@@ -1,6 +1,27 @@
-## scalecodec golang (WIP)
+# scalecodec golang (WIP)
 
->  golang scalecodec,ref https://github.com/polkascan/py-scale-codec
+>  golang scalecodec, Reference from https://github.com/polkascan/py-scale-codec
 
-The project has not been tested, welcome to contribute unit test cases
+ NOTE: The project has not been tested, welcome to contribute unit test cases
+ 
 
+## install 
+
+```bash
+go get -u github.com/freehere107/scalecodec
+```
+
+
+## Getting started
+
+TODO
+
+
+## Test
+
+TODO
+
+
+## Resources
+
+- [polkascan](https://github.com/polkascan)
