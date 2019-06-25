@@ -35,6 +35,7 @@ func (r *RuntimeConfiguration) init() {
 	regRuntimeStruct["compact<moment>"] = &Moment{}
 	regRuntimeStruct["eventrecord"] = &EventRecord{}
 	regRuntimeStruct["u32"] = &U32{}
+	regRuntimeStruct["blocknumber"] = &BlockNumber{}
 }
 
 func (r *RuntimeConfiguration) GetDecoderClass(typeString string) (interface{}, error) {
@@ -181,6 +182,10 @@ func (s *ScaleDecoder) ProcessType(typeString string, valueList ...string) refle
 		class := c.(*U32)
 		class.ScaleDecoder = *s
 		tt = reflect.ValueOf(&class).Elem()
+	case *BlockNumber:
+		class := c.(*BlockNumber)
+		class.ScaleDecoder = *s
+		tt = reflect.ValueOf(&class).Elem()
 	}
 	tt.MethodByName("Init").Call([]reflect.Value{reflect.ValueOf(s.Data), reflect.ValueOf(valueList)})
 	return tt
@@ -188,8 +193,11 @@ func (s *ScaleDecoder) ProcessType(typeString string, valueList ...string) refle
 
 func (s *ScaleDecoder) getNextU8() int {
 	b := s.getNextBytes(1)
+	data := make([]byte, len(s.Data.Data))
+	copy(data, s.Data.Data)
 	bs := make([]byte, 4-len(b))
 	bs = append(b[:], bs...)
+	s.Data.Data = data
 	return int(binary.LittleEndian.Uint32(bs))
 }
 

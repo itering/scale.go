@@ -152,6 +152,7 @@ func (e *EventsDecoder) Process() []map[string]interface{} {
 	bm, _ := json.Marshal(e.Metadata)
 	for i := 0; i < elementCount; i++ {
 		element := e.ProcessAndUpdateData("EventRecord", "", string(bm)).Interface().(map[string]interface{})
+		element["event_idx"] = i
 		e.Elements = append(e.Elements, element)
 	}
 	return e.Elements

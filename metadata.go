@@ -83,10 +83,10 @@ type MetadataCalls struct {
 }
 
 type MetadataEvents struct {
-	Lookup string            `json:"lookup"`
-	Name   string            `json:"name"`
-	Docs   []string          `json:"docs"`
-	Args   map[string]string `json:"args"`
+	Lookup string   `json:"lookup"`
+	Name   string   `json:"name"`
+	Docs   []string `json:"docs"`
+	Args   []string `json:"args"`
 }
 
 func (m *MetadataV3Decoder) Init(data ScaleBytes, valueList []string) {
