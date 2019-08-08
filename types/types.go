@@ -1,4 +1,4 @@
-package scalecodec
+package types
 
 import (
 	"encoding/binary"
@@ -17,7 +17,7 @@ type Compact struct {
 }
 
 func (c *Compact) ProcessCompactBytes() []byte {
-	compactByte := c.getNextBytes(1)
+	compactByte := c.GetNextBytes(1)
 	byteMod := compactByte[0] % 4
 	if byteMod == 0 {
 		c.CompactLength = 1
@@ -28,13 +28,12 @@ func (c *Compact) ProcessCompactBytes() []byte {
 	} else {
 		c.CompactLength = 5 + ((int(compactByte[0]) - 3) / 4)
 	}
-
 	if c.CompactLength == 1 {
 		c.CompactBytes = compactByte
 	} else if utiles.IntInSlice(c.CompactLength, []int{2, 4}) {
-		c.CompactBytes = append(compactByte[:], c.getNextBytes(c.CompactLength - 1)[:]...)
+		c.CompactBytes = append(compactByte[:], c.GetNextBytes(c.CompactLength - 1)[:]...)
 	} else {
-		c.CompactBytes = c.getNextBytes(c.CompactLength - 1)
+		c.CompactBytes = c.GetNextBytes(c.CompactLength - 1)
 	}
 	return c.CompactBytes
 }
@@ -80,7 +79,7 @@ func (c *CompactU32) Process() int {
 	}
 }
 
-func (c *CompactU32) encode(value int) ScaleBytes {
+func (c *CompactU32) Encode(value int) ScaleBytes {
 	if value <= 63 {
 		bs := make([]byte, 4)
 		binary.LittleEndian.PutUint32(bs, uint32(value<<2))
@@ -102,7 +101,7 @@ type Option struct {
 }
 
 func (o *Option) Process() interface{} {
-	optionType := o.getNextBytes(1)
+	optionType := o.GetNextBytes(1)
 	if o.SubType != "" && utiles.BytesToHex(optionType) != "00" {
 		return o.ProcessAndUpdateData(o.SubType).Interface()
 	}
@@ -120,7 +119,7 @@ func (b *Bytes) Init(data ScaleBytes, args []string) {
 
 func (b *Bytes) Process() string {
 	length := b.ProcessAndUpdateData("Compact<u32>").Int()
-	value := b.getNextBytes(int(length))
+	value := b.GetNextBytes(int(length))
 	if utf8.Valid(value) {
 		return string(value)
 	} else {
@@ -137,7 +136,7 @@ func (b *OptionBytes) Init() {
 }
 
 func (b *OptionBytes) Process() string {
-	optionByte := b.getNextBytes(1)
+	optionByte := b.GetNextBytes(1)
 	if utiles.BytesToHex(optionByte) != "00" {
 		return b.ProcessAndUpdateData("Bytes").String()
 	}
@@ -151,7 +150,7 @@ type String struct {
 
 func (s *String) Process() string {
 	length := s.ProcessAndUpdateData("Compact<u32>").Int()
-	value := s.getNextBytes(int(length))
+	value := s.GetNextBytes(int(length))
 	return string(value)
 }
 
@@ -161,7 +160,7 @@ type HexBytes struct {
 
 func (h *HexBytes) Process() string {
 	length := h.ProcessAndUpdateData("Compact<u32>").Int()
-	return utiles.AddHex(utiles.BytesToHex(h.getNextBytes(int(length))))
+	return utiles.AddHex(utiles.BytesToHex(h.GetNextBytes(int(length))))
 }
 
 type U8 struct {
@@ -169,7 +168,7 @@ type U8 struct {
 }
 
 func (u *U8) Process() int {
-	return u.getNextU8()
+	return u.GetNextU8()
 }
 
 type U32 struct {
@@ -177,7 +176,7 @@ type U32 struct {
 }
 
 func (u *U32) Process() uint32 {
-	return uint32(binary.LittleEndian.Uint32(u.getNextBytes(4)))
+	return uint32(binary.LittleEndian.Uint32(u.GetNextBytes(4)))
 }
 
 type U64 struct {
@@ -185,7 +184,7 @@ type U64 struct {
 }
 
 func (u *U64) Process() uint64 {
-	return uint64(binary.LittleEndian.Uint64(u.getNextBytes(8)))
+	return uint64(binary.LittleEndian.Uint64(u.GetNextBytes(8)))
 }
 
 type U128 struct {
@@ -193,7 +192,7 @@ type U128 struct {
 }
 
 func (u *U128) Process() uint128.Uint128 {
-	return uint128.FromBytes(u.getNextBytes(16))
+	return uint128.FromBytes(u.GetNextBytes(16))
 }
 
 type H256 struct {
@@ -201,7 +200,7 @@ type H256 struct {
 }
 
 func (h *H256) Process() string {
-	return utiles.AddHex(utiles.BytesToHex(h.getNextBytes(32)))
+	return utiles.AddHex(utiles.BytesToHex(h.GetNextBytes(32)))
 }
 
 type Era struct {
@@ -209,11 +208,11 @@ type Era struct {
 }
 
 func (e *Era) Process() string {
-	optionHex := utiles.BytesToHex(e.getNextBytes(1))
+	optionHex := utiles.BytesToHex(e.GetNextBytes(1))
 	if optionHex == "00" {
 		return optionHex
 	} else {
-		return optionHex + utiles.BytesToHex(e.getNextBytes(1))
+		return optionHex + utiles.BytesToHex(e.GetNextBytes(1))
 	}
 }
 
@@ -256,11 +255,10 @@ func (b *BoxProposal) Init() {
 }
 
 func (b *BoxProposal) Process() map[string]interface{} {
-	b.CallIndex = utiles.BytesToHex(b.getNextBytes(2))
-	callIndex := b.Metadata.CallIndex
-	b.CallModule = callIndex["module"]
-	b.Call = callIndex["call"]
-	//todo
+	b.CallIndex = utiles.BytesToHex(b.GetNextBytes(2))
+	//callIndex := b.Metadata.CallIndex
+	//b.CallModule = callIndex["module"]
+	//b.Call = callIndex["call"]
 	return map[string]interface{}{
 		"call_index":  b.CallIndex,
 		"call_name":   b.Call,
@@ -354,7 +352,7 @@ type Signature struct {
 }
 
 func (s *Signature) Process() string {
-	return utiles.BytesToHex(s.getNextBytes(64))
+	return utiles.BytesToHex(s.GetNextBytes(64))
 }
 
 type BalanceOf struct {
@@ -394,18 +392,18 @@ type Address struct {
 }
 
 func (a *Address) Process() map[string]string {
-	AccountLength := a.getNextBytes(1)
+	AccountLength := a.GetNextBytes(1)
 	a.AccountLength = utiles.BytesToHex(AccountLength)
 	if a.AccountLength == "ff" {
-		a.AccountId = utiles.BytesToHex(a.getNextBytes(32))
+		a.AccountId = utiles.BytesToHex(a.GetNextBytes(32))
 	} else {
 		var AccountIndex []byte
 		if a.AccountLength == "fc" {
-			AccountIndex = a.getNextBytes(2)
+			AccountIndex = a.GetNextBytes(2)
 		} else if a.AccountLength == "fd" {
-			AccountIndex = a.getNextBytes(4)
+			AccountIndex = a.GetNextBytes(4)
 		} else if a.AccountLength == "fe" {
-			AccountIndex = a.getNextBytes(8)
+			AccountIndex = a.GetNextBytes(8)
 		} else {
 			AccountIndex = AccountLength
 		}
@@ -432,7 +430,7 @@ func (e *Enum) Init(data ScaleBytes, valueList []string) {
 }
 
 func (e *Enum) Process() string {
-	index := utiles.BytesToHex(e.getNextBytes(1))
+	index := utiles.BytesToHex(e.GetNextBytes(1))
 	e.Index = utiles.StringToInt(index)
 	if e.ValueList[e.Index] != "" {
 		return e.ValueList[e.Index]
@@ -498,7 +496,7 @@ type VoteOutcome struct {
 }
 
 func (v *VoteOutcome) Process() []byte {
-	return v.getNextBytes(32)
+	return v.GetNextBytes(32)
 }
 
 type Identity struct {
@@ -748,4 +746,40 @@ type Currency struct {
 
 type CurrencyOf struct {
 	U128
+}
+
+type SessionIndex struct {
+	U32
+}
+
+type Keys struct {
+	Struct
+}
+
+func (d *Keys) Init() {
+	d.TypeString = "(AccountId, AccountId)"
+}
+
+type ScheduleGas struct {
+	Struct
+}
+
+func (s *ScheduleGas) Init() {
+	s.TypeMapping = map[string]interface{}{
+		"version":               "u32",
+		"putCodePerByteCost":    "gas",
+		"growMemCost":           "gas",
+		"regularOpCost":         "gas",
+		"returnDataPerByteCost": "gas",
+		"eventDataPerByteCost":  "gas",
+		"eventPerTopicCost":     "gas",
+		"eventBaseCost":         "gas",
+		"sandboxDataReadCost":   "gas",
+		"sandboxDataWriteCost":  "gas",
+		"maxEventTopics":        "u32",
+		"maxStackHeight":        "u32",
+		"maxMemoryPages":        "u32",
+		"enablePrintln":         "bool",
+		"maxSubjectLen":         "u32",
+	}
 }

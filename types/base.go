@@ -1,75 +1,16 @@
-package scalecodec
+package types
 
 import (
 	"encoding/binary"
-	"errors"
+	"encoding/json"
 	"fmt"
+	"github.com/bilibili/kratos/pkg/log"
+	"github.com/freehere107/scalecodec/tools"
 	"github.com/freehere107/scalecodec/utiles"
 	"reflect"
 	"regexp"
 	"strings"
 )
-
-type RuntimeConfiguration struct {
-}
-
-var regRuntimeStruct map[string]interface{}
-
-func (r *RuntimeConfiguration) init() {
-	regRuntimeStruct = make(map[string]interface{})
-	regRuntimeStruct["vec<u8>"] = &Bytes{}
-	regRuntimeStruct["enum"] = &Enum{}
-	regRuntimeStruct["metadatav4decoder"] = &MetadataV4Decoder{}
-	regRuntimeStruct["metadatav4module"] = &MetadataV4Module{}
-	regRuntimeStruct["bytes"] = &Bytes{}
-	regRuntimeStruct["vec"] = &Vec{}
-	regRuntimeStruct["compact<u32>"] = &CompactU32{}
-	regRuntimeStruct["bool"] = &Bool{}
-	regRuntimeStruct["metadatav4modulestorage"] = &MetadataV4ModuleStorage{}
-	regRuntimeStruct["storagehasher"] = &StorageHasher{}
-	regRuntimeStruct["hexbytes"] = &HexBytes{}
-	regRuntimeStruct["metadatamoduleevent"] = &MetadataModuleEvent{}
-	regRuntimeStruct["metadatamodulecallargument"] = &MetadataModuleCallArgument{}
-	regRuntimeStruct["metadatamodulecall"] = &MetadataModuleCall{}
-	regRuntimeStruct["moment"] = &Moment{}
-	regRuntimeStruct["compact<moment>"] = &Moment{}
-	regRuntimeStruct["eventrecord"] = &EventRecord{}
-	regRuntimeStruct["u32"] = &U32{}
-	regRuntimeStruct["blocknumber"] = &BlockNumber{}
-}
-
-func (r *RuntimeConfiguration) GetDecoderClass(typeString string) (interface{}, error) {
-	fmt.Println("get decoder class", typeString)
-	typeString = strings.ToLower(typeString)
-	if regRuntimeStruct[typeString] == nil {
-		return nil, errors.New("Scalecodec type nil" + typeString)
-	}
-	return regRuntimeStruct[typeString], nil
-}
-
-type ScaleBytes struct {
-	Data   []byte `json:"data"`
-	Offset int    `json:"offset"`
-	Length int    `json:"length"`
-}
-
-func (s *ScaleBytes) getNextBytes(length int) []byte {
-	data := s.Data[s.Offset : s.Offset+length]
-	s.Offset = s.Offset + length
-	return data
-}
-
-func (s *ScaleBytes) getRemainingLength() int {
-	return s.Length - s.Offset
-}
-
-func (s *ScaleBytes) String() string {
-	return utiles.AddHex(utiles.BytesToHex(s.Data))
-}
-
-func (s *ScaleBytes) reset() {
-	s.Offset = 0
-}
 
 type ScaleDecoder struct {
 	TypeString  string                 `json:"type_string"`
@@ -96,19 +37,23 @@ func (s *ScaleDecoder) buildTypeMapping() {
 		n := 1
 		for _, v := range strings.Split(s.TypeString[1:len(s.TypeString)-1], ",") {
 			typeMapping[fmt.Sprintf("col%d", n)] = strings.TrimSpace(v)
+			n += 1
 		}
 		s.TypeMapping = typeMapping
 	}
 }
 
-func (s *ScaleDecoder) getNextBytes(length int) []byte {
-	data := s.Data.getNextBytes(length)
+func (s *ScaleDecoder) GetNextBytes(length int) []byte {
+	data := s.Data.GetNextBytes(length)
 	s.RawValue += utiles.BytesToHex(data)
 	return data
 }
 
 func (s *ScaleDecoder) ProcessType(typeString string, valueList ...string) reflect.Value { //todo
-	c, subType := GetDecoderClass(typeString)
+	c, subType := getDecoderClass(typeString)
+	if c == nil {
+		panic(fmt.Sprintf("not found decoder class %s", typeString))
+	}
 	if subType != "" {
 		valueList = append([]string{subType}, valueList...)
 	}
@@ -116,14 +61,6 @@ func (s *ScaleDecoder) ProcessType(typeString string, valueList ...string) refle
 	switch c.(type) {
 	case *Enum:
 		class := c.(*Enum)
-		class.ScaleDecoder = *s
-		tt = reflect.ValueOf(&class).Elem()
-	case *MetadataV3Decoder:
-		class := c.(*MetadataV3Decoder)
-		class.ScaleDecoder = *s
-		tt = reflect.ValueOf(&class).Elem()
-	case *MetadataV4Decoder:
-		class := c.(*MetadataV4Decoder)
 		class.ScaleDecoder = *s
 		tt = reflect.ValueOf(&class).Elem()
 	case *Vec:
@@ -138,16 +75,8 @@ func (s *ScaleDecoder) ProcessType(typeString string, valueList ...string) refle
 		class := c.(*CompactU32)
 		class.ScaleDecoder = *s
 		tt = reflect.ValueOf(&class).Elem()
-	case *MetadataV4Module:
-		class := c.(*MetadataV4Module)
-		class.ScaleDecoder = *s
-		tt = reflect.ValueOf(&class).Elem()
 	case *Bool:
 		class := c.(*Bool)
-		class.ScaleDecoder = *s
-		tt = reflect.ValueOf(&class).Elem()
-	case *MetadataV4ModuleStorage:
-		class := c.(*MetadataV4ModuleStorage)
 		class.ScaleDecoder = *s
 		tt = reflect.ValueOf(&class).Elem()
 	case *StorageHasher:
@@ -174,10 +103,6 @@ func (s *ScaleDecoder) ProcessType(typeString string, valueList ...string) refle
 		class := c.(*Moment)
 		class.ScaleDecoder = *s
 		tt = reflect.ValueOf(&class).Elem()
-	case *EventRecord:
-		class := c.(*EventRecord)
-		class.ScaleDecoder = *s
-		tt = reflect.ValueOf(&class).Elem()
 	case *U32:
 		class := c.(*U32)
 		class.ScaleDecoder = *s
@@ -186,13 +111,49 @@ func (s *ScaleDecoder) ProcessType(typeString string, valueList ...string) refle
 		class := c.(*BlockNumber)
 		class.ScaleDecoder = *s
 		tt = reflect.ValueOf(&class).Elem()
+	case *AccountId:
+		class := c.(*AccountId)
+		class.ScaleDecoder = *s
+		tt = reflect.ValueOf(&class).Elem()
+	case *SessionIndex:
+		class := c.(*SessionIndex)
+		class.ScaleDecoder = *s
+		tt = reflect.ValueOf(&class).Elem()
+	case *MetadataV5Decoder:
+		class := c.(*MetadataV5Decoder)
+		class.ScaleDecoder = *s
+		tt = reflect.ValueOf(&class).Elem()
+	case *MetadataV5Module:
+		class := c.(*MetadataV5Module)
+		class.ScaleDecoder = *s
+		tt = reflect.ValueOf(&class).Elem()
+	case *MetadataV5ModuleStorage:
+		class := c.(*MetadataV5ModuleStorage)
+		class.ScaleDecoder = *s
+		tt = reflect.ValueOf(&class).Elem()
+	case *MetadataV6Decoder:
+		class := c.(*MetadataV6Decoder)
+		class.ScaleDecoder = *s
+		tt = reflect.ValueOf(&class).Elem()
+	case *MetadataV6Module:
+		class := c.(*MetadataV6Module)
+		class.ScaleDecoder = *s
+		tt = reflect.ValueOf(&class).Elem()
+	case *MetadataV6ModuleStorage:
+		class := c.(*MetadataV6ModuleStorage)
+		class.ScaleDecoder = *s
+		tt = reflect.ValueOf(&class).Elem()
+	case *MetadataV6ModuleConstants:
+		class := c.(*MetadataV6ModuleConstants)
+		class.ScaleDecoder = *s
+		tt = reflect.ValueOf(&class).Elem()
 	}
 	tt.MethodByName("Init").Call([]reflect.Value{reflect.ValueOf(s.Data), reflect.ValueOf(valueList)})
 	return tt
 }
 
-func (s *ScaleDecoder) getNextU8() int {
-	b := s.getNextBytes(1)
+func (s *ScaleDecoder) GetNextU8() int {
+	b := s.GetNextBytes(1)
 	data := make([]byte, len(s.Data.Data))
 	copy(data, s.Data.Data)
 	bs := make([]byte, 4-len(b))
@@ -202,7 +163,7 @@ func (s *ScaleDecoder) getNextU8() int {
 }
 
 func (s *ScaleDecoder) getNextBool() bool {
-	data := s.getNextBytes(1)
+	data := s.GetNextBytes(1)
 	return utiles.BytesToHex(data) == "01"
 }
 
@@ -226,10 +187,10 @@ func (s *ScaleDecoder) ProcessAndUpdateData(typeString string, args ...string) r
 	return vm
 }
 
-func GetDecoderClass(typeString string) (interface{}, string) { //todo
+func getDecoderClass(typeString string) (interface{}, string) { //todo
 	var typeParts []string
-	typeString = ConvertType(typeString)
-	r := RuntimeConfiguration{}
+	typeString = tools.ConvertType(typeString)
+	r := RuntimeConfig{}
 	r.init()
 	if typeString[len(typeString)-1:] == ">" {
 		decoderClass, err := r.GetDecoderClass(typeString)
@@ -252,47 +213,15 @@ func GetDecoderClass(typeString string) (interface{}, string) { //todo
 	}
 	if typeString != "()" && string(typeString[0]) == "(" && string(typeString[len(typeString)-1:]) == ")" {
 		decoderClass, _ := r.GetDecoderClass("struct")
-		//todo
 		return decoderClass, ""
 	}
+	log.Error("Get not init class", typeString)
 	return nil, ""
-
-}
-
-func ConvertType(name string) string {
-	name = strings.ReplaceAll(name, "T::", "")
-	name = strings.ReplaceAll(name, "<T>", "")
-	name = strings.ReplaceAll(name, "<T as Trait>::", "")
-	if name == "()" {
-		return "Null"
-	}
-	if name == "Vec<u8>" {
-		return "Bytes"
-	}
-	if name == "<Lookup as StaticLookup>::Source" {
-		return "Address"
-	}
-	if name == "<Balance as HasCompact>::Type" {
-		return "Compact<Balance>"
-	}
-	if name == "<BlockNumber as HasCompact>::Type" {
-		return "Compact<BlockNumber>"
-	}
-	if name == "<Balance as HasCompact>::Type" {
-		return "Compact<Balance>"
-	}
-	if name == "<Moment as HasCompact>::Type" {
-		return "Compact<Moment>"
-	}
-	if name == "<InherentOfflineReport as InherentOfflineReport>::Inherent" {
-		return "Inherent"
-	}
-	return name
 }
 
 type ScaleType struct {
 	ScaleDecoder
-	Metadata MetadataDecoder `json:"metadata"`
+	//Metadata MetadataDecoder `json:"metadata"`
 }
 
 func (s *ScaleType) Init(data ScaleBytes, args []string) {
@@ -303,6 +232,80 @@ func (s *ScaleType) Init(data ScaleBytes, args []string) {
 	s.ScaleDecoder.Init(data, subType)
 }
 
-func (s *ScaleType) Process() {
+type MetadataModuleCall struct {
+	ScaleType
+	Name string                   `json:"name"`
+	Args []map[string]interface{} `json:"args"`
+	Docs []string                 `json:"docs"`
+}
 
+func (m *MetadataModuleCall) Init(data ScaleBytes, valueList []string) {
+	subType := ""
+	if len(valueList) > 0 {
+		subType = valueList[0]
+	}
+	m.ScaleDecoder.Init(data, subType)
+}
+
+func (m *MetadataModuleCall) Process() string {
+	m.Name = m.ProcessAndUpdateData("Bytes").String()
+	argsValue := m.ProcessAndUpdateData("Vec<MetadataModuleCallArgument>").Interface().([]interface{})
+	var args []map[string]interface{}
+	for _, v := range argsValue {
+		sv := v.(reflect.Value).Interface().(map[string]interface{})
+		args = append(args, sv)
+	}
+	m.Args = args
+	docs := m.ProcessAndUpdateData("Vec<Bytes>").Interface().([]interface{})
+	for _, v := range docs {
+		m.Docs = append(m.Docs, v.(reflect.Value).String())
+	}
+	r := map[string]interface{}{
+		"name": m.Name,
+		"args": m.Args,
+		"docs": m.Docs,
+	}
+	br, _ := json.Marshal(r)
+	return string(br)
+}
+
+type MetadataModuleCallArgument struct {
+	ScaleType
+	Name string `json:"name"`
+	Type string `json:"type"`
+}
+
+func (m *MetadataModuleCallArgument) Process() map[string]interface{} {
+	m.Name = m.ProcessAndUpdateData("Bytes").String()
+	m.Type = tools.ConvertType(m.ProcessAndUpdateData("Bytes").String())
+	return map[string]interface{}{
+		"name": m.Name,
+		"type": m.Type,
+	}
+}
+
+type MetadataModuleEvent struct {
+	ScaleType
+	Name string   `json:"name"`
+	Docs []string `json:"docs"`
+	Args []string `json:"args"`
+}
+
+func (m *MetadataModuleEvent) Process() string {
+	m.Name = m.ProcessAndUpdateData("Bytes").String()
+	args := m.ProcessAndUpdateData("Vec<Bytes>").Interface().([]interface{})
+	for _, v := range args {
+		m.Args = append(m.Args, v.(reflect.Value).String())
+	}
+	docs := m.ProcessAndUpdateData("Vec<Bytes>").Interface().([]interface{})
+	for _, v := range docs {
+		m.Docs = append(m.Docs, v.(reflect.Value).String())
+	}
+	r := map[string]interface{}{
+		"name": m.Name,
+		"args": m.Args,
+		"docs": m.Docs,
+	}
+	br, _ := json.Marshal(r)
+	return string(br)
 }
