@@ -2,7 +2,6 @@ package types
 
 import (
 	"encoding/json"
-	"github.com/freehere107/scalecodec/tools"
 	"github.com/freehere107/scalecodec/utiles"
 	"github.com/huandu/xstrings"
 	"reflect"
@@ -157,7 +156,7 @@ type MetadataV6ModuleConstants struct {
 
 func (m *MetadataV6ModuleConstants) Process() string {
 	name := m.ProcessAndUpdateData("Bytes").String()
-	cType := tools.ConvertType(m.ProcessAndUpdateData("Bytes").String())
+	cType := ConvertType(m.ProcessAndUpdateData("Bytes").String())
 	value := m.ProcessAndUpdateData("Bytes").String()
 	var docsArr []string
 	docs := m.ProcessAndUpdateData("Vec<Bytes>").Interface().([]interface{})

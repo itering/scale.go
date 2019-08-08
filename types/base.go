@@ -4,8 +4,6 @@ import (
 	"encoding/binary"
 	"encoding/json"
 	"fmt"
-	"github.com/bilibili/kratos/pkg/log"
-	"github.com/freehere107/scalecodec/tools"
 	"github.com/freehere107/scalecodec/utiles"
 	"reflect"
 	"regexp"
@@ -189,7 +187,7 @@ func (s *ScaleDecoder) ProcessAndUpdateData(typeString string, args ...string) r
 
 func getDecoderClass(typeString string) (interface{}, string) { //todo
 	var typeParts []string
-	typeString = tools.ConvertType(typeString)
+	typeString = ConvertType(typeString)
 	r := RuntimeConfig{}
 	r.init()
 	if typeString[len(typeString)-1:] == ">" {
@@ -215,7 +213,6 @@ func getDecoderClass(typeString string) (interface{}, string) { //todo
 		decoderClass, _ := r.GetDecoderClass("struct")
 		return decoderClass, ""
 	}
-	log.Error("Get not init class", typeString)
 	return nil, ""
 }
 
@@ -277,7 +274,7 @@ type MetadataModuleCallArgument struct {
 
 func (m *MetadataModuleCallArgument) Process() map[string]interface{} {
 	m.Name = m.ProcessAndUpdateData("Bytes").String()
-	m.Type = tools.ConvertType(m.ProcessAndUpdateData("Bytes").String())
+	m.Type = ConvertType(m.ProcessAndUpdateData("Bytes").String())
 	return map[string]interface{}{
 		"name": m.Name,
 		"type": m.Type,
@@ -308,4 +305,35 @@ func (m *MetadataModuleEvent) Process() string {
 	}
 	br, _ := json.Marshal(r)
 	return string(br)
+}
+
+func ConvertType(name string) string {
+	name = strings.ReplaceAll(name, "T::", "")
+	name = strings.ReplaceAll(name, "<T>", "")
+	name = strings.ReplaceAll(name, "<T as Trait>::", "")
+	if name == "()" {
+		return "Null"
+	}
+	if name == "Vec<u8>" {
+		return "Bytes"
+	}
+	if name == "<Lookup as StaticLookup>::Source" {
+		return "Address"
+	}
+	if name == "<Balance as HasCompact>::Type" {
+		return "Compact<Balance>"
+	}
+	if name == "<BlockNumber as HasCompact>::Type" {
+		return "Compact<BlockNumber>"
+	}
+	if name == "<Balance as HasCompact>::Type" {
+		return "Compact<Balance>"
+	}
+	if name == "<Moment as HasCompact>::Type" {
+		return "Compact<Moment>"
+	}
+	if name == "<InherentOfflineReport as InherentOfflineReport>::Inherent" {
+		return "Inherent"
+	}
+	return name
 }

@@ -2,7 +2,6 @@ package types
 
 import (
 	"encoding/json"
-	"github.com/freehere107/scalecodec/tools"
 	"github.com/freehere107/scalecodec/utiles"
 	"github.com/huandu/xstrings"
 	"reflect"
@@ -168,16 +167,16 @@ func (m *MetadataV5ModuleStorage) Process() string {
 		m.Type = map[string]interface{}{
 			"MapType": map[string]interface{}{
 				"hasher":   m.Hasher,
-				"key":      tools.ConvertType(m.ProcessAndUpdateData("Bytes").String()),
-				"value":    tools.ConvertType(m.ProcessAndUpdateData("Bytes").String()),
+				"key":      ConvertType(m.ProcessAndUpdateData("Bytes").String()),
+				"value":    ConvertType(m.ProcessAndUpdateData("Bytes").String()),
 				"isLinked": m.ProcessAndUpdateData("bool").Bool(),
 			},
 		}
 	} else if storageFunctionType == "DoubleMapType" {
 		m.Hasher = m.ProcessAndUpdateData("StorageHasher").String()
-		key1 := tools.ConvertType(m.ProcessAndUpdateData("Bytes").String())
-		key2 := tools.ConvertType(m.ProcessAndUpdateData("Bytes").String())
-		value := tools.ConvertType(m.ProcessAndUpdateData("Bytes").String())
+		key1 := ConvertType(m.ProcessAndUpdateData("Bytes").String())
+		key2 := ConvertType(m.ProcessAndUpdateData("Bytes").String())
+		value := ConvertType(m.ProcessAndUpdateData("Bytes").String())
 		key2Hasher := m.ProcessAndUpdateData("StorageHasher").String()
 		m.Type = map[string]interface{}{
 			"DoubleMapType": map[string]interface{}{
@@ -190,7 +189,7 @@ func (m *MetadataV5ModuleStorage) Process() string {
 		}
 	} else if storageFunctionType == "PlainType" {
 		m.Type = map[string]interface{}{
-			"PlainType": tools.ConvertType(m.ProcessAndUpdateData("Bytes").String()),
+			"PlainType": ConvertType(m.ProcessAndUpdateData("Bytes").String()),
 		}
 	}
 	m.Fallback = m.ProcessAndUpdateData("HexBytes").String()
