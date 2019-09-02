@@ -21,7 +21,7 @@ func (m *MetadataDecoder) Init(data []byte) {
 func (m *MetadataDecoder) Process() string {
 	magicBytes := m.GetNextBytes(4)
 	if string(magicBytes) == "meta" {
-		m.Version = m.ProcessAndUpdateData("Enum", "MetadataV0Decoder", "MetadataV1Decoder", "MetadataV2Decoder", "MetadataV3Decoder", "MetadataV4Decoder", "MetadataV5Decoder", "MetadataV6Decoder").String()
+		m.Version = m.ProcessAndUpdateData("Enum", "MetadataV0Decoder", "MetadataV1Decoder", "MetadataV2Decoder", "MetadataV3Decoder", "MetadataV4Decoder", "MetadataV5Decoder", "MetadataV6Decoder", "MetadataV7Decoder").String()
 		m.Metadata = m.ProcessAndUpdateData(m.Version).String()
 		var metadata types.MetadataStruct
 		_ = json.Unmarshal([]byte(m.Metadata), &metadata)

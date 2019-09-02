@@ -2,7 +2,9 @@ package scalecodec_test
 
 import (
 	"bytes"
+	"encoding/json"
 	"github.com/freehere107/scalecodec"
+	"github.com/freehere107/scalecodec/types"
 	"github.com/freehere107/scalecodec/utiles"
 	"testing"
 )
@@ -30,4 +32,9 @@ func TestMetadataDecoderProcess(t *testing.T) {
 	if m.Version != "MetadataV6Decoder" {
 		t.Errorf("Metadata version should equal 6")
 	}
+	var metadataStruct types.MetadataStruct
+	if err := json.Unmarshal([]byte(metadataStr), &metadataStruct); err != nil {
+		t.Errorf("Metadata process should return can json.Unmarshal to types.MetadataStruct")
+	}
+
 }

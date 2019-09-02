@@ -1,6 +1,8 @@
 package types
 
-import "github.com/freehere107/scalecodec/utiles"
+import (
+	"github.com/freehere107/scalecodec/utiles"
+)
 
 type ScaleBytes struct {
 	Data   []byte `json:"data"`

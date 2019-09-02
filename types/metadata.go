@@ -6,11 +6,12 @@ type MetadataCallAndEvent struct {
 }
 
 type MetadataModules struct {
-	Name    string            `json:"name"`
-	Prefix  string            `json:"prefix"`
-	Storage []MetadataStorage `json:"storage"`
-	Calls   []MetadataCalls   `json:"calls"`
-	Events  []MetadataEvents  `json:"events"`
+	Name      string              `json:"name"`
+	Prefix    string              `json:"prefix"`
+	Storage   []MetadataStorage   `json:"storage"`
+	Calls     []MetadataCalls     `json:"calls"`
+	Events    []MetadataEvents    `json:"events"`
+	Constants []MetadataConstants `json:"constants,omitempty"`
 }
 
 type MetadataStorage struct {
@@ -19,6 +20,7 @@ type MetadataStorage struct {
 	Type     map[string]interface{} `json:"type"`
 	Fallback string                 `json:"fallback"`
 	Docs     []string               `json:"docs"`
+	Hasher   string                 `json:"hasher,omitempty"`
 }
 
 type MetadataCalls struct {
@@ -44,4 +46,11 @@ type MetadataStruct struct {
 
 type MetadataTag struct {
 	Modules []MetadataModules `json:"modules"`
+}
+
+type MetadataConstants struct {
+	Name  string   `json:"name"`
+	Type  string   `json:"type"`
+	Value string   `json:"value"`
+	Docs  []string `json:"docs"`
 }

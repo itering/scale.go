@@ -4,6 +4,7 @@ import (
 	"encoding/binary"
 	"github.com/freehere107/scalecodec/utiles"
 	"github.com/freehere107/scalecodec/utiles/uint128"
+	"github.com/huandu/xstrings"
 	"reflect"
 	"strconv"
 	"time"
@@ -38,7 +39,7 @@ func (c *Compact) ProcessCompactBytes() []byte {
 	return c.CompactBytes
 }
 
-func (c *Compact) Process() []byte {
+func (c *Compact) Process() interface{} {
 	c.ProcessCompactBytes()
 	if c.SubType != "" {
 		s := ScaleDecoder{TypeString: c.SubType, Data: ScaleBytes{Data: c.CompactBytes}}
@@ -46,7 +47,7 @@ func (c *Compact) Process() []byte {
 		if reflect.TypeOf(byteData).Kind() == reflect.Int && c.CompactLength <= 4 {
 			return []byte(strconv.Itoa(byteData.(int) / 4))
 		} else {
-			return byteData.([]byte)
+			return byteData
 		}
 
 	} else {
@@ -192,6 +193,9 @@ type U128 struct {
 }
 
 func (u *U128) Process() uint128.Uint128 {
+	if len(u.Data.Data) < 16 {
+		u.Data.Data = utiles.HexToBytes(xstrings.RightJustify(utiles.BytesToHex(u.Data.Data), 32, "0"))
+	}
 	return uint128.FromBytes(u.GetNextBytes(16))
 }
 
@@ -271,14 +275,15 @@ type Struct struct {
 	ScaleType
 }
 
-func (s *Struct) Init() {
+func (s *Struct) Init(data ScaleBytes, arg []string) {
 	s.TypeMapping = map[string]interface{}{}
+	s.ScaleDecoder.Init(data, "")
 }
 
 func (s *Struct) Process() map[string]interface{} {
 	result := map[string]interface{}{}
-	for key, dataType := range s.TypeMapping {
-		result[key] = s.ProcessAndUpdateData(dataType.(string)).Interface()
+	for _, dataType := range s.StructTypeOrder {
+		result[dataType] = s.ProcessAndUpdateData(s.TypeMapping[dataType].(string)).Interface()
 	}
 	return result
 }
@@ -756,8 +761,12 @@ type Keys struct {
 	Struct
 }
 
-func (d *Keys) Init() {
-	d.TypeString = "(AccountId, AccountId)"
+func (d *Keys) Init(data ScaleBytes, args []string) {
+	d.TypeMapping = map[string]interface{}{
+		"col1": "AccountId",
+		"col2": "AccountId",
+	}
+	d.StructTypeOrder = []string{"col1", "col2"}
 }
 
 type ScheduleGas struct {
@@ -782,4 +791,80 @@ func (s *ScheduleGas) Init() {
 		"enablePrintln":         "bool",
 		"maxSubjectLen":         "u32",
 	}
+}
+
+type EraIndex struct {
+	U32
+}
+
+type StakingLedgers struct {
+	Struct
+}
+
+func (s *StakingLedgers) Init(data ScaleBytes, args []string) {
+	s.StructTypeOrder = []string{"stash", "total_power", "active_power", "total_ring", "total_regular_ring", "active_ring", "active_regular_ring", "total_kton", "active_kton", "regular_items", "unlocking"}
+	s.TypeMapping = map[string]interface{}{
+		"stash":               "AccountId",
+		"total_power":         "Compact<ExtendedBalance>",
+		"active_power":        "Compact<ExtendedBalance>",
+		"total_ring":          "Compact<RingBalanceOf>",
+		"total_regular_ring":  "Compact<RingBalanceOf>",
+		"active_ring":         "Compact<RingBalanceOf>",
+		"active_regular_ring": "Compact<RingBalanceOf>",
+		"total_kton":          "Compact<KtonBalanceOf>",
+		"active_kton":         "Compact<KtonBalanceOf>",
+		"regular_items":       "Vec<RegularItem>",
+		"unlocking":           "Vec<UnlockChunk>",
+	}
+	s.ScaleDecoder.Init(data, "")
+}
+
+type ExtendedBalance struct {
+	U128
+}
+
+type RingBalanceOf struct {
+	U128
+}
+
+type KtonBalanceOf struct {
+	U128
+}
+
+type UnlockChunk struct {
+	Struct
+}
+
+func (u *UnlockChunk) Init(data ScaleBytes, args []string) {
+	u.StructTypeOrder = []string{"value", "era", "dt_power", "is_regular"}
+	u.TypeMapping = map[string]interface{}{
+		"value":      "StakingBalance",
+		"era":        "Compact<EraIndex>",
+		"dt_power":   "ExtendedBalance",
+		"is_regular": "bool",
+	}
+	u.ScaleDecoder.Init(data, "")
+}
+
+type RegularItem struct {
+	Struct
+}
+
+func (r *RegularItem) Init(data ScaleBytes, args []string) {
+	r.StructTypeOrder = []string{"value", "expire_time"}
+	r.TypeMapping = map[string]interface{}{
+		"value":       "Compact<RingBalanceOf>",
+		"expire_time": "Compact<Moment>",
+	}
+	r.ScaleDecoder.Init(data, "")
+}
+
+type StakingBalance struct {
+	Enum
+}
+
+func (s *StakingBalance) Init(data ScaleBytes, args []string) {
+	s.TypeString = "StakingBalance<RingBalanceOf, KtonBalanceOf>"
+	valueList := []string{"RingBalanceOf", "KtonBalanceOf"}
+	s.Enum.Init(data, valueList)
 }

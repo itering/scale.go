@@ -11,12 +11,13 @@ import (
 )
 
 type ScaleDecoder struct {
-	TypeString  string                 `json:"type_string"`
-	Data        ScaleBytes             `json:"data"`
-	RawValue    string                 `json:"raw_value"`
-	Value       string                 `json:"value"`
-	SubType     string                 `json:"sub_type"`
-	TypeMapping map[string]interface{} `json:"type_mapping"`
+	TypeString      string                 `json:"type_string"`
+	Data            ScaleBytes             `json:"data"`
+	RawValue        string                 `json:"raw_value"`
+	Value           string                 `json:"value"`
+	SubType         string                 `json:"sub_type"`
+	TypeMapping     map[string]interface{} `json:"type_mapping"`
+	StructTypeOrder []string               `json:"struct_type_order"`
 }
 
 func (s *ScaleDecoder) Init(data ScaleBytes, subType string) {
@@ -105,6 +106,10 @@ func (s *ScaleDecoder) ProcessType(typeString string, valueList ...string) refle
 		class := c.(*U32)
 		class.ScaleDecoder = *s
 		tt = reflect.ValueOf(&class).Elem()
+	case *EraIndex:
+		class := c.(*EraIndex)
+		class.ScaleDecoder = *s
+		tt = reflect.ValueOf(&class).Elem()
 	case *BlockNumber:
 		class := c.(*BlockNumber)
 		class.ScaleDecoder = *s
@@ -115,18 +120,6 @@ func (s *ScaleDecoder) ProcessType(typeString string, valueList ...string) refle
 		tt = reflect.ValueOf(&class).Elem()
 	case *SessionIndex:
 		class := c.(*SessionIndex)
-		class.ScaleDecoder = *s
-		tt = reflect.ValueOf(&class).Elem()
-	case *MetadataV5Decoder:
-		class := c.(*MetadataV5Decoder)
-		class.ScaleDecoder = *s
-		tt = reflect.ValueOf(&class).Elem()
-	case *MetadataV5Module:
-		class := c.(*MetadataV5Module)
-		class.ScaleDecoder = *s
-		tt = reflect.ValueOf(&class).Elem()
-	case *MetadataV5ModuleStorage:
-		class := c.(*MetadataV5ModuleStorage)
 		class.ScaleDecoder = *s
 		tt = reflect.ValueOf(&class).Elem()
 	case *MetadataV6Decoder:
@@ -143,6 +136,62 @@ func (s *ScaleDecoder) ProcessType(typeString string, valueList ...string) refle
 		tt = reflect.ValueOf(&class).Elem()
 	case *MetadataV6ModuleConstants:
 		class := c.(*MetadataV6ModuleConstants)
+		class.ScaleDecoder = *s
+		tt = reflect.ValueOf(&class).Elem()
+	case *MetadataV7Decoder:
+		class := c.(*MetadataV7Decoder)
+		class.ScaleDecoder = *s
+		tt = reflect.ValueOf(&class).Elem()
+	case *MetadataV7Module:
+		class := c.(*MetadataV7Module)
+		class.ScaleDecoder = *s
+		tt = reflect.ValueOf(&class).Elem()
+	case *MetadataV7ModuleStorage:
+		class := c.(*MetadataV7ModuleStorage)
+		class.ScaleDecoder = *s
+		tt = reflect.ValueOf(&class).Elem()
+	case *MetadataV7ModuleConstants:
+		class := c.(*MetadataV7ModuleConstants)
+		class.ScaleDecoder = *s
+		tt = reflect.ValueOf(&class).Elem()
+	case *MetadataV7ModuleStorageEntry:
+		class := c.(*MetadataV7ModuleStorageEntry)
+		class.ScaleDecoder = *s
+		tt = reflect.ValueOf(&class).Elem()
+	case *StakingLedgers:
+		class := c.(*StakingLedgers)
+		class.ScaleDecoder = *s
+		tt = reflect.ValueOf(&class).Elem()
+	case *RingBalanceOf:
+		class := c.(*RingBalanceOf)
+		class.ScaleDecoder = *s
+		tt = reflect.ValueOf(&class).Elem()
+	case *KtonBalanceOf:
+		class := c.(*KtonBalanceOf)
+		class.ScaleDecoder = *s
+		tt = reflect.ValueOf(&class).Elem()
+	case *UnlockChunk:
+		class := c.(*UnlockChunk)
+		class.ScaleDecoder = *s
+		tt = reflect.ValueOf(&class).Elem()
+	case *Compact:
+		class := c.(*Compact)
+		class.ScaleDecoder = *s
+		tt = reflect.ValueOf(&class).Elem()
+	case *ExtendedBalance:
+		class := c.(*ExtendedBalance)
+		class.ScaleDecoder = *s
+		tt = reflect.ValueOf(&class).Elem()
+	case *RegularItem:
+		class := c.(*RegularItem)
+		class.ScaleDecoder = *s
+		tt = reflect.ValueOf(&class).Elem()
+	case *StakingBalance:
+		class := c.(*StakingBalance)
+		class.ScaleDecoder = *s
+		tt = reflect.ValueOf(&class).Elem()
+	case *Keys:
+		class := c.(*Keys)
 		class.ScaleDecoder = *s
 		tt = reflect.ValueOf(&class).Elem()
 	}
@@ -305,35 +354,4 @@ func (m *MetadataModuleEvent) Process() string {
 	}
 	br, _ := json.Marshal(r)
 	return string(br)
-}
-
-func ConvertType(name string) string {
-	name = strings.ReplaceAll(name, "T::", "")
-	name = strings.ReplaceAll(name, "<T>", "")
-	name = strings.ReplaceAll(name, "<T as Trait>::", "")
-	if name == "()" {
-		return "Null"
-	}
-	if name == "Vec<u8>" {
-		return "Bytes"
-	}
-	if name == "<Lookup as StaticLookup>::Source" {
-		return "Address"
-	}
-	if name == "<Balance as HasCompact>::Type" {
-		return "Compact<Balance>"
-	}
-	if name == "<BlockNumber as HasCompact>::Type" {
-		return "Compact<BlockNumber>"
-	}
-	if name == "<Balance as HasCompact>::Type" {
-		return "Compact<Balance>"
-	}
-	if name == "<Moment as HasCompact>::Type" {
-		return "Compact<Moment>"
-	}
-	if name == "<InherentOfflineReport as InherentOfflineReport>::Inherent" {
-		return "Inherent"
-	}
-	return name
 }

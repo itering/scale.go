@@ -6,44 +6,85 @@ import (
 )
 
 type RuntimeConfig struct {
+	Runtime map[string]interface{}
 }
 
-var regRuntimeStruct map[string]interface{}
-
 func (r *RuntimeConfig) init() {
-	regRuntimeStruct = make(map[string]interface{})
-	regRuntimeStruct["vec<u8>"] = &Bytes{}
-	regRuntimeStruct["enum"] = &Enum{}
-	regRuntimeStruct["bytes"] = &Bytes{}
-	regRuntimeStruct["vec"] = &Vec{}
-	regRuntimeStruct["compact<u32>"] = &CompactU32{}
-	regRuntimeStruct["bool"] = &Bool{}
-	regRuntimeStruct["storagehasher"] = &StorageHasher{}
-	regRuntimeStruct["hexbytes"] = &HexBytes{}
-	regRuntimeStruct["moment"] = &Moment{}
-	regRuntimeStruct["compact<moment>"] = &Moment{}
-	regRuntimeStruct["u32"] = &U32{}
-	regRuntimeStruct["blocknumber"] = &BlockNumber{}
-	regRuntimeStruct["accountid"] = &AccountId{}
-	regRuntimeStruct["sessionindex"] = &SessionIndex{}
-
-	//metadata
-	regRuntimeStruct["metadatamoduleevent"] = &MetadataModuleEvent{}
-	regRuntimeStruct["metadatamodulecallargument"] = &MetadataModuleCallArgument{}
-	regRuntimeStruct["metadatamodulecall"] = &MetadataModuleCall{}
-	regRuntimeStruct["metadatav5decoder"] = &MetadataV5Decoder{}
-	regRuntimeStruct["metadatav5module"] = &MetadataV5Module{}
-	regRuntimeStruct["metadatav5modulestorage"] = &MetadataV5ModuleStorage{}
-	regRuntimeStruct["metadatav6decoder"] = &MetadataV6Decoder{}
-	regRuntimeStruct["metadatav6module"] = &MetadataV6Module{}
-	regRuntimeStruct["metadatav6modulestorage"] = &MetadataV6ModuleStorage{}
-	regRuntimeStruct["metadatav6moduleconstants"] = &MetadataV6ModuleConstants{}
+	r.Runtime = map[string]interface{}{
+		"vec<u8>":                      &Bytes{},
+		"enum":                         &Enum{},
+		"bytes":                        &Bytes{},
+		"vec":                          &Vec{},
+		"compact<u32>":                 &CompactU32{},
+		"bool":                         &Bool{},
+		"storagehasher":                &StorageHasher{},
+		"hexbytes":                     &HexBytes{},
+		"moment":                       &Moment{},
+		"compact<moment>":              &Moment{},
+		"u32":                          &U32{},
+		"blocknumber":                  &BlockNumber{},
+		"accountid":                    &AccountId{},
+		"sessionindex":                 &SessionIndex{},
+		"eraindex":                     &EraIndex{},
+		"stakingledger":                &StakingLedgers{},
+		"extendedbalance":              &ExtendedBalance{},
+		"ringbalanceof":                &RingBalanceOf{},
+		"ktonbalanceof":                &KtonBalanceOf{},
+		"unlockchunk":                  &UnlockChunk{},
+		"compact":                      &Compact{},
+		"regularitem":                  &RegularItem{},
+		"stakingbalance":               &StakingBalance{},
+		"keys":                         &Keys{},
+		"metadatamoduleevent":          &MetadataModuleEvent{},
+		"metadatamodulecallargument":   &MetadataModuleCallArgument{},
+		"metadatamodulecall":           &MetadataModuleCall{},
+		"metadatav6decoder":            &MetadataV6Decoder{},
+		"metadatav6module":             &MetadataV6Module{},
+		"metadatav6modulestorage":      &MetadataV6ModuleStorage{},
+		"metadatav6moduleconstants":    &MetadataV6ModuleConstants{},
+		"metadatav7decoder":            &MetadataV7Decoder{},
+		"metadatav7module":             &MetadataV7Module{},
+		"metadatav7modulestorage":      &MetadataV7ModuleStorage{},
+		"metadatav7moduleconstants":    &MetadataV7ModuleConstants{},
+		"metadatav7modulestorageentry": &MetadataV7ModuleStorageEntry{},
+	}
 }
 
 func (r *RuntimeConfig) GetDecoderClass(typeStr string) (interface{}, error) {
 	typeStr = strings.ToLower(typeStr)
-	if regRuntimeStruct[typeStr] == nil {
+	if r.Runtime[typeStr] == nil {
 		return nil, errors.New("Scalecodec type nil" + typeStr)
 	}
-	return regRuntimeStruct[typeStr], nil
+	return r.Runtime[typeStr], nil
+}
+
+func ConvertType(name string) string {
+	name = strings.ReplaceAll(name, "T::", "")
+	name = strings.ReplaceAll(name, "<T>", "")
+	name = strings.ReplaceAll(name, "<T as Trait>::", "")
+	if name == "()" {
+		return "Null"
+	}
+	if name == "Vec<u8>" {
+		return "Bytes"
+	}
+	if name == "<Lookup as StaticLookup>::Source" {
+		return "Address"
+	}
+	if name == "<Balance as HasCompact>::Type" {
+		return "Compact<Balance>"
+	}
+	if name == "<BlockNumber as HasCompact>::Type" {
+		return "Compact<BlockNumber>"
+	}
+	if name == "<Balance as HasCompact>::Type" {
+		return "Compact<Balance>"
+	}
+	if name == "<Moment as HasCompact>::Type" {
+		return "Compact<Moment>"
+	}
+	if name == "<InherentOfflineReport as InherentOfflineReport>::Inherent" {
+		return "Inherent"
+	}
+	return name
 }
