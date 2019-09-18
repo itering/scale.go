@@ -25,7 +25,7 @@ type ExtrinsicsDecoder struct {
 }
 
 func (e *ExtrinsicsDecoder) Init(data ScaleBytes, args []string) {
-	e.TypeMapping = map[string]interface{}{
+	e.TypeMapping = map[string]string{
 		"extrinsic_length": "Compact<u32>",
 		"version_info":     "u8",
 		"address":          "Address",
@@ -65,7 +65,7 @@ func (e *ExtrinsicsDecoder) generateHash() string {
 }
 
 func (e *ExtrinsicsDecoder) Process() map[string]interface{} {
-	e.ExtrinsicLength = int(e.ProcessAndUpdateData("Compact<u32>").Int())
+	e.ExtrinsicLength = int(e.ProcessAndUpdateData("Compact<u32>").(int))
 	if e.ExtrinsicLength != e.Data.GetRemainingLength() {
 		e.ExtrinsicLength = 0
 		e.Data.Reset()
@@ -73,10 +73,10 @@ func (e *ExtrinsicsDecoder) Process() map[string]interface{} {
 	e.VersionInfo = utiles.BytesToHex(e.GetNextBytes(1))
 	e.ContainsTransaction = utiles.U256(e.VersionInfo).Int64() >= 80
 	if e.ContainsTransaction {
-		e.Address = e.ProcessAndUpdateData("Address").Interface().(map[string]string)
-		e.Signature = e.ProcessAndUpdateData("Signature").String()
-		e.Nonce = int(e.ProcessAndUpdateData(e.TypeMapping["nonce"].(string)).Int())
-		e.Era = e.ProcessAndUpdateData("Era").String()
+		e.Address = e.ProcessAndUpdateData("Address").(map[string]string)
+		e.Signature = e.ProcessAndUpdateData("Signature").(string)
+		e.Nonce = int(e.ProcessAndUpdateData(e.TypeMapping["nonce"]).(int))
+		e.Era = e.ProcessAndUpdateData("Era").(string)
 		e.ExtrinsicHash = e.generateHash()
 	}
 	e.CallIndex = utiles.BytesToHex(e.GetNextBytes(2))
@@ -94,7 +94,7 @@ func (e *ExtrinsicsDecoder) Process() map[string]interface{} {
 		}
 	}
 	for _, arg := range e.Call.Args {
-		argTypeObj := e.ProcessAndUpdateData(arg["type"].(string)).Interface()
+		argTypeObj := e.ProcessAndUpdateData(arg["type"].(string))
 		e.Params = append(e.Params, map[string]interface{}{
 			"name":     arg["name"].(string),
 			"type":     arg["type"].(string),

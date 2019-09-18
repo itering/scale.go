@@ -28,7 +28,7 @@ func (e *EventsDecoder) Init(data ScaleBytes, args []string) {
 }
 
 func (e *EventsDecoder) Process() []map[string]interface{} {
-	elementCount := int(e.ProcessAndUpdateData("Compact<u32>").Int())
+	elementCount := int(e.ProcessAndUpdateData("Compact<u32>").(int))
 	bm, _ := json.Marshal(e.Metadata)
 	er := EventRecord{}
 	er.Init(e.Data, []string{"", string(bm)})
@@ -68,11 +68,11 @@ func (e *EventRecord) Init(data ScaleBytes, args []string) {
 func (e *EventRecord) Process() map[string]interface{} {
 	e.Phase = e.GetNextU8()
 	if e.Phase == 0 {
-		e.ExtrinsicIdx = int(e.ProcessAndUpdateData("U32").Uint())
+		e.ExtrinsicIdx = int(e.ProcessAndUpdateData("U32").(uint))
 	}
 	e.Type = utiles.BytesToHex(e.GetNextBytes(2))
-	if e.Metadata.EventIndex[e.Type] != nil {
-		eventIndex := e.Metadata.EventIndex[e.Type].(map[string]interface{})
+	if e.Metadata.Metadata.EventIndex[e.Type] != nil {
+		eventIndex := e.Metadata.Metadata.EventIndex[e.Type].(map[string]interface{})
 		bc, _ := json.Marshal(eventIndex["call"])
 		var event MetadataEvents
 		_ = json.Unmarshal(bc, &event)
@@ -83,7 +83,7 @@ func (e *EventRecord) Process() map[string]interface{} {
 		e.EventModule = EventModule
 	}
 	for _, argType := range e.Event.Args {
-		argTypeObj := e.ProcessAndUpdateData(argType).Interface()
+		argTypeObj := e.ProcessAndUpdateData(argType)
 		e.Params = append(e.Params, map[string]interface{}{
 			"type":     argType,
 			"value":    argTypeObj,
@@ -91,7 +91,7 @@ func (e *EventRecord) Process() map[string]interface{} {
 		})
 	}
 	if utiles.StringToInt(e.Metadata.Version) >= 5 {
-		topicValue := e.ProcessAndUpdateData("Vec<Hash>").Interface().([]interface{})
+		topicValue := e.ProcessAndUpdateData("Vec<Hash>").([]interface{})
 		for _, v := range topicValue {
 			e.Topic = append(e.Topic, v.(reflect.Value).String())
 		}

@@ -49,8 +49,8 @@ type MetadataTag struct {
 }
 
 type MetadataConstants struct {
-	Name  string   `json:"name"`
-	Type  string   `json:"type"`
-	Value string   `json:"value"`
-	Docs  []string `json:"docs"`
+	Name           string   `json:"name"`
+	Type           string   `json:"type"`
+	ConstantsValue string   `json:"constants_value"`
+	Docs           []string `json:"docs"`
 }

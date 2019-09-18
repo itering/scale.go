@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"github.com/freehere107/scalecodec/utiles"
 	"github.com/huandu/xstrings"
-	"reflect"
 )
 
 type MetadataV6Decoder struct {
@@ -15,15 +14,11 @@ type MetadataV6Decoder struct {
 	EventIndex map[string]interface{} `json:"event_index"`
 }
 
-func (m *MetadataV6Decoder) Init(data ScaleBytes, valueList []string) {
-	subType := ""
-	if len(valueList) > 0 {
-		subType = valueList[0]
-	}
-	m.ScaleDecoder.Init(data, subType)
+func (m *MetadataV6Decoder) Init(data ScaleBytes, subType string, arg ...interface{}) {
+	m.ScaleDecoder.Init(data, subType, arg...)
 }
 
-func (m *MetadataV6Decoder) Process() string {
+func (m *MetadataV6Decoder) Process() {
 	result := MetadataStruct{
 		MagicNumber: 1635018093,
 		Metadata: MetadataTag{
@@ -32,16 +27,11 @@ func (m *MetadataV6Decoder) Process() string {
 	}
 	result.CallIndex = make(map[string]interface{})
 	result.EventIndex = make(map[string]interface{})
-	metadataV6ModuleCall := m.ProcessAndUpdateData("Vec<MetadataV6Module>").Interface().([]interface{})
+	metadataV6ModuleCall := m.ProcessAndUpdateData("Vec<MetadataV6Module>").([]interface{})
 
 	callModuleIndex := 0
 	eventModuleIndex := 0
-	var modules []map[string]interface{}
-	for _, v := range metadataV6ModuleCall {
-		s := v.(reflect.Value).Interface().(map[string]interface{})
-		modules = append(modules, s)
-	}
-	bm, _ := json.Marshal(modules)
+	bm, _ := json.Marshal(metadataV6ModuleCall)
 	var modulesType []MetadataModules
 	_ = json.Unmarshal(bm, &modulesType)
 	for k, module := range modulesType {
@@ -68,111 +58,151 @@ func (m *MetadataV6Decoder) Process() string {
 	}
 
 	result.Metadata.Modules = modulesType
-	bResult, _ := json.Marshal(result)
-	return string(bResult)
+	m.Value = result
 }
 
 type MetadataV6Module struct {
 	ScaleType
-	Name       string                 `json:"name"`
-	Prefix     string                 `json:"prefix"`
-	CallIndex  string                 `json:"call_index"`
-	HasStorage bool                   `json:"has_storage"`
-	Storage    map[string]interface{} `json:"storage"`
-	HasCalls   bool                   `json:"has_calls"`
-	Calls      map[string]interface{} `json:"calls"`
-	HasEvents  bool                   `json:"has_events"`
-	Events     map[string]interface{} `json:"events"`
-	Constants  []interface{}          `json:"constants"`
+	Name       string                   `json:"name"`
+	Prefix     string                   `json:"prefix"`
+	CallIndex  string                   `json:"call_index"`
+	HasStorage bool                     `json:"has_storage"`
+	Storage    []MetadataStorage        `json:"storage"`
+	HasCalls   bool                     `json:"has_calls"`
+	Calls      []MetadataModuleCall     `json:"calls"`
+	HasEvents  bool                     `json:"has_events"`
+	Events     []MetadataEvents         `json:"events"`
+	Constants  []map[string]interface{} `json:"constants"`
 }
 
 func (m *MetadataV6Module) GetIdentifier() string {
 	return m.Name
 }
 
-func (m *MetadataV6Module) Process() map[string]interface{} {
-	m.Name = m.ProcessAndUpdateData("Bytes").String()
-	m.Prefix = m.ProcessAndUpdateData("Bytes").String()
-
-	result := map[string]interface{}{
-		"name":      m.Name,
-		"prefix":    m.Prefix,
-		"storage":   m.Storage,
-		"calls":     m.Calls,
-		"events":    m.Events,
-		"constants": m.Constants,
-	}
-	m.HasStorage = m.ProcessAndUpdateData("bool").Bool()
-	if m.HasStorage {
-		storageValue := m.ProcessAndUpdateData("Vec<MetadataV6ModuleStorage>").Interface().([]interface{})
+func (m *MetadataV6Module) Process() {
+	cm := MetadataV6Module{}
+	cm.Name = m.ProcessAndUpdateData("Bytes").(string)
+	cm.Prefix = m.ProcessAndUpdateData("Bytes").(string)
+	cm.HasStorage = m.ProcessAndUpdateData("bool").(bool)
+	if cm.HasStorage {
+		storageValue := m.ProcessAndUpdateData("Vec<MetadataV6ModuleStorage>").([]interface{})
 		var storage []MetadataStorage
 		for _, v := range storageValue {
-			var sv MetadataStorage
-			_ = json.Unmarshal([]byte(v.(reflect.Value).Interface().(string)), &sv)
-			storage = append(storage, sv)
+			storage = append(storage, v.(MetadataStorage))
 		}
-		result["storage"] = storage
+		cm.Storage = storage
 	}
-	m.HasCalls = m.ProcessAndUpdateData("bool").Bool()
-	if m.HasCalls {
-		callValue := m.ProcessAndUpdateData("Vec<MetadataModuleCall>").Interface().([]interface{})
+
+	cm.HasCalls = m.ProcessAndUpdateData("bool").(bool)
+	if cm.HasCalls {
+		callValue := m.ProcessAndUpdateData("Vec<MetadataModuleCall>").([]interface{})
 		var calls []MetadataModuleCall
 		for _, v := range callValue {
-			var sv MetadataModuleCall
-			_ = json.Unmarshal([]byte(v.(reflect.Value).Interface().(string)), &sv)
-			calls = append(calls, sv)
+			calls = append(calls, v.(MetadataModuleCall))
 		}
-		result["calls"] = calls
+		cm.Calls = calls
 	}
-	m.HasEvents = m.ProcessAndUpdateData("bool").Bool()
-	if m.HasEvents {
-		eventValue := m.ProcessAndUpdateData("Vec<MetadataModuleEvent>").Interface().([]interface{})
+	cm.HasEvents = m.ProcessAndUpdateData("bool").(bool)
+	if cm.HasEvents {
+		eventValue := m.ProcessAndUpdateData("Vec<MetadataModuleEvent>").([]interface{})
 		var events []MetadataEvents
 		for _, v := range eventValue {
-			var sv MetadataEvents
-			_ = json.Unmarshal([]byte(v.(reflect.Value).Interface().(string)), &sv)
-			events = append(events, sv)
+			events = append(events, v.(MetadataEvents))
 		}
-		result["events"] = events
+		cm.Events = events
 	}
-	constantValue := m.ProcessAndUpdateData("Vec<MetadataV6ModuleConstants>").Interface().([]interface{})
-	var constants []interface{}
+	constantValue := m.ProcessAndUpdateData("Vec<MetadataV6ModuleConstants>").([]interface{})
+	var constants []map[string]interface{}
 	for _, v := range constantValue {
-		var sv MetadataV6ModuleConstants
-		_ = json.Unmarshal([]byte(v.(reflect.Value).Interface().(string)), &sv)
-		constants = append(constants, sv)
+		constants = append(constants, v.(map[string]interface{}))
 	}
-	result["constants"] = constants
-	return result
+	cm.Constants = constants
+	m.Value = cm
 }
 
 type MetadataV6ModuleConstants struct {
 	ScaleType
-	Name  string   `json:"name"`
-	Type  string   `json:"type"`
-	Value string   `json:"value"`
-	Docs  []string `json:"docs"`
+	Name           string   `json:"name"`
+	Type           string   `json:"type"`
+	ConstantsValue string   `json:"constants_value"`
+	Docs           []string `json:"docs"`
 }
 
-func (m *MetadataV6ModuleConstants) Process() string {
-	name := m.ProcessAndUpdateData("Bytes").String()
-	cType := ConvertType(m.ProcessAndUpdateData("Bytes").String())
-	value := m.ProcessAndUpdateData("HexBytes").String()
+func (m *MetadataV6ModuleConstants) Process() {
+	name := m.ProcessAndUpdateData("Bytes").(string)
+	cType := ConvertType(m.ProcessAndUpdateData("Bytes").(string))
+	ConstantsValue := m.ProcessAndUpdateData("HexBytes").(string)
 	var docsArr []string
-	docs := m.ProcessAndUpdateData("Vec<Bytes>").Interface().([]interface{})
+	docs := m.ProcessAndUpdateData("Vec<Bytes>").([]interface{})
 	for _, v := range docs {
-		docsArr = append(docsArr, v.(reflect.Value).String())
+		docsArr = append(docsArr, v.(string))
 	}
 	r := map[string]interface{}{
-		"name":  name,
-		"type":  cType,
-		"value": value,
-		"docs":  docsArr,
+		"name":            name,
+		"type":            cType,
+		"constants_value": ConstantsValue,
+		"docs":            docsArr,
 	}
-	br, _ := json.Marshal(r)
-	return string(br)
+	CheckCodecType(r["type"].(string))
+	m.Value = r
 }
 
 type MetadataV6ModuleStorage struct {
-	MetadataV5ModuleStorage
+	ScaleType
+	Name     string                 `json:"name"`
+	Modifier string                 `json:"modifier"`
+	Type     map[string]interface{} `json:"type"`
+	Fallback string                 `json:"fallback"`
+	Docs     []string               `json:"docs"`
+	Hasher   string                 `json:"hasher"`
+}
+
+func (m *MetadataV6ModuleStorage) Init(data ScaleBytes, subType string, arg ...interface{}) {
+	m.ScaleDecoder.Init(data, subType, arg...)
+}
+
+func (m *MetadataV6ModuleStorage) Process() {
+	cm := MetadataStorage{}
+	cm.Name = m.ProcessAndUpdateData("Bytes").(string)
+	cm.Modifier = m.ProcessAndUpdateData("Enum", "Optional", "Default").(string)
+	storageFunctionType := m.ProcessAndUpdateData("Enum", "PlainType", "MapType", "DoubleMapType").(string)
+	if storageFunctionType == "MapType" {
+		cm.Hasher = m.ProcessAndUpdateData("StorageHasher").(string)
+		cm.Type = map[string]interface{}{
+			"MapType": map[string]interface{}{
+				"hasher":   cm.Hasher,
+				"key":      ConvertType(m.ProcessAndUpdateData("Bytes").(string)),
+				"value":    ConvertType(m.ProcessAndUpdateData("Bytes").(string)),
+				"isLinked": m.ProcessAndUpdateData("bool").(bool),
+			},
+		}
+		CheckCodecType(cm.Type["MapType"].(map[string]interface{})["value"].(string))
+	} else if storageFunctionType == "DoubleMapType" {
+		cm.Hasher = m.ProcessAndUpdateData("StorageHasher").(string)
+		key1 := ConvertType(m.ProcessAndUpdateData("Bytes").(string))
+		key2 := ConvertType(m.ProcessAndUpdateData("Bytes").(string))
+		value := ConvertType(m.ProcessAndUpdateData("Bytes").(string))
+		key2Hasher := m.ProcessAndUpdateData("StorageHasher").(string)
+		cm.Type = map[string]interface{}{
+			"DoubleMapType": map[string]interface{}{
+				"hasher":     cm.Hasher,
+				"key1":       key1,
+				"key2":       key2,
+				"value":      value,
+				"key2Hasher": key2Hasher,
+			},
+		}
+		CheckCodecType(cm.Type["DoubleMapType"].(map[string]interface{})["value"].(string))
+	} else if storageFunctionType == "PlainType" {
+		cm.Type = map[string]interface{}{
+			"PlainType": ConvertType(m.ProcessAndUpdateData("Bytes").(string)),
+		}
+		CheckCodecType(cm.Type["PlainType"].(string))
+	}
+	cm.Fallback = m.ProcessAndUpdateData("HexBytes").(string)
+	docs := m.ProcessAndUpdateData("Vec<Bytes>").([]interface{})
+	for _, v := range docs {
+		cm.Docs = append(m.Docs, v.(string))
+	}
+	m.Value = cm
 }
