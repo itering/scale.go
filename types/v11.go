@@ -8,8 +8,6 @@ import (
 
 type MetadataV11Decoder struct {
 	ScaleDecoder
-	Version string            `json:"version"`
-	Modules []MetadataModules `json:"modules"`
 }
 
 func (m *MetadataV11Decoder) Init(data ScaleBytes, option *ScaleDecoderOption) {
@@ -17,17 +15,19 @@ func (m *MetadataV11Decoder) Init(data ScaleBytes, option *ScaleDecoderOption) {
 }
 
 func (m *MetadataV11Decoder) Process() {
+	var callModuleIndex, eventModuleIndex int
+
 	result := MetadataStruct{
 		Metadata: MetadataTag{
 			Modules: nil,
 		},
 	}
-	MetadataV10ModuleCall := m.ProcessAndUpdateData("Vec<MetadataV8Module>").([]interface{})
-	callModuleIndex := 0
-	eventModuleIndex := 0
-	bm, _ := json.Marshal(MetadataV10ModuleCall)
+	MetadataV11ModuleCall := m.ProcessAndUpdateData("Vec<MetadataV8Module>").([]interface{})
+	bm, _ := json.Marshal(MetadataV11ModuleCall)
+
 	var modulesType []MetadataModules
 	_ = json.Unmarshal(bm, &modulesType)
+
 	for k, module := range modulesType {
 		if module.Calls != nil {
 			for callIndex := range module.Calls {

@@ -1,10 +1,5 @@
 package types
 
-type MetadataCallAndEvent struct {
-	CallIndex  map[string]interface{} `json:"call_index"`
-	EventIndex map[string]interface{} `json:"event_index"`
-}
-
 type MetadataModules struct {
 	Name      string                `json:"name"`
 	Prefix    string                `json:"prefix"`

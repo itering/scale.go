@@ -8,8 +8,6 @@ import (
 
 type MetadataV8Decoder struct {
 	ScaleDecoder
-	Version string            `json:"version"`
-	Modules []MetadataModules `json:"modules"`
 }
 
 func (m *MetadataV8Decoder) Init(data ScaleBytes, option *ScaleDecoderOption) {

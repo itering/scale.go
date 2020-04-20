@@ -79,17 +79,24 @@ func (s *ScaleDecoder) buildStruct() {
 func (s *ScaleDecoder) ProcessAndUpdateData(typeString string, args ...string) interface{} {
 	r := RuntimeType{}
 	c, rc, subType := r.reg().decoderClass(typeString)
+
 	if c == nil {
 		panic(fmt.Sprintf("not found decoder class %s", typeString))
 	}
+
+	// init
 	method, exist := c.MethodByName("Init")
 	if exist == false {
 		panic(fmt.Sprintf("%s not implement init function", typeString))
 	}
 	option := ScaleDecoderOption{SubType: subType, ValueList: args}
 	method.Func.Call([]reflect.Value{rc, reflect.ValueOf(s.Data), reflect.ValueOf(&option)})
+
+	// process
 	rc.MethodByName("Process").Call(nil)
+
 	s.Data.Offset = int(rc.Elem().FieldByName("Data").FieldByName("Offset").Int())
 	s.Data.Data = rc.Elem().FieldByName("Data").FieldByName("Data").Bytes()
+
 	return rc.Elem().FieldByName("Value").Interface()
 }

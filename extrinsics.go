@@ -1,7 +1,6 @@
 package scalecodec
 
 import (
-	"encoding/json"
 	scaleType "github.com/freehere107/scalecodec/types"
 	"github.com/freehere107/scalecodec/utiles"
 	"golang.org/x/crypto/blake2b"
@@ -9,19 +8,18 @@ import (
 
 type ExtrinsicsDecoder struct {
 	scaleType.ScaleDecoder
-	Metadata            scaleType.MetadataCallAndEvent `json:"metadata"`
-	ExtrinsicLength     int                            `json:"extrinsic_length"`
-	ExtrinsicHash       string                         `json:"extrinsic_hash"`
-	VersionInfo         string                         `json:"version_info"`
-	ContainsTransaction bool                           `json:"contains_transaction"`
-	Address             map[string]string              `json:"address"`
-	Signature           string                         `json:"signature"`
-	Nonce               int                            `json:"nonce"`
-	Era                 string                         `json:"era"`
-	CallIndex           string                         `json:"call_index"`
-	CallModule          scaleType.MetadataModules      `json:"call_module"`
-	Call                scaleType.MetadataCalls        `json:"call"`
-	Params              []map[string]interface{}       `json:"params"`
+	ExtrinsicLength     int                       `json:"extrinsic_length"`
+	ExtrinsicHash       string                    `json:"extrinsic_hash"`
+	VersionInfo         string                    `json:"version_info"`
+	ContainsTransaction bool                      `json:"contains_transaction"`
+	Address             map[string]string         `json:"address"`
+	Signature           string                    `json:"signature"`
+	Nonce               int                       `json:"nonce"`
+	Era                 string                    `json:"era"`
+	CallIndex           string                    `json:"call_index"`
+	CallModule          scaleType.MetadataModules `json:"call_module"`
+	Call                scaleType.MetadataCalls   `json:"call"`
+	Params              []map[string]interface{}  `json:"params"`
 }
 
 func (e *ExtrinsicsDecoder) Init(data scaleType.ScaleBytes, args []string) {
@@ -34,15 +32,12 @@ func (e *ExtrinsicsDecoder) Init(data scaleType.ScaleBytes, args []string) {
 		"era":              "Era",
 		"call_index":       "(u8,u8)",
 	}
-	var metadata scaleType.MetadataCallAndEvent
+
 	var subType string
 	if len(args) > 0 {
 		subType = args[0]
 	}
-	if len(args) > 1 {
-		_ = json.Unmarshal([]byte(args[1]), &metadata)
-	}
-	e.Metadata = metadata
+
 	e.ScaleDecoder.Init(data, &scaleType.ScaleDecoderOption{SubType: subType})
 }
 
@@ -80,19 +75,7 @@ func (e *ExtrinsicsDecoder) Process() map[string]interface{} {
 		e.ExtrinsicHash = e.generateHash()
 	}
 	e.CallIndex = utiles.BytesToHex(e.NextBytes(2))
-	if e.CallIndex != "" {
-		if e.Metadata.CallIndex[e.CallIndex] != nil {
-			callIndex := e.Metadata.CallIndex[e.CallIndex].(map[string]interface{})
-			bc, _ := json.Marshal(callIndex["call"])
-			var call scaleType.MetadataCalls
-			_ = json.Unmarshal(bc, &call)
-			e.Call = call
-			var CallModule scaleType.MetadataModules
-			bc, _ = json.Marshal(callIndex["module"])
-			_ = json.Unmarshal(bc, &CallModule)
-			e.CallModule = CallModule
-		}
-	}
+
 	for _, arg := range e.Call.Args {
 		argTypeObj := e.ProcessAndUpdateData(arg["type"].(string))
 		e.Params = append(e.Params, map[string]interface{}{

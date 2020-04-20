@@ -9,29 +9,25 @@ import (
 
 type EventsDecoder struct {
 	scaleType.Vec
-	Metadata scaleType.MetadataCallAndEvent `json:"metadata"`
-	Elements []map[string]interface{}       `json:"elements"`
+	Elements []map[string]interface{} `json:"elements"`
 }
 
 func (e *EventsDecoder) Init(data scaleType.ScaleBytes, args []string) {
 	e.TypeString = "Vec<EventRecord>"
-	var metadata scaleType.MetadataCallAndEvent
+
 	var subType string
 	if len(args) > 0 {
 		subType = args[0]
 	}
-	if len(args) > 1 {
-		_ = json.Unmarshal([]byte(args[1]), &metadata)
-	}
-	e.Metadata = metadata
+
 	e.ScaleDecoder.Init(data, &scaleType.ScaleDecoderOption{SubType: subType})
 }
 
 func (e *EventsDecoder) Process() []map[string]interface{} {
 	elementCount := int(e.ProcessAndUpdateData("Compact<u32>").(int))
-	bm, _ := json.Marshal(e.Metadata)
+	// bm, _ := json.Marshal(e.Metadata)
 	er := EventRecord{}
-	er.Init(e.Data, []string{"", string(bm)})
+	er.Init(e.Data, []string{""})
 	for i := 0; i < elementCount; i++ {
 		element := er.Process()
 		element["event_idx"] = i
@@ -71,17 +67,6 @@ func (e *EventRecord) Process() map[string]interface{} {
 		e.ExtrinsicIdx = int(e.ProcessAndUpdateData("U32").(uint))
 	}
 	e.Type = utiles.BytesToHex(e.NextBytes(2))
-	// if e.MetadataV6.MetadataV6.EventIndex[e.Type] != nil {
-	// 	eventIndex := e.MetadataV6.MetadataV6.EventIndex[e.Type].(map[string]interface{})
-	// 	bc, _ := json.Marshal(eventIndex["call"])
-	// 	var event scaleType.MetadataEvents
-	// 	_ = json.Unmarshal(bc, &event)
-	// 	e.Event = event
-	// 	var EventModule scaleType.MetadataModules
-	// 	bc, _ = json.Marshal(eventIndex["module"])
-	// 	_ = json.Unmarshal(bc, &EventModule)
-	// 	e.EventModule = EventModule
-	// }
 	for _, argType := range e.Event.Args {
 		argTypeObj := e.ProcessAndUpdateData(argType)
 		e.Params = append(e.Params, map[string]interface{}{
