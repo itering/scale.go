@@ -20,13 +20,12 @@ func (m *MetadataV6Decoder) Init(data ScaleBytes, subType string, arg ...interfa
 
 func (m *MetadataV6Decoder) Process() {
 	result := MetadataStruct{
-		MagicNumber: 1635018093,
 		Metadata: MetadataTag{
 			Modules: nil,
 		},
 	}
-	result.CallIndex = make(map[string]interface{})
-	result.EventIndex = make(map[string]interface{})
+	// result.CallIndex = make(map[string]interface{})
+	// result.EventIndex = make(map[string]interface{})
 	metadataV6ModuleCall := m.ProcessAndUpdateData("Vec<MetadataV6Module>").([]interface{})
 
 	callModuleIndex := 0
@@ -36,24 +35,24 @@ func (m *MetadataV6Decoder) Process() {
 	_ = json.Unmarshal(bm, &modulesType)
 	for k, module := range modulesType {
 		if module.Calls != nil {
-			for callIndex, call := range module.Calls {
+			for callIndex := range module.Calls {
 				modulesType[k].Calls[callIndex].Lookup = xstrings.RightJustify(utiles.IntToHex(callModuleIndex), 2, "0") + xstrings.RightJustify(utiles.IntToHex(callIndex), 2, "0")
-				result.CallIndex[modulesType[k].Calls[callIndex].Lookup] = map[string]interface{}{
-					"module": module,
-					"call":   call,
-				}
+				// result.CallIndex[modulesType[k].Calls[callIndex].Lookup] = map[string]interface{}{
+				// 	"module": module,
+				// 	"call":   call,
+				// }
 			}
-			callModuleIndex += 1
+			callModuleIndex++
 		}
 		if module.Events != nil {
-			for eventIndex, event := range module.Events {
+			for eventIndex := range module.Events {
 				modulesType[k].Events[eventIndex].Lookup = xstrings.RightJustify(utiles.IntToHex(eventModuleIndex), 2, "0") + xstrings.RightJustify(utiles.IntToHex(eventIndex), 2, "0")
-				result.EventIndex[modulesType[k].Events[eventIndex].Lookup] = map[string]interface{}{
-					"module": module,
-					"call":   event,
-				}
+				// result.EventIndex[modulesType[k].Events[eventIndex].Lookup] = map[string]interface{}{
+				// 	"module": module,
+				// 	"call":   event,
+				// }
 			}
-			eventModuleIndex += 1
+			eventModuleIndex++
 		}
 	}
 
@@ -62,7 +61,7 @@ func (m *MetadataV6Decoder) Process() {
 }
 
 type MetadataV6Module struct {
-	ScaleType
+	ScaleDecoder
 	Name       string                   `json:"name"`
 	Prefix     string                   `json:"prefix"`
 	CallIndex  string                   `json:"call_index"`
@@ -121,7 +120,7 @@ func (m *MetadataV6Module) Process() {
 }
 
 type MetadataV6ModuleConstants struct {
-	ScaleType
+	ScaleDecoder
 	Name           string   `json:"name"`
 	Type           string   `json:"type"`
 	ConstantsValue string   `json:"constants_value"`
@@ -143,12 +142,11 @@ func (m *MetadataV6ModuleConstants) Process() {
 		"constants_value": ConstantsValue,
 		"docs":            docsArr,
 	}
-	CheckCodecType(r["type"].(string))
 	m.Value = r
 }
 
 type MetadataV6ModuleStorage struct {
-	ScaleType
+	ScaleDecoder
 	Name     string                 `json:"name"`
 	Modifier string                 `json:"modifier"`
 	Type     map[string]interface{} `json:"type"`
@@ -168,36 +166,34 @@ func (m *MetadataV6ModuleStorage) Process() {
 	storageFunctionType := m.ProcessAndUpdateData("Enum", "PlainType", "MapType", "DoubleMapType").(string)
 	if storageFunctionType == "MapType" {
 		cm.Hasher = m.ProcessAndUpdateData("StorageHasher").(string)
-		cm.Type = map[string]interface{}{
-			"MapType": map[string]interface{}{
-				"hasher":   cm.Hasher,
-				"key":      ConvertType(m.ProcessAndUpdateData("Bytes").(string)),
-				"value":    ConvertType(m.ProcessAndUpdateData("Bytes").(string)),
-				"isLinked": m.ProcessAndUpdateData("bool").(bool),
+		cm.Type = StorageType{
+			Origin: "MapType",
+			MapType: &MapType{
+				Hasher:   cm.Hasher,
+				Key:      ConvertType(m.ProcessAndUpdateData("Bytes").(string)),
+				Value:    ConvertType(m.ProcessAndUpdateData("Bytes").(string)),
+				IsLinked: m.ProcessAndUpdateData("bool").(bool),
 			},
 		}
-		CheckCodecType(cm.Type["MapType"].(map[string]interface{})["value"].(string))
 	} else if storageFunctionType == "DoubleMapType" {
 		cm.Hasher = m.ProcessAndUpdateData("StorageHasher").(string)
 		key1 := ConvertType(m.ProcessAndUpdateData("Bytes").(string))
 		key2 := ConvertType(m.ProcessAndUpdateData("Bytes").(string))
 		value := ConvertType(m.ProcessAndUpdateData("Bytes").(string))
 		key2Hasher := m.ProcessAndUpdateData("StorageHasher").(string)
-		cm.Type = map[string]interface{}{
-			"DoubleMapType": map[string]interface{}{
-				"hasher":     cm.Hasher,
-				"key1":       key1,
-				"key2":       key2,
-				"value":      value,
-				"key2Hasher": key2Hasher,
+		cm.Type = StorageType{
+			Origin: "DoubleMapType",
+			DoubleMapType: &MapType{
+				Hasher:     cm.Hasher,
+				Key:        key1,
+				Key2:       key2,
+				Value:      value,
+				Key2Hasher: key2Hasher,
 			},
 		}
-		CheckCodecType(cm.Type["DoubleMapType"].(map[string]interface{})["value"].(string))
 	} else if storageFunctionType == "PlainType" {
-		cm.Type = map[string]interface{}{
-			"PlainType": ConvertType(m.ProcessAndUpdateData("Bytes").(string)),
-		}
-		CheckCodecType(cm.Type["PlainType"].(string))
+		plainType := ConvertType(m.ProcessAndUpdateData("Bytes").(string))
+		cm.Type = StorageType{Origin: "PlainType", PlainType: &plainType}
 	}
 	cm.Fallback = m.ProcessAndUpdateData("HexBytes").(string)
 	docs := m.ProcessAndUpdateData("Vec<Bytes>").([]interface{})

@@ -2,13 +2,10 @@ package types
 
 import (
 	"errors"
-	"log"
 	"reflect"
 	"regexp"
 	"strings"
 )
-
-var RuntimeTypeInstant *RuntimeType
 
 type RuntimeType struct {
 	Runtime map[string]interface{}
@@ -16,28 +13,11 @@ type RuntimeType struct {
 
 func (r *RuntimeType) reg() *RuntimeType {
 	r.Runtime = map[string]interface{}{
-		"balance":                      &Balance{},
-		"gas":                          &Gas{},
-		"perbill":                      &Perbill{},
-		"hash":                         &Hash{},
-		"balanceof":                    &BalanceOf{},
-		"accountindex":                 &AccountIndex{},
 		"index":                        &U64{},
 		"u64":                          &U64{},
 		"address":                      &Address{},
-		"codehash":                     &CodeHash{},
-		"schedule":                     &Schedule{},
-		"rewarddestination":            &RewardDestination{},
-		"stakingledgers":               &StakingLedgers{},
-		"validatorprefs":               &ValidatorPrefs{},
-		"digestof":                     &Digest{},
-		"exposures":                    &Exposures{},
 		"option":                       &Option{},
-		"eventindex":                   &EventIndex{},
 		"struct":                       &Struct{},
-		"vestingschedule":              &VestingSchedule{},
-		"storedpendingchange":          &StoredPendingChange{},
-		"box<proposal>":                &BoxProposal{},
 		"vec<u8>":                      &Bytes{},
 		"enum":                         &Enum{},
 		"bytes":                        &Bytes{},
@@ -50,18 +30,7 @@ func (r *RuntimeType) reg() *RuntimeType {
 		"compact<moment>":              &Moment{},
 		"u32":                          &U32{},
 		"blocknumber":                  &BlockNumber{},
-		"accountid":                    &AccountId{},
-		"sessionindex":                 &SessionIndex{},
-		"eraindex":                     &EraIndex{},
-		"stakingledger":                &StakingLedgers{},
-		"extendedbalance":              &ExtendedBalance{},
-		"ringbalanceof":                &RingBalanceOf{},
-		"ktonbalanceof":                &KtonBalanceOf{},
-		"unlockchunk":                  &UnlockChunk{},
 		"compact":                      &Compact{},
-		"regularitem":                  &RegularItem{},
-		"stakingbalance":               &StakingBalance{},
-		"keys":                         &Keys{},
 		"metadatamoduleevent":          &MetadataModuleEvent{},
 		"metadatamodulecallargument":   &MetadataModuleCallArgument{},
 		"metadatamodulecall":           &MetadataModuleCall{},
@@ -74,6 +43,12 @@ func (r *RuntimeType) reg() *RuntimeType {
 		"metadatav7modulestorage":      &MetadataV7ModuleStorage{},
 		"metadatav7moduleconstants":    &MetadataV7ModuleConstants{},
 		"metadatav7modulestorageentry": &MetadataV7ModuleStorageEntry{},
+		"metadatav8module":             &MetadataV8Module{},
+		"metadatav8decoder":            &MetadataV8Decoder{},
+		"metadatav9decoder":            &MetadataV9Decoder{},
+		"metadatav10decoder":           &MetadataV10Decoder{},
+		"metadatav11decoder":           &MetadataV11Decoder{},
+		"metadatamoduleerror":          &MetadataModuleError{},
 	}
 	return r
 }
@@ -118,14 +93,4 @@ func (r *RuntimeType) getDecoderClass(typeString string) (reflect.Type, reflect.
 		return decoderClass, rcvr, ""
 	}
 	return nil, reflect.ValueOf((*error)(nil)).Elem(), ""
-}
-
-func CheckCodecType(typeString string) {
-	if RuntimeTypeInstant == nil {
-		r := RuntimeType{}
-		RuntimeTypeInstant = r.reg()
-	}
-	if t, _, _ := RuntimeTypeInstant.getDecoderClass(typeString); t == nil {
-		log.Printf("find not reg type %s", typeString)
-	}
 }

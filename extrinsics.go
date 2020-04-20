@@ -2,29 +2,29 @@ package scalecodec
 
 import (
 	"encoding/json"
-	. "github.com/freehere107/scalecodec/types"
+	scaleType "github.com/freehere107/scalecodec/types"
 	"github.com/freehere107/scalecodec/utiles"
 	"golang.org/x/crypto/blake2b"
 )
 
 type ExtrinsicsDecoder struct {
-	ScaleDecoder
-	Metadata            MetadataCallAndEvent     `json:"metadata"`
-	ExtrinsicLength     int                      `json:"extrinsic_length"`
-	ExtrinsicHash       string                   `json:"extrinsic_hash"`
-	VersionInfo         string                   `json:"version_info"`
-	ContainsTransaction bool                     `json:"contains_transaction"`
-	Address             map[string]string        `json:"address"`
-	Signature           string                   `json:"signature"`
-	Nonce               int                      `json:"nonce"`
-	Era                 string                   `json:"era"`
-	CallIndex           string                   `json:"call_index"`
-	CallModule          MetadataModules          `json:"call_module"`
-	Call                MetadataCalls            `json:"call"`
-	Params              []map[string]interface{} `json:"params"`
+	scaleType.ScaleDecoder
+	Metadata            scaleType.MetadataCallAndEvent `json:"metadata"`
+	ExtrinsicLength     int                            `json:"extrinsic_length"`
+	ExtrinsicHash       string                         `json:"extrinsic_hash"`
+	VersionInfo         string                         `json:"version_info"`
+	ContainsTransaction bool                           `json:"contains_transaction"`
+	Address             map[string]string              `json:"address"`
+	Signature           string                         `json:"signature"`
+	Nonce               int                            `json:"nonce"`
+	Era                 string                         `json:"era"`
+	CallIndex           string                         `json:"call_index"`
+	CallModule          scaleType.MetadataModules      `json:"call_module"`
+	Call                scaleType.MetadataCalls        `json:"call"`
+	Params              []map[string]interface{}       `json:"params"`
 }
 
-func (e *ExtrinsicsDecoder) Init(data ScaleBytes, args []string) {
+func (e *ExtrinsicsDecoder) Init(data scaleType.ScaleBytes, args []string) {
 	e.TypeMapping = map[string]string{
 		"extrinsic_length": "Compact<u32>",
 		"version_info":     "u8",
@@ -34,7 +34,7 @@ func (e *ExtrinsicsDecoder) Init(data ScaleBytes, args []string) {
 		"era":              "Era",
 		"call_index":       "(u8,u8)",
 	}
-	var metadata MetadataCallAndEvent
+	var metadata scaleType.MetadataCallAndEvent
 	var subType string
 	if len(args) > 0 {
 		subType = args[0]
@@ -52,7 +52,7 @@ func (e *ExtrinsicsDecoder) generateHash() string {
 		if e.ExtrinsicLength > 0 {
 			extrinsicData = e.Data.Data
 		} else {
-			extrinsicLengthType := CompactU32{}
+			extrinsicLengthType := scaleType.CompactU32{}
 			extrinsicLengthType.Encode(e.Data.Length)
 			extrinsicData = append(extrinsicLengthType.Data.Data[:], e.Data.Data[:]...)
 		}
@@ -70,7 +70,7 @@ func (e *ExtrinsicsDecoder) Process() map[string]interface{} {
 		e.ExtrinsicLength = 0
 		e.Data.Reset()
 	}
-	e.VersionInfo = utiles.BytesToHex(e.GetNextBytes(1))
+	e.VersionInfo = utiles.BytesToHex(e.NextBytes(1))
 	e.ContainsTransaction = utiles.U256(e.VersionInfo).Int64() >= 80
 	if e.ContainsTransaction {
 		e.Address = e.ProcessAndUpdateData("Address").(map[string]string)
@@ -79,15 +79,15 @@ func (e *ExtrinsicsDecoder) Process() map[string]interface{} {
 		e.Era = e.ProcessAndUpdateData("Era").(string)
 		e.ExtrinsicHash = e.generateHash()
 	}
-	e.CallIndex = utiles.BytesToHex(e.GetNextBytes(2))
+	e.CallIndex = utiles.BytesToHex(e.NextBytes(2))
 	if e.CallIndex != "" {
 		if e.Metadata.CallIndex[e.CallIndex] != nil {
 			callIndex := e.Metadata.CallIndex[e.CallIndex].(map[string]interface{})
 			bc, _ := json.Marshal(callIndex["call"])
-			var call MetadataCalls
+			var call scaleType.MetadataCalls
 			_ = json.Unmarshal(bc, &call)
 			e.Call = call
-			var CallModule MetadataModules
+			var CallModule scaleType.MetadataModules
 			bc, _ = json.Marshal(callIndex["module"])
 			_ = json.Unmarshal(bc, &CallModule)
 			e.CallModule = CallModule
