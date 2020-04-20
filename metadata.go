@@ -15,7 +15,7 @@ type MetadataDecoder struct {
 
 func (m *MetadataDecoder) Init(data []byte) {
 	sData := types.ScaleBytes{Data: data}
-	m.ScaleDecoder.Init(sData, "")
+	m.ScaleDecoder.Init(sData, nil)
 }
 
 func (m *MetadataDecoder) Process() error {

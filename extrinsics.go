@@ -43,7 +43,7 @@ func (e *ExtrinsicsDecoder) Init(data scaleType.ScaleBytes, args []string) {
 		_ = json.Unmarshal([]byte(args[1]), &metadata)
 	}
 	e.Metadata = metadata
-	e.ScaleDecoder.Init(data, subType)
+	e.ScaleDecoder.Init(data, &scaleType.ScaleDecoderOption{SubType: subType})
 }
 
 func (e *ExtrinsicsDecoder) generateHash() string {
@@ -75,7 +75,7 @@ func (e *ExtrinsicsDecoder) Process() map[string]interface{} {
 	if e.ContainsTransaction {
 		e.Address = e.ProcessAndUpdateData("Address").(map[string]string)
 		e.Signature = e.ProcessAndUpdateData("Signature").(string)
-		e.Nonce = int(e.ProcessAndUpdateData(e.TypeMapping["nonce"]).(int))
+		// e.Nonce = int(e.ProcessAndUpdateData(e.TypeMapping["nonce"]).(int))
 		e.Era = e.ProcessAndUpdateData("Era").(string)
 		e.ExtrinsicHash = e.generateHash()
 	}

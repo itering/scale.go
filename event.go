@@ -24,7 +24,7 @@ func (e *EventsDecoder) Init(data scaleType.ScaleBytes, args []string) {
 		_ = json.Unmarshal([]byte(args[1]), &metadata)
 	}
 	e.Metadata = metadata
-	e.ScaleDecoder.Init(data, subType)
+	e.ScaleDecoder.Init(data, &scaleType.ScaleDecoderOption{SubType: subType})
 }
 
 func (e *EventsDecoder) Process() []map[string]interface{} {
@@ -62,7 +62,7 @@ func (e *EventRecord) Init(data scaleType.ScaleBytes, args []string) {
 		_ = json.Unmarshal([]byte(args[1]), &metadata)
 	}
 	e.Metadata = metadata
-	e.ScaleDecoder.Init(data, subType)
+	e.ScaleDecoder.Init(data, &scaleType.ScaleDecoderOption{SubType: subType})
 }
 
 func (e *EventRecord) Process() map[string]interface{} {
@@ -71,8 +71,8 @@ func (e *EventRecord) Process() map[string]interface{} {
 		e.ExtrinsicIdx = int(e.ProcessAndUpdateData("U32").(uint))
 	}
 	e.Type = utiles.BytesToHex(e.NextBytes(2))
-	// if e.Metadata.Metadata.EventIndex[e.Type] != nil {
-	// 	eventIndex := e.Metadata.Metadata.EventIndex[e.Type].(map[string]interface{})
+	// if e.MetadataV6.MetadataV6.EventIndex[e.Type] != nil {
+	// 	eventIndex := e.MetadataV6.MetadataV6.EventIndex[e.Type].(map[string]interface{})
 	// 	bc, _ := json.Marshal(eventIndex["call"])
 	// 	var event scaleType.MetadataEvents
 	// 	_ = json.Unmarshal(bc, &event)

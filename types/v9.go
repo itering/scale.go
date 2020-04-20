@@ -8,14 +8,12 @@ import (
 
 type MetadataV9Decoder struct {
 	ScaleDecoder
-	Version    string                 `json:"version"`
-	Modules    []MetadataModules      `json:"modules"`
-	CallIndex  map[string]interface{} `json:"call_index"`
-	EventIndex map[string]interface{} `json:"event_index"`
+	Version string            `json:"version"`
+	Modules []MetadataModules `json:"modules"`
 }
 
-func (m *MetadataV9Decoder) Init(data ScaleBytes, subType string, arg ...interface{}) {
-	m.ScaleDecoder.Init(data, subType, arg...)
+func (m *MetadataV9Decoder) Init(data ScaleBytes, option *ScaleDecoderOption) {
+	m.ScaleDecoder.Init(data, option)
 }
 
 func (m *MetadataV9Decoder) Process() {
@@ -24,8 +22,6 @@ func (m *MetadataV9Decoder) Process() {
 			Modules: nil,
 		},
 	}
-	//result.CallIndex = make(map[string]interface{})
-	//result.EventIndex = make(map[string]interface{})
 	MetadataV9ModuleCall := m.ProcessAndUpdateData("Vec<MetadataV8Module>").([]interface{})
 	callModuleIndex := 0
 	eventModuleIndex := 0

@@ -7,7 +7,6 @@ import (
 	"github.com/huandu/xstrings"
 	"reflect"
 	"strconv"
-	"unicode/utf8"
 )
 
 type Compact struct {
@@ -50,94 +49,6 @@ func (c *Compact) Process() {
 		}
 	} else {
 		c.Value = c.CompactBytes
-	}
-}
-
-type CompactU32 struct {
-	Compact
-}
-
-func (c *CompactU32) Init(data ScaleBytes, subType string, arg ...interface{}) {
-	c.TypeString = "Compact<u32>"
-	c.ScaleDecoder.Init(data, "", arg...)
-}
-
-func (c *CompactU32) Process() {
-	c.ProcessCompactBytes()
-	if c.CompactLength <= 4 {
-		data := make([]byte, len(c.Data.Data))
-		copy(data, c.Data.Data)
-
-		compactBytes := c.CompactBytes
-		bs := make([]byte, 4-len(compactBytes))
-		compactBytes = append(compactBytes[:], bs...)
-		c.Data.Data = data
-		c.Value = int(binary.LittleEndian.Uint32(compactBytes)) / 4
-	} else {
-		c.Value = int(binary.LittleEndian.Uint32(c.CompactBytes))
-	}
-}
-
-func (c *CompactU32) Encode(value int) ScaleBytes {
-	if value <= 63 {
-		bs := make([]byte, 4)
-		binary.LittleEndian.PutUint32(bs, uint32(value<<2))
-		c.Data.Data = bs[0:1]
-	} else if value <= 16383 {
-		bs := make([]byte, 4)
-		binary.LittleEndian.PutUint32(bs, uint32(value<<2)|1)
-		c.Data.Data = bs[0:2]
-	} else if value <= 1073741823 {
-		bs := make([]byte, 4)
-		binary.LittleEndian.PutUint32(bs, uint32(value<<2)|2)
-		c.Data.Data = bs
-	}
-	return c.Data
-}
-
-type Option struct {
-	ScaleDecoder
-}
-
-func (o *Option) Process() {
-	optionType := o.NextBytes(1)
-	if o.SubType != "" && utiles.BytesToHex(optionType) != "00" {
-		o.Value = o.ProcessAndUpdateData(o.SubType)
-	}
-}
-
-type Bytes struct {
-	ScaleDecoder
-}
-
-func (b *Bytes) Init(data ScaleBytes, subType string, arg ...interface{}) {
-	b.TypeString = "Vec<u8>"
-	b.ScaleDecoder.Init(data, "", arg...)
-}
-
-func (b *Bytes) Process() {
-	length := b.ProcessAndUpdateData("Compact<u32>").(int)
-	value := b.NextBytes(int(length))
-	if utf8.Valid(value) {
-		b.Value = string(value)
-	} else {
-		b.Value = utiles.BytesToHex(value)
-	}
-}
-
-type OptionBytes struct {
-	ScaleDecoder
-}
-
-func (b *OptionBytes) Init(data ScaleBytes, subType string, arg ...interface{}) {
-	b.TypeString = "Option<Vec<u8>>"
-	b.ScaleDecoder.Init(data, "", arg...)
-}
-
-func (b *OptionBytes) Process() {
-	optionByte := b.NextBytes(1)
-	if utiles.BytesToHex(optionByte) != "00" {
-		b.Value = b.ProcessAndUpdateData("Bytes").(string)
 	}
 }
 
@@ -232,9 +143,9 @@ type Moment struct {
 	CompactU32
 }
 
-func (m *Moment) Init(data ScaleBytes, subType string, arg ...interface{}) {
+func (m *Moment) Init(data ScaleBytes, option *ScaleDecoderOption) {
 	m.TypeString = "Compact<Moment>"
-	m.ScaleDecoder.Init(data, subType, arg...)
+	m.ScaleDecoder.Init(data, option)
 }
 
 func (m *Moment) Process() {
@@ -246,14 +157,18 @@ type Struct struct {
 	ScaleDecoder
 }
 
-func (s *Struct) Init(data ScaleBytes, subType string, arg ...interface{}) {
-	s.ScaleDecoder.Init(data, subType, arg...)
+func (s *Struct) Init(data ScaleBytes, option *ScaleDecoderOption) {
+	s.ScaleDecoder.Init(data, option)
 }
 
 func (s *Struct) Process() {
 	result := make(map[string]interface{})
-	for _, dataType := range s.StructOrderField {
-		result[dataType] = s.ProcessAndUpdateData(s.TypeMapping[dataType])
+	t := reflect.TypeOf(s)
+	for i := 0; i < t.NumField(); i++ {
+		field := t.Field(i)
+		if field.Tag.Get("scale") != "" && field.Tag.Get("json") != "" {
+			result[field.Tag.Get("json")] = s.ProcessAndUpdateData(field.Tag.Get("scale"))
+		}
 	}
 	s.Value = result
 }
@@ -267,9 +182,9 @@ type Vec struct {
 	Elements []interface{} `json:"elements"`
 }
 
-func (v *Vec) Init(data ScaleBytes, subType string, arg ...interface{}) {
+func (v *Vec) Init(data ScaleBytes, option *ScaleDecoderOption) {
 	v.Elements = []interface{}{}
-	v.ScaleDecoder.Init(data, subType, arg...)
+	v.ScaleDecoder.Init(data, option)
 }
 
 func (v *Vec) Process() {
@@ -323,10 +238,12 @@ type Enum struct {
 	Index     int      `json:"index"`
 }
 
-func (e *Enum) Init(data ScaleBytes, subType string, arg ...interface{}) {
+func (e *Enum) Init(data ScaleBytes, option *ScaleDecoderOption) {
 	e.Index = 0
-	e.ValueList = arg[0].([]string)
-	e.ScaleDecoder.Init(data, subType, arg...)
+	if option != nil {
+		e.ValueList = option.ValueList
+	}
+	e.ScaleDecoder.Init(data, option)
 }
 
 func (e *Enum) Process() {
@@ -343,16 +260,16 @@ type StorageHasher struct {
 	Enum
 }
 
-func (s *StorageHasher) Init(data ScaleBytes, subType string, arg ...interface{}) {
-	valueList := []string{"Blake2_128", "Blake2_256", "Blake2_128Concat", "Twox128", "Twox256", "Twox64Concat", "Identity"}
-	s.Enum.Init(data, "", valueList)
+func (s *StorageHasher) Init(data ScaleBytes, option *ScaleDecoderOption) {
+	option.ValueList = []string{"Blake2_128", "Blake2_256", "Blake2_128Concat", "Twox128", "Twox256", "Twox64Concat", "Identity"}
+	s.Enum.Init(data, option)
 }
 
 type DigestItem struct {
 	Enum
 }
 
-func (s *DigestItem) Init(data ScaleBytes, subType string, arg ...interface{}) {
-	valueList := []string{"Other", "AuthoritiesChange", "ChangesTrieRoot", "SealV0", "Consensus", "Seal", "PreRuntime"}
-	s.Enum.Init(data, subType, valueList)
+func (s *DigestItem) Init(data ScaleBytes, option *ScaleDecoderOption) {
+	option.ValueList = []string{"Other", "AuthoritiesChange", "ChangesTrieRoot", "SealV0", "Consensus", "Seal", "PreRuntime"}
+	s.Enum.Init(data, option)
 }

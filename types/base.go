@@ -7,32 +7,38 @@ import (
 	"strings"
 )
 
+type ScaleDecoderOption struct {
+	SubType   string
+	ValueList []string
+}
+
 type IScaleDecoder interface {
-	Init(data ScaleBytes, subType string, arg ...interface{})
+	Init(data ScaleBytes, option *ScaleDecoderOption)
 	Process()
-	buildTypeMapping()
+	buildStruct()
 	NextBytes(int) []byte
 	GetNextU8() int
 	reset()
 }
 
 type ScaleDecoder struct {
-	TypeString       string            `json:"-"`
-	Data             ScaleBytes        `json:"-"`
-	RawValue         string            `json:"-"`
-	Value            interface{}       `json:"-"`
-	SubType          string            `json:"-"`
-	TypeMapping      map[string]string `json:"-"`
-	StructOrderField []string          `json:"-"`
+	Data        ScaleBytes  `json:"-"`
+	TypeString  string      `json:"-"`
+	SubType     string      `json:"-"`
+	Value       interface{} `json:"-"`
+	RawValue    string      `json:"-"`
+	TypeMapping interface{} `json:"-"`
 }
 
-func (s *ScaleDecoder) Init(data ScaleBytes, subType string, arg ...interface{}) {
-	s.SubType = subType
+func (s *ScaleDecoder) Init(data ScaleBytes, option *ScaleDecoderOption) {
+	if option != nil {
+		s.SubType = option.SubType
+	}
 	s.Data = data
 	s.RawValue = ""
 	s.Value = nil
 	if s.TypeMapping == nil && s.TypeString != "" {
-		s.buildTypeMapping()
+		s.buildStruct()
 	}
 }
 
@@ -59,19 +65,20 @@ func (s *ScaleDecoder) reset() {
 	s.Data.Offset = 0
 }
 
-func (s *ScaleDecoder) buildTypeMapping() {
+func (s *ScaleDecoder) buildStruct() {
 	if s.TypeString != "" && string(s.TypeString[0]) == "(" && string(s.TypeString[len(s.TypeString)-1:]) == ")" {
-		s.TypeMapping = make(map[string]string)
+		var names, types []string
 		for k, v := range strings.Split(s.TypeString[1:len(s.TypeString)-1], ",") {
-			s.TypeMapping[fmt.Sprintf("col%d", k+1)] = strings.TrimSpace(v)
-			s.StructOrderField = append(s.StructOrderField, fmt.Sprintf("col%d", k+1))
+			types = append(types, strings.TrimSpace(v))
+			names = append(names, fmt.Sprintf("col%d", k+1))
 		}
+		s.TypeMapping = NewStruct(names, types)
 	}
 }
 
 func (s *ScaleDecoder) ProcessAndUpdateData(typeString string, args ...string) interface{} {
 	r := RuntimeType{}
-	c, rc, subType := r.reg().getDecoderClass(typeString)
+	c, rc, subType := r.reg().decoderClass(typeString)
 	if c == nil {
 		panic(fmt.Sprintf("not found decoder class %s", typeString))
 	}
@@ -79,8 +86,8 @@ func (s *ScaleDecoder) ProcessAndUpdateData(typeString string, args ...string) i
 	if exist == false {
 		panic(fmt.Sprintf("%s not implement init function", typeString))
 	}
-
-	method.Func.Call([]reflect.Value{rc, reflect.ValueOf(s.Data), reflect.ValueOf(subType), reflect.ValueOf(args)})
+	option := ScaleDecoderOption{SubType: subType, ValueList: args}
+	method.Func.Call([]reflect.Value{rc, reflect.ValueOf(s.Data), reflect.ValueOf(&option)})
 	rc.MethodByName("Process").Call(nil)
 	s.Data.Offset = int(rc.Elem().FieldByName("Data").FieldByName("Offset").Int())
 	s.Data.Data = rc.Elem().FieldByName("Data").FieldByName("Data").Bytes()

@@ -12,44 +12,54 @@ type RuntimeType struct {
 }
 
 func (r *RuntimeType) reg() *RuntimeType {
-	r.Runtime = map[string]interface{}{
-		"index":                        &U64{},
-		"u64":                          &U64{},
-		"address":                      &Address{},
-		"option":                       &Option{},
-		"struct":                       &Struct{},
-		"vec<u8>":                      &Bytes{},
-		"enum":                         &Enum{},
-		"bytes":                        &Bytes{},
-		"vec":                          &Vec{},
-		"compact<u32>":                 &CompactU32{},
-		"bool":                         &Bool{},
-		"storagehasher":                &StorageHasher{},
-		"hexbytes":                     &HexBytes{},
-		"moment":                       &Moment{},
-		"compact<moment>":              &Moment{},
-		"u32":                          &U32{},
-		"blocknumber":                  &BlockNumber{},
-		"compact":                      &Compact{},
-		"metadatamoduleevent":          &MetadataModuleEvent{},
-		"metadatamodulecallargument":   &MetadataModuleCallArgument{},
-		"metadatamodulecall":           &MetadataModuleCall{},
-		"metadatav6decoder":            &MetadataV6Decoder{},
-		"metadatav6module":             &MetadataV6Module{},
-		"metadatav6modulestorage":      &MetadataV6ModuleStorage{},
-		"metadatav6moduleconstants":    &MetadataV6ModuleConstants{},
-		"metadatav7decoder":            &MetadataV7Decoder{},
-		"metadatav7module":             &MetadataV7Module{},
-		"metadatav7modulestorage":      &MetadataV7ModuleStorage{},
-		"metadatav7moduleconstants":    &MetadataV7ModuleConstants{},
-		"metadatav7modulestorageentry": &MetadataV7ModuleStorageEntry{},
-		"metadatav8module":             &MetadataV8Module{},
-		"metadatav8decoder":            &MetadataV8Decoder{},
-		"metadatav9decoder":            &MetadataV9Decoder{},
-		"metadatav10decoder":           &MetadataV10Decoder{},
-		"metadatav11decoder":           &MetadataV11Decoder{},
-		"metadatamoduleerror":          &MetadataModuleError{},
+	registry := make(map[string]interface{})
+	scales := []interface{}{
+		&U64{},
+		&Address{},
+		&Option{},
+		&Struct{},
+		&Bytes{},
+		&Enum{},
+		&Bytes{},
+		&Vec{},
+		&CompactU32{},
+		&Bool{},
+		&StorageHasher{},
+		&HexBytes{},
+		&Moment{},
+		&Moment{},
+		&U32{},
+		&BlockNumber{},
+		&Compact{},
+		&MetadataModuleEvent{},
+		&MetadataModuleCallArgument{},
+		&MetadataModuleCall{},
+		&MetadataV6Decoder{},
+		&MetadataV6Module{},
+		&MetadataV6ModuleStorage{},
+		&MetadataV6ModuleConstants{},
+		&MetadataV7Decoder{},
+		&MetadataV7Module{},
+		&MetadataV7ModuleStorage{},
+		&MetadataV7ModuleConstants{},
+		&MetadataV7ModuleStorageEntry{},
+		&MetadataV8Module{},
+		&MetadataV8Decoder{},
+		&MetadataV9Decoder{},
+		&MetadataV10Decoder{},
+		&MetadataV11Decoder{},
+		&MetadataModuleError{},
 	}
+	for _, class := range scales {
+		valueOf := reflect.ValueOf(class)
+		if valueOf.Type().Kind() == reflect.Ptr {
+			registry[strings.ToLower(reflect.Indirect(valueOf).Type().Name())] = class
+		} else {
+			registry[strings.ToLower(valueOf.Type().Name())] = class
+		}
+	}
+	registry["compact<u32>"] = &CompactU32{}
+	r.Runtime = registry
 	return r
 }
 
@@ -63,34 +73,34 @@ func (r *RuntimeType) getCodecInstant(t string) (reflect.Type, reflect.Value, er
 	return value.Type(), value, nil
 }
 
-func (r *RuntimeType) getDecoderClass(typeString string) (reflect.Type, reflect.Value, string) {
+func (r *RuntimeType) decoderClass(typeString string) (reflect.Type, reflect.Value, string) {
 	var typeParts []string
 	typeString = ConvertType(typeString)
 	if typeString[len(typeString)-1:] == ">" {
-		decoderClass, rcvr, err := r.getCodecInstant(typeString)
+		decoderClass, rc, err := r.getCodecInstant(typeString)
 		if err == nil {
-			return decoderClass, rcvr, ""
+			return decoderClass, rc, ""
 		}
 		reg := regexp.MustCompile("^([^<]*)<(.+)>$")
 		typeParts = reg.FindStringSubmatch(typeString)
 	}
 	if len(typeParts) > 0 {
-		class, rcvr, err := r.getCodecInstant(typeParts[1])
+		class, rc, err := r.getCodecInstant(typeParts[1])
 		if err == nil {
-			return class, rcvr, typeParts[2]
+			return class, rc, typeParts[2]
 		}
 	} else {
-		class, rcvr, err := r.getCodecInstant(typeString)
+		class, rc, err := r.getCodecInstant(typeString)
 		if err == nil {
-			return class, rcvr, ""
+			return class, rc, ""
 		}
 	}
 	if typeString != "()" && string(typeString[0]) == "(" && string(typeString[len(typeString)-1:]) == ")" {
-		decoderClass, rcvr, _ := r.getCodecInstant("Struct")
-		s := rcvr.Interface().(*Struct)
+		decoderClass, rc, _ := r.getCodecInstant("Struct")
+		s := rc.Interface().(*Struct)
 		s.TypeString = typeString
-		s.buildTypeMapping()
-		return decoderClass, rcvr, ""
+		s.buildStruct()
+		return decoderClass, rc, ""
 	}
 	return nil, reflect.ValueOf((*error)(nil)).Elem(), ""
 }

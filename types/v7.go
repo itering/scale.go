@@ -8,14 +8,12 @@ import (
 
 type MetadataV7Decoder struct {
 	ScaleDecoder
-	Version    string                 `json:"version"`
-	Modules    []MetadataModules      `json:"modules"`
-	CallIndex  map[string]interface{} `json:"call_index"`
-	EventIndex map[string]interface{} `json:"event_index"`
+	Version string            `json:"version"`
+	Modules []MetadataModules `json:"modules"`
 }
 
-func (m *MetadataV7Decoder) Init(data ScaleBytes, subType string, arg ...interface{}) {
-	m.ScaleDecoder.Init(data, subType, arg...)
+func (m *MetadataV7Decoder) Init(data ScaleBytes, option *ScaleDecoderOption) {
+	m.ScaleDecoder.Init(data, option)
 }
 
 func (m *MetadataV7Decoder) Process() {
@@ -24,8 +22,6 @@ func (m *MetadataV7Decoder) Process() {
 			Modules: nil,
 		},
 	}
-	//result.CallIndex = make(map[string]interface{})
-	//result.EventIndex = make(map[string]interface{})
 	metadataV7ModuleCall := m.ProcessAndUpdateData("Vec<MetadataV7Module>").([]interface{})
 	callModuleIndex := 0
 	eventModuleIndex := 0
@@ -36,20 +32,12 @@ func (m *MetadataV7Decoder) Process() {
 		if module.Calls != nil {
 			for callIndex := range module.Calls {
 				modulesType[k].Calls[callIndex].Lookup = xstrings.RightJustify(utiles.IntToHex(callModuleIndex), 2, "0") + xstrings.RightJustify(utiles.IntToHex(callIndex), 2, "0")
-				//result.CallIndex[modulesType[k].Calls[callIndex].Lookup] = map[string]interface{}{
-				//	"module": module,
-				//	"call":   call,
-				//}
 			}
 			callModuleIndex++
 		}
 		if module.Events != nil {
 			for eventIndex := range module.Events {
 				modulesType[k].Events[eventIndex].Lookup = xstrings.RightJustify(utiles.IntToHex(eventModuleIndex), 2, "0") + xstrings.RightJustify(utiles.IntToHex(eventIndex), 2, "0")
-				//result.EventIndex[modulesType[k].Events[eventIndex].Lookup] = map[string]interface{}{
-				//	"module": module,
-				//	"call":   event,
-				//}
 			}
 			eventModuleIndex++
 		}
@@ -60,7 +48,7 @@ func (m *MetadataV7Decoder) Process() {
 }
 
 type MetadataV7Module struct {
-	ScaleType
+	ScaleDecoder
 	Name       string                   `json:"name"`
 	Prefix     string                   `json:"prefix"`
 	CallIndex  string                   `json:"call_index"`
@@ -146,8 +134,8 @@ type MetadataV7ModuleStorageEntry struct {
 	Hasher   string      `json:"hasher"`
 }
 
-func (m *MetadataV7ModuleStorageEntry) Init(data ScaleBytes, subType string, arg ...interface{}) {
-	m.ScaleDecoder.Init(data, subType, arg...)
+func (m *MetadataV7ModuleStorageEntry) Init(data ScaleBytes, option *ScaleDecoderOption) {
+	m.ScaleDecoder.Init(data, option)
 }
 
 func (m *MetadataV7ModuleStorageEntry) Process() {
