@@ -50,8 +50,20 @@ type MetadataEvents struct {
 }
 
 type MetadataStruct struct {
-	MetadataVersion int         `json:"metadata_version"`
-	Metadata        MetadataTag `json:"metadata"`
+	MetadataVersion int                   `json:"metadata_version"`
+	Metadata        MetadataTag           `json:"metadata"`
+	CallIndex       map[string]CallIndex  `json:"call_index"`
+	EventIndex      map[string]EventIndex `json:"event_index"`
+}
+
+type CallIndex struct {
+	Module MetadataModules `json:"module"`
+	Call   MetadataCalls   `json:"call"`
+}
+
+type EventIndex struct {
+	Module MetadataModules `json:"module"`
+	Call   MetadataEvents  `json:"call"`
 }
 
 type MetadataTag struct {

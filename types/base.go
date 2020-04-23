@@ -10,6 +10,7 @@ import (
 type ScaleDecoderOption struct {
 	SubType   string
 	ValueList []string
+	Metadata  *MetadataStruct
 }
 
 type IScaleDecoder interface {

@@ -1,47 +1,47 @@
 package scalecodec
 
 import (
+	"fmt"
 	scaleType "github.com/freehere107/scalecodec/types"
 	"github.com/freehere107/scalecodec/utiles"
 	"golang.org/x/crypto/blake2b"
 )
 
-type ExtrinsicsDecoder struct {
+type ExtrinsicParam struct {
+	Name     string      `json:"name"`
+	Type     string      `json:"type"`
+	Value    interface{} `json:"value"`
+	ValueRaw string      `json:"value_raw"`
+}
+
+type ExtrinsicDecoder struct {
 	scaleType.ScaleDecoder
 	ExtrinsicLength     int                       `json:"extrinsic_length"`
 	ExtrinsicHash       string                    `json:"extrinsic_hash"`
 	VersionInfo         string                    `json:"version_info"`
 	ContainsTransaction bool                      `json:"contains_transaction"`
-	Address             map[string]string         `json:"address"`
+	Address             string                    `json:"address"`
 	Signature           string                    `json:"signature"`
+	SignatureVersion    int                       `json:"signature_version"`
 	Nonce               int                       `json:"nonce"`
 	Era                 string                    `json:"era"`
 	CallIndex           string                    `json:"call_index"`
+	Tip                 string                    `json:"tip"`
 	CallModule          scaleType.MetadataModules `json:"call_module"`
 	Call                scaleType.MetadataCalls   `json:"call"`
-	Params              []map[string]interface{}  `json:"params"`
+	Params              []ExtrinsicParam          `json:"params"`
+	Metadata            *scaleType.MetadataStruct
 }
 
-func (e *ExtrinsicsDecoder) Init(data scaleType.ScaleBytes, args []string) {
-	e.TypeMapping = map[string]string{
-		"extrinsic_length": "Compact<u32>",
-		"version_info":     "u8",
-		"address":          "Address",
-		"signature":        "Signature",
-		"nonce":            "Compact<u32>",
-		"era":              "Era",
-		"call_index":       "(u8,u8)",
+func (e *ExtrinsicDecoder) Init(data scaleType.ScaleBytes, option *scaleType.ScaleDecoderOption) {
+	if option.Metadata == nil {
+		panic("ExtrinsicDecoder option metadata required")
 	}
-
-	var subType string
-	if len(args) > 0 {
-		subType = args[0]
-	}
-
-	e.ScaleDecoder.Init(data, &scaleType.ScaleDecoderOption{SubType: subType})
+	e.Metadata = option.Metadata
+	e.ScaleDecoder.Init(data, option)
 }
 
-func (e *ExtrinsicsDecoder) generateHash() string {
+func (e *ExtrinsicDecoder) generateHash() string {
 	if e.ContainsTransaction {
 		var extrinsicData []byte
 		if e.ExtrinsicLength > 0 {
@@ -59,31 +59,81 @@ func (e *ExtrinsicsDecoder) generateHash() string {
 	return ""
 }
 
-func (e *ExtrinsicsDecoder) Process() map[string]interface{} {
+func (e *ExtrinsicDecoder) Process() map[string]interface{} {
 	e.ExtrinsicLength = int(e.ProcessAndUpdateData("Compact<u32>").(int))
 	if e.ExtrinsicLength != e.Data.GetRemainingLength() {
 		e.ExtrinsicLength = 0
 		e.Data.Reset()
 	}
-	e.VersionInfo = utiles.BytesToHex(e.NextBytes(1))
-	e.ContainsTransaction = utiles.U256(e.VersionInfo).Int64() >= 80
-	if e.ContainsTransaction {
-		e.Address = e.ProcessAndUpdateData("Address").(map[string]string)
-		e.Signature = e.ProcessAndUpdateData("Signature").(string)
-		// e.Nonce = int(e.ProcessAndUpdateData(e.TypeMapping["nonce"]).(int))
-		e.Era = e.ProcessAndUpdateData("Era").(string)
-		e.ExtrinsicHash = e.generateHash()
-	}
-	e.CallIndex = utiles.BytesToHex(e.NextBytes(2))
 
-	for _, arg := range e.Call.Args {
-		argTypeObj := e.ProcessAndUpdateData(arg["type"].(string))
-		e.Params = append(e.Params, map[string]interface{}{
-			"name":     arg["name"].(string),
-			"type":     arg["type"].(string),
-			"value":    argTypeObj,
-			"valueRaw": "",
-		})
+	e.VersionInfo = utiles.BytesToHex(e.NextBytes(1))
+
+	e.ContainsTransaction = utiles.U256(e.VersionInfo).Int64() >= 80
+
+	if e.VersionInfo == "01" || e.VersionInfo == "81" {
+
+		if e.ContainsTransaction {
+			e.Address = e.ProcessAndUpdateData("Address").(string)
+			e.Signature = e.ProcessAndUpdateData("Signature").(string)
+			e.Nonce = int(e.ProcessAndUpdateData("Compact<u32>").(int))
+			e.Era = e.ProcessAndUpdateData("Era").(string)
+			e.ExtrinsicHash = e.generateHash()
+		}
+		e.CallIndex = utiles.BytesToHex(e.NextBytes(2))
+
+	} else if e.VersionInfo == "02" || e.VersionInfo == "82" {
+
+		if e.ContainsTransaction {
+			e.Address = e.ProcessAndUpdateData("Address").(string)
+			e.Signature = e.ProcessAndUpdateData("Signature").(string)
+			e.Era = e.ProcessAndUpdateData("Era").(string)
+			e.Nonce = int(e.ProcessAndUpdateData("Compact<U64>").(int))
+			e.Tip = e.ProcessAndUpdateData("Compact<Balance>").(string)
+			e.ExtrinsicHash = e.generateHash()
+		}
+		e.CallIndex = utiles.BytesToHex(e.NextBytes(2))
+
+	} else if e.VersionInfo == "03" || e.VersionInfo == "83" {
+
+		if e.ContainsTransaction {
+			e.Address = e.ProcessAndUpdateData("Address").(string)
+			e.Signature = e.ProcessAndUpdateData("Signature").(string)
+			e.Era = e.ProcessAndUpdateData("Era").(string)
+			e.Nonce = int(e.ProcessAndUpdateData("Compact<U64>").(int))
+			e.Tip = e.ProcessAndUpdateData("Compact<Balance>").(string)
+			e.ExtrinsicHash = e.generateHash()
+		}
+		e.CallIndex = utiles.BytesToHex(e.NextBytes(2))
+
+	} else if e.VersionInfo == "04" || e.VersionInfo == "84" {
+
+		if e.ContainsTransaction {
+			e.Address = e.ProcessAndUpdateData("Address").(string)
+			e.SignatureVersion = e.ProcessAndUpdateData("U8").(int)
+			e.Signature = e.ProcessAndUpdateData("Signature").(string)
+			e.Era = e.ProcessAndUpdateData("Era").(string)
+			e.Nonce = int(e.ProcessAndUpdateData("Compact<U64>").(int))
+			e.Tip = e.ProcessAndUpdateData("Compact<Balance>").(string)
+			e.ExtrinsicHash = e.generateHash()
+		}
+		e.CallIndex = utiles.BytesToHex(e.NextBytes(2))
+	} else {
+		panic(fmt.Sprintf("Extrinsics version %s is not support", e.VersionInfo))
+	}
+
+	if e.CallIndex != "" {
+		call := e.Metadata.CallIndex[e.CallIndex].Call
+		e.CallModule = e.Metadata.CallIndex[e.CallIndex].Module
+
+		for _, arg := range call.Args {
+			argTypeObj := e.ProcessAndUpdateData(arg["type"].(string))
+			e.Params = append(e.Params, ExtrinsicParam{
+				Name:     arg["name"].(string),
+				Type:     arg["type"].(string),
+				Value:    argTypeObj,
+				ValueRaw: "",
+			})
+		}
 	}
 
 	result := map[string]interface{}{
@@ -93,20 +143,23 @@ func (e *ExtrinsicsDecoder) Process() map[string]interface{} {
 	}
 
 	if e.ContainsTransaction {
-		result["account_length"] = e.Address["account_length"]
-		result["account_id"] = e.Address["account_id"]
-		result["account_index"] = e.Address["account_index"]
-		result["account_idx"] = e.Address["account_idx"]
+		result["account_id"] = e.Address
 		result["signature"] = e.Signature
 		result["nonce"] = e.Nonce
 		result["era"] = e.Era
 		result["extrinsic_hash"] = e.ExtrinsicHash
 	}
+
 	if e.CallIndex != "" {
 		result["call_code"] = e.CallIndex
 		result["call_module_function"] = e.Call.Name
 		result["call_module"] = e.CallModule.Name
 	}
+
+	result["nonce"] = e.Nonce
+	result["era"] = e.Era
+	result["tip"] = e.Tip
 	result["params"] = e.Params
+
 	return result
 }
