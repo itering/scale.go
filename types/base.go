@@ -1,6 +1,7 @@
 package types
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/freehere107/scalecodec/utiles"
 	"reflect"
@@ -23,17 +24,19 @@ type IScaleDecoder interface {
 }
 
 type ScaleDecoder struct {
-	Data        ScaleBytes  `json:"-"`
-	TypeString  string      `json:"-"`
-	SubType     string      `json:"-"`
-	Value       interface{} `json:"-"`
-	RawValue    string      `json:"-"`
-	TypeMapping interface{} `json:"-"`
+	Data        ScaleBytes      `json:"-"`
+	TypeString  string          `json:"-"`
+	SubType     string          `json:"-"`
+	Value       interface{}     `json:"-"`
+	RawValue    string          `json:"-"`
+	TypeMapping interface{}     `json:"-"`
+	Metadata    *MetadataStruct `json:"-"`
 }
 
 func (s *ScaleDecoder) Init(data ScaleBytes, option *ScaleDecoderOption) {
 	if option != nil {
 		s.SubType = option.SubType
+		s.Metadata = option.Metadata
 	}
 	s.Data = data
 	s.RawValue = ""
@@ -68,22 +71,28 @@ func (s *ScaleDecoder) reset() {
 
 func (s *ScaleDecoder) buildStruct() {
 	if s.TypeString != "" && string(s.TypeString[0]) == "(" && string(s.TypeString[len(s.TypeString)-1:]) == ")" {
+
 		var names, types []string
 		for k, v := range strings.Split(s.TypeString[1:len(s.TypeString)-1], ",") {
 			types = append(types, strings.TrimSpace(v))
 			names = append(names, fmt.Sprintf("col%d", k+1))
 		}
-		s.TypeMapping = NewStruct(names, types)
+		s.TypeMapping = newStruct(names, types)
 	}
 }
 
 func (s *ScaleDecoder) ProcessAndUpdateData(typeString string, args ...string) interface{} {
 	r := RuntimeType{}
-	c, rc, subType := r.reg().decoderClass(typeString)
+
+	if typeRegistry == nil {
+		r.Reg()
+	}
+	c, rc, subType := r.decoderClass(typeString)
 
 	if c == nil {
 		panic(fmt.Sprintf("not found decoder class %s", typeString))
 	}
+	b, _ := json.Marshal(typeRegistry)
 
 	// init
 	method, exist := c.MethodByName("Init")

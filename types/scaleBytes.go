@@ -7,7 +7,6 @@ import (
 type ScaleBytes struct {
 	Data   []byte `json:"data"`
 	Offset int    `json:"offset"`
-	Length int    `json:"length"`
 }
 
 func (s *ScaleBytes) GetNextBytes(length int) []byte {
@@ -17,7 +16,7 @@ func (s *ScaleBytes) GetNextBytes(length int) []byte {
 }
 
 func (s *ScaleBytes) GetRemainingLength() int {
-	return s.Length - s.Offset
+	return len(s.Data) - s.Offset
 }
 
 func (s *ScaleBytes) String() string {

@@ -7,14 +7,20 @@ import (
 	"strings"
 )
 
+var typeRegistry map[string]interface{}
+
 type RuntimeType struct {
-	Runtime map[string]interface{}
 }
 
-func (r *RuntimeType) reg() *RuntimeType {
+func (r RuntimeType) Reg() *RuntimeType {
 	registry := make(map[string]interface{})
 	scales := []interface{}{
+		&Null{},
+		&U8{},
+		&U32{},
 		&U64{},
+		&Compact{},
+		&H256{},
 		&Address{},
 		&Option{},
 		&Struct{},
@@ -27,10 +33,9 @@ func (r *RuntimeType) reg() *RuntimeType {
 		&StorageHasher{},
 		&HexBytes{},
 		&Moment{},
-		&Moment{},
-		&U32{},
 		&BlockNumber{},
-		&Compact{},
+		&AccountId{},
+		&BoxProposal{},
 		&MetadataModuleEvent{},
 		&MetadataModuleCallArgument{},
 		&MetadataModuleCall{},
@@ -59,15 +64,20 @@ func (r *RuntimeType) reg() *RuntimeType {
 		}
 	}
 	registry["compact<u32>"] = &CompactU32{}
-	r.Runtime = registry
-	return r
+	registry["compact<moment>"] = &Moment{}
+	registry["hash"] = &H256{}
+	registry["[u8; 32]"] = &VecU8FixedLength{FixedLength: 32}
+	registry["[u8; 16]"] = &VecU8FixedLength{FixedLength: 16}
+	registry["[u8; 8]"] = &VecU8FixedLength{FixedLength: 8}
+	registry["[u8; 4]"] = &VecU8FixedLength{FixedLength: 4}
+	typeRegistry = registry
+	return &r
 }
 
 func (r *RuntimeType) getCodecInstant(t string) (reflect.Type, reflect.Value, error) {
-	t = strings.ToLower(t)
-	rt := r.Runtime[t]
+	rt := typeRegistry[strings.ToLower(t)]
 	if rt == nil {
-		return nil, reflect.ValueOf((*error)(nil)).Elem(), errors.New("Scalecodec type nil" + t)
+		return nil, reflect.ValueOf((*error)(nil)).Elem(), errors.New("Scale codec type nil" + t)
 	}
 	value := reflect.ValueOf(rt)
 	return value.Type(), value, nil

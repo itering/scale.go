@@ -87,7 +87,7 @@ func (m *MetadataV8Module) Process() {
 	cm.HasCalls = m.ProcessAndUpdateData("bool").(bool)
 	if cm.HasCalls {
 		callValue := m.ProcessAndUpdateData("Vec<MetadataModuleCall>").([]interface{})
-		var calls []MetadataModuleCall
+		calls := []MetadataModuleCall{}
 		for _, v := range callValue {
 			calls = append(calls, v.(MetadataModuleCall))
 		}
@@ -96,7 +96,7 @@ func (m *MetadataV8Module) Process() {
 	cm.HasEvents = m.ProcessAndUpdateData("bool").(bool)
 	if cm.HasEvents {
 		eventValue := m.ProcessAndUpdateData("Vec<MetadataModuleEvent>").([]interface{})
-		var events []MetadataEvents
+		events := []MetadataEvents{}
 		for _, v := range eventValue {
 			events = append(events, v.(MetadataEvents))
 		}

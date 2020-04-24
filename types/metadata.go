@@ -36,10 +36,10 @@ type MapType struct {
 }
 
 type MetadataCalls struct {
-	Lookup string                   `json:"lookup"`
-	Name   string                   `json:"name"`
-	Docs   []string                 `json:"docs"`
-	Args   []map[string]interface{} `json:"args"`
+	Lookup string                       `json:"lookup"`
+	Name   string                       `json:"name"`
+	Docs   []string                     `json:"docs"`
+	Args   []MetadataModuleCallArgument `json:"args"`
 }
 
 type MetadataEvents struct {
@@ -75,4 +75,11 @@ type MetadataConstants struct {
 	Type           string   `json:"type"`
 	ConstantsValue string   `json:"constants_value"`
 	Docs           []string `json:"docs"`
+}
+
+type ExtrinsicParam struct {
+	Name     string      `json:"name"`
+	Type     string      `json:"type"`
+	Value    interface{} `json:"value"`
+	ValueRaw string      `json:"value_raw"`
 }

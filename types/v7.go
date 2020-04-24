@@ -2,6 +2,7 @@ package types
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/freehere107/scalecodec/utiles"
 	"github.com/huandu/xstrings"
 )
@@ -67,10 +68,6 @@ type MetadataV7Module struct {
 	HasEvents  bool                     `json:"has_events"`
 	Events     []MetadataEvents         `json:"events"`
 	Constants  []map[string]interface{} `json:"constants"`
-}
-
-func (m *MetadataV7Module) GetIdentifier() string {
-	return m.Name
 }
 
 func (m *MetadataV7Module) Process() {
@@ -194,5 +191,6 @@ func (m *MetadataV7ModuleStorageEntry) Process() {
 		Fallback: m.Fallback,
 		Docs:     m.Docs,
 	}
+	fmt.Println(m.Value)
 
 }

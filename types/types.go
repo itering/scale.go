@@ -9,49 +9,6 @@ import (
 	"strconv"
 )
 
-type Compact struct {
-	ScaleDecoder
-	CompactLength int    `json:"compact_length"`
-	CompactBytes  []byte `json:"compact_bytes"`
-}
-
-func (c *Compact) ProcessCompactBytes() []byte {
-	compactByte := c.NextBytes(1)
-	byteMod := compactByte[0] % 4
-	if byteMod == 0 {
-		c.CompactLength = 1
-	} else if byteMod == 1 {
-		c.CompactLength = 2
-	} else if byteMod == 2 {
-		c.CompactLength = 4
-	} else {
-		c.CompactLength = 5 + ((int(compactByte[0]) - 3) / 4)
-	}
-	if c.CompactLength == 1 {
-		c.CompactBytes = compactByte
-	} else if utiles.IntInSlice(c.CompactLength, []int{2, 4}) {
-		c.CompactBytes = append(compactByte[:], c.NextBytes(c.CompactLength - 1)[:]...)
-	} else {
-		c.CompactBytes = c.NextBytes(c.CompactLength - 1)
-	}
-	return c.CompactBytes
-}
-
-func (c *Compact) Process() {
-	c.ProcessCompactBytes()
-	if c.SubType != "" {
-		s := ScaleDecoder{TypeString: c.SubType, Data: ScaleBytes{Data: c.CompactBytes}}
-		byteData := s.ProcessAndUpdateData(c.SubType)
-		if reflect.TypeOf(byteData).Kind() == reflect.Int && c.CompactLength <= 4 {
-			c.Value = []byte(strconv.Itoa(byteData.(int) / 4))
-		} else {
-			c.Value = byteData
-		}
-	} else {
-		c.Value = c.CompactBytes
-	}
-}
-
 type HexBytes struct {
 	ScaleDecoder
 }
@@ -149,16 +106,14 @@ func (m *Moment) Init(data ScaleBytes, option *ScaleDecoderOption) {
 }
 
 func (m *Moment) Process() {
-	intValue := m.ProcessAndUpdateData("Compact<u32>").(int)
-	m.Value = intValue
+	m.CompactU32.Process()
+	if m.Value.(int) > 10000000000 {
+		m.Value = m.Value.(int) / 1000
+	}
 }
 
 type Struct struct {
 	ScaleDecoder
-}
-
-func (s *Struct) Init(data ScaleBytes, option *ScaleDecoderOption) {
-	s.ScaleDecoder.Init(data, option)
 }
 
 func (s *Struct) Process() {
@@ -272,4 +227,49 @@ type DigestItem struct {
 func (s *DigestItem) Init(data ScaleBytes, option *ScaleDecoderOption) {
 	option.ValueList = []string{"Other", "AuthoritiesChange", "ChangesTrieRoot", "SealV0", "Consensus", "Seal", "PreRuntime"}
 	s.Enum.Init(data, option)
+}
+
+type Null struct {
+	ScaleDecoder
+}
+
+type VecU8FixedLength struct {
+	ScaleDecoder
+	FixedLength int
+}
+
+func (s *VecU8FixedLength) Process() {
+	s.Value = utiles.AddHex(utiles.BytesToHex(s.NextBytes(s.FixedLength)))
+}
+
+type AccountId struct {
+	ScaleDecoder
+}
+
+func (s *AccountId) Process() {
+	s.Value = utiles.AddHex(xstrings.RightJustify(utiles.BytesToHex(s.NextBytes(32)), 64, "0"))
+}
+
+type BoxProposal struct {
+	ScaleDecoder
+}
+
+func (s *BoxProposal) Process() {
+	callIndex := utiles.BytesToHex(s.NextBytes(2))
+	callModule := s.Metadata.CallIndex[callIndex]
+	result := map[string]interface{}{
+		"call_index":  callIndex,
+		"call_name":   callModule.Call.Name,
+		"call_module": callModule.Module.Name,
+	}
+	var param []ExtrinsicParam
+	for _, arg := range callModule.Call.Args {
+		param = append(param, ExtrinsicParam{
+			Name:     arg.Name,
+			Type:     arg.Type,
+			Value:    s.ProcessAndUpdateData(arg.Type),
+			ValueRaw: "",
+		})
+	}
+	s.Value = result
 }

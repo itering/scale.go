@@ -34,7 +34,7 @@ type ExtrinsicDecoder struct {
 }
 
 func (e *ExtrinsicDecoder) Init(data scaleType.ScaleBytes, option *scaleType.ScaleDecoderOption) {
-	if option.Metadata == nil {
+	if option == nil || option.Metadata == nil {
 		panic("ExtrinsicDecoder option metadata required")
 	}
 	e.Metadata = option.Metadata
@@ -48,7 +48,7 @@ func (e *ExtrinsicDecoder) generateHash() string {
 			extrinsicData = e.Data.Data
 		} else {
 			extrinsicLengthType := scaleType.CompactU32{}
-			extrinsicLengthType.Encode(e.Data.Length)
+			extrinsicLengthType.Encode(len(e.Data.Data))
 			extrinsicData = append(extrinsicLengthType.Data.Data[:], e.Data.Data[:]...)
 		}
 		checksum, _ := blake2b.New(32, []byte{})
@@ -59,8 +59,8 @@ func (e *ExtrinsicDecoder) generateHash() string {
 	return ""
 }
 
-func (e *ExtrinsicDecoder) Process() map[string]interface{} {
-	e.ExtrinsicLength = int(e.ProcessAndUpdateData("Compact<u32>").(int))
+func (e *ExtrinsicDecoder) Process() {
+	e.ExtrinsicLength = e.ProcessAndUpdateData("Compact<u32>").(int)
 	if e.ExtrinsicLength != e.Data.GetRemainingLength() {
 		e.ExtrinsicLength = 0
 		e.Data.Reset()
@@ -122,16 +122,18 @@ func (e *ExtrinsicDecoder) Process() map[string]interface{} {
 	}
 
 	if e.CallIndex != "" {
-		call := e.Metadata.CallIndex[e.CallIndex].Call
+		e.Call = e.Metadata.CallIndex[e.CallIndex].Call
 		e.CallModule = e.Metadata.CallIndex[e.CallIndex].Module
 
-		for _, arg := range call.Args {
+		for _, arg := range e.Call.Args {
+
+			fmt.Println("arg.Type", arg.Type)
 			e.Params = append(e.Params,
 				ExtrinsicParam{
-					Name:     arg["name"].(string),
-					Type:     arg["type"].(string),
-					Value:    e.ProcessAndUpdateData(arg["type"].(string)),
-					ValueRaw: "",
+					Name:     arg.Name,
+					Type:     arg.Type,
+					Value:    e.ProcessAndUpdateData(arg.Type),
+					ValueRaw: e.RawValue,
 				})
 		}
 	}
@@ -160,6 +162,6 @@ func (e *ExtrinsicDecoder) Process() map[string]interface{} {
 	result["era"] = e.Era
 	result["tip"] = e.Tip
 	result["params"] = e.Params
-
-	return result
+	e.Value = result
+	return
 }

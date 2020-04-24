@@ -8,12 +8,15 @@ import (
 
 type EventsDecoder struct {
 	scaleType.Vec
-	Elements []map[string]interface{} `json:"elements"`
 	Metadata *scaleType.MetadataStruct
 }
 
 func (e *EventsDecoder) Init(data scaleType.ScaleBytes, option *scaleType.ScaleDecoderOption) {
+	if option.Metadata == nil {
+		panic("ExtrinsicDecoder option metadata required")
+	}
 	e.TypeString = "Vec<EventRecord>"
+	e.Metadata = option.Metadata
 	e.Vec.Init(data, option)
 }
 
@@ -23,19 +26,19 @@ type EventParam struct {
 	ValueRaw string      `json:"value_raw"`
 }
 
-func (e *EventsDecoder) Process() []map[string]interface{} {
+func (e *EventsDecoder) Process() {
 	elementCount := int(e.ProcessAndUpdateData("Compact<u32>").(int))
 
 	er := EventRecord{}
 	option := scaleType.ScaleDecoderOption{Metadata: e.Metadata}
 	er.Init(e.Data, &option)
-
+	var result []interface{}
 	for i := 0; i < elementCount; i++ {
 		element := er.Process()
 		element["event_idx"] = i
-		e.Elements = append(e.Elements, element)
+		result = append(result, element)
 	}
-	return e.Elements
+	e.Value = result
 }
 
 type EventRecord struct {
@@ -51,9 +54,7 @@ type EventRecord struct {
 }
 
 func (e *EventRecord) Init(data scaleType.ScaleBytes, option *scaleType.ScaleDecoderOption) {
-	if option.Metadata == nil {
-		panic("ExtrinsicDecoder option metadata required")
-	}
+
 	e.Metadata = option.Metadata
 	e.ScaleDecoder.Init(data, option)
 }

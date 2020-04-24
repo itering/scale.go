@@ -2,17 +2,18 @@ package types
 
 type MetadataModuleCall struct {
 	ScaleDecoder
-	Name string              `json:"name"`
-	Args []map[string]string `json:"args"`
-	Docs []string            `json:"docs"`
+	Name string                       `json:"name"`
+	Args []MetadataModuleCallArgument `json:"args"`
+	Docs []string                     `json:"docs"`
 }
 
 func (m *MetadataModuleCall) Process() {
 	m.Name = m.ProcessAndUpdateData("Bytes").(string)
 	argsValue := m.ProcessAndUpdateData("Vec<MetadataModuleCallArgument>").([]interface{})
-	var args []map[string]string
+	var args []MetadataModuleCallArgument
 	for _, v := range argsValue {
-		args = append(args, v.(map[string]string))
+		arg := v.(map[string]string)
+		args = append(args, MetadataModuleCallArgument{Name: arg["name"], Type: arg["type"]})
 	}
 	m.Args = args
 	docs := m.ProcessAndUpdateData("Vec<Bytes>").([]interface{})
