@@ -126,13 +126,13 @@ func (e *ExtrinsicDecoder) Process() map[string]interface{} {
 		e.CallModule = e.Metadata.CallIndex[e.CallIndex].Module
 
 		for _, arg := range call.Args {
-			argTypeObj := e.ProcessAndUpdateData(arg["type"].(string))
-			e.Params = append(e.Params, ExtrinsicParam{
-				Name:     arg["name"].(string),
-				Type:     arg["type"].(string),
-				Value:    argTypeObj,
-				ValueRaw: "",
-			})
+			e.Params = append(e.Params,
+				ExtrinsicParam{
+					Name:     arg["name"].(string),
+					Type:     arg["type"].(string),
+					Value:    e.ProcessAndUpdateData(arg["type"].(string)),
+					ValueRaw: "",
+				})
 		}
 	}
 

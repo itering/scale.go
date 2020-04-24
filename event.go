@@ -1,7 +1,6 @@
 package scalecodec
 
 import (
-	"encoding/json"
 	scaleType "github.com/freehere107/scalecodec/types"
 	"github.com/freehere107/scalecodec/utiles"
 	"reflect"
@@ -10,24 +9,27 @@ import (
 type EventsDecoder struct {
 	scaleType.Vec
 	Elements []map[string]interface{} `json:"elements"`
+	Metadata *scaleType.MetadataStruct
 }
 
-func (e *EventsDecoder) Init(data scaleType.ScaleBytes, args []string) {
+func (e *EventsDecoder) Init(data scaleType.ScaleBytes, option *scaleType.ScaleDecoderOption) {
 	e.TypeString = "Vec<EventRecord>"
+	e.Vec.Init(data, option)
+}
 
-	var subType string
-	if len(args) > 0 {
-		subType = args[0]
-	}
-
-	e.ScaleDecoder.Init(data, &scaleType.ScaleDecoderOption{SubType: subType})
+type EventParam struct {
+	Type     string      `json:"type"`
+	Value    interface{} `json:"value"`
+	ValueRaw string      `json:"value_raw"`
 }
 
 func (e *EventsDecoder) Process() []map[string]interface{} {
 	elementCount := int(e.ProcessAndUpdateData("Compact<u32>").(int))
-	// bm, _ := json.Marshal(e.Metadata)
+
 	er := EventRecord{}
-	er.Init(e.Data, []string{""})
+	option := scaleType.ScaleDecoderOption{Metadata: e.Metadata}
+	er.Init(e.Data, &option)
+
 	for i := 0; i < elementCount; i++ {
 		element := er.Process()
 		element["event_idx"] = i
@@ -38,49 +40,46 @@ func (e *EventsDecoder) Process() []map[string]interface{} {
 
 type EventRecord struct {
 	scaleType.ScaleDecoder
-	Metadata     MetadataDecoder           `json:"metadata"`
+	Metadata     *scaleType.MetadataStruct
 	Phase        int                       `json:"phase"`
 	ExtrinsicIdx int                       `json:"extrinsic_idx"`
 	Type         string                    `json:"type"`
-	Params       []map[string]interface{}  `json:"params"`
+	Params       []EventParam              `json:"params"`
 	Event        scaleType.MetadataEvents  `json:"event"`
 	EventModule  scaleType.MetadataModules `json:"event_module"`
 	Topic        []string                  `json:"topic"`
 }
 
-func (e *EventRecord) Init(data scaleType.ScaleBytes, args []string) {
-	var metadata MetadataDecoder
-	var subType string
-	if len(args) > 0 {
-		subType = args[0]
+func (e *EventRecord) Init(data scaleType.ScaleBytes, option *scaleType.ScaleDecoderOption) {
+	if option.Metadata == nil {
+		panic("ExtrinsicDecoder option metadata required")
 	}
-	if len(args) > 1 {
-		_ = json.Unmarshal([]byte(args[1]), &metadata)
-	}
-	e.Metadata = metadata
-	e.ScaleDecoder.Init(data, &scaleType.ScaleDecoderOption{SubType: subType})
+	e.Metadata = option.Metadata
+	e.ScaleDecoder.Init(data, option)
 }
 
 func (e *EventRecord) Process() map[string]interface{} {
 	e.Phase = e.GetNextU8()
+
 	if e.Phase == 0 {
 		e.ExtrinsicIdx = int(e.ProcessAndUpdateData("U32").(uint))
 	}
 	e.Type = utiles.BytesToHex(e.NextBytes(2))
+
+	e.Event = e.Metadata.EventIndex[e.Type].Call
+	e.EventModule = e.Metadata.EventIndex[e.Type].Module
+
 	for _, argType := range e.Event.Args {
-		argTypeObj := e.ProcessAndUpdateData(argType)
-		e.Params = append(e.Params, map[string]interface{}{
-			"type":     argType,
-			"value":    argTypeObj,
-			"valueRaw": "",
-		})
+		e.Params = append(e.Params, EventParam{Type: argType, Value: e.ProcessAndUpdateData(argType), ValueRaw: ""})
 	}
-	if utiles.StringToInt(e.Metadata.Version) >= 5 {
+
+	if e.Metadata.MetadataVersion >= 5 {
 		topicValue := e.ProcessAndUpdateData("Vec<Hash>").([]interface{})
 		for _, v := range topicValue {
 			e.Topic = append(e.Topic, v.(reflect.Value).String())
 		}
 	}
+
 	return map[string]interface{}{
 		"phase":         e.Phase,
 		"extrinsic_idx": e.ExtrinsicIdx,
@@ -88,6 +87,7 @@ func (e *EventRecord) Process() map[string]interface{} {
 		"module_id":     e.EventModule.Name,
 		"event_id":      e.Event.Name,
 		"params":        e.Params,
+		"topic":         e.Topic,
 	}
 
 }
