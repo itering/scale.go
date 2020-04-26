@@ -63,7 +63,7 @@ func (e *EventRecord) Process() map[string]interface{} {
 	e.Phase = e.GetNextU8()
 
 	if e.Phase == 0 {
-		e.ExtrinsicIdx = int(e.ProcessAndUpdateData("U32").(uint))
+		e.ExtrinsicIdx = int(e.ProcessAndUpdateData("U32").(uint32))
 	}
 	e.Type = utiles.BytesToHex(e.NextBytes(2))
 

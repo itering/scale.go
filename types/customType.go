@@ -2,28 +2,21 @@ package types
 
 import (
 	"fmt"
-	"github.com/Ompluscator/dynamic-struct"
 	"github.com/freehere107/scalecodec/source"
 	"strings"
 )
 
-type StructType dynamicstruct.Builder
-
-var customTypeRegistry map[string]interface{}
-
-func newStruct(names, typeString []string) interface{} {
-	instance := dynamicstruct.NewStruct()
+func newStruct(names, typeString []string) *TypeMapping {
 	if len(names) != len(typeString) {
 		panic("init newStruct names and typeString length not equal")
 	}
-	for index, name := range names {
-		instance = instance.AddField("Text", "", fmt.Sprintf(`json:"%s" scale:"%s",`, name, typeString[index]))
-	}
-	return instance.Build().New()
+	return &TypeMapping{Names: names, Types: typeString}
 }
 
 func RegCustomTypes(registry map[string]source.TypeStruct) {
 	for key, typeStruct := range registry {
+		key = strings.ToLower(key)
+
 		switch typeStruct.Type {
 		case "string":
 			instant := typeRegistry[strings.ToLower(typeStruct.TypeString)]
@@ -38,9 +31,12 @@ func RegCustomTypes(registry map[string]source.TypeStruct) {
 				names = append(names, v[0])
 				typeStrings = append(typeStrings, v[1])
 			}
-			typeRegistry[key] = newStruct(names, typeStrings)
+			s := Struct{}
+			s.TypeMapping = newStruct(names, typeStrings)
+			typeRegistry[key] = &s
+
 		case "enum":
-			typeRegistry[key] = Enum{ValueList: typeStruct.ValueList}
+			typeRegistry[key] = &Enum{ValueList: typeStruct.ValueList}
 		}
 	}
 }

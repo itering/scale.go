@@ -1,7 +1,6 @@
 package types
 
 import (
-	"encoding/json"
 	"fmt"
 	"github.com/freehere107/scalecodec/utiles"
 	"reflect"
@@ -12,6 +11,11 @@ type ScaleDecoderOption struct {
 	SubType   string
 	ValueList []string
 	Metadata  *MetadataStruct
+}
+
+type TypeMapping struct {
+	Names []string
+	Types []string
 }
 
 type IScaleDecoder interface {
@@ -29,7 +33,7 @@ type ScaleDecoder struct {
 	SubType     string          `json:"-"`
 	Value       interface{}     `json:"-"`
 	RawValue    string          `json:"-"`
-	TypeMapping interface{}     `json:"-"`
+	TypeMapping *TypeMapping    `json:"-"`
 	Metadata    *MetadataStruct `json:"-"`
 }
 
@@ -77,7 +81,8 @@ func (s *ScaleDecoder) buildStruct() {
 			types = append(types, strings.TrimSpace(v))
 			names = append(names, fmt.Sprintf("col%d", k+1))
 		}
-		s.TypeMapping = newStruct(names, types)
+
+		s.TypeMapping = &TypeMapping{Names: names, Types: types}
 	}
 }
 
@@ -92,7 +97,6 @@ func (s *ScaleDecoder) ProcessAndUpdateData(typeString string, args ...string) i
 	if c == nil {
 		panic(fmt.Sprintf("not found decoder class %s", typeString))
 	}
-	b, _ := json.Marshal(typeRegistry)
 
 	// init
 	method, exist := c.MethodByName("Init")

@@ -62,7 +62,6 @@ func (c *CompactU32) Init(data ScaleBytes, option *ScaleDecoderOption) {
 
 func (c *CompactU32) Process() {
 	c.ProcessCompactBytes()
-	// fmt.Println(c.CompactLength)
 	switch len(c.CompactBytes) {
 	case 1:
 		c.Value = int(c.CompactBytes[0])

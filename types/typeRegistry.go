@@ -80,7 +80,12 @@ func (r *RuntimeType) getCodecInstant(t string) (reflect.Type, reflect.Value, er
 		return nil, reflect.ValueOf((*error)(nil)).Elem(), errors.New("Scale codec type nil" + t)
 	}
 	value := reflect.ValueOf(rt)
-	return value.Type(), value, nil
+	if value.Kind() == reflect.Ptr {
+		value = reflect.Indirect(value)
+	}
+	p := reflect.New(value.Type())
+	p.Elem().Set(value)
+	return p.Type(), p, nil
 }
 
 func (r *RuntimeType) decoderClass(typeString string) (reflect.Type, reflect.Value, string) {

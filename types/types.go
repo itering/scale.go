@@ -5,7 +5,6 @@ import (
 	"github.com/freehere107/scalecodec/utiles"
 	"github.com/freehere107/scalecodec/utiles/uint128"
 	"github.com/huandu/xstrings"
-	"reflect"
 	"strconv"
 )
 
@@ -39,7 +38,8 @@ type U32 struct {
 }
 
 func (u *U32) Process() {
-	u.Value = uint32(binary.LittleEndian.Uint32(u.NextBytes(4)))
+	c := u.NextBytes(4)
+	u.Value = uint32(binary.LittleEndian.Uint32(c))
 }
 
 func (u *U32) Encode(value int) {
@@ -118,18 +118,16 @@ type Struct struct {
 
 func (s *Struct) Process() {
 	result := make(map[string]interface{})
-	t := reflect.TypeOf(s)
-	for i := 0; i < t.NumField(); i++ {
-		field := t.Field(i)
-		if field.Tag.Get("scale") != "" && field.Tag.Get("json") != "" {
-			result[field.Tag.Get("json")] = s.ProcessAndUpdateData(field.Tag.Get("scale"))
+	if s.TypeMapping != nil {
+		for k, v := range s.TypeMapping.Names {
+			result[v] = s.ProcessAndUpdateData(s.TypeMapping.Types[k])
 		}
 	}
 	s.Value = result
 }
 
 type BlockNumber struct {
-	U64
+	U32
 }
 
 type Vec struct {
@@ -195,7 +193,7 @@ type Enum struct {
 
 func (e *Enum) Init(data ScaleBytes, option *ScaleDecoderOption) {
 	e.Index = 0
-	if option != nil {
+	if option != nil && len(e.ValueList) == 0 {
 		e.ValueList = option.ValueList
 	}
 	e.ScaleDecoder.Init(data, option)

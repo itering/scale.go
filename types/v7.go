@@ -2,7 +2,6 @@ package types
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/freehere107/scalecodec/utiles"
 	"github.com/huandu/xstrings"
 )
@@ -191,6 +190,5 @@ func (m *MetadataV7ModuleStorageEntry) Process() {
 		Fallback: m.Fallback,
 		Docs:     m.Docs,
 	}
-	fmt.Println(m.Value)
 
 }

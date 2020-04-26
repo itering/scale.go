@@ -1,18 +1,22 @@
-# scalecodec golang (WIP)
+# Scale codec golang
 
-Scale codec written by golang, Reference from https://github.com/polkascan/py-scale-codec
+Scale Codec written by golang, Reference from https://github.com/polkascan/py-scale-codec
 
-NOTE: The project has not been tested, welcome to contribute unit test cases 
+## Features
 
-## install 
+- [x] low level codec decode
+- [x] metadata decode
+- [x] extrinsic decode
+- [x] event decode
+- [x] custom type reg
+- [ ] low level codec encode
+
+
+## Installation 
 
 ```bash
 go get -u github.com/freehere107/scalecodec
 ```
-
-## Getting started
-
-TODO
 
 
 ## Test
@@ -26,3 +30,12 @@ go test github.com/freehere107/scalecodec -v
 
 - [polkascan](https://github.com/polkascan)
 - [polkadot.js](http://polkadot.js.org/)
+
+
+## Contributing
+
+Bug reports and pull requests are welcome on GitHub at https://github.com/freehere107/go-scale-codec
+
+## License
+
+The package is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
