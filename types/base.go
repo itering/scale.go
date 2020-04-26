@@ -97,6 +97,7 @@ func (s *ScaleDecoder) ProcessAndUpdateData(typeString string, args ...string) i
 	if c == nil {
 		panic(fmt.Sprintf("not found decoder class %s", typeString))
 	}
+	offsetStart := s.Data.Offset
 
 	// init
 	method, exist := c.MethodByName("Init")
@@ -111,6 +112,7 @@ func (s *ScaleDecoder) ProcessAndUpdateData(typeString string, args ...string) i
 
 	s.Data.Offset = int(rc.Elem().FieldByName("Data").FieldByName("Offset").Int())
 	s.Data.Data = rc.Elem().FieldByName("Data").FieldByName("Data").Bytes()
+	s.RawValue = utiles.BytesToHex(s.Data.Data[offsetStart:s.Data.Offset])
 
 	return rc.Elem().FieldByName("Value").Interface()
 }

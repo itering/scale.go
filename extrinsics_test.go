@@ -33,7 +33,7 @@ func TestExtrinsicDecoder(t *testing.T) {
 	e.Init(types.ScaleBytes{Data: utiles.HexToBytes(extrinsicRaw)}, &option)
 	e.Process()
 	b, _ := json.Marshal(e.Value)
-	r := `{"call_code":"0200","call_module":"Timestamp","call_module_function":"set","era":"","extrinsic_length":10,"nonce":0,"params":[{"name":"now","type":"Compact\u003cMoment\u003e","value":1587602394}],"tip":"0","valueRaw":"040200","version_info":"04"}`
+	r := `{"call_code":"0200","call_module":"Timestamp","call_module_function":"set","era":"","extrinsic_length":10,"nonce":0,"params":[{"name":"now","type":"Compact\u003cMoment\u003e","value":1587602394,"value_raw":"0b900b7aa47101"}],"tip":"0","version_info":"04"}`
 	if string(b) != r {
 		t.Errorf("Test TestExtrinsicDecoder Process fail, decode return %s", string(b))
 	}
