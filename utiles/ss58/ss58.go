@@ -1,8 +1,8 @@
 package ss58
 
 import (
-	"github.com/freehere107/scalecodec/utiles"
-	"github.com/freehere107/scalecodec/utiles/base58"
+	"github.com/freehere107/go-scale-codec/utiles"
+	"github.com/freehere107/go-scale-codec/utiles/base58"
 	"golang.org/x/crypto/blake2b"
 )
 

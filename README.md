@@ -15,14 +15,14 @@ Scale Codec written by golang, Reference from https://github.com/polkascan/py-sc
 ## Installation 
 
 ```bash
-go get -u github.com/freehere107/scalecodec
+go get -u github.com/freehere107/go-scale-codec
 ```
 
 
 ## Test
 
 ```bash
-go test github.com/freehere107/scalecodec -v
+go test ./... --cover -v
 ```
 
 

@@ -1,7 +1,7 @@
 package types
 
 import (
-	"github.com/freehere107/scalecodec/utiles"
+	"github.com/freehere107/go-scale-codec/utiles"
 )
 
 type ScaleBytes struct {

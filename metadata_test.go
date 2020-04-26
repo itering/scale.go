@@ -2,8 +2,8 @@ package scalecodec_test
 
 import (
 	"bytes"
-	"github.com/freehere107/scalecodec"
-	"github.com/freehere107/scalecodec/utiles"
+	"github.com/freehere107/go-scale-codec"
+	"github.com/freehere107/go-scale-codec/utiles"
 	"testing"
 )
 

@@ -2,8 +2,8 @@ package scalecodec
 
 import (
 	"fmt"
-	scaleType "github.com/freehere107/scalecodec/types"
-	"github.com/freehere107/scalecodec/utiles"
+	scaleType "github.com/freehere107/go-scale-codec/types"
+	"github.com/freehere107/go-scale-codec/utiles"
 	"golang.org/x/crypto/blake2b"
 )
 

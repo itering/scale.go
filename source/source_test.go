@@ -1,7 +1,7 @@
 package source_test
 
 import (
-	"github.com/freehere107/scalecodec/source"
+	"github.com/freehere107/go-scale-codec/source"
 	"testing"
 )
 

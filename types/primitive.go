@@ -2,7 +2,7 @@ package types
 
 import (
 	"encoding/binary"
-	"github.com/freehere107/scalecodec/utiles"
+	"github.com/freehere107/go-scale-codec/utiles"
 	"reflect"
 	"strconv"
 	"unicode/utf8"

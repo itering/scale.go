@@ -2,9 +2,9 @@ package scalecodec_test
 
 import (
 	"encoding/json"
-	"github.com/freehere107/scalecodec"
-	"github.com/freehere107/scalecodec/types"
-	"github.com/freehere107/scalecodec/utiles"
+	"github.com/freehere107/go-scale-codec"
+	"github.com/freehere107/go-scale-codec/types"
+	"github.com/freehere107/go-scale-codec/utiles"
 	"testing"
 )
 
@@ -16,7 +16,7 @@ func TestExtrinsicDecoder_Init(t *testing.T) {
 	e := scalecodec.ExtrinsicDecoder{}
 	option := types.ScaleDecoderOption{Metadata: &m.Metadata}
 	e.Init(types.ScaleBytes{Data: utiles.HexToBytes("0x280402000b900b7aa47101")}, &option)
-	if utiles.BytesToHex(e.Data.Data) != "0x280402000b900b7aa47101" {
+	if utiles.BytesToHex(e.Data.Data) != "280402000b900b7aa47101" {
 		t.Errorf("Test TestExtrinsicDecoder_Init fail")
 	}
 }

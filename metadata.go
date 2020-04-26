@@ -2,8 +2,8 @@ package scalecodec
 
 import (
 	"errors"
-	"github.com/freehere107/scalecodec/types"
-	"github.com/freehere107/scalecodec/utiles"
+	"github.com/freehere107/go-scale-codec/types"
+	"github.com/freehere107/go-scale-codec/utiles"
 )
 
 type MetadataDecoder struct {

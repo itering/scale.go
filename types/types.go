@@ -2,8 +2,8 @@ package types
 
 import (
 	"encoding/binary"
-	"github.com/freehere107/scalecodec/utiles"
-	"github.com/freehere107/scalecodec/utiles/uint128"
+	"github.com/freehere107/go-scale-codec/utiles"
+	"github.com/freehere107/go-scale-codec/utiles/uint128"
 	"github.com/huandu/xstrings"
 	"strconv"
 )
