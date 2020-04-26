@@ -8,7 +8,7 @@ import (
 
 func SS58Decode(address string) string {
 	checksumPrefix := []byte("SS58PRE")
-	ss58Format := base58.Base58Decode(address)
+	ss58Format := base58.Decode(address)
 	if ss58Format[0] != 42 {
 		return ""
 	}
@@ -46,5 +46,5 @@ func SS58Encode(address string) string {
 	checksum.Write(w)
 	h := checksum.Sum(nil)
 	b := append(addressFormat[:], h[:checksumLength][:]...)
-	return base58.Base58Encode(b)
+	return base58.Encode(b)
 }

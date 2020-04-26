@@ -8,6 +8,19 @@ import (
 	"testing"
 )
 
+func TestExtrinsicDecoder_Init(t *testing.T) {
+	m := scalecodec.MetadataDecoder{}
+	m.Init(utiles.HexToBytes(Kusama1055))
+	_ = m.Process()
+
+	e := scalecodec.ExtrinsicDecoder{}
+	option := types.ScaleDecoderOption{Metadata: &m.Metadata}
+	e.Init(types.ScaleBytes{Data: utiles.HexToBytes("0x280402000b900b7aa47101")}, &option)
+	if utiles.BytesToHex(e.Data.Data) != "0x280402000b900b7aa47101" {
+		t.Errorf("Test TestExtrinsicDecoder_Init fail")
+	}
+}
+
 func TestExtrinsicDecoder(t *testing.T) {
 	m := scalecodec.MetadataDecoder{}
 	m.Init(utiles.HexToBytes(Kusama1055))

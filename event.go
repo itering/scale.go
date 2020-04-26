@@ -29,9 +29,8 @@ type EventParam struct {
 func (e *EventsDecoder) Process() {
 	elementCount := int(e.ProcessAndUpdateData("Compact<u32>").(int))
 
-	er := EventRecord{}
-	option := scaleType.ScaleDecoderOption{Metadata: e.Metadata}
-	er.Init(e.Data, &option)
+	er := EventRecord{Metadata: e.Metadata}
+	er.Data = e.Data
 	var result []interface{}
 	for i := 0; i < elementCount; i++ {
 		element := er.Process()
@@ -51,12 +50,6 @@ type EventRecord struct {
 	Event        scaleType.MetadataEvents  `json:"event"`
 	EventModule  scaleType.MetadataModules `json:"event_module"`
 	Topic        []string                  `json:"topic"`
-}
-
-func (e *EventRecord) Init(data scaleType.ScaleBytes, option *scaleType.ScaleDecoderOption) {
-
-	e.Metadata = option.Metadata
-	e.ScaleDecoder.Init(data, option)
 }
 
 func (e *EventRecord) Process() map[string]interface{} {

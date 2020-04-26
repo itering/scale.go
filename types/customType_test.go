@@ -8,5 +8,5 @@ import (
 
 func TestRegCustomTypes(t *testing.T) {
 	types.RuntimeType{}.Reg()
-	types.RegCustomTypes(source.LoadTypeRegistry("../source/default"))
+	types.RegCustomTypes(source.LoadTypeRegistry("../source/base"))
 }

@@ -6,6 +6,6 @@ import (
 )
 
 func TestLoadTypeRegistry(t *testing.T) {
-	fileName := "default"
+	fileName := "base"
 	source.LoadTypeRegistry(fileName)
 }

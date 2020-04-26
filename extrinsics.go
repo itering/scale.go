@@ -127,7 +127,6 @@ func (e *ExtrinsicDecoder) Process() {
 
 		for _, arg := range e.Call.Args {
 
-			fmt.Println("arg.Type", arg.Type)
 			e.Params = append(e.Params,
 				ExtrinsicParam{
 					Name:     arg.Name,
