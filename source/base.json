@@ -669,12 +669,12 @@
       ]
     ]
   },
-  "DispatchError": {
+  "DispatchErrorModule": {
     "type": "struct",
     "type_mapping": [
       [
-        "module",
-        "Option<u8>"
+        "index",
+        "u8"
       ],
       [
         "error",
@@ -682,16 +682,24 @@
       ]
     ]
   },
-  "DispatchError1031": {
-    "type": "struct",
+  "DispatchError": {
+    "type": "enum",
     "type_mapping": [
       [
-        "module",
-        "Option<u8>"
+        "Other",
+        "Null"
       ],
       [
-        "error",
-        "u8"
+        "CannotLookup",
+        "Null"
+      ],
+      [
+        "BadOrigin",
+        "Null"
+      ],
+      [
+        "Module",
+        "DispatchErrorModule"
       ]
     ]
   },
@@ -699,12 +707,12 @@
     "type": "enum",
     "type_mapping": [
       [
-        "Ok",
-        "Null"
-      ],
-      [
         "Error",
         "DispatchError"
+      ],
+      [
+        "Ok",
+        "Null"
       ]
     ]
   },
@@ -1124,6 +1132,31 @@
       [
         "approvals",
         "Vec<AccountId>"
+      ]
+    ]
+  },
+  "SessionKeysPolkadot": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "grandpa",
+        "AccountId"
+      ],
+      [
+        "babe",
+        "AccountId"
+      ],
+      [
+        "im_online",
+        "AccountId"
+      ],
+      [
+        "authority_discovery",
+        "AccountId"
+      ],
+      [
+        "parachains",
+        "AccountId"
       ]
     ]
   }

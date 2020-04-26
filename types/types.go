@@ -1,11 +1,13 @@
 package types
 
 import (
+	"bytes"
 	"encoding/binary"
 	"github.com/freehere107/go-scale-codec/utiles"
 	"github.com/freehere107/go-scale-codec/utiles/uint128"
 	"github.com/huandu/xstrings"
-	"strconv"
+	"github.com/shopspring/decimal"
+	"io"
 )
 
 type HexBytes struct {
@@ -26,20 +28,31 @@ func (u *U8) Process() {
 }
 
 type U16 struct {
+	Reader io.Reader
 	ScaleDecoder
 }
 
 func (u *U16) Process() {
-	u.Value = uint16(binary.LittleEndian.Uint16(u.NextBytes(2)))
+	buf := &bytes.Buffer{}
+	u.Reader = buf
+	_, _ = buf.Write(u.NextBytes(2))
+	c := make([]byte, 2)
+	_, _ = u.Reader.Read(c)
+	u.Value = binary.LittleEndian.Uint32(c)
 }
 
 type U32 struct {
+	Reader io.Reader
 	ScaleDecoder
 }
 
 func (u *U32) Process() {
-	c := u.NextBytes(4)
-	u.Value = uint32(binary.LittleEndian.Uint32(c))
+	buf := &bytes.Buffer{}
+	u.Reader = buf
+	_, _ = buf.Write(u.NextBytes(4))
+	c := make([]byte, 4)
+	_, _ = u.Reader.Read(c)
+	u.Value = binary.LittleEndian.Uint32(c)
 }
 
 func (u *U32) Encode(value int) {
@@ -50,10 +63,16 @@ func (u *U32) Encode(value int) {
 
 type U64 struct {
 	ScaleDecoder
+	Reader io.Reader
 }
 
 func (u *U64) Process() {
-	u.Value = uint64(binary.LittleEndian.Uint64(u.NextBytes(8)))
+	buf := &bytes.Buffer{}
+	u.Reader = buf
+	_, _ = buf.Write(u.NextBytes(8))
+	c := make([]byte, 8)
+	_, _ = u.Reader.Read(c)
+	u.Value = binary.LittleEndian.Uint64(c)
 }
 
 type U128 struct {
@@ -62,7 +81,7 @@ type U128 struct {
 
 func (u *U128) Process() {
 	if len(u.Data.Data) < 16 {
-		u.Data.Data = utiles.HexToBytes(xstrings.RightJustify(utiles.BytesToHex(u.Data.Data), 32, "0"))
+		u.Data.Data = utiles.HexToBytes(xstrings.LeftJustify(utiles.BytesToHex(u.Data.Data), 32, "0"))
 	}
 	u.Value = uint128.FromBytes(u.NextBytes(16))
 }
@@ -154,31 +173,24 @@ func (v *Vec) Process() {
 type Address struct {
 	ScaleDecoder
 	AccountLength string `json:"account_length"`
-	AccountId     string `json:"account_id"`
-	AccountIndex  string `json:"account_index"`
-	AccountIdx    string `json:"account_idx"`
 }
 
+// only support latest address type
 func (a *Address) Process() {
 	AccountLength := a.NextBytes(1)
 	a.AccountLength = utiles.BytesToHex(AccountLength)
 	if a.AccountLength == "ff" {
-		a.AccountId = utiles.BytesToHex(a.NextBytes(32))
-	} else {
-		var AccountIndex []byte
-		if a.AccountLength == "fc" {
-			AccountIndex = a.NextBytes(2)
-		} else if a.AccountLength == "fd" {
-			AccountIndex = a.NextBytes(4)
-		} else if a.AccountLength == "fe" {
-			AccountIndex = a.NextBytes(8)
-		} else {
-			AccountIndex = AccountLength
-		}
-		a.AccountIndex = utiles.BytesToHex(AccountIndex)
-		a.AccountIdx = strconv.FormatUint(uint64(binary.LittleEndian.Uint32(AccountIndex)), 10)
+		a.Value = utiles.BytesToHex(a.NextBytes(32))
 	}
-	a.Value = map[string]string{"account_length": a.AccountLength, "account_id": a.AccountId, "account_index": a.AccountIndex, "account_idx": a.AccountIdx}
+	a.Value = utiles.BytesToHex(append(AccountLength, a.NextBytes(31)...))
+}
+
+type Signature struct {
+	ScaleDecoder
+}
+
+func (s *Signature) Process() {
+	s.Value = utiles.BytesToHex(s.NextBytes(64))
 }
 
 type RawAddress struct {
@@ -270,4 +282,15 @@ func (s *BoxProposal) Process() {
 		})
 	}
 	s.Value = result
+}
+
+type Balance struct {
+	ScaleDecoder
+}
+
+func (b *Balance) Process() {
+	if len(b.Data.Data) < 16 {
+		b.Data.Data = utiles.HexToBytes(xstrings.LeftJustify(utiles.BytesToHex(b.Data.Data), 32, "0"))
+	}
+	b.Value = decimal.NewFromBigInt(uint128.FromBytes(b.NextBytes(16)).Big(), 0)
 }

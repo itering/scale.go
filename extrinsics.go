@@ -4,14 +4,14 @@ import (
 	"fmt"
 	scaleType "github.com/freehere107/go-scale-codec/types"
 	"github.com/freehere107/go-scale-codec/utiles"
+	"github.com/shopspring/decimal"
 	"golang.org/x/crypto/blake2b"
 )
 
 type ExtrinsicParam struct {
-	Name     string      `json:"name"`
-	Type     string      `json:"type"`
-	Value    interface{} `json:"value"`
-	ValueRaw string      `json:"value_raw"`
+	Name  string      `json:"name"`
+	Type  string      `json:"type"`
+	Value interface{} `json:"value"`
 }
 
 type ExtrinsicDecoder struct {
@@ -26,7 +26,7 @@ type ExtrinsicDecoder struct {
 	Nonce               int                       `json:"nonce"`
 	Era                 string                    `json:"era"`
 	CallIndex           string                    `json:"call_index"`
-	Tip                 string                    `json:"tip"`
+	Tip                 decimal.Decimal           `json:"tip"`
 	CallModule          scaleType.MetadataModules `json:"call_module"`
 	Call                scaleType.MetadataCalls   `json:"call"`
 	Params              []ExtrinsicParam          `json:"params"`
@@ -37,6 +37,7 @@ func (e *ExtrinsicDecoder) Init(data scaleType.ScaleBytes, option *scaleType.Sca
 	if option == nil || option.Metadata == nil {
 		panic("ExtrinsicDecoder option metadata required")
 	}
+	e.Params = []ExtrinsicParam{}
 	e.Metadata = option.Metadata
 	e.ScaleDecoder.Init(data, option)
 }
@@ -87,8 +88,8 @@ func (e *ExtrinsicDecoder) Process() {
 			e.Address = e.ProcessAndUpdateData("Address").(string)
 			e.Signature = e.ProcessAndUpdateData("Signature").(string)
 			e.Era = e.ProcessAndUpdateData("Era").(string)
-			e.Nonce = int(e.ProcessAndUpdateData("Compact<U64>").(int))
-			e.Tip = e.ProcessAndUpdateData("Compact<Balance>").(string)
+			e.Nonce = int(e.ProcessAndUpdateData("Compact<U64>").(uint64))
+			e.Tip = e.ProcessAndUpdateData("Compact<Balance>").(decimal.Decimal)
 			e.ExtrinsicHash = e.generateHash()
 		}
 		e.CallIndex = utiles.BytesToHex(e.NextBytes(2))
@@ -99,8 +100,8 @@ func (e *ExtrinsicDecoder) Process() {
 			e.Address = e.ProcessAndUpdateData("Address").(string)
 			e.Signature = e.ProcessAndUpdateData("Signature").(string)
 			e.Era = e.ProcessAndUpdateData("Era").(string)
-			e.Nonce = int(e.ProcessAndUpdateData("Compact<U64>").(int))
-			e.Tip = e.ProcessAndUpdateData("Compact<Balance>").(string)
+			e.Nonce = int(e.ProcessAndUpdateData("Compact<U64>").(uint64))
+			e.Tip = e.ProcessAndUpdateData("Compact<Balance>").(decimal.Decimal)
 			e.ExtrinsicHash = e.generateHash()
 		}
 		e.CallIndex = utiles.BytesToHex(e.NextBytes(2))
@@ -112,8 +113,8 @@ func (e *ExtrinsicDecoder) Process() {
 			e.SignatureVersion = e.ProcessAndUpdateData("U8").(int)
 			e.Signature = e.ProcessAndUpdateData("Signature").(string)
 			e.Era = e.ProcessAndUpdateData("Era").(string)
-			e.Nonce = int(e.ProcessAndUpdateData("Compact<U64>").(int))
-			e.Tip = e.ProcessAndUpdateData("Compact<Balance>").(string)
+			e.Nonce = int(e.ProcessAndUpdateData("Compact<U64>").(uint64))
+			e.Tip = e.ProcessAndUpdateData("Compact<Balance>").(decimal.Decimal)
 			e.ExtrinsicHash = e.generateHash()
 		}
 		e.CallIndex = utiles.BytesToHex(e.NextBytes(2))
@@ -126,13 +127,11 @@ func (e *ExtrinsicDecoder) Process() {
 		e.CallModule = e.Metadata.CallIndex[e.CallIndex].Module
 
 		for _, arg := range e.Call.Args {
-
 			e.Params = append(e.Params,
 				ExtrinsicParam{
-					Name:     arg.Name,
-					Type:     arg.Type,
-					Value:    e.ProcessAndUpdateData(arg.Type),
-					ValueRaw: e.RawValue,
+					Name:  arg.Name,
+					Type:  arg.Type,
+					Value: e.ProcessAndUpdateData(arg.Type),
 				})
 		}
 	}

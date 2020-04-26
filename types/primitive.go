@@ -1,10 +1,11 @@
 package types
 
 import (
+	"bytes"
 	"encoding/binary"
 	"github.com/freehere107/go-scale-codec/utiles"
-	"reflect"
-	"strconv"
+	"github.com/shopspring/decimal"
+	"io"
 	"unicode/utf8"
 )
 
@@ -41,8 +42,19 @@ func (c *Compact) Process() {
 	if c.SubType != "" {
 		s := ScaleDecoder{TypeString: c.SubType, Data: ScaleBytes{Data: c.CompactBytes}}
 		byteData := s.ProcessAndUpdateData(c.SubType)
-		if reflect.TypeOf(byteData).Kind() == reflect.Int && c.CompactLength <= 4 {
-			c.Value = []byte(strconv.Itoa(byteData.(int) / 4))
+		if c.CompactLength <= 4 {
+			switch byteData.(type) {
+			case uint64:
+				c.Value = uint64(byteData.(uint64) / 4)
+			case uint32:
+				c.Value = uint64(byteData.(uint32) / 4)
+			case int:
+				c.Value = uint64(byteData.(int) / 4)
+			case decimal.Decimal:
+				c.Value = byteData.(decimal.Decimal).Div(decimal.New(4, 0)).Ceil()
+			default:
+				c.Value = byteData
+			}
 		} else {
 			c.Value = byteData
 		}
@@ -53,6 +65,7 @@ func (c *Compact) Process() {
 
 type CompactU32 struct {
 	Compact
+	Reader io.Reader
 }
 
 func (c *CompactU32) Init(data ScaleBytes, option *ScaleDecoderOption) {
@@ -62,20 +75,12 @@ func (c *CompactU32) Init(data ScaleBytes, option *ScaleDecoderOption) {
 
 func (c *CompactU32) Process() {
 	c.ProcessCompactBytes()
-	switch len(c.CompactBytes) {
-	case 1:
-		c.Value = int(c.CompactBytes[0])
-	case 2:
-		c.Value = int(binary.LittleEndian.Uint16(c.CompactBytes))
-	case 4:
-		c.Value = int(binary.LittleEndian.Uint32(c.CompactBytes))
-	case 6:
-		b := c.CompactBytes
-		c.Value = int(uint64(b[0]) | uint64(b[1])<<8 | uint64(b[2])<<16 | uint64(b[3])<<24 |
-			uint64(b[4])<<32 | uint64(b[5])<<40)
-	case 8:
-		c.Value = int(binary.LittleEndian.Uint64(c.CompactBytes))
-	}
+	buf := &bytes.Buffer{}
+	c.Reader = buf
+	_, _ = buf.Write(c.CompactBytes)
+	b := make([]byte, 8)
+	_, _ = c.Reader.Read(b)
+	c.Value = int(binary.LittleEndian.Uint64(b))
 	if c.CompactLength <= 4 {
 		c.Value = int(c.Value.(int)) / 4
 	}
