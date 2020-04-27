@@ -3,11 +3,13 @@ package types
 import (
 	"bytes"
 	"encoding/binary"
+	"fmt"
 	"github.com/freehere107/go-scale-codec/utiles"
 	"github.com/freehere107/go-scale-codec/utiles/uint128"
 	"github.com/huandu/xstrings"
 	"github.com/shopspring/decimal"
 	"io"
+	"math"
 )
 
 type HexBytes struct {
@@ -213,11 +215,17 @@ func (e *Enum) Init(data ScaleBytes, option *ScaleDecoderOption) {
 
 func (e *Enum) Process() {
 	index := utiles.BytesToHex(e.NextBytes(1))
-	e.Index = int(utiles.U256(index).Int64())
+	if utiles.U256(index) != nil {
+		e.Index = int(utiles.U256(index).Uint64())
+	}
+	if e.TypeMapping != nil {
+		if e.TypeMapping.Types[e.Index] != "" {
+			e.Value = e.ProcessAndUpdateData(e.TypeMapping.Types[e.Index])
+			return
+		}
+	}
 	if e.ValueList[e.Index] != "" {
 		e.Value = e.ValueList[e.Index]
-	} else {
-		e.Value = ""
 	}
 }
 
@@ -227,15 +235,6 @@ type StorageHasher struct {
 
 func (s *StorageHasher) Init(data ScaleBytes, option *ScaleDecoderOption) {
 	option.ValueList = []string{"Blake2_128", "Blake2_256", "Blake2_128Concat", "Twox128", "Twox256", "Twox64Concat", "Identity"}
-	s.Enum.Init(data, option)
-}
-
-type DigestItem struct {
-	Enum
-}
-
-func (s *DigestItem) Init(data ScaleBytes, option *ScaleDecoderOption) {
-	option.ValueList = []string{"Other", "AuthoritiesChange", "ChangesTrieRoot", "SealV0", "Consensus", "Seal", "PreRuntime"}
 	s.Enum.Init(data, option)
 }
 
@@ -284,13 +283,107 @@ func (s *BoxProposal) Process() {
 	s.Value = result
 }
 
-type Balance struct {
-	ScaleDecoder
-}
+type Balance struct{ ScaleDecoder }
 
 func (b *Balance) Process() {
 	if len(b.Data.Data) < 16 {
 		b.Data.Data = utiles.HexToBytes(xstrings.LeftJustify(utiles.BytesToHex(b.Data.Data), 32, "0"))
 	}
 	b.Value = decimal.NewFromBigInt(uint128.FromBytes(b.NextBytes(16)).Big(), 0)
+}
+
+type Index struct{ U64 }
+
+type SessionIndex struct{ U32 }
+
+type EraIndex struct{ U32 }
+
+type ParaId struct{ U32 }
+
+type Set struct {
+	ScaleDecoder
+	SetValue  int
+	ValueList []string
+}
+
+func (s *Set) Init(data ScaleBytes, option *ScaleDecoderOption) {
+	s.SetValue = 0
+	if option.ValueList != nil {
+		s.ValueList = option.ValueList
+	}
+	s.ScaleDecoder.Init(data, option)
+}
+
+func (s *Set) Process() {
+	s.SetValue = s.ProcessAndUpdateData("U8").(int)
+	var result []string
+	if s.SetValue > 0 {
+		for k, value := range s.ValueList {
+			if s.SetValue&int(math.Pow(2, float64(k))) > 0 {
+				result = append(result, value)
+			}
+		}
+	}
+	s.Value = result
+}
+
+type LogDigest struct{ Enum }
+
+func (l *LogDigest) Init(data ScaleBytes, option *ScaleDecoderOption) {
+	l.ValueList = []string{"Other", "AuthoritiesChange", "ChangesTrieRoot", "SealV0", "Consensus", "Seal", "PreRuntime"}
+	l.Enum.Init(data, option)
+}
+
+func (l *LogDigest) Process() {
+	index := utiles.BytesToHex(l.NextBytes(1))
+	if utiles.U256(index) != nil {
+		l.Index = int(utiles.U256(index).Uint64())
+	}
+	indexType := l.ValueList[l.Index]
+	if indexType == "" {
+		panic(fmt.Sprintf("LogDigest index %d not in list", l.Index))
+	}
+	l.Value = map[string]interface{}{
+		"type":  indexType,
+		"value": l.ProcessAndUpdateData(indexType),
+	}
+}
+
+type Other struct{ HexBytes }
+
+type ChangesTrieRoot struct{ HexBytes }
+
+type AuthoritiesChange struct{ Vec }
+
+func (l *AuthoritiesChange) Init(data ScaleBytes, option *ScaleDecoderOption) {
+	option.SubType = "AccountId"
+	l.Vec.Init(data, option)
+}
+
+type SealV0 struct{ Struct }
+
+func (s *SealV0) Init(data ScaleBytes, option *ScaleDecoderOption) {
+	s.Struct.TypeMapping = &TypeMapping{Names: []string{"slot", "signature"}, Types: []string{"u64", "Signature"}}
+	s.Struct.Init(data, option)
+}
+
+type Consensus struct{ Struct }
+
+func (s *Consensus) Init(data ScaleBytes, option *ScaleDecoderOption) {
+	s.Struct.TypeMapping = &TypeMapping{Names: []string{"engine", "data"}, Types: []string{"u32", "Vec<u8>"}}
+	s.Struct.Init(data, option)
+}
+
+type Seal struct{ Struct }
+
+func (s *Seal) Init(data ScaleBytes, option *ScaleDecoderOption) {
+	s.Struct.TypeMapping = &TypeMapping{Names: []string{"engine", "data"}, Types: []string{"u32", "HexBytes"}}
+	s.Struct.Init(data, option)
+}
+
+type PreRuntime struct{ Struct }
+
+func (s *PreRuntime) Init(data ScaleBytes, option *ScaleDecoderOption) {
+	s.Struct.TypeMapping = &TypeMapping{Names: []string{"engine", "data"}, Types: []string{"u32", "HexBytes"}}
+	s.Struct.Init(data, option)
 }

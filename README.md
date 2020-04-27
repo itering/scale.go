@@ -7,6 +7,7 @@ Scale Codec written by golang, Reference from https://github.com/polkascan/py-sc
 - [x] low level codec decode
 - [x] metadata decode
 - [x] extrinsic decode
+- [x] LogDigest decode
 - [x] event decode
 - [x] custom type reg
 - [ ] low level codec encode

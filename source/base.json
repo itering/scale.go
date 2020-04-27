@@ -1,4 +1,37 @@
 {
+  "SetId": "U64",
+  "RoundNumber": "U64",
+  "SessionIndex": "U32",
+  "AuctionIndex": "U32",
+  "AuthIndex": "U32",
+  "AuthorityIndex": "u64",
+  "AuthorityWeight": "u64",
+  "CollatorId": "H256",
+  "EventIndex": "u32",
+  "LeasePeriod": "BlockNumber",
+  "LeasePeriodOf": "BlockNumber",
+  "MaybeVrf": "[u8; 32]",
+  "MemberCount": "u32",
+  "MomentOf": "Moment",
+  "MoreAttestations": "Null",
+  "Multiplier": "u64",
+  "PhantomData": "Null",
+  "Reporter": "AccountId",
+  "RegistrarIndex": "u32",
+  "ReportIdOf": "Hash",
+  "SubId": "u32",
+  "Weight": "u32",
+  "WeightMultiplier": "u64",
+  "Index": "U32",
+  "Kind": "[u8; 16]",
+  "OpaqueTimeSlot": "Bytes",
+  "Box<<T as Trait<I>>::Proposal>": "BoxProposal",
+  "&[u8]": "Bytes",
+  "ConsensusEngineId": "[u8; 4]",
+  "SpanIndex": "u32",
+  "StrikeCount": "u32",
+  "RefCount": "u8",
+  "ValidatorId": "AccountId",
   "(AccountId, Balance)": {
     "type": "struct",
     "type_mapping": [
@@ -113,7 +146,6 @@
       ]
     ]
   },
-  "SetId": "U64",
   "Reasons": {
     "type": "enum",
     "value_list": [
@@ -122,12 +154,6 @@
       "All"
     ]
   },
-  "RoundNumber": "U64",
-  "SessionIndex": "U32",
-  "AuctionIndex": "U32",
-  "AuthIndex": "U32",
-  "AuthorityIndex": "u64",
-  "AuthorityWeight": "u64",
   "NextAuthority": {
     "type": "struct",
     "type_mapping": [
@@ -154,7 +180,6 @@
       ]
     ]
   },
-  "CollatorId": "H256",
   "DispatchClass": {
     "type": "enum",
     "value_list": [
@@ -192,19 +217,18 @@
       ]
     ]
   },
-  "EventIndex": "u32",
   "IdentityFields": {
     "type": "set",
-    "value_list": {
-      "Display": 1,
-      "Legal": 2,
-      "Web": 4,
-      "Riot": 8,
-      "Email": 16,
-      "PgpFingerprint": 32,
-      "Image": 64,
-      "Twitter": 128
-    }
+    "value_list": [
+      "Display",
+      "Legal",
+      "Web",
+      "Riot",
+      "Email",
+      "PgpFingerprint",
+      "Image",
+      "Twitter"
+    ]
   },
   "IdentityInfoAdditional": {
     "type": "struct",
@@ -293,13 +317,6 @@
       ]
     ]
   },
-  "LeasePeriod": "BlockNumber",
-  "LeasePeriodOf": "BlockNumber",
-  "MaybeVrf": "[u8; 32]",
-  "MemberCount": "u32",
-  "MomentOf": "Moment",
-  "MoreAttestations": "Null",
-  "Multiplier": "u64",
   "Offender": {
     "type": "struct",
     "type_mapping": [
@@ -313,8 +330,6 @@
       ]
     ]
   },
-  "PhantomData": "Null",
-  "Reporter": "AccountId",
   "OffenceDetails<AccountId, IdentificationTuple>": {
     "type": "struct",
     "type_mapping": [
@@ -411,7 +426,6 @@
       ]
     ]
   },
-  "RegistrarIndex": "u32",
   "RegistrarInfo": {
     "type": "struct",
     "type_mapping": [
@@ -459,10 +473,6 @@
       ]
     ]
   },
-  "ReportIdOf": "Hash",
-  "SubId": "u32",
-  "Weight": "u32",
-  "WeightMultiplier": "u64",
   "WinningDataEntry": {
     "type": "struct",
     "type_mapping": [
@@ -482,16 +492,14 @@
   },
   "WithdrawReasons": {
     "type": "set",
-    "value_list": {
-      "TransactionPayment": 1,
-      "Transfer": 2,
-      "Reserve": 4,
-      "Fee": 8,
-      "Tip": 16
-    }
+    "value_list": [
+      "TransactionPayment",
+      "Transfer",
+      "Reserve",
+      "Fee",
+      "Tip"
+    ]
   },
-  "Index": "U32",
-  "Kind": "[u8; 16]",
   "Nominations": {
     "type": "struct",
     "type_mapping": [
@@ -509,9 +517,6 @@
       ]
     ]
   },
-  "OpaqueTimeSlot": "Bytes",
-  "Box<<T as Trait<I>>::Proposal>": "BoxProposal",
-  "&[u8]": "Bytes",
   "Forcing": {
     "type": "enum",
     "value_list": [
@@ -549,7 +554,6 @@
       "Controller"
     ]
   },
-  "ConsensusEngineId": "[u8; 4]",
   "DigestItem": {
     "type": "enum",
     "type_mapping": [
@@ -592,7 +596,6 @@
       ]
     ]
   },
-  "SpanIndex": "u32",
   "SpanRecord": {
     "type": "struct",
     "type_mapping": [
@@ -797,7 +800,6 @@
       ]
     ]
   },
-  "StrikeCount": "u32",
   "VouchingStatus": {
     "type": "enum",
     "value_list": [
@@ -818,7 +820,6 @@
       ]
     ]
   },
-  "RefCount": "u8",
   "AccountInfo<Index, AccountData>": {
     "type": "struct",
     "type_mapping": [
@@ -1158,6 +1159,35 @@
         "parachains",
         "AccountId"
       ]
+    ]
+  },
+  "BalanceLock": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "id",
+        "LockIdentifier"
+      ],
+      [
+        "amount",
+        "Balance"
+      ],
+      [
+        "until",
+        "u32"
+      ],
+      [
+        "reasons",
+        "WithdrawReasons"
+      ]
+    ]
+  },
+  "VoteThreshold": {
+    "type": "enum",
+    "value_list": [
+      "SuperMajorityApprove",
+      "SuperMajorityAgainst",
+      "SimpleMajority"
     ]
   }
 }

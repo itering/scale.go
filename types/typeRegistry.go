@@ -9,8 +9,7 @@ import (
 
 var typeRegistry map[string]interface{}
 
-type RuntimeType struct {
-}
+type RuntimeType struct{}
 
 func (r RuntimeType) Reg() *RuntimeType {
 	registry := make(map[string]interface{})
@@ -28,6 +27,7 @@ func (r RuntimeType) Reg() *RuntimeType {
 		&Enum{},
 		&Bytes{},
 		&Vec{},
+		&Set{},
 		&CompactU32{},
 		&Bool{},
 		&StorageHasher{},
@@ -39,6 +39,18 @@ func (r RuntimeType) Reg() *RuntimeType {
 		&Signature{},
 		&Era{},
 		&Balance{},
+		&Index{},
+		&SessionIndex{},
+		&EraIndex{},
+		&ParaId{},
+		&LogDigest{},
+		&Other{},
+		&ChangesTrieRoot{},
+		&AuthoritiesChange{},
+		&SealV0{},
+		&Consensus{},
+		&Seal{},
+		&PreRuntime{},
 		&MetadataModuleEvent{},
 		&MetadataModuleCallArgument{},
 		&MetadataModuleCall{},
@@ -73,6 +85,8 @@ func (r RuntimeType) Reg() *RuntimeType {
 	registry["[u8; 16]"] = &VecU8FixedLength{FixedLength: 16}
 	registry["[u8; 8]"] = &VecU8FixedLength{FixedLength: 8}
 	registry["[u8; 4]"] = &VecU8FixedLength{FixedLength: 4}
+	registry["[u8; 256]"] = &VecU8FixedLength{FixedLength: 256}
+
 	typeRegistry = registry
 	return &r
 }
