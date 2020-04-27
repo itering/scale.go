@@ -387,3 +387,17 @@ func (s *PreRuntime) Init(data ScaleBytes, option *ScaleDecoderOption) {
 	s.Struct.TypeMapping = &TypeMapping{Names: []string{"engine", "data"}, Types: []string{"u32", "HexBytes"}}
 	s.Struct.Init(data, option)
 }
+
+type Exposure struct{ Struct }
+
+func (s *Exposure) Init(data ScaleBytes, option *ScaleDecoderOption) {
+	s.Struct.TypeMapping = &TypeMapping{Names: []string{"total", "own", "others"}, Types: []string{"Compact<Balance>", "Compact<Balance>", "Vec<IndividualExposure<AccountId, Balance>>"}}
+	s.Struct.Init(data, option)
+}
+
+type IndividualExposure struct{ Struct }
+
+func (s *IndividualExposure) Init(data ScaleBytes, option *ScaleDecoderOption) {
+	s.Struct.TypeMapping = &TypeMapping{Names: []string{"who", "value"}, Types: []string{"AccountId", "Compact<Balance>"}}
+	s.Struct.Init(data, option)
+}

@@ -2,6 +2,7 @@ package types
 
 import (
 	"errors"
+	"github.com/freehere107/go-scale-codec/source"
 	"reflect"
 	"regexp"
 	"strings"
@@ -88,6 +89,7 @@ func (r RuntimeType) Reg() *RuntimeType {
 	registry["[u8; 256]"] = &VecU8FixedLength{FixedLength: 256}
 
 	typeRegistry = registry
+	RegCustomTypes(source.LoadTypeRegistry("source/base"))
 	return &r
 }
 
