@@ -401,3 +401,40 @@ func (s *IndividualExposure) Init(data ScaleBytes, option *ScaleDecoderOption) {
 	s.Struct.TypeMapping = &TypeMapping{Names: []string{"who", "value"}, Types: []string{"AccountId", "Compact<Balance>"}}
 	s.Struct.Init(data, option)
 }
+
+type RawAuraPreDigest struct{ Struct }
+
+func (s *RawAuraPreDigest) Init(data ScaleBytes, option *ScaleDecoderOption) {
+	s.Struct.TypeMapping = &TypeMapping{Names: []string{"slotNumber"}, Types: []string{"u64"}}
+	s.Struct.Init(data, option)
+}
+
+type RawBabePreDigest struct {
+	Enum
+}
+
+func (r *RawBabePreDigest) Init(data ScaleBytes, option *ScaleDecoderOption) {
+	r.Enum.TypeMapping = &TypeMapping{Names: []string{"isPhantom", "Primary", "Secondary"}, Types: []string{"bool", "RawBabePreDigestPrimary", "RawBabePreDigestSecondary"}}
+	r.Enum.Init(data, option)
+}
+
+type RawBabePreDigestPrimary struct{ Struct }
+
+type RawBabePreDigestSecondary struct{ Struct }
+
+type SlotNumber struct{ U64 }
+
+type BabeBlockWeight struct{ U32 }
+
+func (r *RawBabePreDigestPrimary) Init(data ScaleBytes, option *ScaleDecoderOption) {
+	r.Struct.TypeMapping = &TypeMapping{
+		Names: []string{"authorityIndex", "slotNumber", "weight", "vrfOutput", "vrfProof"},
+		Types: []string{"u32", "SlotNumber", "BabeBlockWeight", "H256", "H256"},
+	}
+	r.Struct.Init(data, option)
+}
+
+func (r *RawBabePreDigestSecondary) Init(data ScaleBytes, option *ScaleDecoderOption) {
+	r.Struct.TypeMapping = &TypeMapping{Names: []string{"authorityIndex", "slotNumber", "weight"}, Types: []string{"u32", "SlotNumber", "BabeBlockWeight"}}
+	r.Struct.Init(data, option)
+}
