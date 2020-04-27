@@ -1,6 +1,7 @@
 package types_test
 
 import (
+	"fmt"
 	"github.com/freehere107/go-scale-codec/source"
 	"github.com/freehere107/go-scale-codec/types"
 	"github.com/freehere107/go-scale-codec/utiles"
@@ -16,6 +17,13 @@ func TestCompactU64(t *testing.T) {
 	if r != 4 {
 		t.Errorf("Test TestCompactU64 Process fail, decode return %d", r)
 	}
+}
+func TestRawBabePreDigest(t *testing.T) {
+	raw := "0x02020000008b86750900000000"
+	m := types.ScaleDecoder{}
+	m.Init(types.ScaleBytes{Data: utiles.HexToBytes(raw)}, nil)
+	r := m.ProcessAndUpdateData("RawBabePreDigest")
+	fmt.Println(r)
 }
 
 func TestSet_Process(t *testing.T) {

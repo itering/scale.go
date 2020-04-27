@@ -410,12 +410,22 @@ func (s *RawAuraPreDigest) Init(data ScaleBytes, option *ScaleDecoderOption) {
 }
 
 type RawBabePreDigest struct {
-	Enum
+	Struct
 }
 
 func (r *RawBabePreDigest) Init(data ScaleBytes, option *ScaleDecoderOption) {
-	r.Enum.TypeMapping = &TypeMapping{Names: []string{"isPhantom", "Primary", "Secondary"}, Types: []string{"bool", "RawBabePreDigestPrimary", "RawBabePreDigestSecondary"}}
-	r.Enum.Init(data, option)
+	r.Struct.TypeMapping = &TypeMapping{Names: []string{"isPhantom", "Primary", "Secondary"}, Types: []string{"bool", "RawBabePreDigestPrimary", "RawBabePreDigestSecondary"}}
+	r.Struct.Init(data, option)
+}
+
+func (r *RawBabePreDigest) Process() {
+	label := r.ProcessAndUpdateData("Enum", []string{"isPhantom", "Primary", "Secondary"}...).(string)
+	for k, name := range r.Struct.TypeMapping.Names {
+		if name == label {
+			r.Value = map[string]interface{}{label: r.ProcessAndUpdateData(r.TypeMapping.Types[k])}
+			break
+		}
+	}
 }
 
 type RawBabePreDigestPrimary struct{ Struct }
