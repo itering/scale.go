@@ -18,12 +18,6 @@ func TestCompactU64(t *testing.T) {
 	}
 }
 
-func TestEnum_Process(t *testing.T) {
-	types.RuntimeType{}.Reg()
-	types.RegCustomTypes(source.LoadTypeRegistry("../source/base"))
-
-}
-
 func TestSet_Process(t *testing.T) {
 	types.RuntimeType{}.Reg()
 	types.RegCustomTypes(map[string]source.TypeStruct{
