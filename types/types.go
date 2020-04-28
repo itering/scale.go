@@ -448,3 +448,13 @@ func (r *RawBabePreDigestSecondary) Init(data ScaleBytes, option *ScaleDecoderOp
 	r.Struct.TypeMapping = &TypeMapping{Names: []string{"authorityIndex", "slotNumber", "weight"}, Types: []string{"u32", "SlotNumber", "BabeBlockWeight"}}
 	r.Struct.Init(data, option)
 }
+
+type LockIdentifier struct {
+	ScaleDecoder
+}
+
+func (l *LockIdentifier) Process() {
+	l.Value = utiles.AddHex(utiles.BytesToHex(l.NextBytes(8)))
+}
+
+type AccountIndex struct{ U32 }

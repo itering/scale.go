@@ -32,6 +32,7 @@
   "StrikeCount": "u32",
   "RefCount": "u8",
   "ValidatorId": "AccountId",
+  "CallHash": "H256",
   "(AccountId, Balance)": {
     "type": "struct",
     "type_mapping": [
@@ -1188,6 +1189,20 @@
       "SuperMajorityApprove",
       "SuperMajorityAgainst",
       "SimpleMajority"
+    ]
+  },
+  "ModuleId": "LockIdentifier",
+  "RuntimeDbWeight": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "read",
+        "Weight"
+      ],
+      [
+        "write",
+        "Weight"
+      ]
     ]
   }
 }

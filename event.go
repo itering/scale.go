@@ -3,7 +3,6 @@ package scalecodec
 import (
 	scaleType "github.com/freehere107/go-scale-codec/types"
 	"github.com/freehere107/go-scale-codec/utiles"
-	"reflect"
 )
 
 type EventsDecoder struct {
@@ -31,6 +30,7 @@ func (e *EventsDecoder) Process() {
 
 	er := EventRecord{Metadata: e.Metadata}
 	er.Data = e.Data
+	er.Spec = e.Spec
 	var result []interface{}
 	for i := 0; i < elementCount; i++ {
 		element := er.Process()
@@ -70,7 +70,7 @@ func (e *EventRecord) Process() map[string]interface{} {
 	if e.Metadata.MetadataVersion >= 5 {
 		topicValue := e.ProcessAndUpdateData("Vec<Hash>").([]interface{})
 		for _, v := range topicValue {
-			e.Topic = append(e.Topic, v.(reflect.Value).String())
+			e.Topic = append(e.Topic, v.(string))
 		}
 	}
 

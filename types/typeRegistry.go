@@ -11,9 +11,16 @@ import (
 	"strings"
 )
 
+type RuntimeType struct{}
+
+type Special struct {
+	Version  []int
+	Registry interface{}
+}
+
 var typeRegistry map[string]interface{}
 
-type RuntimeType struct{}
+var specialRegistry map[string]Special
 
 func (r RuntimeType) Reg() *RuntimeType {
 	registry := make(map[string]interface{})
@@ -61,6 +68,8 @@ func (r RuntimeType) Reg() *RuntimeType {
 		&RawBabePreDigestPrimary{},
 		&RawBabePreDigestSecondary{},
 		&SlotNumber{},
+		&AccountIndex{},
+		&LockIdentifier{},
 		&BabeBlockWeight{},
 		&MetadataModuleEvent{},
 		&MetadataModuleCallArgument{},
@@ -105,10 +114,14 @@ func (r RuntimeType) Reg() *RuntimeType {
 	return &r
 }
 
-func (r *RuntimeType) getCodecInstant(t string) (reflect.Type, reflect.Value, error) {
-	rt := typeRegistry[strings.ToLower(t)]
-	if rt == nil {
-		return nil, reflect.ValueOf((*error)(nil)).Elem(), errors.New("Scale codec type nil" + t)
+func (r *RuntimeType) getCodecInstant(t string, spec int) (reflect.Type, reflect.Value, error) {
+	t = strings.ToLower(t)
+	rt, err := r.getSpecialCodec(t, spec)
+	if err != nil {
+		rt = typeRegistry[strings.ToLower(t)]
+		if rt == nil {
+			return nil, reflect.ValueOf((*error)(nil)).Elem(), errors.New("Scale codec type nil" + t)
+		}
 	}
 	value := reflect.ValueOf(rt)
 	if value.Kind() == reflect.Ptr {
@@ -119,11 +132,11 @@ func (r *RuntimeType) getCodecInstant(t string) (reflect.Type, reflect.Value, er
 	return p.Type(), p, nil
 }
 
-func (r *RuntimeType) decoderClass(typeString string) (reflect.Type, reflect.Value, string) {
+func (r *RuntimeType) decoderClass(typeString string, spec int) (reflect.Type, reflect.Value, string) {
 	var typeParts []string
 	typeString = ConvertType(typeString)
 	if typeString[len(typeString)-1:] == ">" {
-		decoderClass, rc, err := r.getCodecInstant(typeString)
+		decoderClass, rc, err := r.getCodecInstant(typeString, spec)
 		if err == nil {
 			return decoderClass, rc, ""
 		}
@@ -131,22 +144,35 @@ func (r *RuntimeType) decoderClass(typeString string) (reflect.Type, reflect.Val
 		typeParts = reg.FindStringSubmatch(typeString)
 	}
 	if len(typeParts) > 0 {
-		class, rc, err := r.getCodecInstant(typeParts[1])
+		class, rc, err := r.getCodecInstant(typeParts[1], spec)
 		if err == nil {
 			return class, rc, typeParts[2]
 		}
 	} else {
-		class, rc, err := r.getCodecInstant(typeString)
+		class, rc, err := r.getCodecInstant(typeString, spec)
 		if err == nil {
 			return class, rc, ""
 		}
 	}
 	if typeString != "()" && string(typeString[0]) == "(" && string(typeString[len(typeString)-1:]) == ")" {
-		decoderClass, rc, _ := r.getCodecInstant("Struct")
+		decoderClass, rc, _ := r.getCodecInstant("Struct", spec)
 		s := rc.Interface().(*Struct)
 		s.TypeString = typeString
 		s.buildStruct()
 		return decoderClass, rc, ""
 	}
 	return nil, reflect.ValueOf((*error)(nil)).Elem(), ""
+}
+
+func (r *RuntimeType) getSpecialCodec(t string, spec int) (interface{}, error) {
+	var rt interface{}
+	special, ok := specialRegistry[t]
+	if ok {
+
+		if spec >= special.Version[0] && spec <= special.Version[1] {
+			rt = special.Registry
+			return rt, nil
+		}
+	}
+	return rt, fmt.Errorf("not found")
 }

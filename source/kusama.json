@@ -72,5 +72,14 @@
         "ReferendumInfoFinished"
       ]
     ]
-  }
+  },
+  "DispatchClass": {
+    "type": "enum",
+    "value_list": [
+      "Normal",
+      "Operational",
+      "Mandatory"
+    ]
+  },
+  "Weight#1058-?": "u64"
 }

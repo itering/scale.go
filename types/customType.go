@@ -1,7 +1,9 @@
 package types
 
 import (
+	"fmt"
 	"github.com/freehere107/go-scale-codec/source"
+	"github.com/freehere107/go-scale-codec/utiles"
 	"regexp"
 	"strings"
 )
@@ -25,9 +27,10 @@ func RegCustomTypes(registry map[string]source.TypeStruct) {
 			typeString := typeStruct.TypeString
 			instant := typeRegistry[strings.ToLower(typeString)]
 			if instant != nil {
-				typeRegistry[key] = instant
+				regCustomKey(key, instant)
 				continue
 			}
+
 			// Vec
 			if typeString[len(typeString)-1:] == ">" {
 				reg := regexp.MustCompile("^([^<]*)<(.+)>$")
@@ -35,7 +38,7 @@ func RegCustomTypes(registry map[string]source.TypeStruct) {
 				if len(typeParts) > 2 && strings.ToLower(typeParts[0]) == "vec" {
 					v := &Vec{}
 					v.SubType = typeParts[1]
-					typeRegistry[key] = &v
+					regCustomKey(key, &v)
 					continue
 				}
 			}
@@ -45,7 +48,7 @@ func RegCustomTypes(registry map[string]source.TypeStruct) {
 				s := Struct{}
 				s.TypeString = typeString
 				s.buildStruct()
-				typeRegistry[key] = &s
+				regCustomKey(key, &s)
 			}
 
 		case "struct":
@@ -56,8 +59,8 @@ func RegCustomTypes(registry map[string]source.TypeStruct) {
 			}
 			s := Struct{}
 			s.TypeMapping = newStruct(names, typeStrings)
-			typeRegistry[key] = &s
 
+			regCustomKey(key, &s)
 		case "enum":
 			var names, typeStrings []string
 			for _, v := range typeStruct.TypeMapping {
@@ -66,10 +69,29 @@ func RegCustomTypes(registry map[string]source.TypeStruct) {
 			}
 			e := Enum{ValueList: typeStruct.ValueList}
 			e.TypeMapping = newStruct(names, typeStrings)
-			typeRegistry[key] = &e
-
+			regCustomKey(key, &e)
 		case "set":
-			typeRegistry[key] = &Set{ValueList: typeStruct.ValueList}
+			regCustomKey(key, &Set{ValueList: typeStruct.ValueList})
 		}
 	}
+}
+
+func regCustomKey(key string, rt interface{}) {
+	slice := strings.Split(key, "#")
+	if len(slice) == 2 { // for Special
+		special := Special{Registry: rt, Version: []int{0, 99999999}}
+		if version := strings.Split(slice[1], "-"); len(version) == 2 {
+			special.Version[0] = utiles.StringToInt(version[0])
+			if version[1] != "?" {
+				special.Version[1] = utiles.StringToInt(version[1])
+			}
+		}
+		if specialRegistry == nil {
+			specialRegistry = make(map[string]Special)
+		}
+		specialRegistry[slice[0]] = special
+	} else {
+		typeRegistry[key] = rt
+	}
+
 }

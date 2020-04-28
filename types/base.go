@@ -8,6 +8,7 @@ import (
 )
 
 type ScaleDecoderOption struct {
+	Spec      int
 	SubType   string
 	ValueList []string
 	Metadata  *MetadataStruct
@@ -35,13 +36,18 @@ type ScaleDecoder struct {
 	RawValue    string          `json:"-"`
 	TypeMapping *TypeMapping    `json:"-"`
 	Metadata    *MetadataStruct `json:"-"`
+	Spec        int             `json:"-"`
 }
 
 func (s *ScaleDecoder) Init(data ScaleBytes, option *ScaleDecoderOption) {
 	if option != nil {
 		s.SubType = option.SubType
 		s.Metadata = option.Metadata
+		if option.Spec != 0 {
+			s.Spec = option.Spec
+		}
 	}
+
 	s.Data = data
 	s.RawValue = ""
 	s.Value = nil
@@ -92,8 +98,7 @@ func (s *ScaleDecoder) ProcessAndUpdateData(typeString string, args ...string) i
 	if typeRegistry == nil {
 		r.Reg()
 	}
-	c, rc, subType := r.decoderClass(typeString)
-
+	c, rc, subType := r.decoderClass(typeString, s.Spec)
 	if c == nil {
 		panic(fmt.Sprintf("not found decoder class %s", typeString))
 	}
@@ -104,7 +109,7 @@ func (s *ScaleDecoder) ProcessAndUpdateData(typeString string, args ...string) i
 	if exist == false {
 		panic(fmt.Sprintf("%s not implement init function", typeString))
 	}
-	option := ScaleDecoderOption{SubType: subType, ValueList: args}
+	option := ScaleDecoderOption{SubType: subType, ValueList: args, Spec: s.Spec}
 	method.Func.Call([]reflect.Value{rc, reflect.ValueOf(s.Data), reflect.ValueOf(&option)})
 
 	// process
