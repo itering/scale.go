@@ -33,6 +33,9 @@
   "RefCount": "u8",
   "ValidatorId": "AccountId",
   "CallHash": "H256",
+  "PhragmenScore": "[u128; 3]",
+  "schnorrkel::Randomness": "Hash",
+  "schnorrkel::RawVRFOutput": "[u8; 32]",
   "(AccountId, Balance)": {
     "type": "struct",
     "type_mapping": [
@@ -1202,6 +1205,230 @@
       [
         "write",
         "Weight"
+      ]
+    ]
+  },
+  "ElectionCompute": {
+    "type": "enum",
+    "value_list": [
+      "OnChain",
+      "Signed",
+      "Authority"
+    ]
+  },
+  "ElectionResult": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "compute",
+        "ElectionCompute"
+      ],
+      [
+        "slotStake",
+        "Balance"
+      ],
+      [
+        "electedStashes",
+        "Vec<AccountId>"
+      ],
+      [
+        "exposures",
+        "Vec<(AccountId, Exposure)>"
+      ]
+    ]
+  },
+  "ElectionStatus": {
+    "type": "enum",
+    "type_mapping": [
+      [
+        "Close",
+        "Null"
+      ],
+      [
+        "Open",
+        "BlockNumber"
+      ]
+    ]
+  },
+  "Phase": {
+    "type": "enum",
+    "type_mapping": [
+      [
+        "ApplyExtrinsic",
+        "u32"
+      ],
+      [
+        "Finalization",
+        "Null"
+      ],
+      [
+        "Initialization",
+        "Null"
+      ]
+    ]
+  },
+  "PreimageStatusAvailable": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "data",
+        "Bytes"
+      ],
+      [
+        "provider",
+        "AccountId"
+      ],
+      [
+        "deposit",
+        "Balance"
+      ],
+      [
+        "since",
+        "BlockNumber"
+      ],
+      [
+        "expiry",
+        "Option<BlockNumber>"
+      ]
+    ]
+  },
+  "PreimageStatus": {
+    "type": "enum",
+    "type_mapping": [
+      [
+        "Missing",
+        "BlockNumber"
+      ],
+      [
+        "Available",
+        "PreimageStatusAvailable"
+      ]
+    ]
+  },
+  "TaskAddress": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "blockNumber",
+        "BlockNumber"
+      ],
+      [
+        "index",
+        "u32"
+      ]
+    ]
+  },
+  "ValidationCode": "Bytes",
+  "ValidatorIndex": "u16",
+  "ParaPastCodeMeta": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "upgrade_times",
+        "Vec<BlockNumber>"
+      ],
+      [
+        "last_pruned",
+        "Option<BlockNumber>"
+      ]
+    ]
+  },
+  "CompactScore": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "accountId",
+        "AccountId"
+      ],
+      [
+        "score",
+        "u128"
+      ]
+    ]
+  },
+  "CompactAssignmentsVote": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "accountId1",
+        "AccountId"
+      ],
+      [
+        "scores",
+        "Vec<CompactScore>"
+      ],
+      [
+        "accountId2",
+        "AccountId"
+      ]
+    ]
+  },
+  "CompactAssignments": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "votes1",
+        "Vec<CompactAssignmentsVote>"
+      ],
+      [
+        "votes2",
+        "Vec<CompactAssignmentsVote>"
+      ],
+      [
+        "votes3",
+        "Vec<CompactAssignmentsVote>"
+      ],
+      [
+        "votes4",
+        "Vec<CompactAssignmentsVote>"
+      ],
+      [
+        "votes5",
+        "Vec<CompactAssignmentsVote>"
+      ],
+      [
+        "votes6",
+        "Vec<CompactAssignmentsVote>"
+      ],
+      [
+        "votes7",
+        "Vec<CompactAssignmentsVote>"
+      ],
+      [
+        "votes8",
+        "Vec<CompactAssignmentsVote>"
+      ],
+      [
+        "votes9",
+        "Vec<CompactAssignmentsVote>"
+      ],
+      [
+        "votes10",
+        "Vec<CompactAssignmentsVote>"
+      ],
+      [
+        "votes11",
+        "Vec<CompactAssignmentsVote>"
+      ],
+      [
+        "votes12",
+        "Vec<CompactAssignmentsVote>"
+      ],
+      [
+        "votes13",
+        "Vec<CompactAssignmentsVote>"
+      ],
+      [
+        "votes14",
+        "Vec<CompactAssignmentsVote>"
+      ],
+      [
+        "votes15",
+        "Vec<CompactAssignmentsVote>"
+      ],
+      [
+        "votes16",
+        "Vec<CompactAssignmentsVote>"
       ]
     ]
   }
