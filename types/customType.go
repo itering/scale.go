@@ -1,7 +1,6 @@
 package types
 
 import (
-	"fmt"
 	"github.com/freehere107/go-scale-codec/source"
 	"github.com/freehere107/go-scale-codec/utiles"
 	"regexp"
