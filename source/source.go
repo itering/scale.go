@@ -2,8 +2,6 @@ package source
 
 import (
 	"encoding/json"
-	"fmt"
-	"io/ioutil"
 )
 
 type TypeStruct struct {
@@ -13,14 +11,9 @@ type TypeStruct struct {
 	ValueList   []string   `json:"value_list,omitempty"`
 }
 
-func LoadTypeRegistry(name string) map[string]TypeStruct {
-	c, err := ioutil.ReadFile(fmt.Sprintf("%s.json", name))
-	if err != nil {
-		panic(err)
-	}
-
+func LoadTypeRegistry(source []byte) map[string]TypeStruct {
 	var original map[string]interface{}
-	err = json.Unmarshal(c, &original)
+	err := json.Unmarshal(source, &original)
 	if err != nil {
 		panic(err)
 	}

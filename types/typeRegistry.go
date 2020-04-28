@@ -4,10 +4,8 @@ import (
 	"errors"
 	"fmt"
 	"github.com/freehere107/go-scale-codec/source"
-	"path"
 	"reflect"
 	"regexp"
-	"runtime"
 	"strings"
 )
 
@@ -110,8 +108,7 @@ func (r RuntimeType) Reg() *RuntimeType {
 
 	typeRegistry = registry
 
-	_, filename, _, _ := runtime.Caller(0)
-	RegCustomTypes(source.LoadTypeRegistry(fmt.Sprintf("%s/../source/base", path.Dir(filename))))
+	RegCustomTypes(source.LoadTypeRegistry([]byte(source.BaseType)))
 	return &r
 }
 
