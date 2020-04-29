@@ -75,6 +75,7 @@ func (r RuntimeType) Reg() *RuntimeType {
 		&BabeBlockWeight{},
 		&AuthorityId{},
 		&Call{},
+		&ReferendumIndex{},
 		&EcdsaSignature{},
 		&MetadataModuleEvent{},
 		&MetadataModuleCallArgument{},

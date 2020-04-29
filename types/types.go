@@ -530,3 +530,5 @@ func (s *Call) Process() {
 	s.Value = result
 
 }
+
+type ReferendumIndex struct{ U32 }

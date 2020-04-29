@@ -28,6 +28,7 @@ var BaseType = `{
   "Kind": "[u8; 16]",
   "OpaqueTimeSlot": "Bytes",
   "Box<<T as Trait<I>>::Proposal>": "BoxProposal",
+  "<AuthorityId as RuntimeAppPublic>::Signature": "Signature",
   "&[u8]": "Bytes",
   "ConsensusEngineId": "[u8; 4]",
   "SpanIndex": "u32",
