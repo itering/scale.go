@@ -44,6 +44,7 @@ var BaseType = `
   "OffchainAccuracy": "u16",
   "ValidationCode": "Bytes",
   "ValidatorIndex": "u16",
+  "AuthorityList": "Vec<NextAuthority>",
   "(AccountId, Balance)": {
     "type": "struct",
     "type_mapping": [

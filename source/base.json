@@ -39,6 +39,7 @@
   "NominatorIndex": "u32",
   "PerU16": "u16",
   "OffchainAccuracy": "u16",
+  "AuthorityList": "Vec<NextAuthority>",
   "(AccountId, Balance)": {
     "type": "struct",
     "type_mapping": [
