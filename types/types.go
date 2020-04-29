@@ -96,6 +96,14 @@ func (h *H256) Process() {
 	h.Value = utiles.AddHex(utiles.BytesToHex(h.NextBytes(32)))
 }
 
+type H512 struct {
+	ScaleDecoder
+}
+
+func (h *H512) Process() {
+	h.Value = utiles.AddHex(utiles.BytesToHex(h.NextBytes(64)))
+}
+
 type Era struct {
 	ScaleDecoder
 }
@@ -158,6 +166,9 @@ type Vec struct {
 
 func (v *Vec) Init(data ScaleBytes, option *ScaleDecoderOption) {
 	v.Elements = []interface{}{}
+	if v.SubType != "" && option != nil {
+		option.SubType = v.SubType
+	}
 	v.ScaleDecoder.Init(data, option)
 }
 
@@ -483,3 +494,5 @@ func (f *FixedLengthArray) Process() {
 	}
 	f.Value = result
 }
+
+type AuthorityId struct{ H256 }

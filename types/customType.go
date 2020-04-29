@@ -36,7 +36,7 @@ func RegCustomTypes(registry map[string]source.TypeStruct) {
 				typeParts := reg.FindStringSubmatch(typeString)
 				if len(typeParts) > 2 && strings.ToLower(typeParts[1]) == "vec" {
 					v := Vec{}
-					v.SubType = typeParts[1]
+					v.SubType = typeParts[2]
 					regCustomKey(key, &v)
 					continue
 				}
