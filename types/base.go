@@ -110,7 +110,7 @@ func (s *ScaleDecoder) ProcessAndUpdateData(typeString string, args ...string) i
 	if exist == false {
 		panic(fmt.Sprintf("%s not implement init function", typeString))
 	}
-	option := ScaleDecoderOption{SubType: subType, ValueList: args, Spec: s.Spec}
+	option := ScaleDecoderOption{SubType: subType, ValueList: args, Spec: s.Spec, Metadata: s.Metadata}
 	method.Func.Call([]reflect.Value{rc, reflect.ValueOf(s.Data), reflect.ValueOf(&option)})
 
 	// process
