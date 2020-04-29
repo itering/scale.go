@@ -35,7 +35,7 @@ func RegCustomTypes(registry map[string]source.TypeStruct) {
 				reg := regexp.MustCompile("^([^<]*)<(.+)>$")
 				typeParts := reg.FindStringSubmatch(typeString)
 				if len(typeParts) > 2 && strings.ToLower(typeParts[1]) == "vec" {
-					v := &Vec{}
+					v := Vec{}
 					v.SubType = typeParts[1]
 					regCustomKey(key, &v)
 					continue
