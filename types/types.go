@@ -40,7 +40,7 @@ func (u *U16) Process() {
 	_, _ = buf.Write(u.NextBytes(2))
 	c := make([]byte, 2)
 	_, _ = u.Reader.Read(c)
-	u.Value = binary.LittleEndian.Uint32(c)
+	u.Value = binary.LittleEndian.Uint16(c)
 }
 
 type U32 struct {
@@ -85,7 +85,7 @@ func (u *U128) Process() {
 	if len(u.Data.Data) < 16 {
 		u.Data.Data = utiles.HexToBytes(xstrings.LeftJustify(utiles.BytesToHex(u.Data.Data), 32, "0"))
 	}
-	u.Value = uint128.FromBytes(u.NextBytes(16))
+	u.Value = uint128.FromBytes(u.NextBytes(16)).String()
 }
 
 type H256 struct {
@@ -458,3 +458,28 @@ func (l *LockIdentifier) Process() {
 }
 
 type AccountIndex struct{ U32 }
+
+type FixedLengthArray struct {
+	ScaleDecoder
+	FixedLength int
+	SubType     string
+}
+
+func (f *FixedLengthArray) Init(data ScaleBytes, option *ScaleDecoderOption) {
+	if option != nil && option.FixedLength != 0 {
+		f.FixedLength = option.FixedLength
+	}
+	f.ScaleDecoder.Init(data, option)
+}
+
+func (f *FixedLengthArray) Process() {
+	var result []interface{}
+	if f.FixedLength > 0 {
+		for i := 0; i < f.FixedLength; i++ {
+			result = append(result, f.ProcessAndUpdateData(f.SubType))
+		}
+	} else {
+		f.GetNextU8()
+	}
+	f.Value = result
+}

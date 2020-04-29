@@ -1,7 +1,6 @@
 package types_test
 
 import (
-	"fmt"
 	"github.com/freehere107/go-scale-codec/source"
 	"github.com/freehere107/go-scale-codec/types"
 	"github.com/freehere107/go-scale-codec/utiles"
@@ -22,8 +21,7 @@ func TestRawBabePreDigest(t *testing.T) {
 	raw := "0x02020000008b86750900000000"
 	m := types.ScaleDecoder{}
 	m.Init(types.ScaleBytes{Data: utiles.HexToBytes(raw)}, nil)
-	r := m.ProcessAndUpdateData("RawBabePreDigest")
-	fmt.Println(r)
+	m.ProcessAndUpdateData("RawBabePreDigest")
 }
 
 func TestSet_Process(t *testing.T) {

@@ -8,10 +8,11 @@ import (
 )
 
 type ScaleDecoderOption struct {
-	Spec      int
-	SubType   string
-	ValueList []string
-	Metadata  *MetadataStruct
+	Spec        int
+	SubType     string
+	ValueList   []string
+	Metadata    *MetadataStruct
+	FixedLength int
 }
 
 type TypeMapping struct {

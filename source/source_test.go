@@ -6,6 +6,5 @@ import (
 )
 
 func TestLoadTypeRegistry(t *testing.T) {
-	fileName := "base"
-	source.LoadTypeRegistry(fileName)
+	source.LoadTypeRegistry([]byte(source.BaseType))
 }

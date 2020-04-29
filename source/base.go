@@ -1,6 +1,7 @@
 package source
 
-var BaseType = `{
+var BaseType = `
+{
   "SetId": "U64",
   "RoundNumber": "U64",
   "SessionIndex": "U32",
@@ -38,6 +39,11 @@ var BaseType = `{
   "PhragmenScore": "[u128; 3]",
   "schnorrkel::Randomness": "Hash",
   "schnorrkel::RawVRFOutput": "[u8; 32]",
+  "NominatorIndex": "u32",
+  "PerU16": "u16",
+  "OffchainAccuracy": "u16",
+  "ValidationCode": "Bytes",
+  "ValidatorIndex": "u16",
   "(AccountId, Balance)": {
     "type": "struct",
     "type_mapping": [
@@ -1320,8 +1326,6 @@ var BaseType = `{
       ]
     ]
   },
-  "ValidationCode": "Bytes",
-  "ValidatorIndex": "u16",
   "ParaPastCodeMeta": {
     "type": "struct",
     "type_mapping": [
@@ -1339,12 +1343,12 @@ var BaseType = `{
     "type": "struct",
     "type_mapping": [
       [
-        "accountId",
-        "AccountId"
+        "validatorIndex",
+        "ValidatorIndex"
       ],
       [
-        "score",
-        "u128"
+        "offchainAccuracy",
+        "OffchainAccuracy"
       ]
     ]
   },
@@ -1370,67 +1374,167 @@ var BaseType = `{
     "type_mapping": [
       [
         "votes1",
-        "Vec<CompactAssignmentsVote>"
+        "Vec<(NominatorIndex, ValidatorIndex)>"
       ],
       [
         "votes2",
-        "Vec<CompactAssignmentsVote>"
+        "Vec<(NominatorIndex, [CompactScore; 1], ValidatorIndex)>"
       ],
       [
         "votes3",
-        "Vec<CompactAssignmentsVote>"
+        "Vec<(NominatorIndex, [CompactScore; 2], ValidatorIndex)>"
       ],
       [
         "votes4",
-        "Vec<CompactAssignmentsVote>"
+        "Vec<(NominatorIndex, [CompactScore; 3], ValidatorIndex)>"
       ],
       [
         "votes5",
-        "Vec<CompactAssignmentsVote>"
+        "Vec<(NominatorIndex, [CompactScore; 4], ValidatorIndex)>"
       ],
       [
         "votes6",
-        "Vec<CompactAssignmentsVote>"
+        "Vec<(NominatorIndex, [CompactScore; 5], ValidatorIndex)>"
       ],
       [
         "votes7",
-        "Vec<CompactAssignmentsVote>"
+        "Vec<(NominatorIndex, [CompactScore; 6], ValidatorIndex)>"
       ],
       [
         "votes8",
-        "Vec<CompactAssignmentsVote>"
+        "Vec<(NominatorIndex, [CompactScore; 7], ValidatorIndex)>"
       ],
       [
         "votes9",
-        "Vec<CompactAssignmentsVote>"
+        "Vec<(NominatorIndex, [CompactScore; 8], ValidatorIndex)>"
       ],
       [
         "votes10",
-        "Vec<CompactAssignmentsVote>"
+        "Vec<(NominatorIndex, [CompactScore; 9], ValidatorIndex)>"
       ],
       [
         "votes11",
-        "Vec<CompactAssignmentsVote>"
+        "Vec<(NominatorIndex, [CompactScore; 10], ValidatorIndex)>"
       ],
       [
         "votes12",
-        "Vec<CompactAssignmentsVote>"
+        "Vec<(NominatorIndex, [CompactScore; 11], ValidatorIndex)>"
       ],
       [
         "votes13",
-        "Vec<CompactAssignmentsVote>"
+        "Vec<(NominatorIndex, [CompactScore; 12], ValidatorIndex)>"
       ],
       [
         "votes14",
-        "Vec<CompactAssignmentsVote>"
+        "Vec<(NominatorIndex, [CompactScore; 13], ValidatorIndex)>"
       ],
       [
         "votes15",
-        "Vec<CompactAssignmentsVote>"
+        "Vec<(NominatorIndex, [CompactScore; 14], ValidatorIndex)>"
       ],
       [
         "votes16",
-        "Vec<CompactAssignmentsVote>"
+        "Vec<(NominatorIndex, [CompactScore; 15], ValidatorIndex)>"
+      ]
+    ]
+  },
+  "ReleasesBalances": {
+    "type": "enum",
+    "value_list": [
+      "V1_0_0",
+      "V2_0_0"
+    ]
+  },
+  "Releases": "ReleasesBalances",
+  "SlotRange": {
+    "type": "enum",
+    "value_list": [
+      "ZeroZero",
+      "ZeroOne",
+      "ZeroTwo",
+      "ZeroThree",
+      "OneOne",
+      "OneTwo",
+      "OneThree",
+      "TwoTwo",
+      "TwoThree",
+      "ThreeThree"
+    ]
+  },
+  "ValidityAttestation": {
+    "type": "enum",
+    "type_mapping": [
+      [
+        "None",
+        "Null"
+      ],
+      [
+        "Implicit",
+        "CollatorSignature"
+      ],
+      [
+        "Explicit",
+        "CollatorSignature"
+      ]
+    ]
+  },
+  "VestingInfo": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "locked",
+        "Balance"
+      ],
+      [
+        "perBlock",
+        "Balance"
+      ],
+      [
+        "startingBlock",
+        "BlockNumber"
+      ]
+    ]
+  },
+  "ProxyState": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "Open",
+        "AccountId"
+      ],
+      [
+        "Active",
+        "AccountId"
+      ]
+    ]
+  },
+  "IncomingParachainFixed": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "codeHash",
+        "Hash"
+      ],
+      [
+        "initialHeadData",
+        "Bytes"
+      ]
+    ]
+  },
+  "IncomingParachain": {
+    "type": "enum",
+    "type_mapping": [
+      [
+        "Unset",
+        "NewBidder"
+      ],
+      [
+        "Fixed",
+        "IncomingParachainFixed"
+      ],
+      [
+        "Deploy",
+        "IncomingParachainDeploy"
       ]
     ]
   }

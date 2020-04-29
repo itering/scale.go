@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/freehere107/go-scale-codec/source"
+	"github.com/freehere107/go-scale-codec/utiles"
 	"reflect"
 	"regexp"
 	"strings"
@@ -25,8 +26,10 @@ func (r RuntimeType) Reg() *RuntimeType {
 	scales := []interface{}{
 		&Null{},
 		&U8{},
+		&U16{},
 		&U32{},
 		&U64{},
+		&U128{},
 		&Compact{},
 		&H256{},
 		&Address{},
@@ -104,7 +107,7 @@ func (r RuntimeType) Reg() *RuntimeType {
 	registry["[u8; 8]"] = &VecU8FixedLength{FixedLength: 8}
 	registry["[u8; 4]"] = &VecU8FixedLength{FixedLength: 4}
 	registry["[u8; 256]"] = &VecU8FixedLength{FixedLength: 256}
-	registry["[u128; 3]"] = &VecU8FixedLength{FixedLength: 48}
+	registry["[u128; 3]"] = &FixedLengthArray{FixedLength: 3, SubType: "u128"}
 
 	typeRegistry = registry
 
@@ -114,9 +117,18 @@ func (r RuntimeType) Reg() *RuntimeType {
 
 func (r *RuntimeType) getCodecInstant(t string, spec int) (reflect.Type, reflect.Value, error) {
 	t = strings.ToLower(t)
-	rt, err := r.getSpecialCodec(t, spec)
+	rt, err := r.specialVersionCodec(t, spec)
 	if err != nil {
 		rt = typeRegistry[strings.ToLower(t)]
+		if rt == nil && t != "[]" && string(t[0]) == "[" && string(t[len(t)-1:]) == "]" {
+			if typePart := strings.Split(string(t[1:len(t)-1]), ";"); len(typePart) == 2 {
+				fixed := FixedLengthArray{
+					FixedLength: utiles.StringToInt(strings.TrimSpace(typePart[1])),
+					SubType:     strings.TrimSpace(typePart[0]),
+				}
+				rt = &fixed
+			}
+		}
 		if rt == nil {
 			return nil, reflect.ValueOf((*error)(nil)).Elem(), errors.New("Scale codec type nil" + t)
 		}
@@ -162,7 +174,7 @@ func (r *RuntimeType) decoderClass(typeString string, spec int) (reflect.Type, r
 	return nil, reflect.ValueOf((*error)(nil)).Elem(), ""
 }
 
-func (r *RuntimeType) getSpecialCodec(t string, spec int) (interface{}, error) {
+func (r *RuntimeType) specialVersionCodec(t string, spec int) (interface{}, error) {
 	var rt interface{}
 	special, ok := specialRegistry[t]
 	if ok {
