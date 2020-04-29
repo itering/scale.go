@@ -51,7 +51,7 @@ func (c *Compact) Process() {
 			case int:
 				c.Value = uint64(byteData.(int) / 4)
 			case decimal.Decimal:
-				c.Value = byteData.(decimal.Decimal).Div(decimal.New(4, 0)).Ceil()
+				c.Value = byteData.(decimal.Decimal).Div(decimal.New(4, 0)).Floor()
 			default:
 				c.Value = byteData
 			}
