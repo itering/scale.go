@@ -537,9 +537,117 @@
       ]
     ]
   },
-  "StakingBalanceT": "StakingBalance",
-  "StakingLedgerT": "StakingLedger",
-  "ExposureT": "Exposure",
-  "FullIdentification": "Exposure",
-  "RKT": "RK"
+  "StakingBalanceT": {
+    "type": "enum",
+    "type_mapping": [
+      [
+        "RingBalance",
+        "Balance"
+      ],
+      [
+        "KtonBalance",
+        "Balance"
+      ]
+    ]
+  },
+  "StakingLedgerT": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "stash",
+        "AccountId"
+      ],
+      [
+        "active_ring",
+        "Compact<Balance>"
+      ],
+      [
+        "active_deposit_ring",
+        "Compact<Balance>"
+      ],
+      [
+        "active_kton",
+        "Compact<Balance>"
+      ],
+      [
+        "deposit_items",
+        "Vec<TimeDepositItem>"
+      ],
+      [
+        "ring_staking_lock",
+        "StakingLock"
+      ],
+      [
+        "kton_staking_lock",
+        "StakingLock"
+      ],
+      [
+        "last_reward",
+        "Option<EraIndex>"
+      ]
+    ]
+  },
+  "ExposureT": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "own_ring_balance",
+        "Compact<Balance>"
+      ],
+      [
+        "own_kton_balance",
+        "Compact<Balance>"
+      ],
+      [
+        "own_power",
+        "Power"
+      ],
+      [
+        "total_power",
+        "Power"
+      ],
+      [
+        "others",
+        "Vec<IndividualExposure>"
+      ]
+    ]
+  },
+  "FullIdentification": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "own_ring_balance",
+        "Compact<Balance>"
+      ],
+      [
+        "own_kton_balance",
+        "Compact<Balance>"
+      ],
+      [
+        "own_power",
+        "Power"
+      ],
+      [
+        "total_power",
+        "Power"
+      ],
+      [
+        "others",
+        "Vec<IndividualExposure>"
+      ]
+    ]
+  },
+  "RKT": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "r",
+        "Balance"
+      ],
+      [
+        "k",
+        "Balance"
+      ]
+    ]
+  }
 }

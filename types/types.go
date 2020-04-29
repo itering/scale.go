@@ -267,7 +267,7 @@ type AccountId struct {
 }
 
 func (s *AccountId) Process() {
-	s.Value = utiles.AddHex(xstrings.RightJustify(utiles.BytesToHex(s.NextBytes(32)), 64, "0"))
+	s.Value = xstrings.RightJustify(utiles.BytesToHex(s.NextBytes(32)), 64, "0")
 }
 
 type BoxProposal struct {
@@ -496,3 +496,37 @@ func (f *FixedLengthArray) Process() {
 }
 
 type AuthorityId struct{ H256 }
+
+type EcdsaSignature struct {
+	ScaleDecoder
+}
+
+func (e *EcdsaSignature) Process() {
+	e.Value = utiles.AddHex(utiles.BytesToHex(e.NextBytes(65)))
+}
+
+type Call struct {
+	ScaleDecoder
+}
+
+func (s *Call) Process() {
+	callIndex := utiles.BytesToHex(s.NextBytes(2))
+	callModule := s.Metadata.CallIndex[callIndex]
+	result := map[string]interface{}{
+		"call_index":    callIndex,
+		"call_function": callModule.Call.Name,
+		"call_module":   callModule.Module.Name,
+	}
+	var param []ExtrinsicParam
+	for _, arg := range callModule.Call.Args {
+		param = append(param, ExtrinsicParam{
+			Name:     arg.Name,
+			Type:     arg.Type,
+			Value:    s.ProcessAndUpdateData(arg.Type),
+			ValueRaw: s.RawValue,
+		})
+	}
+	result["call_args"] = param
+	s.Value = result
+
+}

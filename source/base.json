@@ -40,6 +40,36 @@
   "PerU16": "u16",
   "OffchainAccuracy": "u16",
   "AuthorityList": "Vec<NextAuthority>",
+  "BalanceOf": "Balance",
+  "ProposalIndex": "u32",
+  "OpaquePeerId": "Bytes",
+  "OpaqueMultiaddr": "Bytes",
+  "IndividualExposure": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "who",
+        "AccountId"
+      ],
+      [
+        "value",
+        "Compact<Balance>"
+      ]
+    ]
+  },
+  "OpaqueNetworkState": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "peerId",
+        "OpaquePeerId"
+      ],
+      [
+        "externalAddresses",
+        "Vec<OpaqueMultiaddr>"
+      ]
+    ]
+  },
   "(AccountId, Balance)": {
     "type": "struct",
     "type_mapping": [

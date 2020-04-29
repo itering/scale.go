@@ -1,7 +1,6 @@
 package source
 
-var BaseType = `
-{
+var BaseType = `{
   "SetId": "U64",
   "RoundNumber": "U64",
   "SessionIndex": "U32",
@@ -42,9 +41,37 @@ var BaseType = `
   "NominatorIndex": "u32",
   "PerU16": "u16",
   "OffchainAccuracy": "u16",
-  "ValidationCode": "Bytes",
-  "ValidatorIndex": "u16",
   "AuthorityList": "Vec<NextAuthority>",
+  "BalanceOf": "Balance",
+  "ProposalIndex": "u32",
+  "OpaquePeerId": "Bytes",
+  "OpaqueMultiaddr": "Bytes",
+  "IndividualExposure": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "who",
+        "AccountId"
+      ],
+      [
+        "value",
+        "Compact<Balance>"
+      ]
+    ]
+  },
+  "OpaqueNetworkState": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "peerId",
+        "OpaquePeerId"
+      ],
+      [
+        "externalAddresses",
+        "Vec<OpaqueMultiaddr>"
+      ]
+    ]
+  },
   "(AccountId, Balance)": {
     "type": "struct",
     "type_mapping": [
@@ -1327,6 +1354,8 @@ var BaseType = `
       ]
     ]
   },
+  "ValidationCode": "Bytes",
+  "ValidatorIndex": "u16",
   "ParaPastCodeMeta": {
     "type": "struct",
     "type_mapping": [

@@ -53,6 +53,9 @@ type EventRecord struct {
 }
 
 func (e *EventRecord) Process() map[string]interface{} {
+	e.Params = []EventParam{}
+	e.Topic = []string{}
+
 	e.Phase = e.GetNextU8()
 
 	if e.Phase == 0 {
