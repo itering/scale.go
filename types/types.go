@@ -296,13 +296,18 @@ func (s *BoxProposal) Process() {
 	s.Value = result
 }
 
-type Balance struct{ ScaleDecoder }
+type Balance struct {
+	ScaleDecoder
+	Reader io.Reader
+}
 
 func (b *Balance) Process() {
-	if len(b.Data.Data) < 16 {
-		b.Data.Data = utiles.HexToBytes(xstrings.LeftJustify(utiles.BytesToHex(b.Data.Data), 32, "0"))
-	}
-	b.Value = decimal.NewFromBigInt(uint128.FromBytes(b.NextBytes(16)).Big(), 0)
+	buf := &bytes.Buffer{}
+	b.Reader = buf
+	_, _ = buf.Write(b.NextBytes(16))
+	c := make([]byte, 16)
+	_, _ = b.Reader.Read(c)
+	b.Value = decimal.NewFromBigInt(uint128.FromBytes(c).Big(), 0)
 }
 
 type Index struct{ U64 }

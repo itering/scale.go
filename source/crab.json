@@ -80,6 +80,35 @@
       ]
     ]
   },
+  "AccountInfo<Index, AccountData>": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "free",
+        "Balance"
+      ],
+      [
+        "reserved",
+        "Balance"
+      ],
+      [
+        "free_kton",
+        "Balance"
+      ],
+      [
+        "reserved_kton",
+        "Balance"
+      ],
+      [
+        "misc_frozen",
+        "Balance"
+      ],
+      [
+        "fee_frozen",
+        "Balance"
+      ]
+    ]
+  },
   "TimeDepositItem": {
     "type": "struct",
     "type_mapping": [
