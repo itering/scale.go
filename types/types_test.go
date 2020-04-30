@@ -49,7 +49,15 @@ func TestCompactBalance(t *testing.T) {
 	m := types.ScaleDecoder{}
 	m.Init(types.ScaleBytes{Data: utiles.HexToBytes(raw)}, nil)
 	m.ProcessAndUpdateData("Compact<Balance>")
+}
 
+// 0xe52d2254c67c430a0000000000000000 Balance
+func TestBalance(t *testing.T) {
+	raw := "0xe52d2254c67c430a0000000000000000"
+	m := types.ScaleDecoder{}
+	m.Init(types.ScaleBytes{Data: utiles.HexToBytes(raw)}, nil)
+	c := m.ProcessAndUpdateData("Balance")
+	fmt.Println(c)
 }
 
 //

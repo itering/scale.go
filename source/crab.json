@@ -15,6 +15,21 @@
   "H": "Hash",
   "Address": "AccountId",
   "Keys": "SessionKeysPolkadot",
+  "Weight": "u64",
+  "ModuleId": "[u8; 8]",
+  "RuntimeDbWeight": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "read",
+        "u128"
+      ],
+      [
+        "read",
+        "write"
+      ]
+    ]
+  },
   "StakingBalance": {
     "type": "enum",
     "type_mapping": [
@@ -151,6 +166,10 @@
       [
         "power",
         "Power"
+      ],
+      [
+        "value",
+        "Compact<Balance>"
       ]
     ]
   },
@@ -211,6 +230,14 @@
       [
         "lock_reasons",
         "LockReasons"
+      ],
+      [
+        "amount",
+        "Balance"
+      ],
+      [
+        "reasons",
+        "Reasons"
       ]
     ]
   },
@@ -297,6 +324,14 @@
       [
         "reserved_kton",
         "Balance"
+      ],
+      [
+        "misc_frozen",
+        "Balance"
+      ],
+      [
+        "fee_frozen",
+        "Balance"
       ]
     ]
   },
@@ -314,6 +349,10 @@
       [
         "number",
         "EthBlockNumber"
+      ],
+      [
+        "relayer",
+        "AccountId"
       ]
     ]
   },
@@ -584,6 +623,18 @@
       [
         "last_reward",
         "Option<EraIndex>"
+      ],
+      [
+        "total",
+        "Compact<Balance>"
+      ],
+      [
+        "active",
+        "Compact<Balance>"
+      ],
+      [
+        "unlocking",
+        "Vec<UnlockChunk>"
       ]
     ]
   },
@@ -609,6 +660,14 @@
       [
         "others",
         "Vec<IndividualExposure>"
+      ],
+      [
+        "total",
+        "Compact<Balance>"
+      ],
+      [
+        "own",
+        "Compact<Balance>"
       ]
     ]
   },

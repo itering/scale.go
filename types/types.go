@@ -195,6 +195,7 @@ func (a *Address) Process() {
 	a.AccountLength = utiles.BytesToHex(AccountLength)
 	if a.AccountLength == "ff" {
 		a.Value = utiles.BytesToHex(a.NextBytes(32))
+		return
 	}
 	a.Value = utiles.BytesToHex(append(AccountLength, a.NextBytes(31)...))
 }
