@@ -10,6 +10,7 @@ import (
 	"github.com/shopspring/decimal"
 	"io"
 	"math"
+	"unicode/utf8"
 )
 
 type HexBytes struct {
@@ -532,3 +533,49 @@ func (s *Call) Process() {
 }
 
 type ReferendumIndex struct{ U32 }
+
+type PropIndex struct{ U32 }
+
+type EthereumAddress struct {
+	ScaleDecoder
+}
+
+func (e *EthereumAddress) Process() {
+	e.Value = utiles.BytesToHex(e.NextBytes(20))
+}
+
+type Data struct {
+	Enum
+}
+
+func (d *Data) Init(data ScaleBytes, option *ScaleDecoderOption) {
+	d.TypeMapping = &TypeMapping{
+		Names: []string{"None", "Raw", "BlakeTwo256", "Sha256", "Keccak256", "ShaThree256"},
+		Types: []string{"Null", "Bytes", "H256", "H256", "H256", "H256"},
+	}
+	d.Enum.Init(data, option)
+}
+
+func (d *Data) Process() {
+	c := utiles.BytesToHex(d.NextBytes(1))
+	if c == "" || utiles.U256(c).Uint64() == 0 {
+		d.Value = map[string]interface{}{"None": nil}
+		return
+	}
+
+	d.Index = int(utiles.U256(c).Uint64())
+
+	if d.Index >= 1 && d.Index <= 33 {
+		data := d.NextBytes(d.Index - 1)
+		if utf8.Valid(data) {
+			d.Value = map[string]interface{}{"Raw": string(data)}
+		} else {
+			d.Value = map[string]interface{}{"Raw": utiles.BytesToHex(data)}
+		}
+
+	}
+	if d.Index >= 34 && d.Index <= 37 {
+		enumKey := d.TypeMapping.Names[d.Index-32]
+		d.Value = map[string]interface{}{enumKey: d.ProcessAndUpdateData(d.TypeMapping.Types[d.Index-32])}
+	}
+}

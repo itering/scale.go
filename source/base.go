@@ -27,6 +27,7 @@ var BaseType = `{
   "Index": "U32",
   "Kind": "[u8; 16]",
   "OpaqueTimeSlot": "Bytes",
+  "Box<Call>": "BoxProposal",
   "Box<<T as Trait<I>>::Proposal>": "BoxProposal",
   "<AuthorityId as RuntimeAppPublic>::Signature": "Signature",
   "&[u8]": "Bytes",
