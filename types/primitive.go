@@ -17,7 +17,10 @@ type Compact struct {
 
 func (c *Compact) ProcessCompactBytes() []byte {
 	compactByte := c.NextBytes(1)
-	byteMod := compactByte[0] % 4
+	var byteMod = 0
+	if len(compactByte) != 0 {
+		byteMod = int(compactByte[0]) % 4
+	}
 	if byteMod == 0 {
 		c.CompactLength = 1
 	} else if byteMod == 1 {

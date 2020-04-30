@@ -52,12 +52,12 @@ func TestCrabEventsDecoder(t *testing.T) {
 		panic(err)
 	}
 	types.RegCustomTypes(source.LoadTypeRegistry(c))
-	e := scalecodec.EventsDecoder{}
+	e := types.ScaleDecoder{}
 	option := types.ScaleDecoderOption{Metadata: &m.Metadata}
 
-	eventRaw := "0x1800000000000000000000000000000002000000010000000f00e44664996ab7b5d86c12e9d5ac3093f5b2efc9172cb7ce298cd6c3c51002c31840ef5a070000000000000000000000000000010000000f020331760198d850b159844f3bfa620f6e704167973213154aca27675f7ddd987ee44664996ab7b5d86c12e9d5ac3093f5b2efc9172cb7ce298cd6c3c51002c31840ef5a0700000000000000000000000000000100000015063c1311000000000000000000000000000000010000000e04584ea8f083c3a9038d57acc5229ab4d790ab6132921d5edc5fae1be4ed89ec1fcf4404000000000000000000000000000000010000000000000b6b1b00000000000000"
+	eventRaw := "0x02286bee00b3e60100b3e6010000"
 	e.Init(types.ScaleBytes{Data: utiles.HexToBytes(eventRaw)}, &option)
-	e.Process()
-	cb, _ := json.Marshal(e.Value)
+	v := e.ProcessAndUpdateData("ExposureT")
+	cb, _ := json.Marshal(v)
 	fmt.Println(string(cb))
 }
