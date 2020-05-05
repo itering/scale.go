@@ -80,6 +80,7 @@ func (r RuntimeType) Reg() *RuntimeType {
 		&EthereumAddress{},
 		&PropIndex{},
 		&Data{},
+		&Vote{},
 		&MetadataModuleEvent{},
 		&MetadataModuleCallArgument{},
 		&MetadataModuleCall{},

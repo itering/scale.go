@@ -587,3 +587,7 @@ func (d *Data) Process() {
 		d.Value = map[string]interface{}{enumKey: d.ProcessAndUpdateData(d.TypeMapping.Types[d.Index-32])}
 	}
 }
+
+type Vote struct {
+	U8
+}
