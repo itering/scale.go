@@ -80,6 +80,7 @@ func (r RuntimeType) Reg() *RuntimeType {
 		&PropIndex{},
 		&Data{},
 		&Vote{},
+		&VoteOutcome{},
 		&MetadataModuleEvent{},
 		&MetadataModuleCallArgument{},
 		&MetadataModuleCall{},
