@@ -49,6 +49,7 @@ var BaseType = `{
   "OpaquePeerId": "Bytes",
   "OpaqueMultiaddr": "Bytes",
   "ProposalTitle": "Bytes",
+  "ProposalContents": "Bytes",
   "IndividualExposure": {
     "type": "struct",
     "type_mapping": [
@@ -575,6 +576,20 @@ var BaseType = `{
       "Commit",
       "Voting",
       "Completed"
+    ]
+  },
+  "ProposalStage": {
+    "type": "enum",
+    "value_list": [
+      "PreVoting",
+      "Voting",
+      "Completed"
+    ]
+  },
+  "ProposalCategory": {
+    "type": "enum",
+    "value_list": [
+      "Signaling"
     ]
   },
   "Heartbeat": {
