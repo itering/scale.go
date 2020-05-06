@@ -234,7 +234,7 @@ func (e *Enum) Process() {
 	if e.TypeMapping != nil {
 		if e.TypeMapping.Types[e.Index] != "" {
 			e.Value = map[string]interface{}{
-				e.TypeMapping.Types[e.Index]: e.ProcessAndUpdateData(e.TypeMapping.Types[e.Index]),
+				e.TypeMapping.Names[e.Index]: e.ProcessAndUpdateData(e.TypeMapping.Types[e.Index]),
 			}
 			return
 		}
