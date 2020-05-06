@@ -48,6 +48,7 @@ var BaseType = `{
   "ProposalIndex": "u32",
   "OpaquePeerId": "Bytes",
   "OpaqueMultiaddr": "Bytes",
+  "ProposalTitle": "Bytes",
   "IndividualExposure": {
     "type": "struct",
     "type_mapping": [
@@ -565,6 +566,15 @@ var BaseType = `{
       "NotForcing",
       "ForceNew",
       "ForceNone"
+    ]
+  },
+  "VoteStage": {
+    "type": "enum",
+    "value_list": [
+      "PreVoting",
+      "Commit",
+      "Voting",
+      "Completed"
     ]
   },
   "Heartbeat": {

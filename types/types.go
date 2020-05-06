@@ -591,3 +591,11 @@ func (d *Data) Process() {
 type Vote struct {
 	U8
 }
+
+type VoteOutcome struct {
+	ScaleDecoder
+}
+
+func (v *VoteOutcome) Process() {
+	v.Value = utiles.BytesToHex(v.NextBytes(32))
+}

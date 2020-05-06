@@ -36,7 +36,6 @@ func (r RuntimeType) Reg() *RuntimeType {
 		&Address{},
 		&Option{},
 		&Struct{},
-		&Bytes{},
 		&Enum{},
 		&Bytes{},
 		&Vec{},
