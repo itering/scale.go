@@ -54,3 +54,14 @@ func BytesToHex(b []byte) string {
 func IntToHex(i interface{}) string {
 	return fmt.Sprintf("%x", i)
 }
+
+func UniqueSlice(s []string) (list []string) {
+	keys := make(map[string]bool)
+	for _, entry := range s {
+		if _, value := keys[entry]; !value {
+			keys[entry] = true
+			list = append(list, entry)
+		}
+	}
+	return
+}

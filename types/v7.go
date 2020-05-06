@@ -144,8 +144,8 @@ func (m *MetadataV7ModuleStorageEntry) Init(data ScaleBytes, option *ScaleDecode
 
 func (m *MetadataV7ModuleStorageEntry) Process() {
 	m.Name = m.ProcessAndUpdateData("Bytes").(string)
-	m.Modifier = m.ProcessAndUpdateData("Enum", "Optional", "Default").(string)
-	storageFunctionType := m.ProcessAndUpdateData("Enum", "PlainType", "MapType", "DoubleMapType").(string)
+	m.Modifier = m.ProcessAndUpdateData("StorageModify").(string)
+	storageFunctionType := m.ProcessAndUpdateData("StorageFunctionType").(string)
 	if storageFunctionType == "MapType" {
 		m.Hasher = m.ProcessAndUpdateData("StorageHasher").(string)
 		m.Type = StorageType{

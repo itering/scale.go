@@ -158,8 +158,8 @@ func (m *MetadataV6ModuleStorage) Init(data ScaleBytes, option *ScaleDecoderOpti
 func (m *MetadataV6ModuleStorage) Process() {
 	cm := MetadataStorage{}
 	cm.Name = m.ProcessAndUpdateData("Bytes").(string)
-	cm.Modifier = m.ProcessAndUpdateData("Enum", "Optional", "Default").(string)
-	storageFunctionType := m.ProcessAndUpdateData("Enum", "PlainType", "MapType", "DoubleMapType").(string)
+	cm.Modifier = m.ProcessAndUpdateData("StorageModify").(string)
+	storageFunctionType := m.ProcessAndUpdateData("StorageFunctionType").(string)
 	if storageFunctionType == "MapType" {
 		cm.Hasher = m.ProcessAndUpdateData("StorageHasher").(string)
 		cm.Type = StorageType{

@@ -7,6 +7,8 @@ import (
 	"strings"
 )
 
+var RuntimeCodecType []string
+
 type ScaleDecoderOption struct {
 	Spec        int
 	SubType     string
@@ -93,32 +95,34 @@ func (s *ScaleDecoder) buildStruct() {
 	}
 }
 
-func (s *ScaleDecoder) ProcessAndUpdateData(typeString string, args ...string) interface{} {
+func (s *ScaleDecoder) ProcessAndUpdateData(typeString string, registry ...interface{}) interface{} {
 	r := RuntimeType{}
 
 	if typeRegistry == nil {
 		r.Reg()
 	}
-	c, rc, subType := r.decoderClass(typeString, s.Spec)
-	if c == nil {
-		panic(fmt.Sprintf("not found decoder class %s", typeString))
+
+	class, value, subType := r.decoderClass(typeString, s.Spec)
+	if class == nil {
+		panic(fmt.Sprintf("Not found decoder class %s", typeString))
 	}
+
 	offsetStart := s.Data.Offset
 
 	// init
-	method, exist := c.MethodByName("Init")
+	method, exist := class.MethodByName("Init")
 	if exist == false {
 		panic(fmt.Sprintf("%s not implement init function", typeString))
 	}
-	option := ScaleDecoderOption{SubType: subType, ValueList: args, Spec: s.Spec, Metadata: s.Metadata}
-	method.Func.Call([]reflect.Value{rc, reflect.ValueOf(s.Data), reflect.ValueOf(&option)})
+	option := ScaleDecoderOption{SubType: subType, Spec: s.Spec, Metadata: s.Metadata}
+	method.Func.Call([]reflect.Value{value, reflect.ValueOf(s.Data), reflect.ValueOf(&option)})
 
 	// process
-	rc.MethodByName("Process").Call(nil)
+	value.MethodByName("Process").Call(nil)
 
-	s.Data.Offset = int(rc.Elem().FieldByName("Data").FieldByName("Offset").Int())
-	s.Data.Data = rc.Elem().FieldByName("Data").FieldByName("Data").Bytes()
+	s.Data.Offset = int(value.Elem().FieldByName("Data").FieldByName("Offset").Int())
+	s.Data.Data = value.Elem().FieldByName("Data").FieldByName("Data").Bytes()
 	s.RawValue = utiles.BytesToHex(s.Data.Data[offsetStart:s.Data.Offset])
 
-	return rc.Elem().FieldByName("Value").Interface()
+	return value.Elem().FieldByName("Value").Interface()
 }

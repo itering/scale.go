@@ -78,12 +78,15 @@ func (m *MetadataV8Module) Process() {
 	cm := MetadataV8Module{}
 	cm.Name = m.ProcessAndUpdateData("Bytes").(string)
 
+	// storage
 	cm.HasStorage = m.ProcessAndUpdateData("bool").(bool)
 	if cm.HasStorage {
 		storageValue := m.ProcessAndUpdateData("MetadataV7ModuleStorage").(MetadataV7ModuleStorage)
 		cm.Storage = storageValue.Items
 		cm.Prefix = storageValue.Prefix
 	}
+
+	// call
 	cm.HasCalls = m.ProcessAndUpdateData("bool").(bool)
 	if cm.HasCalls {
 		callValue := m.ProcessAndUpdateData("Vec<MetadataModuleCall>").([]interface{})
@@ -93,6 +96,8 @@ func (m *MetadataV8Module) Process() {
 		}
 		cm.Calls = calls
 	}
+
+	// event
 	cm.HasEvents = m.ProcessAndUpdateData("bool").(bool)
 	if cm.HasEvents {
 		eventValue := m.ProcessAndUpdateData("Vec<MetadataModuleEvent>").([]interface{})
@@ -102,6 +107,8 @@ func (m *MetadataV8Module) Process() {
 		}
 		cm.Events = events
 	}
+
+	// constant
 	constantValue := m.ProcessAndUpdateData("Vec<MetadataV7ModuleConstants>").([]interface{})
 	var constants []map[string]interface{}
 	for _, v := range constantValue {

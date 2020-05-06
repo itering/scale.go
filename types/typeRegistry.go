@@ -81,6 +81,7 @@ func (r RuntimeType) Reg() *RuntimeType {
 		&Data{},
 		&Vote{},
 		&VoteOutcome{},
+		&RawBabeLabel{},
 		&MetadataModuleEvent{},
 		&MetadataModuleCallArgument{},
 		&MetadataModuleCall{},
@@ -127,6 +128,7 @@ func (r RuntimeType) Reg() *RuntimeType {
 func (r *RuntimeType) getCodecInstant(t string, spec int) (reflect.Type, reflect.Value, error) {
 	t = strings.ToLower(t)
 	rt, err := r.specialVersionCodec(t, spec)
+
 	if err != nil {
 		rt = typeRegistry[strings.ToLower(t)]
 		if rt == nil && t != "[]" && string(t[0]) == "[" && string(t[len(t)-1:]) == "]" {
@@ -142,6 +144,7 @@ func (r *RuntimeType) getCodecInstant(t string, spec int) (reflect.Type, reflect
 			return nil, reflect.ValueOf((*error)(nil)).Elem(), errors.New("Scale codec type nil" + t)
 		}
 	}
+
 	value := reflect.ValueOf(rt)
 	if value.Kind() == reflect.Ptr {
 		value = reflect.Indirect(value)
@@ -154,6 +157,7 @@ func (r *RuntimeType) getCodecInstant(t string, spec int) (reflect.Type, reflect
 func (r *RuntimeType) decoderClass(typeString string, spec int) (reflect.Type, reflect.Value, string) {
 	var typeParts []string
 	typeString = ConvertType(typeString)
+
 	if typeString[len(typeString)-1:] == ">" {
 		decoderClass, rc, err := r.getCodecInstant(typeString, spec)
 		if err == nil {
@@ -162,6 +166,7 @@ func (r *RuntimeType) decoderClass(typeString string, spec int) (reflect.Type, r
 		reg := regexp.MustCompile("^([^<]*)<(.+)>$")
 		typeParts = reg.FindStringSubmatch(typeString)
 	}
+
 	if len(typeParts) > 0 {
 		class, rc, err := r.getCodecInstant(typeParts[1], spec)
 		if err == nil {
@@ -173,6 +178,7 @@ func (r *RuntimeType) decoderClass(typeString string, spec int) (reflect.Type, r
 			return class, rc, ""
 		}
 	}
+
 	if typeString != "()" && string(typeString[0]) == "(" && string(typeString[len(typeString)-1:]) == ")" {
 		decoderClass, rc, _ := r.getCodecInstant("Struct", spec)
 		s := rc.Interface().(*Struct)
@@ -185,9 +191,8 @@ func (r *RuntimeType) decoderClass(typeString string, spec int) (reflect.Type, r
 
 func (r *RuntimeType) specialVersionCodec(t string, spec int) (interface{}, error) {
 	var rt interface{}
-	special, ok := specialRegistry[t]
-	if ok {
 
+	if special, ok := specialRegistry[t]; ok {
 		if spec >= special.Version[0] && spec <= special.Version[1] {
 			rt = special.Registry
 			return rt, nil

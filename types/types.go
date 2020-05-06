@@ -439,13 +439,22 @@ func (r *RawBabePreDigest) Init(data ScaleBytes, option *ScaleDecoderOption) {
 }
 
 func (r *RawBabePreDigest) Process() {
-	label := r.ProcessAndUpdateData("Enum", []string{"isPhantom", "Primary", "Secondary"}...).(string)
+	label := r.ProcessAndUpdateData("RawBabeLabel").(string)
 	for k, name := range r.Struct.TypeMapping.Names {
 		if name == label {
 			r.Value = map[string]interface{}{label: r.ProcessAndUpdateData(r.TypeMapping.Types[k])}
 			break
 		}
 	}
+}
+
+type RawBabeLabel struct {
+	Enum
+}
+
+func (s *RawBabeLabel) Init(data ScaleBytes, option *ScaleDecoderOption) {
+	option.ValueList = []string{"isPhantom", "Primary", "Secondary"}
+	s.Enum.Init(data, option)
 }
 
 type RawBabePreDigestPrimary struct{ Struct }

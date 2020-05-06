@@ -1,6 +1,38 @@
 package source
 
 var BaseType = `{
+  "MetadataVersion": {
+    "type": "enum",
+    "value_list": [
+      "MetadataV0Decoder",
+      "MetadataV1Decoder",
+      "MetadataV2Decoder",
+      "MetadataV3Decoder",
+      "MetadataV4Decoder",
+      "MetadataV5Decoder",
+      "MetadataV6Decoder",
+      "MetadataV7Decoder",
+      "MetadataV8Decoder",
+      "MetadataV9Decoder",
+      "MetadataV10Decoder",
+      "MetadataV11Decoder"
+    ]
+  },
+  "StorageModify": {
+    "type": "enum",
+    "value_list": [
+      "Optional",
+      "Default"
+    ]
+  },
+  "StorageFunctionType": {
+    "type": "enum",
+    "value_list": [
+      "PlainType",
+      "MapType",
+      "DoubleMapType"
+    ]
+  },
   "SetId": "U64",
   "RoundNumber": "U64",
   "SessionIndex": "U32",
