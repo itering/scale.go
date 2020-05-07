@@ -30,11 +30,15 @@ func RegCustomTypes(registry map[string]source.TypeStruct) {
 			}
 
 			// Explained
-			if explainedType := registry[typeString]; explainedType.Type == "string" {
-				instant := typeRegistry[strings.ToLower(explainedType.TypeString)]
-				if instant != nil {
-					regCustomKey(key, instant)
-					continue
+			if explainedType, ok := registry[typeString]; ok {
+				if explainedType.Type == "string" {
+					instant := typeRegistry[strings.ToLower(explainedType.TypeString)]
+					if instant != nil {
+						regCustomKey(key, instant)
+						continue
+					}
+				} else {
+					RegCustomTypes(map[string]source.TypeStruct{key: registry[typeString]})
 				}
 			}
 
