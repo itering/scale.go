@@ -20,7 +20,6 @@ func newStruct(names, typeString []string) *TypeMapping {
 func RegCustomTypes(registry map[string]source.TypeStruct) {
 	for key, typeStruct := range registry {
 		key = strings.ToLower(key)
-
 		switch typeStruct.Type {
 		case "string":
 			typeString := typeStruct.TypeString
@@ -28,6 +27,15 @@ func RegCustomTypes(registry map[string]source.TypeStruct) {
 			if instant != nil {
 				regCustomKey(key, instant)
 				continue
+			}
+
+			// Explained
+			if explainedType := registry[typeString]; explainedType.Type == "string" {
+				instant := typeRegistry[strings.ToLower(explainedType.TypeString)]
+				if instant != nil {
+					regCustomKey(key, instant)
+					continue
+				}
 			}
 
 			// Vec
