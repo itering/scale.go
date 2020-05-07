@@ -112,10 +112,10 @@ func (e *ExtrinsicDecoder) Process() {
 		if e.ContainsTransaction {
 			e.Address = e.ProcessAndUpdateData("Address").(string)
 			e.SignatureVersion = e.ProcessAndUpdateData("U8").(int)
-			if e.SignatureVersion == 1 {
-				e.Signature = e.ProcessAndUpdateData("Signature").(string)
-			} else {
+			if e.SignatureVersion == 2 {
 				e.Signature = e.ProcessAndUpdateData("EcdsaSignature").(string)
+			} else {
+				e.Signature = e.ProcessAndUpdateData("Signature").(string)
 			}
 			e.Era = e.ProcessAndUpdateData("Era").(string)
 			e.Nonce = int(e.ProcessAndUpdateData("Compact<U64>").(uint64))
