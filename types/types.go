@@ -10,6 +10,7 @@ import (
 	"github.com/shopspring/decimal"
 	"io"
 	"math"
+	"math/big"
 	"unicode/utf8"
 )
 
@@ -607,4 +608,36 @@ type VoteOutcome struct {
 
 func (v *VoteOutcome) Process() {
 	v.Value = utiles.BytesToHex(v.NextBytes(32))
+}
+
+type H160 struct{ ScaleDecoder }
+
+func (h *H160) Process() {
+	h.Value = utiles.AddHex(utiles.BytesToHex(h.NextBytes(20)))
+}
+
+type IntFixed struct {
+	ScaleDecoder
+	FixedLength int
+	Reader      io.Reader
+}
+
+func (f *IntFixed) Init(data ScaleBytes, option *ScaleDecoderOption) {
+	if option != nil && option.FixedLength != 0 {
+		f.FixedLength = option.FixedLength
+	}
+	f.ScaleDecoder.Init(data, option)
+}
+
+func (f *IntFixed) Process() {
+	value := utiles.U256(utiles.BytesToHex(utiles.ReverseBytes(f.NextBytes(f.FixedLength))))
+	var i, e, b = big.NewInt(2), big.NewInt(int64(f.FixedLength*8) - 1), big.NewInt(int64(f.FixedLength * 8))
+	unsignedMid := big.NewInt(2).Exp(i, e, nil)
+	ceiling := big.NewInt(2).Exp(i, b, nil)
+	fmt.Println(unsignedMid, ceiling)
+	if value.Cmp(unsignedMid) > 0 {
+		f.Value = value.Sub(value, ceiling)
+		return
+	}
+	f.Value = value
 }

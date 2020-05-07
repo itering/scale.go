@@ -69,3 +69,12 @@ func TestRegistration(t *testing.T) {
 	rb, _ := json.Marshal(r)
 	fmt.Println(string(rb))
 }
+
+func TestInt(t *testing.T) {
+	raw := "0x2efb"
+	m := types.ScaleDecoder{}
+	m.Init(types.ScaleBytes{Data: utiles.HexToBytes(raw)}, nil)
+	r := m.ProcessAndUpdateData("i16")
+	rb, _ := json.Marshal(r)
+	fmt.Println(string(rb))
+}

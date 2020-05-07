@@ -80,6 +80,9 @@
   "OpaqueMultiaddr": "Bytes",
   "ProposalTitle": "Bytes",
   "ProposalContents": "Bytes",
+  "StorageKey": "Bytes",
+  "DoNotConstruct": "Null",
+  "Origin": "Null",
   "IndividualExposure": {
     "type": "struct",
     "type_mapping": [

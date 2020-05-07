@@ -1,6 +1,7 @@
 package source
 
-var BaseType = `{
+var BaseType = `
+{
   "MetadataVersion": {
     "type": "enum",
     "value_list": [
@@ -82,6 +83,8 @@ var BaseType = `{
   "OpaqueMultiaddr": "Bytes",
   "ProposalTitle": "Bytes",
   "ProposalContents": "Bytes",
+  "StorageKey": "Bytes",
+  "DoNotConstruct": "Null",
   "IndividualExposure": {
     "type": "struct",
     "type_mapping": [

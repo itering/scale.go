@@ -31,6 +31,7 @@ func (r RuntimeType) Reg() *RuntimeType {
 		&U64{},
 		&U128{},
 		&Compact{},
+		&H160{},
 		&H256{},
 		&H512{},
 		&Address{},
@@ -112,6 +113,11 @@ func (r RuntimeType) Reg() *RuntimeType {
 	registry["compact<u32>"] = &CompactU32{}
 	registry["compact<moment>"] = &Moment{}
 	registry["hash"] = &H256{}
+	registry["i8"] = &IntFixed{FixedLength: 1}
+	registry["i16"] = &IntFixed{FixedLength: 2}
+	registry["i32"] = &IntFixed{FixedLength: 4}
+	registry["i64"] = &IntFixed{FixedLength: 8}
+	registry["i128"] = &IntFixed{FixedLength: 16}
 	registry["[u8; 32]"] = &VecU8FixedLength{FixedLength: 32}
 	registry["[u8; 16]"] = &VecU8FixedLength{FixedLength: 16}
 	registry["[u8; 8]"] = &VecU8FixedLength{FixedLength: 8}
