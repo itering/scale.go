@@ -85,6 +85,9 @@ var BaseType = `
   "ProposalContents": "Bytes",
   "StorageKey": "Bytes",
   "DoNotConstruct": "Null",
+  "Origin": "Null",
+  "Randomness": "Hash",
+  "MaybeRandomness": "Option<Randomness>",
   "IndividualExposure": {
     "type": "struct",
     "type_mapping": [

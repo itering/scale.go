@@ -42,16 +42,24 @@ func RegCustomTypes(registry map[string]source.TypeStruct) {
 				}
 			}
 
-			// Vec
+			// sub type vec|option
 			if typeString[len(typeString)-1:] == ">" {
 				reg := regexp.MustCompile("^([^<]*)<(.+)>$")
 				typeParts := reg.FindStringSubmatch(typeString)
-				if len(typeParts) > 2 && strings.ToLower(typeParts[1]) == "vec" {
-					v := Vec{}
-					v.SubType = typeParts[2]
-					regCustomKey(key, &v)
-					continue
+				if len(typeParts) > 2 {
+					if strings.ToLower(typeParts[1]) == "vec" {
+						v := Vec{}
+						v.SubType = typeParts[2]
+						regCustomKey(key, &v)
+						continue
+					} else if strings.ToLower(typeParts[1]) == "option" {
+						v := Option{}
+						v.SubType = typeParts[2]
+						regCustomKey(key, &v)
+						continue
+					}
 				}
+
 			}
 
 			// Tuple
