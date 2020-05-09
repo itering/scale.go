@@ -643,8 +643,8 @@
         "SessionIndex"
       ],
       [
-        "authorityId",
-        "AuthorityId"
+        "authorityIndex",
+        "AuthIndex"
       ]
     ]
   },

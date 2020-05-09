@@ -634,7 +634,6 @@ func (f *IntFixed) Process() {
 	var i, e, b = big.NewInt(2), big.NewInt(int64(f.FixedLength*8) - 1), big.NewInt(int64(f.FixedLength * 8))
 	unsignedMid := big.NewInt(2).Exp(i, e, nil)
 	ceiling := big.NewInt(2).Exp(i, b, nil)
-	fmt.Println(unsignedMid, ceiling)
 	if value.Cmp(unsignedMid) > 0 {
 		f.Value = value.Sub(value, ceiling)
 		return

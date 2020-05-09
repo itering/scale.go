@@ -646,8 +646,8 @@ var BaseType = `
         "SessionIndex"
       ],
       [
-        "authorityId",
-        "AuthorityId"
+        "authorityIndex",
+        "AuthIndex"
       ]
     ]
   },

@@ -95,7 +95,7 @@ func (s *ScaleDecoder) buildStruct() {
 	}
 }
 
-func (s *ScaleDecoder) ProcessAndUpdateData(typeString string, registry ...interface{}) interface{} {
+func (s *ScaleDecoder) ProcessAndUpdateData(typeString string) interface{} {
 	r := RuntimeType{}
 
 	if typeRegistry == nil {

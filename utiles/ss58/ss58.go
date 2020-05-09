@@ -6,7 +6,8 @@ import (
 	"golang.org/x/crypto/blake2b"
 )
 
-func SS58Decode(address string) string {
+// ss58 address decode
+func Decode(address string) string {
 	checksumPrefix := []byte("SS58PRE")
 	ss58Format := base58.Decode(address)
 	if ss58Format[0] != 42 {
@@ -29,7 +30,8 @@ func SS58Decode(address string) string {
 	return utiles.BytesToHex(ss58Format[1:33])
 }
 
-func SS58Encode(address string) string {
+// ss58 address encode
+func Encode(address string) string {
 	checksumPrefix := []byte("SS58PRE")
 	addressBytes := utiles.HexToBytes(address)
 	var checksumLength int
