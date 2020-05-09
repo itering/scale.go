@@ -293,9 +293,10 @@ func (s *BoxProposal) Process() {
 			Name:     arg.Name,
 			Type:     arg.Type,
 			Value:    s.ProcessAndUpdateData(arg.Type),
-			ValueRaw: "",
+			ValueRaw: s.RawValue,
 		})
 	}
+	result["params"] = param
 	s.Value = result
 }
 

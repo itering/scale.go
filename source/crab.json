@@ -4,6 +4,8 @@
   "KtonBalance": "Balance",
   "MomentT": "Moment",
   "Power": "u32",
+  "U256": "[u8; 32]",
+  "H128": "[u8; 16]",
   "DepositId": "U256",
   "EthBlockNumber": "u64",
   "EthAddress": "H160",
