@@ -88,6 +88,7 @@ var BaseType = `
   "Origin": "Null",
   "Randomness": "Hash",
   "MaybeRandomness": "Option<Randomness>",
+  "Perbill": "u32",
   "IndividualExposure": {
     "type": "struct",
     "type_mapping": [
