@@ -89,6 +89,19 @@ var BaseType = `
   "Randomness": "Hash",
   "MaybeRandomness": "Option<Randomness>",
   "Perbill": "u32",
+  "UnlockChunk": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "value",
+        "Compact<Balance>"
+      ],
+      [
+        "era",
+        "Compact<EraIndex>"
+      ]
+    ]
+  },
   "IndividualExposure": {
     "type": "struct",
     "type_mapping": [
