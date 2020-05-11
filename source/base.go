@@ -1301,6 +1301,23 @@ var BaseType = `
       ]
     ]
   },
+  "BalanceLock<Balance>": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "id",
+        "LockIdentifier"
+      ],
+      [
+        "amount",
+        "Balance"
+      ],
+      [
+        "reasons",
+        "Reasons"
+      ]
+    ]
+  },
   "VoteThreshold": {
     "type": "enum",
     "value_list": [
