@@ -69,7 +69,10 @@ func (s *ScaleDecoder) NextBytes(length int) []byte {
 
 func (s *ScaleDecoder) GetNextU8() int {
 	b := s.NextBytes(1)
-	return int(b[0])
+	if len(b) > 0 {
+		return int(b[0])
+	}
+	return 0
 }
 
 func (s *ScaleDecoder) getNextBool() bool {
