@@ -311,6 +311,10 @@ func (b *Balance) Process() {
 	_, _ = buf.Write(b.NextBytes(16))
 	c := make([]byte, 16)
 	_, _ = b.Reader.Read(c)
+	if utiles.BytesToHex(c) == "ffffffffffffffffffffffffffffffff" {
+		b.Value = decimal.Zero
+		return
+	}
 	b.Value = decimal.NewFromBigInt(uint128.FromBytes(c).Big(), 0)
 }
 
