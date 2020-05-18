@@ -1663,5 +1663,12 @@ var BaseType = `
         "IncomingParachainDeploy"
       ]
     ]
+  },
+  "Pays": {
+    "type": "enum",
+    "value_list": [
+      "Yes",
+      "No"
+    ]
   }
 }`
