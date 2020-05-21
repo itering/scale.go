@@ -24,5 +24,6 @@ func ConvertType(name string) string {
 	case "<Moment as HasCompact>::Type":
 		name = "Compact<Moment>"
 	}
+	name = strings.ReplaceAll(name, " ", "")
 	return name
 }

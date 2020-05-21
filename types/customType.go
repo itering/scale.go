@@ -19,7 +19,7 @@ func newStruct(names, typeString []string) *TypeMapping {
 
 func RegCustomTypes(registry map[string]source.TypeStruct) {
 	for key, typeStruct := range registry {
-		key = strings.ToLower(key)
+		key = strings.ReplaceAll(strings.ToLower(key), " ", "")
 		switch typeStruct.Type {
 		case "string":
 			typeString := typeStruct.TypeString

@@ -89,6 +89,20 @@ var BaseType = `
   "Randomness": "Hash",
   "MaybeRandomness": "Option<Randomness>",
   "Perbill": "u32",
+  "Proposal": "BoxProposal",
+  "KeyValue": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "key",
+        "Vec<u8>"
+      ],
+      [
+        "value",
+        "Vec<u8>"
+      ]
+    ]
+  },
   "UnlockChunk": {
     "type": "struct",
     "type_mapping": [

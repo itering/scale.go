@@ -645,3 +645,5 @@ func (f *IntFixed) Process() {
 	}
 	f.Value = value
 }
+
+type Key struct{ Bytes }
