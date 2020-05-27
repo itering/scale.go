@@ -27,6 +27,13 @@ func TestRawBabePreDigest(t *testing.T) {
 	m.ProcessAndUpdateData("RawBabePreDigest")
 }
 
+func TestRawBabePreDigestVRF(t *testing.T) {
+	raw := "0x030000000099decc0f0000000040a523a6fdd15ef7ffb2956689b828185b4d60cfac789f64d1b6f26257ebbe543349f8ceae602875c705a59b156af586c7cf907df5c8d5b541fa755638e32b07b02bfb5e7549fb88aa1f32da93519c67275e999da1cd58ec168c80b30e5b4d05"
+	m := types.ScaleDecoder{}
+	m.Init(types.ScaleBytes{Data: utiles.HexToBytes(raw)}, nil)
+	m.ProcessAndUpdateData("RawBabePreDigest")
+}
+
 func TestSet_Process(t *testing.T) {
 	types.RuntimeType{}.Reg()
 	types.RegCustomTypes(map[string]source.TypeStruct{

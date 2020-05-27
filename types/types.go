@@ -459,7 +459,7 @@ type RawBabeLabel struct {
 }
 
 func (s *RawBabeLabel) Init(data ScaleBytes, option *ScaleDecoderOption) {
-	option.ValueList = []string{"isPhantom", "Primary", "Secondary"}
+	option.ValueList = []string{"isPhantom", "Primary", "Secondary", "VRF"}
 	s.Enum.Init(data, option)
 }
 

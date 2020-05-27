@@ -69,6 +69,7 @@ func (r RuntimeType) Reg() *RuntimeType {
 		&RawBabePreDigest{},
 		&RawBabePreDigestPrimary{},
 		&RawBabePreDigestSecondary{},
+		&RawBabePreDigestSecondaryVRF{},
 		&SlotNumber{},
 		&AccountIndex{},
 		&LockIdentifier{},
@@ -120,6 +121,7 @@ func (r RuntimeType) Reg() *RuntimeType {
 	registry["i64"] = &IntFixed{FixedLength: 8}
 	registry["i128"] = &IntFixed{FixedLength: 16}
 	registry["[u8; 32]"] = &VecU8FixedLength{FixedLength: 32}
+	registry["[u8; 64]"] = &VecU8FixedLength{FixedLength: 64}
 	registry["[u8; 16]"] = &VecU8FixedLength{FixedLength: 16}
 	registry["[u8; 8]"] = &VecU8FixedLength{FixedLength: 8}
 	registry["[u8; 4]"] = &VecU8FixedLength{FixedLength: 4}
