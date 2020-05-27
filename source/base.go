@@ -90,6 +90,8 @@ var BaseType = `{
   "Perbill": "u32",
   "Proposal": "BoxProposal",
   "AuthoritySignature": "Signature",
+  "VrfData": "[u8; 32]",
+  "VrfProof": "[u8; 64]",
   "KeyValue": {
     "type": "struct",
     "type_mapping": [
@@ -1886,6 +1888,13 @@ var BaseType = `{
       ]
     ]
   },
-  "VrfData": "[u8; 32]",
-  "VrfProof": "[u8; 64]"
+  "ValidatorPrefs": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "Commission",
+        "Compact<Balance>"
+      ]
+    ]
+  }
 }`
