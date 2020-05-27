@@ -1,11 +1,11 @@
 {
+  "U256": "[u8; 32]",
+  "H128": "[u8; 16]",
   "TsInMs": "u64",
   "RingBalance": "Balance",
   "KtonBalance": "Balance",
   "MomentT": "Moment",
   "Power": "u32",
-  "U256": "[u8; 32]",
-  "H128": "[u8; 16]",
   "DepositId": "U256",
   "EthBlockNumber": "u64",
   "EthAddress": "H160",
@@ -29,6 +29,37 @@
       [
         "read",
         "write"
+      ]
+    ]
+  },
+  "SpanRecord": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "slashed",
+        "RKT"
+      ],
+      [
+        "paid_out",
+        "RKT"
+      ]
+    ]
+  },
+  "StakingRuntimeDispatchInfo": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "power",
+        "Power"
+      ]
+    ]
+  },
+  "BalancesRuntimeDispatchInfo": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "usable_balance",
+        "Balance"
       ]
     ]
   },
@@ -228,14 +259,6 @@
       [
         "lock_reasons",
         "LockReasons"
-      ],
-      [
-        "amount",
-        "Balance"
-      ],
-      [
-        "reasons",
-        "Reasons"
       ]
     ]
   },
@@ -321,14 +344,6 @@
       ],
       [
         "reserved_kton",
-        "Balance"
-      ],
-      [
-        "misc_frozen",
-        "Balance"
-      ],
-      [
-        "fee_frozen",
         "Balance"
       ]
     ]
@@ -619,20 +634,8 @@
         "StakingLock"
       ],
       [
-        "last_reward",
-        "Option<EraIndex>"
-      ],
-      [
-        "total",
-        "Compact<Balance>"
-      ],
-      [
-        "active",
-        "Compact<Balance>"
-      ],
-      [
-        "unlocking",
-        "Vec<UnlockChunk>"
+        "claimed_rewards",
+        "Vec<EraIndex>"
       ]
     ]
   },
@@ -658,14 +661,6 @@
       [
         "others",
         "Vec<IndividualExposure>"
-      ],
-      [
-        "total",
-        "Compact<Balance>"
-      ],
-      [
-        "own",
-        "Compact<Balance>"
       ]
     ]
   },
@@ -704,6 +699,27 @@
       [
         "k",
         "Balance"
+      ]
+    ]
+  },
+  "DispatchClass": {
+    "type": "enum",
+    "value_list": [
+      "Normal",
+      "Operational",
+      "Mandatory"
+    ]
+  },
+  "DispatchResult": {
+    "type": "enum",
+    "type_mapping": [
+      [
+        "Ok",
+        "Null"
+      ],
+      [
+        "Error",
+        "DispatchError"
       ]
     ]
   }

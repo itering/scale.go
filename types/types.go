@@ -440,7 +440,7 @@ type RawBabePreDigest struct {
 }
 
 func (r *RawBabePreDigest) Init(data ScaleBytes, option *ScaleDecoderOption) {
-	r.Struct.TypeMapping = &TypeMapping{Names: []string{"isPhantom", "Primary", "Secondary"}, Types: []string{"bool", "RawBabePreDigestPrimary", "RawBabePreDigestSecondary"}}
+	r.Struct.TypeMapping = &TypeMapping{Names: []string{"isPhantom", "Primary", "Secondary", "VRF"}, Types: []string{"bool", "RawBabePreDigestPrimary", "RawBabePreDigestSecondary", "RawBabePreDigestSecondaryVRF"}}
 	r.Struct.Init(data, option)
 }
 
@@ -481,6 +481,13 @@ func (r *RawBabePreDigestPrimary) Init(data ScaleBytes, option *ScaleDecoderOpti
 
 func (r *RawBabePreDigestSecondary) Init(data ScaleBytes, option *ScaleDecoderOption) {
 	r.Struct.TypeMapping = &TypeMapping{Names: []string{"authorityIndex", "slotNumber", "weight"}, Types: []string{"u32", "SlotNumber", "BabeBlockWeight"}}
+	r.Struct.Init(data, option)
+}
+
+type RawBabePreDigestSecondaryVRF struct{ Struct }
+
+func (r *RawBabePreDigestSecondaryVRF) Init(data ScaleBytes, option *ScaleDecoderOption) {
+	r.Struct.TypeMapping = &TypeMapping{Names: []string{"authorityIndex", "slotNumber", "vrfOutput", "vrfProof"}, Types: []string{"u32", "SlotNumber", "VrfData", "VrfProof"}}
 	r.Struct.Init(data, option)
 }
 

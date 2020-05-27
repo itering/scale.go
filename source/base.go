@@ -1,7 +1,6 @@
 package source
 
-var BaseType = `
-{
+var BaseType = `{
   "MetadataVersion": {
     "type": "enum",
     "value_list": [
@@ -90,6 +89,7 @@ var BaseType = `
   "MaybeRandomness": "Option<Randomness>",
   "Perbill": "u32",
   "Proposal": "BoxProposal",
+  "AuthoritySignature": "Signature",
   "KeyValue": {
     "type": "struct",
     "type_mapping": [
@@ -491,6 +491,27 @@ var BaseType = `
       [
         "scheduling",
         "ParaScheduling"
+      ]
+    ]
+  },
+  "ReferendumInfo": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "end",
+        "BlockNumber"
+      ],
+      [
+        "proposal",
+        "Proposal"
+      ],
+      [
+        "threshold",
+        "VoteThreshold"
+      ],
+      [
+        "delay",
+        "BlockNumber"
       ]
     ]
   },
@@ -1684,5 +1705,187 @@ var BaseType = `
       "Yes",
       "No"
     ]
-  }
+  },
+  "Renouncing": {
+    "type": "enum",
+    "type_mapping": [
+      [
+        "Member",
+        "Null"
+      ],
+      [
+        "RunnerUp",
+        "Null"
+      ],
+      [
+        "Candidate",
+        "Compact<u32>"
+      ]
+    ]
+  },
+  "ExtrinsicsWeight": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "normal",
+        "Weight"
+      ],
+      [
+        "operational",
+        "Weight"
+      ]
+    ]
+  },
+  "ValidatorCount": "u32",
+  "KeyOwnerProof": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "session",
+        "SessionIndex"
+      ],
+      [
+        "trieNodes",
+        "Vec<Bytes>"
+      ],
+      [
+        "validatorCount",
+        "ValidatorCount"
+      ]
+    ]
+  },
+  "DefunctVoter": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "who",
+        "AccountId"
+      ],
+      [
+        "voteCount",
+        "Compact<u32>"
+      ],
+      [
+        "candidateCount",
+        "Compact<u32>"
+      ]
+    ]
+  },
+  "ElectionSize": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "validators",
+        "ValidatorIndex"
+      ],
+      [
+        "nominators",
+        "NominatorIndex"
+      ]
+    ]
+  },
+  "AllowedSlots": {
+    "type": "enum",
+    "value_list": [
+      "PrimarySlots",
+      "PrimaryAndSecondaryPlainSlots",
+      "PrimaryAndSecondaryVRFSlots"
+    ]
+  },
+  "NextConfigDescriptorV1": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "c",
+        "(u64, u64)"
+      ],
+      [
+        "allowedSlots",
+        "AllowedSlots"
+      ]
+    ]
+  },
+  "NextConfigDescriptor": {
+    "type": "enum",
+    "type_mapping": [
+      [
+        "V0",
+        "Null"
+      ],
+      [
+        "V1",
+        "NextConfigDescriptorV1"
+      ]
+    ]
+  },
+  "StatementKind": {
+    "type": "enum",
+    "value_list": [
+      "Regular",
+      "Saft"
+    ]
+  },
+  "schedule::Priority": "u8",
+  "GrandpaEquivocation": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "roundNumber",
+        "u64"
+      ],
+      [
+        "identity",
+        "AuthorityId"
+      ],
+      [
+        "first",
+        "(GrandpaPrevote, AuthoritySignature)"
+      ],
+      [
+        "second",
+        "(GrandpaPrevote, AuthoritySignature)"
+      ]
+    ]
+  },
+  "GrandpaPrevote": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "targetHash",
+        "Hash"
+      ],
+      [
+        "targetNumber",
+        "BlockNumber"
+      ]
+    ]
+  },
+  "Equivocation": {
+    "type": "enum",
+    "type_mapping": [
+      [
+        "Prevote",
+        "GrandpaEquivocation"
+      ],
+      [
+        "Precommit",
+        "GrandpaEquivocation"
+      ]
+    ]
+  },
+  "EquivocationProof": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "setId",
+        "SetId"
+      ],
+      [
+        "equivocation",
+        "Equivocation"
+      ]
+    ]
+  },
+  "VrfData": "[u8; 32]",
+  "VrfProof": "[u8; 64]"
 }`
