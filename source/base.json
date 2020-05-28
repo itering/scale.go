@@ -1776,11 +1776,11 @@
     "type_mapping": [
       [
         "validators",
-        "ValidatorIndex"
+        "Compact<ValidatorIndex>"
       ],
       [
         "nominators",
-        "NominatorIndex"
+        "Compact<NominatorIndex>"
       ]
     ]
   },
