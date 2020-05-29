@@ -2,7 +2,7 @@ package types
 
 import (
 	"fmt"
-	"github.com/freehere107/go-scale-codec/utiles"
+	"github.com/itering/scale.go/utiles"
 	"reflect"
 	"strings"
 )

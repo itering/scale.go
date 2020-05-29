@@ -1,7 +1,7 @@
 package types_test
 
 import (
-	"github.com/freehere107/go-scale-codec/types"
+	"github.com/itering/scale.go/types"
 	"testing"
 )
 

@@ -17,7 +17,7 @@ Scale Codec written by golang, Reference from https://github.com/polkascan/py-sc
 ## Installation 
 
 ```bash
-go get -u github.com/freehere107/go-scale-codec
+go get -u github.com/itering/scale.go
 ```
 
 
@@ -36,7 +36,7 @@ go test ./... --cover -v
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/freehere107/go-scale-codec
+Bug reports and pull requests are welcome on GitHub at https://github.com/itering/scale.go
 
 ## License
 
