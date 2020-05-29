@@ -17,7 +17,7 @@ type Special struct {
 	Registry interface{}
 }
 
-var typeRegistry map[string]interface{}
+var TypeRegistry map[string]interface{}
 
 var specialRegistry map[string]Special
 
@@ -129,7 +129,7 @@ func (r RuntimeType) Reg() *RuntimeType {
 	registry["[u8; 256]"] = &VecU8FixedLength{FixedLength: 256}
 	registry["[u128; 3]"] = &FixedLengthArray{FixedLength: 3, SubType: "u128"}
 
-	typeRegistry = registry
+	TypeRegistry = registry
 
 	RegCustomTypes(source.LoadTypeRegistry([]byte(source.BaseType)))
 	return &r
@@ -140,7 +140,7 @@ func (r *RuntimeType) getCodecInstant(t string, spec int) (reflect.Type, reflect
 	rt, err := r.specialVersionCodec(t, spec)
 
 	if err != nil {
-		rt = typeRegistry[strings.ToLower(t)]
+		rt = TypeRegistry[strings.ToLower(t)]
 		if rt == nil && t != "[]" && string(t[0]) == "[" && string(t[len(t)-1:]) == "]" {
 			if typePart := strings.Split(string(t[1:len(t)-1]), ";"); len(typePart) == 2 {
 				fixed := FixedLengthArray{
@@ -164,9 +164,9 @@ func (r *RuntimeType) getCodecInstant(t string, spec int) (reflect.Type, reflect
 	return p.Type(), p, nil
 }
 
-func (r *RuntimeType) decoderClass(typeString string, spec int) (reflect.Type, reflect.Value, string) {
+func (r *RuntimeType) DecoderClass(typeString string, spec int) (reflect.Type, reflect.Value, string) {
 	var typeParts []string
-	typeString = ConvertType(typeString)
+	typeString = ConvertType(typeString, true)
 
 	if typeString[len(typeString)-1:] == ">" {
 		decoderClass, rc, err := r.getCodecInstant(typeString, spec)

@@ -43,7 +43,7 @@
       ]
     ]
   },
-  "BalanceLock<Balance, BlockNumber>": {
+  "BalanceLock<Balance>": {
     "type": "struct",
     "type_mapping": [
       [
@@ -81,5 +81,115 @@
       "Mandatory"
     ]
   },
-  "Weight#1058-?": "u64"
+  "DispatchResult": {
+    "type": "enum",
+    "type_mapping": [
+      [
+        "Ok",
+        "Null"
+      ],
+      [
+        "Error",
+        "DispatchError"
+      ]
+    ]
+  },
+  "Heartbeat": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "blockNumber",
+        "BlockNumber"
+      ],
+      [
+        "networkState",
+        "OpaqueNetworkState"
+      ],
+      [
+        "sessionIndex",
+        "SessionIndex"
+      ],
+      [
+        "authorityIndex",
+        "AuthIndex"
+      ]
+    ]
+  },
+  "Weight#1058-?": "u64",
+  "Heartbeat#1062-?": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "blockNumber",
+        "BlockNumber"
+      ],
+      [
+        "networkState",
+        "OpaqueNetworkState"
+      ],
+      [
+        "sessionIndex",
+        "SessionIndex"
+      ],
+      [
+        "authorityIndex",
+        "AuthIndex"
+      ],
+      [
+        "validatorsLen",
+        "u32"
+      ]
+    ]
+  },
+  "ReferendumInfo<BlockNumber, Hash, BalanceOf>": {
+    "type": "enum",
+    "type_mapping": [
+      [
+        "Ongoing",
+        "ReferendumStatus"
+      ],
+      [
+        "Finished",
+        "ReferendumInfoFinished"
+      ]
+    ]
+  },
+  "DispatchInfo#1062-?": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "weight",
+        "Weight"
+      ],
+      [
+        "class",
+        "DispatchClass"
+      ],
+      [
+        "paysFee",
+        "Pays"
+      ]
+    ]
+  },
+  "ReferendumInfo#1019-1054": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "end",
+        "BlockNumber"
+      ],
+      [
+        "proposal",
+        "Proposal"
+      ],
+      [
+        "threshold",
+        "VoteThreshold"
+      ],
+      [
+        "delay",
+        "BlockNumber"
+      ]
+    ]
+  }
 }

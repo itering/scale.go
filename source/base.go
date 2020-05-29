@@ -25,12 +25,33 @@ var BaseType = `{
       "Default"
     ]
   },
+  "StoredState": {
+    "type": "enum",
+    "value_list": [
+      "Live",
+      "PendingPause",
+      "Paused",
+      "PendingResume"
+    ]
+  },
   "StorageFunctionType": {
     "type": "enum",
     "value_list": [
       "PlainType",
       "MapType",
       "DoubleMapType"
+    ]
+  },
+  "Conviction": {
+    "type": "enum",
+    "value_list": [
+      "None",
+      "Locked1x",
+      "Locked2x",
+      "Locked3x",
+      "Locked4x",
+      "Locked5x",
+      "Locked6x"
     ]
   },
   "SetId": "U64",
@@ -64,7 +85,6 @@ var BaseType = `{
   "<AuthorityId as RuntimeAppPublic>::Signature": "Signature",
   "&[u8]": "Bytes",
   "ConsensusEngineId": "[u8; 4]",
-  "SpanIndex": "u32",
   "StrikeCount": "u32",
   "RefCount": "u8",
   "ValidatorId": "AccountId",
@@ -92,6 +112,141 @@ var BaseType = `{
   "AuthoritySignature": "Signature",
   "VrfData": "[u8; 32]",
   "VrfProof": "[u8; 64]",
+  "DigestOf": "Digest",
+  "Permill": "u32",
+  "Percent": "u8",
+  " <T as Trait<I>>::Proposal": "BoxProposal",
+  "IncludedBlocks": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "actualNumber",
+        "BlockNumber"
+      ],
+      [
+        "session",
+        "SessionIndex"
+      ],
+      [
+        "randomSeed",
+        "H256"
+      ],
+      [
+        "activeParachains",
+        "Vec<ParaId>"
+      ],
+      [
+        "paraBlocks",
+        "Vec<Hash>"
+      ]
+    ]
+  },
+  "BlockAttestations": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "receipt",
+        "CandidateReceipt"
+      ],
+      [
+        "valid",
+        "Vec<AccountId>"
+      ],
+      [
+        "invalid",
+        "Vec<AccountId>"
+      ]
+    ]
+  },
+  "EraRewardPoints": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "total",
+        "RewardPoint"
+      ],
+      [
+        "individual",
+        "Vec<(AccountId, RewardPoint)>"
+      ]
+    ]
+  },
+  "SpanIndex": "u32",
+  "slashing::SpanIndex": "SpanIndex",
+  "SlashingSpans": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "spanIndex",
+        "SpanIndex"
+      ],
+      [
+        "lastStart",
+        "EraIndex"
+      ],
+      [
+        "lastNonzeroSlash",
+        "EraIndex"
+      ],
+      [
+        "prior",
+        "Vec<EraIndex>"
+      ]
+    ]
+  },
+  "slashing::SlashingSpans": "SlashingSpans",
+  "SpanRecord": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "slashed",
+        "Balance"
+      ],
+      [
+        "paidOut",
+        "Balance"
+      ]
+    ]
+  },
+  "slashing::SpanRecord<BalanceOf>": "SpanRecord",
+  "UnappliedSlashOther": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "account",
+        "AccountId"
+      ],
+      [
+        "amount",
+        "Balance"
+      ]
+    ]
+  },
+  "UnappliedSlash<AccountId, BalanceOf>": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "validator",
+        "AccountId"
+      ],
+      [
+        "own",
+        "AccountId"
+      ],
+      [
+        "others",
+        "Vec<UnappliedSlashOther>"
+      ],
+      [
+        "reporters",
+        "Vec<AccountId>"
+      ],
+      [
+        "payout",
+        "Balance"
+      ]
+    ]
+  },
   "KeyValue": {
     "type": "struct",
     "type_mapping": [
@@ -606,6 +761,7 @@ var BaseType = `{
       ]
     ]
   },
+  "WinningData": "Vec<WinningDataEntry>",
   "WinningDataEntry": {
     "type": "struct",
     "type_mapping": [
@@ -749,32 +905,6 @@ var BaseType = `{
       [
         "logs",
         "Vec<DigestItem<Hash>>"
-      ]
-    ]
-  },
-  "SpanRecord": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "slashed",
-        "Balance"
-      ],
-      [
-        "paidOut",
-        "Balance"
-      ]
-    ]
-  },
-  "UnappliedSlashOther": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "account",
-        "AccountId"
-      ],
-      [
-        "amount",
-        "Balance"
       ]
     ]
   },
@@ -1701,6 +1831,32 @@ var BaseType = `{
       ]
     ]
   },
+  "Bidder": {
+    "type": "enum",
+    "type_mapping": [
+      [
+        "New",
+        "NewBidder"
+      ],
+      [
+        "Existing",
+        "ParaId"
+      ]
+    ]
+  },
+  "NewBidder": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "who",
+        "AccountId"
+      ],
+      [
+        "sub",
+        "SubId"
+      ]
+    ]
+  },
   "Pays": {
     "type": "enum",
     "value_list": [
@@ -1894,6 +2050,40 @@ var BaseType = `{
       [
         "Commission",
         "Compact<Balance>"
+      ]
+    ]
+  },
+  "StoredPendingChange": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "scheduled_at",
+        "u32"
+      ],
+      [
+        "forced",
+        "u32"
+      ]
+    ]
+  },
+  "Votes": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "index",
+        "ProposalIndex"
+      ],
+      [
+        "threshold",
+        "MemberCount"
+      ],
+      [
+        "ayes",
+        "Vec<AccountId>"
+      ],
+      [
+        "nays",
+        "Vec<AccountId>"
       ]
     ]
   }

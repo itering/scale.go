@@ -369,6 +369,7 @@
       ]
     ]
   },
+  "EthHeaderBrief::<AccountId>": "EthHeaderBrief",
   "HeaderInfo": {
     "type": "struct",
     "type_mapping": [
@@ -722,5 +723,33 @@
         "DispatchError"
       ]
     ]
-  }
+  },
+  "OpenTip<AccountId, RingBalance, BlockNumber, Hash>": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "reason",
+        "Hash"
+      ],
+      [
+        "who",
+        "AccountId"
+      ],
+      [
+        "finder",
+        "Option<OpenTipFinder>"
+      ],
+      [
+        "closes",
+        "Option<BlockNumber>"
+      ],
+      [
+        "tips",
+        "Vec<OpenTipTip>"
+      ]
+    ]
+  },
+  "slashing::SpanRecord<RingBalance, KtonBalance>": "SpanRecord",
+  "slashing::RKT": "RKT",
+  "ElectionResultT": "ElectionResult"
 }

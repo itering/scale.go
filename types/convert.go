@@ -2,9 +2,11 @@ package types
 
 import "strings"
 
-func ConvertType(name string) string {
+func ConvertType(name string, option ...interface{}) string {
 	defer func() {
-		RuntimeCodecType = append(RuntimeCodecType, name)
+		if len(option) == 0 {
+			RuntimeCodecType = append(RuntimeCodecType, name)
+		}
 	}()
 	name = strings.ReplaceAll(name, "T::", "")
 	name = strings.ReplaceAll(name, "<T>", "")
@@ -23,6 +25,8 @@ func ConvertType(name string) string {
 		name = "Compact<BlockNumber>"
 	case "<Moment as HasCompact>::Type":
 		name = "Compact<Moment>"
+	case "<T as Trait<I>>::Proposal":
+		name = "Proposal"
 	}
 	return name
 }

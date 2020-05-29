@@ -101,11 +101,11 @@ func (s *ScaleDecoder) buildStruct() {
 func (s *ScaleDecoder) ProcessAndUpdateData(typeString string) interface{} {
 	r := RuntimeType{}
 
-	if typeRegistry == nil {
+	if TypeRegistry == nil {
 		r.Reg()
 	}
 
-	class, value, subType := r.decoderClass(typeString, s.Spec)
+	class, value, subType := r.DecoderClass(typeString, s.Spec)
 	if class == nil {
 		panic(fmt.Sprintf("Not found decoder class %s", typeString))
 	}

@@ -1,8 +1,12 @@
 package scalecodec_test
 
 import (
+	"fmt"
 	"github.com/itering/scale.go"
+	"github.com/itering/scale.go/source"
+	"github.com/itering/scale.go/types"
 	"github.com/itering/scale.go/utiles"
+	"io/ioutil"
 	"testing"
 )
 
@@ -20,4 +24,16 @@ func TestMetadataV11DecoderProcess(t *testing.T) {
 	if m.Version != "MetadataV11Decoder" {
 		t.Errorf("MetadataV11 version should equal 11")
 	}
+}
+
+func TestCheckRegistry(t *testing.T) {
+	m := scalecodec.MetadataDecoder{}
+	m.Init(utiles.HexToBytes(Crab2))
+	_ = m.Process()
+	c, err := ioutil.ReadFile(fmt.Sprintf("%s.json", "source/crab"))
+	if err != nil {
+		panic(err)
+	}
+	types.RegCustomTypes(source.LoadTypeRegistry(c))
+	m.CheckRegistry()
 }
