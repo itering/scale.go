@@ -1,0 +1,83 @@
+{
+  "BlockNumber": "u32",
+  "LeasePeriod": "BlockNumber",
+  "Keys": "SessionKeysPolkadot",
+  "Weight": "u32",
+  "Weight#3-?": "u64",
+  "DispatchInfo": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "weight",
+        "Weight"
+      ],
+      [
+        "class",
+        "DispatchClass"
+      ],
+      [
+        "paysFee",
+        "Pays"
+      ]
+    ]
+  },
+  "DispatchClass": {
+    "type": "enum",
+    "value_list": [
+      "Normal",
+      "Operational",
+      "Mandatory"
+    ]
+  },
+  "DispatchResult": {
+    "type": "enum",
+    "type_mapping": [
+      [
+        "Ok",
+        "Null"
+      ],
+      [
+        "Error",
+        "DispatchError"
+      ]
+    ]
+  },
+  "DispatchError": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "module",
+        "Option<u8>"
+      ],
+      [
+        "error",
+        "u8"
+      ]
+    ]
+  },
+  "SessionKeysPolkadot": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "grandpa",
+        "AccountId"
+      ],
+      [
+        "babe",
+        "AccountId"
+      ],
+      [
+        "im_online",
+        "AccountId"
+      ],
+      [
+        "authority_discovery",
+        "AccountId"
+      ],
+      [
+        "parachains",
+        "AccountId"
+      ]
+    ]
+  }
+}

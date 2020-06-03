@@ -177,6 +177,9 @@ func (v *Vec) Init(data ScaleBytes, option *ScaleDecoderOption) {
 func (v *Vec) Process() {
 	elementCount := v.ProcessAndUpdateData("Compact<u32>").(int)
 	var result []interface{}
+	if elementCount > 100000 {
+		return
+	}
 	for i := 0; i < elementCount; i++ {
 		element := v.ProcessAndUpdateData(v.SubType)
 		v.Elements = append(v.Elements, element)

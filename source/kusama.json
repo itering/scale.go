@@ -94,6 +94,19 @@
       ]
     ]
   },
+  "DispatchError#1031-1031": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "module",
+        "Option<u8>"
+      ],
+      [
+        "error",
+        "u8"
+      ]
+    ]
+  },
   "Heartbeat": {
     "type": "struct",
     "type_mapping": [
