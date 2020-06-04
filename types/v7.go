@@ -71,7 +71,7 @@ type MetadataV7Module struct {
 
 func (m *MetadataV7Module) Process() {
 	cm := MetadataV7Module{}
-	cm.Name = m.ProcessAndUpdateData("Bytes").(string)
+	cm.Name = m.ProcessAndUpdateData("String").(string)
 
 	cm.HasStorage = m.ProcessAndUpdateData("bool").(bool)
 	if cm.HasStorage {
@@ -118,7 +118,7 @@ type MetadataV7ModuleStorage struct {
 
 func (m *MetadataV7ModuleStorage) Process() {
 	cm := MetadataV7ModuleStorage{}
-	cm.Prefix = m.ProcessAndUpdateData("Bytes").(string)
+	cm.Prefix = m.ProcessAndUpdateData("String").(string)
 	itemsValue := m.ProcessAndUpdateData("Vec<MetadataV7ModuleStorageEntry>").([]interface{})
 	var items []MetadataStorage
 	for _, v := range itemsValue {
@@ -143,7 +143,7 @@ func (m *MetadataV7ModuleStorageEntry) Init(data ScaleBytes, option *ScaleDecode
 }
 
 func (m *MetadataV7ModuleStorageEntry) Process() {
-	m.Name = m.ProcessAndUpdateData("Bytes").(string)
+	m.Name = m.ProcessAndUpdateData("String").(string)
 	m.Modifier = m.ProcessAndUpdateData("StorageModify").(string)
 	storageFunctionType := m.ProcessAndUpdateData("StorageFunctionType").(string)
 	if storageFunctionType == "MapType" {
@@ -152,15 +152,15 @@ func (m *MetadataV7ModuleStorageEntry) Process() {
 			Origin: "MapType",
 			MapType: &MapType{
 				Hasher:   m.Hasher,
-				Key:      ConvertType(m.ProcessAndUpdateData("Bytes").(string)),
-				Value:    ConvertType(m.ProcessAndUpdateData("Bytes").(string)),
+				Key:      ConvertType(m.ProcessAndUpdateData("String").(string)),
+				Value:    ConvertType(m.ProcessAndUpdateData("String").(string)),
 				IsLinked: m.ProcessAndUpdateData("bool").(bool)},
 		}
 	} else if storageFunctionType == "DoubleMapType" {
 		m.Hasher = m.ProcessAndUpdateData("StorageHasher").(string)
-		key1 := ConvertType(m.ProcessAndUpdateData("Bytes").(string))
-		key2 := ConvertType(m.ProcessAndUpdateData("Bytes").(string))
-		value := ConvertType(m.ProcessAndUpdateData("Bytes").(string))
+		key1 := ConvertType(m.ProcessAndUpdateData("String").(string))
+		key2 := ConvertType(m.ProcessAndUpdateData("String").(string))
+		value := ConvertType(m.ProcessAndUpdateData("String").(string))
 		key2Hasher := m.ProcessAndUpdateData("StorageHasher").(string)
 		m.Type = StorageType{
 			Origin: "DoubleMapType",
@@ -173,13 +173,13 @@ func (m *MetadataV7ModuleStorageEntry) Process() {
 			},
 		}
 	} else if storageFunctionType == "PlainType" {
-		plainType := ConvertType(m.ProcessAndUpdateData("Bytes").(string))
+		plainType := ConvertType(m.ProcessAndUpdateData("String").(string))
 		m.Type = StorageType{
 			Origin:    "PlainType",
 			PlainType: &plainType}
 	}
 	m.Fallback = m.ProcessAndUpdateData("HexBytes").(string)
-	docs := m.ProcessAndUpdateData("Vec<Bytes>").([]interface{})
+	docs := m.ProcessAndUpdateData("Vec<String>").([]interface{})
 	for _, v := range docs {
 		m.Docs = append(m.Docs, v.(string))
 	}

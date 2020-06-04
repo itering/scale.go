@@ -76,7 +76,7 @@ func (m *MetadataV8Module) GetIdentifier() string {
 
 func (m *MetadataV8Module) Process() {
 	cm := MetadataV8Module{}
-	cm.Name = m.ProcessAndUpdateData("Bytes").(string)
+	cm.Name = m.ProcessAndUpdateData("String").(string)
 
 	// storage
 	cm.HasStorage = m.ProcessAndUpdateData("bool").(bool)
@@ -139,9 +139,9 @@ func (m *MetadataModuleError) Init(data ScaleBytes, option *ScaleDecoderOption) 
 
 func (m *MetadataModuleError) Process() {
 	cm := MetadataModuleError{}
-	cm.Name = m.ProcessAndUpdateData("Bytes").(string)
+	cm.Name = m.ProcessAndUpdateData("String").(string)
 	var docsArr []string
-	docs := m.ProcessAndUpdateData("Vec<Bytes>").([]interface{})
+	docs := m.ProcessAndUpdateData("Vec<String>").([]interface{})
 	for _, v := range docs {
 		docsArr = append(docsArr, v.(string))
 	}

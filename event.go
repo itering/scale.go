@@ -71,9 +71,11 @@ func (e *EventRecord) Process() map[string]interface{} {
 	}
 
 	if e.Metadata.MetadataVersion >= 5 {
-		topicValue := e.ProcessAndUpdateData("Vec<Hash>").([]interface{})
-		for _, v := range topicValue {
-			e.Topic = append(e.Topic, v.(string))
+		if topic := e.ProcessAndUpdateData("Vec<Hash>"); topic != nil {
+			topicValue := topic.([]interface{})
+			for _, v := range topicValue {
+				e.Topic = append(e.Topic, v.(string))
+			}
 		}
 	}
 

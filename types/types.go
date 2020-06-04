@@ -584,7 +584,7 @@ type Data struct {
 func (d *Data) Init(data ScaleBytes, option *ScaleDecoderOption) {
 	d.TypeMapping = &TypeMapping{
 		Names: []string{"None", "Raw", "BlakeTwo256", "Sha256", "Keccak256", "ShaThree256"},
-		Types: []string{"Null", "Bytes", "H256", "H256", "H256", "H256"},
+		Types: []string{"Null", "String", "H256", "H256", "H256", "H256"},
 	}
 	d.Enum.Init(data, option)
 }
