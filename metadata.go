@@ -2,7 +2,6 @@ package scalecodec
 
 import (
 	"errors"
-	"fmt"
 	"github.com/itering/scale.go/types"
 	"github.com/itering/scale.go/utiles"
 )
@@ -34,7 +33,7 @@ func (m *MetadataDecoder) Process() error {
 
 }
 
-func (m *MetadataDecoder) CheckRegistry() {
+func (m *MetadataDecoder) CheckRegistry() (notReg []string) {
 	r := types.RuntimeType{}
 
 	if types.TypeRegistry == nil {
@@ -43,7 +42,8 @@ func (m *MetadataDecoder) CheckRegistry() {
 
 	for _, typeString := range m.CodecTypes {
 		if class, _, _ := r.DecoderClass(typeString, 0); class == nil {
-			fmt.Println(fmt.Sprintf("Not found decoder class %s", typeString))
+			notReg = append(notReg, typeString)
 		}
 	}
+	return
 }
