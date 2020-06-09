@@ -54,6 +54,7 @@ var BaseType = `{
       "Locked6x"
     ]
   },
+  "ElectionScore": "[u128; 3]",
   "SetId": "U64",
   "RoundNumber": "U64",
   "SessionIndex": "U32",
