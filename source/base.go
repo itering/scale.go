@@ -111,12 +111,14 @@ var BaseType = `{
   "Perbill": "u32",
   "Proposal": "BoxProposal",
   "AuthoritySignature": "Signature",
+  "CollatorSignature": "Signature",
   "VrfData": "[u8; 32]",
   "VrfProof": "[u8; 64]",
   "DigestOf": "Digest",
   "Permill": "u32",
   "Percent": "u8",
   "HeadData": "Bytes",
+  "Remark": "[u8; 32]",
   "ValidatorSignature": "Signature",
   "IncludedBlocks": {
     "type": "struct",
@@ -377,11 +379,15 @@ var BaseType = `{
     "type_mapping": [
       [
         "candidate",
-        "CandidateReceipt"
+        "AbridgedCandidateReceipt"
       ],
       [
         "validityVotes",
-        "Vec<ValidityVote>"
+        "Vec<ValidityAttestation>"
+      ],
+      [
+        "validatorIndices",
+        "BitVec"
       ]
     ]
   },
@@ -638,6 +644,13 @@ var BaseType = `{
     ]
   },
   "ParaScheduling": {
+    "type": "enum",
+    "value_list": [
+      "Always",
+      "Dynamic"
+    ]
+  },
+  "Scheduling": {
     "type": "enum",
     "value_list": [
       "Always",
@@ -1760,7 +1773,7 @@ var BaseType = `{
     "type": "enum",
     "type_mapping": [
       [
-        "None",
+        "Never",
         "Null"
       ],
       [
@@ -1809,6 +1822,10 @@ var BaseType = `{
       [
         "codeHash",
         "Hash"
+      ],
+      [
+        "codeSize",
+        "u32"
       ],
       [
         "initialHeadData",
@@ -2142,6 +2159,153 @@ var BaseType = `{
         "signingContext",
         "SigningContext"
       ]
+    ]
+  },
+  "ProxyType": {
+    "type": "enum",
+    "value_list": [
+      "Any",
+      "NonTransfer",
+      "Staking"
+    ]
+  },
+  "AbridgedCandidateReceipt": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "parachainIndex",
+        "ParaId"
+      ],
+      [
+        "relayParent",
+        "Hash"
+      ],
+      [
+        "headData",
+        "HeadData"
+      ],
+      [
+        "collator",
+        "CollatorId"
+      ],
+      [
+        "signature",
+        "CollatorSignature"
+      ],
+      [
+        "povBlockHash",
+        "Hash"
+      ],
+      [
+        "commitments",
+        "CandidateCommitments"
+      ]
+    ]
+  },
+  "UpwardMessage": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "origin",
+        "ParachainDispatchOrigin"
+      ],
+      [
+        "data",
+        "Vec<u8>"
+      ]
+    ]
+  },
+  "CandidateCommitments": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "fees",
+        "Balance"
+      ],
+      [
+        "upwardMessages",
+        "Vec<UpwardMessage>"
+      ],
+      [
+        "erasureRoot",
+        "Hash"
+      ],
+      [
+        "newValidationCode",
+        "Option<ValidationCode>"
+      ],
+      [
+        "processedDownwardMessages",
+        "u32"
+      ]
+    ]
+  },
+  "DownwardMessage": {
+    "type": "enum",
+    "type_mapping": [
+      [
+        "TransferInto",
+        "(AccountId, Balance, Remark)"
+      ],
+      [
+        "Opaque",
+        "Vec<u8>"
+      ]
+    ]
+  },
+  "GlobalValidationSchedule": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "maxCodeSize",
+        "u32"
+      ],
+      [
+        "maxHeadDataSize",
+        "u32"
+      ],
+      [
+        "blockNumber",
+        "BlockNumber"
+      ]
+    ]
+  },
+  "IncomingParachainDeploy": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "code",
+        "ValidationCode"
+      ],
+      [
+        "initialHeadData",
+        "HeadData"
+      ]
+    ]
+  },
+  "LocalValidationData": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "parentHead",
+        "HeadData"
+      ],
+      [
+        "balance",
+        "Balance"
+      ],
+      [
+        "codeUpgradeAllowed",
+        "Option<BlockNumber>"
+      ]
+    ]
+  },
+  "ParachainDispatchOrigin": {
+    "type": "enum",
+    "value_list": [
+      "Signed",
+      "Parachain",
+      "Root"
     ]
   }
 }
