@@ -116,7 +116,8 @@ var BaseType = `{
   "DigestOf": "Digest",
   "Permill": "u32",
   "Percent": "u8",
-  " <T as Trait<I>>::Proposal": "BoxProposal",
+  "HeadData": "Bytes",
+  "ValidatorSignature": "Signature",
   "IncludedBlocks": {
     "type": "struct",
     "type_mapping": [
@@ -2087,5 +2088,61 @@ var BaseType = `{
         "Vec<AccountId>"
       ]
     ]
+  },
+  "SigningContext": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "sessionIndex",
+        "sessionIndex"
+      ],
+      [
+        "parentHash",
+        "Hash"
+      ]
+    ]
+  },
+  "MembershipProof": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "session",
+        "sessionIndex"
+      ],
+      [
+        "trieNodes",
+        "Vec<Vec<u8>>"
+      ],
+      [
+        "validatorCount",
+        "ValidatorCount"
+      ]
+    ]
+  },
+  "DoubleVoteReport": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "identity",
+        "ValidatorId"
+      ],
+      [
+        "first",
+        "(Statement, ValidatorSignature)"
+      ],
+      [
+        "second",
+        "(Statement, ValidatorSignature)"
+      ],
+      [
+        "proof",
+        "MembershipProof"
+      ],
+      [
+        "signingContext",
+        "SigningContext"
+      ]
+    ]
   }
-}`
+}
+`
