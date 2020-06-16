@@ -2174,7 +2174,8 @@ var BaseType = `{
     "value_list": [
       "Any",
       "NonTransfer",
-      "Staking"
+      "isGovernance",
+	  "isStaking"
     ]
   },
   "AbridgedCandidateReceipt": {
