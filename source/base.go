@@ -120,6 +120,7 @@ var BaseType = `{
   "HeadData": "Bytes",
   "Remark": "[u8; 32]",
   "ValidatorSignature": "Signature",
+  "Status": "BalanceStatus",
   "IncludedBlocks": {
     "type": "struct",
     "type_mapping": [
@@ -427,6 +428,13 @@ var BaseType = `{
       "Fee",
       "Misc",
       "All"
+    ]
+  },
+  "BalanceStatus": {
+    "type": "enum",
+    "value_list": [
+      "Free",
+      "Reserved"
     ]
   },
   "NextAuthority": {
