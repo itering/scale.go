@@ -2175,7 +2175,7 @@ var BaseType = `{
       "Any",
       "NonTransfer",
       "isGovernance",
-	  "isStaking"
+      "isStaking"
     ]
   },
   "AbridgedCandidateReceipt": {
@@ -2316,6 +2316,31 @@ var BaseType = `{
       "Parachain",
       "Root"
     ]
-  }
-}
-`
+  },
+  "Period": "(BlockNumber, u32)",
+  "Priority": "u8",
+  "SchedulePeriod": "Period",
+  "SchedulePriority": "Priority",
+  "Scheduled": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "maybeId",
+        "Option<Bytes>"
+      ],
+      [
+        "priority",
+        "SchedulePriority"
+      ],
+      [
+        "call",
+        "Call"
+      ],
+      [
+        "maybePeriodic",
+        "Option<SchedulePeriod>"
+      ]
+    ]
+  },
+  "schedule::Period<BlockNumber>":"Period"
+}`
