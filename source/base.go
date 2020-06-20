@@ -2319,8 +2319,8 @@ var BaseType = `{
   },
   "Period": "(BlockNumber, u32)",
   "Priority": "u8",
-  "SchedulePeriod": "Period",
-  "SchedulePriority": "Priority",
+  "SchedulePeriod": "(BlockNumber, u32)",
+  "SchedulePriority": "u8",
   "Scheduled": {
     "type": "struct",
     "type_mapping": [
@@ -2342,5 +2342,5 @@ var BaseType = `{
       ]
     ]
   },
-  "schedule::Period<BlockNumber>":"Period"
+  "schedule::Period<BlockNumber>":"(BlockNumber, u32)"
 }`
