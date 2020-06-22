@@ -2342,5 +2342,18 @@ var BaseType = `{
       ]
     ]
   },
-  "schedule::Period<BlockNumber>":"(BlockNumber, u32)"
+  "schedule::Period<BlockNumber>": "(BlockNumber, u32)",
+  "ChangesTrieConfiguration": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "digestInterval",
+        "u32"
+      ],
+      [
+        "digestLevels",
+        "u32"
+      ]
+    ]
+  }
 }`
