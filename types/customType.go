@@ -68,8 +68,8 @@ func RegCustomTypes(registry map[string]source.TypeStruct) {
 				s.TypeString = typeString
 				s.buildStruct()
 				regCustomKey(key, &s)
+				continue
 			}
-
 		case "struct":
 			var names, typeStrings []string
 			for _, v := range typeStruct.TypeMapping {

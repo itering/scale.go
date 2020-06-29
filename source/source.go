@@ -29,5 +29,14 @@ func LoadTypeRegistry(source []byte) map[string]TypeStruct {
 			ts[key] = t
 		}
 	}
+	// check inherit
+	for key, value := range ts {
+		if value.Type == "string" {
+			if instant, ok := ts[value.TypeString]; ok {
+				ts[key] = instant
+			}
+		}
+	}
+
 	return ts
 }

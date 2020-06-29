@@ -121,6 +121,7 @@ var BaseType = `{
   "Remark": "[u8; 32]",
   "ValidatorSignature": "Signature",
   "Status": "BalanceStatus",
+  "weights::ExtrinsicsWeight": "ExtrinsicsWeight",
   "IncludedBlocks": {
     "type": "struct",
     "type_mapping": [
