@@ -122,6 +122,7 @@ var BaseType = `{
   "ValidatorSignature": "Signature",
   "Status": "BalanceStatus",
   "weights::ExtrinsicsWeight": "ExtrinsicsWeight",
+  "OpenTipTip": "(AccountId, Balance)",
   "IncludedBlocks": {
     "type": "struct",
     "type_mapping": [
@@ -649,6 +650,39 @@ var BaseType = `{
       [
         "tips",
         "Vec<OpenTipTip>"
+      ]
+    ]
+  },
+  "OpenTip": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "reason",
+        "Hash"
+      ],
+      [
+        "who",
+        "AccountId"
+      ],
+      [
+        "finder",
+        "AccountId"
+      ],
+      [
+        "deposit",
+        "Balance"
+      ],
+      [
+        "closes",
+        "Option<BlockNumber>"
+      ],
+      [
+        "tips",
+        "Vec<OpenTipTip>"
+      ],
+      [
+        "findersFee",
+        "bool"
       ]
     ]
   },
