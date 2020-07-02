@@ -55,6 +55,7 @@ var BaseType = `{
     ]
   },
   "ElectionScore": "[u128; 3]",
+  "LookupSource": "AccountId",
   "SetId": "U64",
   "RoundNumber": "U64",
   "SessionIndex": "U32",
