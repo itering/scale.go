@@ -469,7 +469,8 @@ var BaseType = `{
     "type": "enum",
     "value_list": [
       "Normal",
-      "Operational"
+      "Operational",
+      "Mandatory"
     ]
   },
   "DispatchInfo": {
@@ -2209,8 +2210,8 @@ var BaseType = `{
     "value_list": [
       "Any",
       "NonTransfer",
-      "isGovernance",
-      "isStaking"
+      "Governance",
+      "Staking"
     ]
   },
   "AbridgedCandidateReceipt": {
@@ -2390,5 +2391,23 @@ var BaseType = `{
         "u32"
       ]
     ]
+  },
+  "BalanceLock<Balance, BlockNumber>": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "id",
+        "LockIdentifier"
+      ],
+      [
+        "amount",
+        "Balance"
+      ],
+      [
+        "reasons",
+        "Reasons"
+      ]
+    ]
   }
-}`
+}
+`

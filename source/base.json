@@ -467,7 +467,8 @@
     "type": "enum",
     "value_list": [
       "Normal",
-      "Operational"
+      "Operational",
+      "Mandatory"
     ]
   },
   "DispatchInfo": {
@@ -2207,8 +2208,8 @@
     "value_list": [
       "Any",
       "NonTransfer",
-      "isGovernance",
-      "isStaking"
+      "Governance",
+      "Staking"
     ]
   },
   "AbridgedCandidateReceipt": {
@@ -2386,6 +2387,23 @@
       [
         "digestLevels",
         "u32"
+      ]
+    ]
+  },
+  "BalanceLock<Balance, BlockNumber>": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "id",
+        "LockIdentifier"
+      ],
+      [
+        "amount",
+        "Balance"
+      ],
+      [
+        "reasons",
+        "Reasons"
       ]
     ]
   }
