@@ -124,6 +124,7 @@ var BaseType = `{
   "Status": "BalanceStatus",
   "weights::ExtrinsicsWeight": "ExtrinsicsWeight",
   "OpenTipTip": "(AccountId, Balance)",
+  "RewardPoint": "u32",
   "IncludedBlocks": {
     "type": "struct",
     "type_mapping": [
