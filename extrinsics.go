@@ -117,7 +117,7 @@ func (e *ExtrinsicDecoder) Process() {
 			} else {
 				e.Signature = e.ProcessAndUpdateData("Signature").(string)
 			}
-			e.Era = e.ProcessAndUpdateData("Era").(string)
+			e.Era = e.ProcessAndUpdateData("EraExtrinsic").(string)
 			e.Nonce = int(e.ProcessAndUpdateData("Compact<U64>").(uint64))
 			e.Tip = e.ProcessAndUpdateData("Compact<Balance>").(decimal.Decimal)
 			e.ExtrinsicHash = e.generateHash()

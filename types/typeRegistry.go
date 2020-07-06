@@ -51,6 +51,7 @@ func (r RuntimeType) Reg() *RuntimeType {
 		&BoxProposal{},
 		&Signature{},
 		&Era{},
+		&EraExtrinsic{},
 		&Balance{},
 		&Index{},
 		&SessionIndex{},

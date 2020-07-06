@@ -119,6 +119,19 @@ func (e *Era) Process() {
 	}
 }
 
+type EraExtrinsic struct {
+	ScaleDecoder
+}
+
+func (e *EraExtrinsic) Process() {
+	optionHex := utiles.BytesToHex(e.NextBytes(1))
+	if optionHex == "00" {
+		e.Value = optionHex
+	} else {
+		e.Value = optionHex + utiles.BytesToHex(e.NextBytes(1))
+	}
+}
+
 type Bool struct {
 	ScaleDecoder
 }
