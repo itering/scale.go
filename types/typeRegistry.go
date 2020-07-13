@@ -130,7 +130,7 @@ func (r RuntimeType) Reg() *RuntimeType {
 	registry["[u8; 2]"] = &VecU8FixedLength{FixedLength: 2}
 	registry["[u8; 256]"] = &VecU8FixedLength{FixedLength: 256}
 	registry["[u128; 3]"] = &FixedLengthArray{FixedLength: 3, SubType: "u128"}
-
+	registry["Approvals"] = &FixedLengthArray{FixedLength: 4, SubType: "bool"}
 	TypeRegistry = registry
 
 	RegCustomTypes(source.LoadTypeRegistry([]byte(source.BaseType)))
