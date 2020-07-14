@@ -87,6 +87,7 @@ func (r RuntimeType) Reg() *RuntimeType {
 		&RawBabeLabel{},
 		&Key{},
 		&String{},
+		&GenericAddress{},
 		&MetadataModuleEvent{},
 		&MetadataModuleCallArgument{},
 		&MetadataModuleCall{},
