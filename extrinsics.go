@@ -54,7 +54,7 @@ func (e *ExtrinsicDecoder) generateHash() string {
 			extrinsicData = append(extrinsicLengthType.Data.Data[:], e.Data.Data[:]...)
 		}
 		checksum, _ := blake2b.New(32, []byte{})
-		checksum.Write(extrinsicData)
+		_, _ = checksum.Write(extrinsicData)
 		h := checksum.Sum(nil)
 		return utiles.BytesToHex(h)
 	}
@@ -166,5 +166,4 @@ func (e *ExtrinsicDecoder) Process() {
 	result["tip"] = e.Tip
 	result["params"] = e.Params
 	e.Value = result
-	return
 }

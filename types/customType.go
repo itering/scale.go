@@ -70,6 +70,18 @@ func RegCustomTypes(registry map[string]source.TypeStruct) {
 				regCustomKey(key, &s)
 				continue
 			}
+
+			// Array
+			if typeString != "[]" && string(typeString[0]) == "[" && string(typeString[len(typeString)-1:]) == "]" {
+				if typePart := strings.Split(string(typeString[1:len(typeString)-1]), ";"); len(typePart) == 2 {
+					fixed := FixedLengthArray{
+						FixedLength: utiles.StringToInt(strings.TrimSpace(typePart[1])),
+						SubType:     strings.TrimSpace(typePart[0]),
+					}
+					regCustomKey(key, &fixed)
+					continue
+				}
+			}
 		case "struct":
 			var names, typeStrings []string
 			for _, v := range typeStruct.TypeMapping {

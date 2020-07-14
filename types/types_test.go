@@ -6,6 +6,7 @@ import (
 	"github.com/itering/scale.go/source"
 	"github.com/itering/scale.go/types"
 	"github.com/itering/scale.go/utiles"
+	"reflect"
 	"strings"
 	"testing"
 )
@@ -84,4 +85,15 @@ func TestInt(t *testing.T) {
 	r := m.ProcessAndUpdateData("i16")
 	rb, _ := json.Marshal(r)
 	fmt.Println(string(rb))
+}
+
+func TestBoolArray(t *testing.T) {
+	raw := "0x00000100"
+	m := types.ScaleDecoder{}
+	m.Init(types.ScaleBytes{Data: utiles.HexToBytes(raw)}, nil)
+	r := m.ProcessAndUpdateData("Approvals")
+	c := []interface{}{false, false, true, false}
+	if !reflect.DeepEqual(c, r.([]interface{})) {
+		t.Errorf("Test TestBoolArray Process fail, decode return %v", r)
+	}
 }

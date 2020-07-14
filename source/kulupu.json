@@ -1,0 +1,48 @@
+{
+  "U256": "[u8; 32]",
+  "Difficulty": "U256",
+  "weight": "u64",
+  "DifficultyAndTimestamp": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "difficulty",
+        "Difficulty"
+      ],
+      [
+        "timestamp",
+        "Moment"
+      ]
+    ]
+  },
+  "Era": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "genesisBlockHash",
+        "H256"
+      ],
+      [
+        "finalBlockHash",
+        "H256"
+      ],
+      [
+        "finalStateRoot",
+        "H256"
+      ]
+    ]
+  },
+  "DispatchResult": {
+    "type": "enum",
+    "type_mapping": [
+      [
+        "Ok",
+        "Null"
+      ],
+      [
+        "Error",
+        "DispatchError"
+      ]
+    ]
+  }
+}
