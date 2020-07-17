@@ -125,6 +125,27 @@ var BaseType = `{
   "weights::ExtrinsicsWeight": "ExtrinsicsWeight",
   "OpenTipTip": "(AccountId, Balance)",
   "RewardPoint": "u32",
+  "Keys": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "grandpa",
+        "AccountId"
+      ],
+      [
+        "babe",
+        "AccountId"
+      ],
+      [
+        "im_online",
+        "AccountId"
+      ],
+      [
+        "authority_discovery",
+        "AccountId"
+      ]
+    ]
+  },
   "IncludedBlocks": {
     "type": "struct",
     "type_mapping": [
