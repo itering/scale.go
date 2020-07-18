@@ -670,3 +670,16 @@ func (f *IntFixed) Process() {
 }
 
 type Key struct{ Bytes }
+
+type OpaqueCall struct {
+	Bytes
+}
+
+func (f *OpaqueCall) Process() {
+	f.Bytes.Process()
+	e := ScaleDecoder{}
+	option := ScaleDecoderOption{Metadata: f.Metadata}
+	e.Init(ScaleBytes{Data: utiles.HexToBytes(f.Value.(string))}, &option)
+	value := e.ProcessAndUpdateData("Call")
+	f.Value = value
+}
