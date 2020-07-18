@@ -47,15 +47,15 @@ func (c *Compact) Process() {
 		s := ScaleDecoder{TypeString: c.SubType, Data: ScaleBytes{Data: c.CompactBytes}}
 		byteData := s.ProcessAndUpdateData(c.SubType)
 		if c.CompactLength <= 4 {
-			switch byteData.(type) {
+			switch v := byteData.(type) {
 			case uint64:
-				c.Value = uint64(byteData.(uint64) / 4)
+				c.Value = uint64(v / 4)
 			case uint32:
-				c.Value = uint64(byteData.(uint32) / 4)
+				c.Value = uint64(v / 4)
 			case int:
-				c.Value = uint64(byteData.(int) / 4)
+				c.Value = uint64(v / 4)
 			case decimal.Decimal:
-				c.Value = byteData.(decimal.Decimal).Div(decimal.New(4, 0)).Floor()
+				c.Value = v.Div(decimal.New(4, 0)).Floor()
 			default:
 				c.Value = byteData
 			}

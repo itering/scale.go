@@ -114,7 +114,7 @@ func (s *ScaleDecoder) ProcessAndUpdateData(typeString string) interface{} {
 
 	// init
 	method, exist := class.MethodByName("Init")
-	if exist == false {
+	if !exist {
 		panic(fmt.Sprintf("%s not implement init function", typeString))
 	}
 	option := ScaleDecoderOption{SubType: subType, Spec: s.Spec, Metadata: s.Metadata}

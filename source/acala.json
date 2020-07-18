@@ -39,12 +39,8 @@
   "DepositBalanceOf": "Balance",
   "StorageData": "Bytes",
   "ValidatorId": "AccountId",
-  "Weight": "u32",
+  "Weight": "u64",
   "WeightMultiplier": "Fixed64",
-  "PreRuntime": "(ConsensusEngineId, Bytes)",
-  "SealV0": "(u64, Signature)",
-  "Seal": "(ConsensusEngineId, Bytes)",
-  "Consensus": "(ConsensusEngineId, Bytes)",
   "OracleValue": "FixedU128",
   "TimestampedValueOf": "TimestampedValue",
   "Price": "FixedU128",
@@ -54,6 +50,71 @@
   "Fixed64": "i64",
   "Fixed128": "i128",
   "FixedU128": "u128",
+  "Keys": "(AccountId, AccountId)",
+  "CallOf": "call",
+  "OrderedSet": "Vec<AccountId>",
+  "DispatchId": "u32",
+  "DispatchResult": {
+    "type": "enum",
+    "type_mapping": [
+      [
+        "Ok",
+        "Null"
+      ],
+      [
+        "Error",
+        "DispatchError"
+      ]
+    ]
+  },
+  "BalanceLock<Balance>": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "id",
+        "LockIdentifier"
+      ],
+      [
+        "amount",
+        "Balance"
+      ],
+      [
+        "reasons",
+        "Reasons"
+      ]
+    ]
+  },
+  "VestingSchedule": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "start",
+        "BlockNumber"
+      ],
+      [
+        "period",
+        "BlockNumber"
+      ],
+      [
+        "periodCount",
+        "u32"
+      ],
+      [
+        "perPeriod",
+        "Compact<Balance>"
+      ]
+    ]
+  },
+  "VestingScheduleOf": "VestingSchedule",
+  "ValidatorPrefs": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "Commission",
+        "Compact<Balance>"
+      ]
+    ]
+  },
   "SignedBlock": {
     "type": "struct",
     "type_mapping": [
@@ -217,6 +278,19 @@
       ]
     ]
   },
+  "DelayedDispatchTime": {
+    "type": "enum",
+    "type_mapping": [
+      [
+        "At",
+        "BlockNumber"
+      ],
+      [
+        "After",
+        "BlockNumber"
+      ]
+    ]
+  },
   "HomaUnlockChunk": {
     "type": "struct",
     "type_mapping": [
@@ -257,6 +331,13 @@
       "LDOT"
     ]
   },
+  "LiquidationStrategy": {
+    "type": "enum",
+    "value_list": [
+      "Auction",
+      "Exchange"
+    ]
+  },
   "AirDropCurrencyId": {
     "type": "enum",
     "value_list": [
@@ -286,45 +367,68 @@
       ]
     ]
   },
-  "DigestItem": {
+  "ChangeOptionRate": {
     "type": "enum",
     "type_mapping": [
       [
-        "Other",
-        "Bytes"
+        "NoChange",
+        "Null"
       ],
       [
-        "AuthoritiesChange",
-        "Vec<AuthorityId>"
-      ],
-      [
-        "ChangesTrieRoot",
-        "Hash"
-      ],
-      [
-        "SealV0",
-        "SealV0"
-      ],
-      [
-        "Consensus",
-        "Consensus"
-      ],
-      [
-        "Seal",
-        "Seal"
-      ],
-      [
-        "PreRuntime",
-        "PreRuntime"
+        "NewValue",
+        "OptionRate"
       ]
     ]
   },
-  "DispatchClass": {
+  "ChangeOptionRatio": {
     "type": "enum",
-    "value_list": [
-      "Normal",
-      "Operational",
-      "Mandatory"
+    "type_mapping": [
+      [
+        "NoChange",
+        "Null"
+      ],
+      [
+        "NewValue",
+        "OptionRatio"
+      ]
+    ]
+  },
+  "ChangeBalance": {
+    "type": "enum",
+    "type_mapping": [
+      [
+        "NoChange",
+        "Null"
+      ],
+      [
+        "NewValue",
+        "Balance"
+      ]
+    ]
+  },
+  "RiskManagementParams": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "maximumTotalDebitValue",
+        "Balance"
+      ],
+      [
+        "stabilityFee",
+        "Option<Rate>"
+      ],
+      [
+        "liquidationRatio",
+        "Option<Rate>"
+      ],
+      [
+        "liquidationPenalty",
+        "Option<Rate>"
+      ],
+      [
+        "requiredCollateralRatio",
+        "Option<Rate>"
+      ]
     ]
   },
   "DispatchInfo": {
@@ -340,45 +444,7 @@
       ],
       [
         "paysFee",
-        "bool"
-      ]
-    ]
-  },
-  "DispatchInfoTo190": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "weight",
-        "Weight"
-      ],
-      [
-        "class",
-        "DispatchClass"
-      ]
-    ]
-  },
-  "Header": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "parentHash",
-        "Hash"
-      ],
-      [
-        "number",
-        "Compact<BlockNumber>"
-      ],
-      [
-        "stateRoot",
-        "Hash"
-      ],
-      [
-        "extrinsicsRoot",
-        "Hash"
-      ],
-      [
-        "digest",
-        "Digest"
+        "Pays"
       ]
     ]
   },
@@ -428,5 +494,7 @@
         "Balance"
       ]
     ]
-  }
+  },
+  "OptionRate": "Option<Rate>",
+  "OptionRatio": "Option<Ratio>"
 }

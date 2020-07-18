@@ -125,6 +125,27 @@ var BaseType = `{
   "weights::ExtrinsicsWeight": "ExtrinsicsWeight",
   "OpenTipTip": "(AccountId, Balance)",
   "RewardPoint": "u32",
+  "Keys": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "grandpa",
+        "AccountId"
+      ],
+      [
+        "babe",
+        "AccountId"
+      ],
+      [
+        "im_online",
+        "AccountId"
+      ],
+      [
+        "authority_discovery",
+        "AccountId"
+      ]
+    ]
+  },
   "IncludedBlocks": {
     "type": "struct",
     "type_mapping": [
@@ -2410,6 +2431,59 @@ var BaseType = `{
         "Reasons"
       ]
     ]
-  }
-}
-`
+  },
+  "AssetOptions": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "initalIssuance",
+        "Compact<Balance>"
+      ],
+      [
+        "permissions",
+        "PermissionLatest"
+      ]
+    ]
+  },
+  "Owner": {
+    "type": "enum",
+    "type_mapping": [
+      [
+        "None",
+        "Null"
+      ],
+      [
+        "Address",
+        "AccountId"
+      ]
+    ]
+  },
+  "PermissionsV1": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "update",
+        "Owner"
+      ],
+      [
+        "mint",
+        "Owner"
+      ],
+      [
+        "burn",
+        "Owner"
+      ]
+    ]
+  },
+  "PermissionVersions": {
+    "type": "enum",
+    "type_mapping": [
+      [
+        "V1",
+        "PermissionsV1"
+      ]
+    ]
+  },
+  "PermissionLatest": "PermissionsV1",
+  "Approvals": "[bool; 4]"
+}`

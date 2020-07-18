@@ -19,9 +19,9 @@ func LoadTypeRegistry(source []byte) map[string]TypeStruct {
 	}
 	ts := make(map[string]TypeStruct)
 	for key, value := range original {
-		switch value.(type) {
+		switch v := value.(type) {
 		case string:
-			ts[key] = TypeStruct{Type: "string", TypeString: value.(string)}
+			ts[key] = TypeStruct{Type: "string", TypeString: v}
 		default:
 			b, _ := json.Marshal(value)
 			var t TypeStruct

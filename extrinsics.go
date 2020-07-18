@@ -166,5 +166,4 @@ func (e *ExtrinsicDecoder) Process() {
 	result["tip"] = e.Tip
 	result["params"] = e.Params
 	e.Value = result
-	return
 }

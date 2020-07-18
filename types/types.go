@@ -217,16 +217,34 @@ func (a *Address) Process() {
 	a.Value = utiles.BytesToHex(append(AccountLength, a.NextBytes(31)...))
 }
 
+type GenericAddress struct {
+	ScaleDecoder
+	AccountLength string `json:"account_length"`
+}
+
+func (a *GenericAddress) Process() {
+	AccountLength := a.NextBytes(1)
+	a.AccountLength = utiles.BytesToHex(AccountLength)
+	if a.AccountLength == "ff" {
+		a.Value = utiles.BytesToHex(a.NextBytes(32))
+		return
+	}
+	switch a.AccountLength {
+	case "fc":
+		a.NextBytes(2)
+	case "fd":
+		a.NextBytes(4)
+	case "fe":
+		a.NextBytes(8)
+	}
+}
+
 type Signature struct {
 	ScaleDecoder
 }
 
 func (s *Signature) Process() {
 	s.Value = utiles.BytesToHex(s.NextBytes(64))
-}
-
-type RawAddress struct {
-	Address
 }
 
 type Enum struct {
