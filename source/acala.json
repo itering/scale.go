@@ -328,7 +328,8 @@
       "AUSD",
       "DOT",
       "XBTC",
-      "LDOT"
+      "LDOT",
+      "renBTC"
     ]
   },
   "LiquidationStrategy": {

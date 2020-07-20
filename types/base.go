@@ -44,13 +44,16 @@ type ScaleDecoder struct {
 
 func (s *ScaleDecoder) Init(data ScaleBytes, option *ScaleDecoderOption) {
 	if option != nil {
-		s.SubType = option.SubType
-		s.Metadata = option.Metadata
+		if option.Metadata != nil {
+			s.Metadata = option.Metadata
+		}
+		if option.SubType != "" {
+			s.SubType = option.SubType
+		}
 		if option.Spec != 0 {
 			s.Spec = option.Spec
 		}
 	}
-
 	s.Data = data
 	s.RawValue = ""
 	s.Value = nil
