@@ -125,6 +125,7 @@ var BaseType = `{
   "weights::ExtrinsicsWeight": "ExtrinsicsWeight",
   "OpenTipTip": "(AccountId, Balance)",
   "RewardPoint": "u32",
+  "CodeHash": "Hash",
   "Keys": {
     "type": "struct",
     "type_mapping": [
@@ -2485,5 +2486,149 @@ var BaseType = `{
     ]
   },
   "PermissionLatest": "PermissionsV1",
-  "Approvals": "[bool; 4]"
+  "Approvals": "[bool; 4]",
+  "ContractCallRequest": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "origin",
+        "AccountId"
+      ],
+      [
+        "dest",
+        "AccountId"
+      ],
+      [
+        "value",
+        "Balance"
+      ],
+      [
+        "gasLimit",
+        "u64"
+      ],
+      [
+        "inputData",
+        "Bytes"
+      ]
+    ]
+  },
+  "ContractExecResultSuccess": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "flags",
+        "u32"
+      ],
+      [
+        "data",
+        "Vec<u8>"
+      ],
+      [
+        "gasConsumed",
+        "u64"
+      ]
+    ]
+  },
+  "ContractExecResult": {
+    "type": "enum",
+    "type_mapping": [
+      [
+        "Success",
+        "ContractExecResultSuccess"
+      ],
+      [
+        "Error",
+        "Null"
+      ]
+    ]
+  },
+  "ContractStorageKey": "[u8; 32]",
+  "PrefabWasmModule": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "scheduleVersion",
+        "Compact<u32>"
+      ],
+      [
+        "initial",
+        "Compact<u32>"
+      ],
+      [
+        "maximum",
+        "Compact<u32>"
+      ],
+      [
+        "_reserved",
+        "PrefabWasmModuleReserved"
+      ],
+      [
+        "code",
+        "Bytes"
+      ]
+    ]
+  },
+  "PrefabWasmModuleReserved": "Option<Null>",
+  "ContractExecResultSuccessTo255": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "status",
+        "u8"
+      ],
+      [
+        "data",
+        "Raw"
+      ]
+    ]
+  },
+  "ContractExecResultTo255": {
+    "type": "enum",
+    "type_mapping": [
+      [
+        "Success",
+        "ContractExecResultSuccessTo255"
+      ],
+      [
+        "Error",
+        "Null"
+      ]
+    ]
+  },
+  "AccountStatus": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "validity",
+        "AccountValidity"
+      ],
+      [
+        "freeBalance",
+        "Balance"
+      ],
+      [
+        "lockedBalance",
+        "Balance"
+      ],
+      [
+        "signature",
+        "Vec<u8>"
+      ],
+      [
+        "vat",
+        "Permill"
+      ]
+    ]
+  },
+  "AccountValidity": {
+    "type": "enum",
+    "value_list": [
+      "Invalid",
+      "Initiated",
+      "Pending",
+      "ValidLow",
+      "ValidHigh",
+      "Completed"
+    ]
+  }
 }`
