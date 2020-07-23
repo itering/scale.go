@@ -55,6 +55,7 @@ var BaseType = `{
     ]
   },
   "ElectionScore": "[u128; 3]",
+  "Text": "Bytes",
   "LookupSource": "AccountId",
   "SetId": "U64",
   "RoundNumber": "U64",
@@ -94,6 +95,7 @@ var BaseType = `{
   "PhragmenScore": "[u128; 3]",
   "schnorrkel::Randomness": "Hash",
   "schnorrkel::RawVRFOutput": "[u8; 32]",
+  "VrfOutput": "[u8; 32]",
   "NominatorIndex": "u32",
   "PerU16": "u16",
   "OffchainAccuracy": "u16",
@@ -126,6 +128,19 @@ var BaseType = `{
   "OpenTipTip": "(AccountId, Balance)",
   "RewardPoint": "u32",
   "CodeHash": "Hash",
+  "Linkage": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "previous",
+        "Option<AccountId>"
+      ],
+      [
+        "next",
+        "Option<AccountId>"
+      ]
+    ]
+  },
   "Keys": {
     "type": "struct",
     "type_mapping": [
@@ -2071,27 +2086,6 @@ var BaseType = `{
     ]
   },
   "schedule::Priority": "u8",
-  "GrandpaEquivocation": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "roundNumber",
-        "u64"
-      ],
-      [
-        "identity",
-        "AuthorityId"
-      ],
-      [
-        "first",
-        "(GrandpaPrevote, AuthoritySignature)"
-      ],
-      [
-        "second",
-        "(GrandpaPrevote, AuthoritySignature)"
-      ]
-    ]
-  },
   "GrandpaPrevote": {
     "type": "struct",
     "type_mapping": [
@@ -2105,32 +2099,7 @@ var BaseType = `{
       ]
     ]
   },
-  "Equivocation": {
-    "type": "enum",
-    "type_mapping": [
-      [
-        "Prevote",
-        "GrandpaEquivocation"
-      ],
-      [
-        "Precommit",
-        "GrandpaEquivocation"
-      ]
-    ]
-  },
-  "EquivocationProof": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "setId",
-        "SetId"
-      ],
-      [
-        "equivocation",
-        "Equivocation"
-      ]
-    ]
-  },
+  "Equivocation": "GrandpaEquivocation",
   "ValidatorPrefs": {
     "type": "struct",
     "type_mapping": [
@@ -2630,5 +2599,188 @@ var BaseType = `{
       "ValidHigh",
       "Completed"
     ]
-  }
-}`
+  },
+  "TreasuryProposal": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "proposer",
+        "AccountId"
+      ],
+      [
+        "value",
+        "Balance"
+      ],
+      [
+        "beneficiary",
+        "AccountId"
+      ],
+      [
+        "bond",
+        "Balance"
+      ]
+    ]
+  },
+  "RawBabePreDigestCompat": {
+    "type": "enum",
+    "type_mapping": [
+      [
+        "Zero",
+        "u32"
+      ],
+      [
+        "One",
+        "u32"
+      ],
+      [
+        "Two",
+        "u32"
+      ],
+      [
+        "Three",
+        "u32"
+      ]
+    ]
+  },
+  "BabeAuthorityWeight": "u64",
+  "BabeBlockWeight": "u32",
+  "BabeEquivocationProof": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "offender",
+        "AuthorityId"
+      ],
+      [
+        "slotNumber",
+        "SlotNumber"
+      ],
+      [
+        "firstHeader",
+        "Header"
+      ],
+      [
+        "secondHeader",
+        "Header"
+      ]
+    ]
+  },
+  "BabeWeight": "u64",
+  "EpochAuthorship": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "primary",
+        "Vec<u64>"
+      ],
+      [
+        "secondary",
+        "Vec<u64>"
+      ]
+    ]
+  },
+  "RpcMethods": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "version",
+        "u32"
+      ],
+      [
+        "methods",
+        "Vec<Text>"
+      ]
+    ]
+  },
+  "CreatedBlock": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "hash",
+        "BlockHash"
+      ],
+      [
+        "aux",
+        "ImportedAux"
+      ]
+    ]
+  },
+  "ImportedAux": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "headerOnly",
+        "bool"
+      ],
+      [
+        "clearJustificationRequests",
+        "bool"
+      ],
+      [
+        "needsJustification",
+        "bool"
+      ],
+      [
+        "badJustification",
+        "bool"
+      ],
+      [
+        "needsFinalityProof",
+        "bool"
+      ],
+      [
+        "isNewBest",
+        "bool"
+      ]
+    ]
+  },
+  "GrandpaEquivocationProof": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "setId",
+        "SetId"
+      ],
+      [
+        "equivocation",
+        "GrandpaEquivocation"
+      ]
+    ]
+  },
+  "GrandpaEquivocation": {
+    "type": "enum",
+    "type_mapping": [
+      [
+        "Prevote",
+        "GrandpaEquivocationValue"
+      ],
+      [
+        "Precommit",
+        "GrandpaEquivocationValue"
+      ]
+    ]
+  },
+  "GrandpaEquivocationValue": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "roundNumber",
+        "u64"
+      ],
+      [
+        "identity",
+        "AuthorityId"
+      ],
+      [
+        "first",
+        "(GrandpaPrevote, AuthoritySignature)"
+      ],
+      [
+        "second",
+        "(GrandpaPrevote, AuthoritySignature)"
+      ]
+    ]
+  },
+  "EquivocationProof<Header>": "BabeEquivocationProof"
+}
+`
