@@ -2781,6 +2781,7 @@ var BaseType = `{
       ]
     ]
   },
-  "EquivocationProof<Header>": "BabeEquivocationProof"
+  "EquivocationProof<Header>": "BabeEquivocationProof",
+  "EquivocationProof<Hash, BlockNumber>": "GrandpaEquivocationProof"
 }
 `
