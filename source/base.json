@@ -90,6 +90,7 @@
   "RefCount": "u8",
   "ValidatorId": "AccountId",
   "CallHash": "H256",
+  "CallHashOf": "H256",
   "PhragmenScore": "[u128; 3]",
   "schnorrkel::Randomness": "Hash",
   "schnorrkel::RawVRFOutput": "[u8; 32]",
@@ -2780,5 +2781,58 @@
     ]
   },
   "EquivocationProof<Header>": "BabeEquivocationProof",
-  "EquivocationProof<Hash, BlockNumber>": "GrandpaEquivocationProof"
+  "EquivocationProof<Hash, BlockNumber>": "GrandpaEquivocationProof",
+  "RelayChainBlockNumber": "BlockNumber",
+  "ValidationFunctionParams": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "maxCodeSize",
+        "u32"
+      ],
+      [
+        "relayChainHeight",
+        "RelayChainBlockNumber"
+      ],
+      [
+        "codeUpgradeAllowed",
+        "Option<RelayChainBlockNumber>"
+      ]
+    ]
+  },
+  "Announcement": "ProxyAnnouncement",
+  "ProxyDefinition": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "delegate",
+        "AccountId"
+      ],
+      [
+        "proxyType",
+        "ProxyType"
+      ],
+      [
+        "delay",
+        "BlockNumber"
+      ]
+    ]
+  },
+  "ProxyAnnouncement": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "real",
+        "AccountId"
+      ],
+      [
+        "callHash",
+        "Hash"
+      ],
+      [
+        "height",
+        "BlockNumber"
+      ]
+    ]
+  }
 }

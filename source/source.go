@@ -11,6 +11,7 @@ type TypeStruct struct {
 	ValueList   []string   `json:"value_list,omitempty"`
 }
 
+//go:generate ./type.sh
 func LoadTypeRegistry(source []byte) map[string]TypeStruct {
 	var original map[string]interface{}
 	err := json.Unmarshal(source, &original)
