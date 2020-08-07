@@ -955,12 +955,33 @@
       ]
     ]
   },
-  "RewardDestination": {
+  "RewardDestinationTo257": {
     "type": "enum",
     "value_list": [
       "Staked",
       "Stash",
       "Controller"
+    ]
+  },
+  "RewardDestination": {
+    "type": "enum",
+    "type_mapping": [
+      [
+        "Staked",
+        "Null"
+      ],
+      [
+        "Stash",
+        "Null"
+      ],
+      [
+        "Controller",
+        "Null"
+      ],
+      [
+        "Account",
+        "AccountId"
+      ]
     ]
   },
   "DigestItem": {
