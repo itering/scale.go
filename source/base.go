@@ -2839,6 +2839,79 @@ var BaseType = `{
         "BlockNumber"
       ]
     ]
-  }
+  },
+  "CompactAssignmentsLatest": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "votes1",
+        "Vec<(NominatorIndexCompact, [CompactScoreCompact; 0], ValidatorIndexCompact)>"
+      ],
+      [
+        "votes2",
+        "Vec<(NominatorIndexCompact, [CompactScoreCompact; 1], ValidatorIndexCompact)>"
+      ],
+      [
+        "votes3",
+        "Vec<(NominatorIndexCompact, [CompactScoreCompact; 2], ValidatorIndexCompact)>"
+      ],
+      [
+        "votes4",
+        "Vec<(NominatorIndexCompact, [CompactScoreCompact; 3], ValidatorIndexCompact)>"
+      ],
+      [
+        "votes5",
+        "Vec<(NominatorIndexCompact, [CompactScoreCompact; 4], ValidatorIndexCompact)>"
+      ],
+      [
+        "votes6",
+        "Vec<(NominatorIndexCompact, [CompactScoreCompact; 5], ValidatorIndexCompact)>"
+      ],
+      [
+        "votes7",
+        "Vec<(NominatorIndexCompact, [CompactScoreCompact; 6], ValidatorIndexCompact)>"
+      ],
+      [
+        "votes8",
+        "Vec<(NominatorIndexCompact, [CompactScoreCompact; 7], ValidatorIndexCompact)>"
+      ],
+      [
+        "votes9",
+        "Vec<(NominatorIndexCompact, [CompactScoreCompact; 8], ValidatorIndexCompact)>"
+      ],
+      [
+        "votes10",
+        "Vec<(NominatorIndexCompact, [CompactScoreCompact; 9], ValidatorIndexCompact)>"
+      ],
+      [
+        "votes11",
+        "Vec<(NominatorIndexCompact, [CompactScoreCompact; 10], ValidatorIndexCompact)>"
+      ],
+      [
+        "votes12",
+        "Vec<(NominatorIndexCompact, [CompactScoreCompact; 11], ValidatorIndexCompact)>"
+      ],
+      [
+        "votes13",
+        "Vec<(NominatorIndexCompact, [CompactScoreCompact; 12], ValidatorIndexCompact)>"
+      ],
+      [
+        "votes14",
+        "Vec<(NominatorIndexCompact, [CompactScoreCompact; 13], ValidatorIndexCompact)>"
+      ],
+      [
+        "votes15",
+        "Vec<(NominatorIndexCompact, [CompactScoreCompact; 14], ValidatorIndexCompact)>"
+      ],
+      [
+        "votes16",
+        "Vec<(NominatorIndexCompact, [CompactScoreCompact; 15], ValidatorIndexCompact)>"
+      ]
+    ]
+  },
+  "CompactScoreCompact": "(ValidatorIndexCompact, OffchainAccuracyCompact)",
+  "ValidatorIndexCompact": "Compact<ValidatorIndex>",
+  "OffchainAccuracyCompact": "Compact<OffchainAccuracy>",
+  "NominatorIndexCompact": "Compact<NominatorIndex>"
 }
 `

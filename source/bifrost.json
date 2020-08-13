@@ -543,12 +543,12 @@
   "TxSig": {
     "type_mapping": [
       [
-        "author",
-        "AccountId"
-      ],
-      [
         "signature",
         "Vec<u8>"
+      ],
+      [
+        "author",
+        "AccountId"
       ]
     ],
     "type": "struct"
