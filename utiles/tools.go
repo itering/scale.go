@@ -2,6 +2,7 @@ package utiles
 
 import (
 	"encoding/hex"
+	"encoding/json"
 	"fmt"
 	"math/big"
 	"strconv"
@@ -72,4 +73,18 @@ func ReverseBytes(a []byte) []byte {
 		a[i], a[opp] = a[opp], a[i]
 	}
 	return a
+}
+
+func ToString(i interface{}) string {
+	var val string
+	switch i := i.(type) {
+	case string:
+		val = i
+	case []byte:
+		val = string(i)
+	default:
+		b, _ := json.Marshal(i)
+		val = string(b)
+	}
+	return val
 }

@@ -97,3 +97,20 @@ func TestBoolArray(t *testing.T) {
 		t.Errorf("Test TestBoolArray Process fail, decode return %v", r)
 	}
 }
+
+func TestReferendumInfo(t *testing.T) {
+	raw := "0x00004e0c00295ce46278975a53b855188482af699f7726fbbeac89cf16a1741c4698dcdbc90080970600000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+	m := types.ScaleDecoder{}
+	m.Init(types.ScaleBytes{Data: utiles.HexToBytes(raw)}, nil)
+	r := m.ProcessAndUpdateData("ReferendumInfo<BlockNumber, Hash, BalanceOf>")
+	c := map[string]interface{}{
+		"Ongoing": map[string]interface{}{
+			"delay":        432000,
+			"end":          806400,
+			"proposalHash": "0x295ce46278975a53b855188482af699f7726fbbeac89cf16a1741c4698dcdbc9",
+			"tally":        map[string]interface{}{"ayes": "0", "nays": "0", "turnout": "0"}, "threshold": "SuperMajorityApprove",
+		}}
+	if !reflect.DeepEqual(utiles.ToString(c), utiles.ToString(r)) {
+		t.Errorf("Test TestReferendumInfo Process fail, decode return %v", r.(map[string]interface{}))
+	}
+}

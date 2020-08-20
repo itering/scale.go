@@ -132,6 +132,7 @@ var BaseType = `{
   "OpenTipTip": "(AccountId, Balance)",
   "RewardPoint": "u32",
   "CodeHash": "Hash",
+  "gas": "u64",
   "Linkage": {
     "type": "struct",
     "type_mapping": [
@@ -1355,6 +1356,19 @@ var BaseType = `{
     ]
   },
   "ReferendumInfo<BlockNumber, Hash, Balance>": {
+    "type": "enum",
+    "type_mapping": [
+      [
+        "Ongoing",
+        "ReferendumStatus"
+      ],
+      [
+        "Finished",
+        "ReferendumInfoFinished"
+      ]
+    ]
+  },
+  "ReferendumInfo<BlockNumber, Hash, BalanceOf>": {
     "type": "enum",
     "type_mapping": [
       [
