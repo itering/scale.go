@@ -29,7 +29,7 @@ func AddHex(s string) string {
 	if strings.HasPrefix(s, "0x") {
 		return s
 	}
-	return strings.ToLower("0x" + s)
+	return "0x" + s
 }
 
 func U256(v string) *big.Int {
@@ -87,4 +87,8 @@ func ToString(i interface{}) string {
 		val = string(b)
 	}
 	return val
+}
+
+func TrimHex(s string) string {
+	return strings.TrimPrefix(s, "0x")
 }

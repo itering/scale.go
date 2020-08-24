@@ -114,3 +114,14 @@ func TestReferendumInfo(t *testing.T) {
 		t.Errorf("Test TestReferendumInfo Process fail, decode return %v", r.(map[string]interface{}))
 	}
 }
+
+func TestEthereumAccountId(t *testing.T) {
+	raw := "0x4119b2e6c3cb618f4f0B93ac77f9Beec7ff02887"
+	fmt.Println(len(utiles.HexToBytes(raw)))
+	m := types.ScaleDecoder{}
+	m.Init(types.ScaleBytes{Data: utiles.HexToBytes(raw)}, nil)
+	r := m.ProcessAndUpdateData("EthereumAccountId")
+	if r.(string) != "0x4119b2e6c3Cb618F4f0B93ac77f9BeeC7FF02887" {
+		t.Errorf("Test TestEthereumAccountId Process fail, decode return %v", r)
+	}
+}

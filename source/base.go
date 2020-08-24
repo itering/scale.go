@@ -133,6 +133,8 @@ var BaseType = `{
   "RewardPoint": "u32",
   "CodeHash": "Hash",
   "gas": "u64",
+  "EthereumLookupSource": "EthereumAddress",
+  "EthereumAccountId": "EthereumAddress",
   "Linkage": {
     "type": "struct",
     "type_mapping": [
