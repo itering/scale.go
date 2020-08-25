@@ -211,6 +211,7 @@ var BaseType = `{
       ]
     ]
   },
+  "Points": "u32",
   "EraRewardPoints": {
     "type": "struct",
     "type_mapping": [
