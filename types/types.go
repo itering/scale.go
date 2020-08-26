@@ -85,10 +85,11 @@ type U128 struct {
 }
 
 func (u *U128) Process() {
-	if len(u.Data.Data) < 16 {
-		u.Data.Data = utiles.HexToBytes(xstrings.LeftJustify(utiles.BytesToHex(u.Data.Data), 32, "0"))
+	elementBytes := u.NextBytes(16)
+	if len(elementBytes) < 16 {
+		elementBytes = utiles.HexToBytes(xstrings.LeftJustify(utiles.BytesToHex(elementBytes), 32, "0"))
 	}
-	u.Value = uint128.FromBytes(u.NextBytes(16)).String()
+	u.Value = uint128.FromBytes(elementBytes).String()
 }
 
 type H256 struct {
