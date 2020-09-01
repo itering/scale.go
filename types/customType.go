@@ -102,7 +102,7 @@ func RegCustomTypes(registry map[string]source.TypeStruct) {
 			e.TypeMapping = newStruct(names, typeStrings)
 			regCustomKey(key, &e)
 		case "set":
-			regCustomKey(key, &Set{ValueList: typeStruct.ValueList})
+			regCustomKey(key, &Set{ValueList: typeStruct.ValueList, BitLength: typeStruct.BitLength})
 		}
 	}
 }

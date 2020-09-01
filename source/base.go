@@ -552,6 +552,7 @@ var BaseType = `{
   },
   "IdentityFields": {
     "type": "set",
+    "bit_length": 64,
     "value_list": [
       "Display",
       "Legal",
@@ -887,6 +888,7 @@ var BaseType = `{
   },
   "WithdrawReasons": {
     "type": "set",
+    "bit_length": 8,
     "value_list": [
       "TransactionPayment",
       "Transfer",
@@ -2929,6 +2931,7 @@ var BaseType = `{
   "CompactScoreCompact": "(ValidatorIndexCompact, OffchainAccuracyCompact)",
   "ValidatorIndexCompact": "Compact<ValidatorIndex>",
   "OffchainAccuracyCompact": "Compact<OffchainAccuracy>",
-  "NominatorIndexCompact": "Compact<NominatorIndex>"
+  "NominatorIndexCompact": "Compact<NominatorIndex>",
+  "TransactionPriority": "u64"
 }
 `

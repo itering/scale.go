@@ -94,19 +94,6 @@
       ]
     ]
   },
-  "DispatchError#1031-1031": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "module",
-        "Option<u8>"
-      ],
-      [
-        "error",
-        "u8"
-      ]
-    ]
-  },
   "Heartbeat": {
     "type": "struct",
     "type_mapping": [
@@ -205,5 +192,29 @@
       ]
     ]
   },
-  "Address#1050-?": "AccountId"
+  "DispatchError#1019-1031": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "module",
+        "Option<u8>"
+      ],
+      [
+        "error",
+        "u8"
+      ]
+    ]
+  },
+  "ProxyType": {
+    "type": "enum",
+    "value_list": [
+      "Any",
+      "NonTransfer",
+      "Governance",
+      "Staking",
+      "IdentityJudgement"
+    ]
+  },
+  "Address#1050-?": "AccountId",
+  "Box<Proposal>": "BoxProposal"
 }

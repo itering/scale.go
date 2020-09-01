@@ -9,6 +9,7 @@ type TypeStruct struct {
 	TypeString  string     `json:"type_string"`
 	TypeMapping [][]string `json:"type_mapping,omitempty"`
 	ValueList   []string   `json:"value_list,omitempty"`
+	BitLength   int        `json:"bit_length,omitempty"`
 }
 
 //go:generate ./type.sh

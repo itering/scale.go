@@ -125,3 +125,12 @@ func TestEthereumAccountId(t *testing.T) {
 		t.Errorf("Test TestEthereumAccountId Process fail, decode return %v", r)
 	}
 }
+
+func TestRegistrarInfo(t *testing.T) {
+	raw := "0x08014c4bf7f93d0a5ed801ef778f8e7ef58201bdd7e33e167faf42a01d439283cb430000000000000000000000000000000000000000000000000112ccb53338ac0da571d3697548346fb5f0b637ac9412f8abbf6d13588be7563200d8c3795800000000000000000000000000000000000000"
+	fmt.Println(len(utiles.HexToBytes(raw)))
+	m := types.ScaleDecoder{}
+	m.Init(types.ScaleBytes{Data: utiles.HexToBytes(raw)}, nil)
+	r := m.ProcessAndUpdateData("Vec<Option<RegistrarInfo<BalanceOf, AccountId>>>")
+	fmt.Println(r)
+}

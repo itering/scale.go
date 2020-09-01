@@ -366,6 +366,7 @@ type Set struct {
 	ScaleDecoder
 	SetValue  int
 	ValueList []string
+	BitLength int
 }
 
 func (s *Set) Init(data ScaleBytes, option *ScaleDecoderOption) {
@@ -377,7 +378,17 @@ func (s *Set) Init(data ScaleBytes, option *ScaleDecoderOption) {
 }
 
 func (s *Set) Process() {
-	s.SetValue = s.ProcessAndUpdateData("U8").(int)
+	setValue := s.ProcessAndUpdateData(fmt.Sprintf("U%d", s.BitLength))
+	switch v := setValue.(type) {
+	case uint64:
+		s.SetValue = int(v)
+	case uint8:
+		s.SetValue = int(v)
+	case uint32:
+		s.SetValue = int(v)
+	case uint16:
+		s.SetValue = int(v)
+	}
 	var result []string
 	if s.SetValue > 0 {
 		for k, value := range s.ValueList {
