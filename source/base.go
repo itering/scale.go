@@ -968,14 +968,6 @@ var BaseType = `{
   },
   "RewardDestination": {
     "type": "enum",
-    "value_list": [
-      "Staked",
-      "Stash",
-      "Controller"
-    ]
-  },
-  "RewardDestinationLatest": {
-    "type": "enum",
     "type_mapping": [
       [
         "Staked",

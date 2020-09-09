@@ -134,3 +134,12 @@ func TestRegistrarInfo(t *testing.T) {
 	r := m.ProcessAndUpdateData("Vec<Option<RegistrarInfo<BalanceOf, AccountId>>>")
 	fmt.Println(r)
 }
+
+func TestRewardDestinationLatest(t *testing.T) {
+	raw := "0x03f8764d575b96b30e095a201d90b6ddaf944d042811846f7a3fe5ffda2a01c045"
+	fmt.Println(len(utiles.HexToBytes(raw)))
+	m := types.ScaleDecoder{}
+	m.Init(types.ScaleBytes{Data: utiles.HexToBytes(raw)}, nil)
+	r := m.ProcessAndUpdateData("RewardDestination")
+	fmt.Println(r)
+}
