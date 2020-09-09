@@ -974,6 +974,27 @@ var BaseType = `{
       "Controller"
     ]
   },
+  "RewardDestinationLatest": {
+    "type": "enum",
+    "type_mapping": [
+      [
+        "Staked",
+        "Null"
+      ],
+      [
+        "Stash",
+        "Null"
+      ],
+      [
+        "Controller",
+        "Null"
+      ],
+      [
+        "Account",
+        "AccountId"
+      ]
+    ]
+  },
   "DigestItem": {
     "type": "enum",
     "type_mapping": [
