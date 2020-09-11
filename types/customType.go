@@ -57,6 +57,11 @@ func RegCustomTypes(registry map[string]source.TypeStruct) {
 						v.SubType = typeParts[2]
 						regCustomKey(key, &v)
 						continue
+					} else if strings.ToLower(typeParts[1]) == "compact" {
+						v := Compact{}
+						v.SubType = typeParts[2]
+						regCustomKey(key, &v)
+						continue
 					}
 				}
 

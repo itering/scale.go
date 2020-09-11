@@ -21,6 +21,16 @@ func TestCompactU64(t *testing.T) {
 	}
 }
 
+func TestU32(t *testing.T) {
+	raw := "64000000"
+	m := types.ScaleDecoder{}
+	m.Init(types.ScaleBytes{Data: utiles.HexToBytes(raw)}, nil)
+	r := m.ProcessAndUpdateData("u32").(uint32)
+	if r != 100 {
+		t.Errorf("Test TestCompactU64 Process fail, expect return 100, decode return %d", r)
+	}
+}
+
 func TestRawBabePreDigest(t *testing.T) {
 	raw := "0x02020000008b86750900000000"
 	m := types.ScaleDecoder{}
