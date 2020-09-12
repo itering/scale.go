@@ -50,6 +50,7 @@ func TestSet_Process(t *testing.T) {
 	types.RegCustomTypes(map[string]source.TypeStruct{
 		"CustomSet": {
 			Type:      "set",
+			BitLength: 64,
 			ValueList: []string{"Value1", "Value2", "Value3", "Value4", "Value5"},
 		},
 	})
