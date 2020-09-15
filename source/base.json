@@ -280,7 +280,7 @@
       ],
       [
         "own",
-        "AccountId"
+        "Balance"
       ],
       [
         "others",
@@ -1033,7 +1033,7 @@
       ],
       [
         "own",
-        "AccountId"
+        "Balance"
       ],
       [
         "others",

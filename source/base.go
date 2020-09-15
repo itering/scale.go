@@ -285,7 +285,7 @@ var BaseType = `{
       ],
       [
         "own",
-        "AccountId"
+        "Balance"
       ],
       [
         "others",
@@ -1038,7 +1038,7 @@ var BaseType = `{
       ],
       [
         "own",
-        "AccountId"
+        "Balance"
       ],
       [
         "others",
