@@ -107,6 +107,8 @@ func (r RuntimeType) Reg() *RuntimeType {
 		&MetadataV9Decoder{},
 		&MetadataV10Decoder{},
 		&MetadataV11Decoder{},
+		&MetadataV12Decoder{},
+		&MetadataV12Module{},
 		&MetadataModuleError{},
 	}
 	for _, class := range scales {

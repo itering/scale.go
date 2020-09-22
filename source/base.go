@@ -18,7 +18,8 @@ var BaseType = `{
       "MetadataV8Decoder",
       "MetadataV9Decoder",
       "MetadataV10Decoder",
-      "MetadataV11Decoder"
+      "MetadataV11Decoder",
+      "MetadataV12Decoder"
     ]
   },
   "StorageModify": {
