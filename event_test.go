@@ -17,7 +17,7 @@ func TestEventsDecoder_Init(t *testing.T) {
 	_ = m.Process()
 	e := scalecodec.EventsDecoder{}
 	option := types.ScaleDecoderOption{Metadata: &m.Metadata}
-	c, err := ioutil.ReadFile(fmt.Sprintf("%s.json", "source/kusama"))
+	c, err := ioutil.ReadFile(fmt.Sprintf("%s.json", "network/kusama"))
 	if err != nil {
 		panic(err)
 	}
@@ -30,7 +30,7 @@ func TestKusama1058EventsDecoder(t *testing.T) {
 	m := scalecodec.MetadataDecoder{}
 	m.Init(utiles.HexToBytes(Kusama1055))
 	_ = m.Process()
-	c, err := ioutil.ReadFile(fmt.Sprintf("%s.json", "source/kusama"))
+	c, err := ioutil.ReadFile(fmt.Sprintf("%s.json", "network/kusama"))
 	if err != nil {
 		panic(err)
 	}
@@ -47,7 +47,7 @@ func TestCrabEventsDecoder(t *testing.T) {
 	m := scalecodec.MetadataDecoder{}
 	m.Init(utiles.HexToBytes(Crab2))
 	_ = m.Process()
-	c, err := ioutil.ReadFile(fmt.Sprintf("%s.json", "source/crab"))
+	c, err := ioutil.ReadFile(fmt.Sprintf("%s.json", "network/crab"))
 	if err != nil {
 		panic(err)
 	}
@@ -67,7 +67,7 @@ func TestPlasmEventsDecoder(t *testing.T) {
 	m := scalecodec.MetadataDecoder{}
 	m.Init(utiles.HexToBytes(Plasm))
 	_ = m.Process()
-	c, err := ioutil.ReadFile(fmt.Sprintf("%s.json", "source/plasm"))
+	c, err := ioutil.ReadFile(fmt.Sprintf("%s.json", "network/plasm"))
 	if err != nil {
 		panic(err)
 	}
@@ -84,7 +84,7 @@ func TestWestendEventsDecoder(t *testing.T) {
 	m := scalecodec.MetadataDecoder{}
 	m.Init(utiles.HexToBytes(westend))
 	_ = m.Process()
-	c, err := ioutil.ReadFile(fmt.Sprintf("%s.json", "source/westend"))
+	c, err := ioutil.ReadFile(fmt.Sprintf("%s.json", "network/westend"))
 	if err != nil {
 		panic(err)
 	}

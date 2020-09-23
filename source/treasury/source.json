@@ -1,0 +1,100 @@
+{
+  "BountyIndex": "u32",
+  "BountyStatus": {
+    "type": "enum",
+    "type_mapping": [
+      [
+        "Proposed",
+        "Null"
+      ],
+      [
+        "Approved",
+        "Null"
+      ],
+      [
+        "Funded",
+        "Null"
+      ],
+      [
+        "CuratorProposed",
+        "BountyStatusCuratorProposed"
+      ],
+      [
+        "Active",
+        "BountyStatusActive"
+      ],
+      [
+        "PendingPayout",
+        "BountyStatusPendingPayout"
+      ]
+    ]
+  },
+  "BountyStatusActive": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "curator",
+        "AccountId"
+      ],
+      [
+        "updateDue",
+        "BlockNumber"
+      ]
+    ]
+  },
+  "BountyStatusCuratorProposed": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "curator",
+        "AccountId"
+      ]
+    ]
+  },
+  "BountyStatusPendingPayout": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "curator",
+        "AccountId"
+      ],
+      [
+        "beneficiary",
+        "AccountId"
+      ],
+      [
+        "unlockAt",
+        "BlockNumber"
+      ]
+    ]
+  },
+  "Bounty": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "proposer",
+        "AccountId"
+      ],
+      [
+        "value",
+        "Balance"
+      ],
+      [
+        "fee",
+        "Balance"
+      ],
+      [
+        "curatorDeposit",
+        "Balance"
+      ],
+      [
+        "bond",
+        "Balance"
+      ],
+      [
+        "status",
+        "BountyStatus"
+      ]
+    ]
+  }
+}

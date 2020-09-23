@@ -12,7 +12,7 @@ type TypeStruct struct {
 	BitLength   int        `json:"bit_length,omitempty"`
 }
 
-//go:generate ./type.sh
+//go:generate go run ../tools/merge.go
 func LoadTypeRegistry(source []byte) map[string]TypeStruct {
 	var original map[string]interface{}
 	err := json.Unmarshal(source, &original)

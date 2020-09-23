@@ -1,0 +1,159 @@
+{
+  "Weight": "u32",
+  "ChainId": "u8",
+  "ResourceId": "[u8; 32]",
+  "chainbridge::ChainId": "u8",
+  "DepositNonce": "u64",
+  "Points": "u32",
+  "Multiplier": "Fixed64",
+  "Address": "GenericAddress",
+  "LookupSource": "GenericAddress",
+  "U256": "[u8; 32]",
+  "Box<Proposal>": "BoxProposal",
+  "EraPoints": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "total",
+        "Points"
+      ],
+      [
+        "individual",
+        "Vec<Points>"
+      ]
+    ]
+  },
+  "DispatchResult": {
+    "type": "enum",
+    "type_mapping": [
+      [
+        "Ok",
+        "Null"
+      ],
+      [
+        "Error",
+        "DispatchError"
+      ]
+    ]
+  },
+  "ReferendumInfo": {
+    "type": "enum",
+    "type_mapping": [
+      [
+        "Ongoing",
+        "ReferendumStatus"
+      ],
+      [
+        "Finished",
+        "ReferendumInfoFinished"
+      ]
+    ]
+  },
+  "ProxyType": {
+    "type": "enum",
+    "value_list": [
+      "Any",
+      "NonTransfer",
+      "Governance",
+      "Staking",
+      "SudoBalances",
+      "IdentityJudgement"
+    ]
+  },
+  "AnchorData": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "id",
+        "H256"
+      ],
+      [
+        "docRoot",
+        "H256"
+      ],
+      [
+        "anchoredBlock",
+        "u64"
+      ]
+    ]
+  },
+  "Fee": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "key",
+        "Hash"
+      ],
+      [
+        "price",
+        "Balance"
+      ]
+    ]
+  },
+  "PreCommitData": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "signingRoot",
+        "H256"
+      ],
+      [
+        "identity",
+        "H256"
+      ],
+      [
+        "expirationBlock",
+        "u64"
+      ]
+    ]
+  },
+  "Proof": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "leafHash",
+        "H256"
+      ],
+      [
+        "sortedHashes",
+        "H256"
+      ]
+    ]
+  },
+  "MultiAccountData": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "threshold",
+        "u16"
+      ],
+      [
+        "signatories",
+        "Vec<AccountId>"
+      ],
+      [
+        "deposit",
+        "Balance"
+      ],
+      [
+        "depositor",
+        "AccountId"
+      ]
+    ]
+  },
+  "Address#1-228": "AccountId",
+  "LookupSource#1-228": "AccountId",
+  "Linkage": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "previous",
+        "Option<AccountId>"
+      ],
+      [
+        "next",
+        "Option<AccountId>"
+      ]
+    ]
+  }
+}

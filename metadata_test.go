@@ -44,7 +44,7 @@ func TestCheckRegistry(t *testing.T) {
 	m := scalecodec.MetadataDecoder{}
 	m.Init(utiles.HexToBytes(Crab2))
 	_ = m.Process()
-	c, err := ioutil.ReadFile(fmt.Sprintf("%s.json", "source/crab"))
+	c, err := ioutil.ReadFile(fmt.Sprintf("%s.json", "network/crab"))
 	if err != nil {
 		panic(err)
 	}

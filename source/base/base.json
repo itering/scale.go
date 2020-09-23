@@ -89,6 +89,7 @@
   "ConsensusEngineId": "[u8; 4]",
   "StrikeCount": "u32",
   "RefCount": "u8",
+  "RefCount1": "u32",
   "ValidatorId": "AccountId",
   "CallHash": "H256",
   "CallHashOf": "H256",
