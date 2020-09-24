@@ -79,20 +79,3 @@ func TestPlasmEventsDecoder(t *testing.T) {
 	e.Init(types.ScaleBytes{Data: utiles.HexToBytes(eventRaw)}, &option)
 	e.Process()
 }
-
-func TestWestendEventsDecoder(t *testing.T) {
-	m := scalecodec.MetadataDecoder{}
-	m.Init(utiles.HexToBytes(westend))
-	_ = m.Process()
-	c, err := ioutil.ReadFile(fmt.Sprintf("%s.json", "network/westend"))
-	if err != nil {
-		panic(err)
-	}
-	types.RegCustomTypes(source.LoadTypeRegistry(c))
-	e := scalecodec.EventsDecoder{}
-	option := types.ScaleDecoderOption{Metadata: &m.Metadata, Spec: 1}
-
-	eventRaw := "0x180000000000000080e36a09000000000200000001000000000000000000000000000200000002000000000000ca9a3b0000000002000000030000000300c601b3e5d664c8cfd77f6713be93b8b4364e6a1e93217d04888b3c7cc21ee235005039278c04000000000000000000000000030000001100c601b3e5d664c8cfd77f6713be93b8b4364e6a1e93217d04888b3c7cc21ee235d0ee80934b74c7f0f25c7a137a8a16e58e713283005039278c0400000000000000000000000003000000000000ab904100000000000100"
-	e.Init(types.ScaleBytes{Data: utiles.HexToBytes(eventRaw)}, &option)
-	e.Process()
-}
