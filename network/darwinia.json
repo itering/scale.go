@@ -1039,5 +1039,6 @@
   "TcHeaderMMR": "Vec<u8>",
   "TcHeaderThing": "EthereumHeaderThing",
   "TcBlockNumber": "u64",
-  "TcHeaderHash": "H256"
+  "TcHeaderHash": "H256",
+  "CompactAssignments": "CompactAssignmentsLatest"
 }

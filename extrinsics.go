@@ -77,7 +77,7 @@ func (e *ExtrinsicDecoder) Process() {
 		if e.ContainsTransaction {
 			e.Address = e.ProcessAndUpdateData("Address").(string)
 			e.Signature = e.ProcessAndUpdateData("Signature").(string)
-			e.Nonce = int(e.ProcessAndUpdateData("Compact<u32>").(int))
+			e.Nonce = e.ProcessAndUpdateData("Compact<u32>").(int)
 			e.Era = e.ProcessAndUpdateData("Era").(string)
 			e.ExtrinsicHash = e.generateHash()
 		}

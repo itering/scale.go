@@ -2874,11 +2874,11 @@
     "type_mapping": [
       [
         "votes1",
-        "Vec<(NominatorIndexCompact, [CompactScoreCompact; 0], ValidatorIndexCompact)>"
+        "Vec<(NominatorIndexCompact, ValidatorIndexCompact)>"
       ],
       [
         "votes2",
-        "Vec<(NominatorIndexCompact, [CompactScoreCompact; 1], ValidatorIndexCompact)>"
+        "Vec<(NominatorIndexCompact, CompactScoreCompact, ValidatorIndexCompact)>"
       ],
       [
         "votes3",
@@ -2938,7 +2938,13 @@
       ]
     ]
   },
-  "CompactScoreCompact": "(ValidatorIndexCompact, OffchainAccuracyCompact)",
+  "CompactScoreCompact": {
+    "type": "struct",
+    "type_mapping": [
+      ["validatorIndex", "ValidatorIndexCompact"],
+      ["offchainAccuracy", "OffchainAccuracyCompact"]
+    ]
+  },
   "ValidatorIndexCompact": "Compact<ValidatorIndex>",
   "OffchainAccuracyCompact": "Compact<OffchainAccuracy>",
   "NominatorIndexCompact": "Compact<NominatorIndex>",

@@ -1,0 +1,19 @@
+{
+  "PalletVersion": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "major",
+        "u16"
+      ],
+      [
+        "minor",
+        "u8"
+      ],
+      [
+        "patch",
+        "u8"
+      ]
+    ]
+  }
+}

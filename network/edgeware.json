@@ -249,5 +249,62 @@
         "Reasons"
       ]
     ]
-  }
+  },
+  "Linkage": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "previous",
+        "Option<AccountId>"
+      ],
+      [
+        "next",
+        "Option<AccountId>"
+      ]
+    ]
+  },
+  "voting::VoteType": {
+    "type": "enum",
+    "value_list": [
+      "Binary",
+      "MultiOption"
+    ]
+  },
+  "voting::TallyType": {
+    "type": "enum",
+    "value_list": [
+      "OnePerson",
+      "OneCoin"
+    ]
+  },
+  "Points": "u32",
+  "EraPoints": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "total",
+        "Points"
+      ],
+      [
+        "individual",
+        "Vec<Points>"
+      ]
+    ]
+  },
+  "Weight#38-?": "u64",
+  "DispatchResult#38-?": {
+    "type": "enum",
+    "type_mapping": [
+      [
+        "Ok",
+        "Null"
+      ],
+      [
+        "Error",
+        "DispatchError"
+      ]
+    ]
+  },
+  "Address#38-?": "GenericAddress",
+  "LookupSource#38-?": "GenericAddress"
 }
