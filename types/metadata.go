@@ -8,6 +8,7 @@ type MetadataModules struct {
 	Events    []MetadataEvents      `json:"events"`
 	Constants []MetadataConstants   `json:"constants,omitempty"`
 	Errors    []MetadataModuleError `json:"errors"`
+	Index     int                   `json:"index"`
 }
 
 type MetadataStorage struct {

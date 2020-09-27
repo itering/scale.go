@@ -15,7 +15,7 @@ func (m *MetadataV12Decoder) Init(data ScaleBytes, option *ScaleDecoderOption) {
 }
 
 func (m *MetadataV12Decoder) Process() {
-	var callModuleIndex, eventModuleIndex int
+	// var callModuleIndex, eventModuleIndex int
 
 	result := MetadataStruct{
 		Metadata: MetadataTag{
@@ -32,17 +32,15 @@ func (m *MetadataV12Decoder) Process() {
 	for k, module := range modulesType {
 		if module.Calls != nil {
 			for callIndex, call := range module.Calls {
-				modulesType[k].Calls[callIndex].Lookup = xstrings.RightJustify(utiles.IntToHex(callModuleIndex), 2, "0") + xstrings.RightJustify(utiles.IntToHex(callIndex), 2, "0")
+				modulesType[k].Calls[callIndex].Lookup = xstrings.RightJustify(utiles.IntToHex(module.Index), 2, "0") + xstrings.RightJustify(utiles.IntToHex(callIndex), 2, "0")
 				result.CallIndex[modulesType[k].Calls[callIndex].Lookup] = CallIndex{Module: module, Call: call}
 			}
-			callModuleIndex++
 		}
 		if module.Events != nil {
 			for eventIndex, event := range module.Events {
-				modulesType[k].Events[eventIndex].Lookup = xstrings.RightJustify(utiles.IntToHex(eventModuleIndex), 2, "0") + xstrings.RightJustify(utiles.IntToHex(eventIndex), 2, "0")
+				modulesType[k].Events[eventIndex].Lookup = xstrings.RightJustify(utiles.IntToHex(module.Index), 2, "0") + xstrings.RightJustify(utiles.IntToHex(eventIndex), 2, "0")
 				result.EventIndex[modulesType[k].Events[eventIndex].Lookup] = EventIndex{Module: module, Call: event}
 			}
-			eventModuleIndex++
 		}
 	}
 
