@@ -322,7 +322,6 @@
         "token_symbol",
         "TokenSymbol"
       ]
-
     ],
     "type": "struct"
   },
@@ -350,23 +349,6 @@
       [
         "authority",
         "BlockSigningAuthority"
-      ]
-    ],
-    "type": "struct"
-  },
-  "BalanceDuration": {
-    "type_mapping": [
-      [
-        "last_block",
-        "BlockNumber"
-      ],
-      [
-        "last_balance",
-        "Balance"
-      ],
-      [
-        "value",
-        "Duration"
       ]
     ],
     "type": "struct"
@@ -502,19 +484,6 @@
     ],
     "type": "struct"
   },
-  "SignedBlockHeader": {
-    "type_mapping": [
-      [
-        "block_header",
-        "BlockHeader"
-      ],
-      [
-        "producer_signature",
-        "producerSignature"
-      ]
-    ],
-    "type": "struct"
-  },
   "AssetSymbol": {
     "value_list": [
       "DOT",
@@ -565,6 +534,17 @@
     ],
     "type": "enum"
   },
+  "TrxStatus": {
+    "value_list": [
+      "Initial",
+      "Generated",
+      "Signed",
+      "Processing",
+      "Success",
+      "Fail"
+    ],
+    "type": "enum"
+  },
   "PoolWeight": "Balance",
   "ProxyValidatorRegister": {
     "type_mapping": [
@@ -608,5 +588,18 @@
       ]
     ],
     "type": "struct"
+  },
+  "SignedBlockHeader": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "block_header",
+        "BlockHeader"
+      ],
+      [
+        "producer_signature",
+        "producerSignature"
+      ]
+    ]
   }
 }

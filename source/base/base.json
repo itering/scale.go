@@ -2709,6 +2709,10 @@
       [
         "secondary",
         "Vec<u64>"
+      ],
+      [
+        "secondary_vrf",
+        "Vec<u64>"
       ]
     ]
   },
@@ -2941,8 +2945,14 @@
   "CompactScoreCompact": {
     "type": "struct",
     "type_mapping": [
-      ["validatorIndex", "ValidatorIndexCompact"],
-      ["offchainAccuracy", "OffchainAccuracyCompact"]
+      [
+        "validatorIndex",
+        "ValidatorIndexCompact"
+      ],
+      [
+        "offchainAccuracy",
+        "OffchainAccuracyCompact"
+      ]
     ]
   },
   "ValidatorIndexCompact": "Compact<ValidatorIndex>",
