@@ -30,7 +30,7 @@ func TestExtrinsicDecoder(t *testing.T) {
 	_ = m.Process()
 
 	e := scalecodec.ExtrinsicDecoder{}
-	option := types.ScaleDecoderOption{Metadata: &m.Metadata}
+	option := types.ScaleDecoderOption{Metadata: &m.Metadata, Spec: 1055}
 
 	extrinsicRaw := "0x280402000b900b7aa47101"
 	e.Init(types.ScaleBytes{Data: utiles.HexToBytes(extrinsicRaw)}, &option)
