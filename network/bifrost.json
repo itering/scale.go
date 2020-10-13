@@ -601,5 +601,6 @@
         "producerSignature"
       ]
     ]
-  }
+  },
+  "CompactAssignments": "CompactAssignmentsLatest"
 }

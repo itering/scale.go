@@ -1,0 +1,18 @@
+{
+  "Weight": "u64",
+  "DispatchResult": {
+    "type": "enum",
+    "type_mapping": [
+      [
+        "Ok",
+        "Null"
+      ],
+      [
+        "Error",
+        "DispatchError"
+      ]
+    ]
+  },
+  "Address": "AccountId",
+  "LookupSource": "AccountId"
+}

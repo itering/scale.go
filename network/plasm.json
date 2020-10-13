@@ -48,8 +48,98 @@
       ]
     ]
   },
+  "Claim": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "amount",
+        "u128"
+      ],
+      [
+        "approve",
+        "BTreeSet<AuthorityId>"
+      ],
+      [
+        "complete",
+        "bool"
+      ],
+      [
+        "decline",
+        "BTreeSet<AuthorityId>"
+      ],
+      [
+        "params",
+        "Lockdrop"
+      ]
+    ]
+  },
   "BTreeSet": {
     "type": "struct",
     "type_mapping": []
+  },
+  "AuthorityIndex": "u16",
+  "ClaimId": "H256",
+  "PredicateHash": "H256",
+  "AuthorityVote": "u32",
+  "DollarRate": "u128",
+  "AuthorityId": "AccountId",
+  "TickerRate<DollarRate>": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "authority",
+        "AuthorityIndex"
+      ],
+      [
+        "btc",
+        "DollarRate"
+      ],
+      [
+        "eth",
+        "DollarRate"
+      ]
+    ]
+  },
+  "ClaimVote": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "approve",
+        "bool"
+      ],
+      [
+        "authority",
+        "u16"
+      ],
+      [
+        "claim_id",
+        "ClaimId"
+      ]
+    ]
+  },
+  "Lockdrop": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "duration",
+        "u64"
+      ],
+      [
+        "public_key",
+        "[u8; 33]"
+      ],
+      [
+        "transaction_hash",
+        "H256"
+      ],
+      [
+        "type",
+        "u8"
+      ],
+      [
+        "value",
+        "u128"
+      ]
+    ]
   }
 }

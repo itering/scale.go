@@ -216,5 +216,8 @@
     ]
   },
   "Address#1050-?": "AccountId",
-  "Box<Proposal>": "BoxProposal"
+  "Box<Proposal>": "BoxProposal",
+  "CompactAssignments#2023-?": "CompactAssignmentsLatest",
+  "RewardDestination#2023-?": "RewardDestinationLatest",
+  "RefCount": "u32"
 }

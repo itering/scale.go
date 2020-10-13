@@ -1,33 +1,8 @@
 {
-  "Address": "AccountIdAddress",
+  "Address": "AccountId",
   "BlockNumber": "U32",
   "LeasePeriod": "BlockNumber",
   "Weight": "u64",
-  "SessionKeysPolkadot": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "grandpa",
-        "AccountId"
-      ],
-      [
-        "babe",
-        "AccountId"
-      ],
-      [
-        "im_online",
-        "AccountId"
-      ],
-      [
-        "authority_discovery",
-        "AccountId"
-      ],
-      [
-        "parachains",
-        "AccountId"
-      ]
-    ]
-  },
   "Keys": "SessionKeysPolkadot",
   "DispatchInfo": {
     "type": "struct",
@@ -118,7 +93,18 @@
       ]
     ]
   },
-  "ReferendumInfo<BlockNumber, Hash>": {
+  "ProxyType": {
+    "type": "enum",
+    "value_list": [
+      "Any",
+      "NonTransfer",
+      "Governance",
+      "Staking",
+      "SudoBalances",
+      "IdentityJudgement"
+    ]
+  },
+  "ReferendumInfo": {
     "type": "enum",
     "type_mapping": [
       [
@@ -131,14 +117,7 @@
       ]
     ]
   },
-  "ProxyType": {
-    "type": "enum",
-    "value_list": [
-      "Any",
-      "NonTransfer",
-      "Governance",
-      "Staking",
-      "SudoBalances"
-    ]
-  }
+  "CompactAssignments#23-?": "CompactAssignmentsLatest",
+  "RewardDestination#23-?": "RewardDestinationLatest",
+  "RefCount#25-?": "u32"
 }

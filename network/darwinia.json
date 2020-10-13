@@ -155,23 +155,6 @@
       ]
     ]
   },
-  "RewardDestination": {
-    "type": "enum",
-    "type_mapping": [
-      [
-        "Staked",
-        "Staked"
-      ],
-      [
-        "Stash",
-        "null"
-      ],
-      [
-        "Controller",
-        "null"
-      ]
-    ]
-  },
   "Staked": {
     "type": "struct",
     "type_mapping": [
@@ -645,7 +628,7 @@
       ],
       [
         "Deposit",
-        "EthReceiptProof"
+        "NULL"
       ]
     ]
   },
@@ -1040,5 +1023,45 @@
   "TcHeaderThing": "EthereumHeaderThing",
   "TcBlockNumber": "u64",
   "TcHeaderHash": "H256",
-  "CompactAssignments": "CompactAssignmentsLatest"
+  "CompactAssignments": "CompactAssignmentsLatest",
+  "ProxyType": {
+    "type": "enum",
+    "value_list": [
+      "Any",
+      "NonTransfer",
+      "Staking",
+      "IdentityJudgement",
+      "EthereumBridge"
+    ]
+  },
+  "TreasuryProposal": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "proposer",
+        "AccountId"
+      ],
+      [
+        "beneficiary",
+        "AccountId"
+      ],
+      [
+        "ring_value",
+        "Balance"
+      ],
+      [
+        "kton_value",
+        "Balance"
+      ],
+      [
+        "ring_bond",
+        "Balance"
+      ],
+      [
+        "kton_bond",
+        "Balance"
+      ]
+    ]
+  },
+  "RewardDestination": "RewardDestinationLatest"
 }

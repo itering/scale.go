@@ -1,0 +1,315 @@
+{
+  "Weight": "u64",
+  "Address": "AccountId",
+  "LookupSource": "AccountId",
+  "DispatchResult": {
+    "type": "enum",
+    "type_mapping": [
+      [
+        "Ok",
+        "Null"
+      ],
+      [
+        "Error",
+        "DispatchError"
+      ]
+    ]
+  },
+  "Sworker": "Vec<u8>",
+  "SworkerCert": "Vec<u8>",
+  "IASSig": "Vec<u8>",
+  "ISVBody": "Vec<u8>",
+  "SworkerPubKey": "Vec<u8>",
+  "SworkerSignature": "Vec<u8>",
+  "SworkerCode": "Vec<u8>",
+  "ReportSlot": "u64",
+  "AddressInfo": "Vec<u8>",
+  "MerkleRoot": "Vec<u8>",
+  "Identity": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "pub_key",
+        "Vec<u8>"
+      ],
+      [
+        "code",
+        "Vec<u8>"
+      ]
+    ]
+  },
+  "WorkReport": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "block_number",
+        "u64"
+      ],
+      [
+        "used",
+        "u64"
+      ],
+      [
+        "reserved",
+        "u64"
+      ],
+      [
+        "cached_reserved",
+        "u64"
+      ],
+      [
+        "files",
+        "Vec<(Vec<u8>, u64)>"
+      ]
+    ]
+  },
+  "StakingLedger": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "stash",
+        "AccountId"
+      ],
+      [
+        "total",
+        "Compact<Balance>"
+      ],
+      [
+        "active",
+        "Compact<Balance>"
+      ],
+      [
+        "valid",
+        "Compact<Balance>"
+      ],
+      [
+        "unlocking",
+        "Vec<UnlockChunk>"
+      ]
+    ]
+  },
+  "Validations": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "total",
+        "Compact<Balance>"
+      ],
+      [
+        "guarantee_fee",
+        "Compact<Perbill>"
+      ],
+      [
+        "guarantors",
+        "Vec<AccountId>"
+      ]
+    ]
+  },
+  "Nominations": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "targets",
+        "Vec<AccountId>"
+      ],
+      [
+        "total",
+        "Compact<Balance>"
+      ],
+      [
+        "submitted_in",
+        "u32"
+      ],
+      [
+        "suppressed",
+        "bool"
+      ]
+    ]
+  },
+  "MerchantInfo": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "address",
+        "Vec<u8>"
+      ],
+      [
+        "storage_price",
+        "Balance"
+      ],
+      [
+        "file_map:",
+        "Vec<(Vec<u8>, Vec<Hash>)>"
+      ]
+    ]
+  },
+  "OrderStatus": {
+    "type": "enum",
+    "value_list": [
+      "Success",
+      "Failed",
+      "Pending"
+    ]
+  },
+  "StorageOrder": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "file_identifier",
+        "Vec<u8>"
+      ],
+      [
+        "file_size",
+        "u64"
+      ],
+      [
+        "created_on",
+        "BlockNumber"
+      ],
+      [
+        "completed_on",
+        "BlockNumber"
+      ],
+      [
+        "expired_on",
+        "BlockNumber"
+      ],
+      [
+        "provider",
+        "AccountId"
+      ],
+      [
+        "client",
+        "AccountId"
+      ],
+      [
+        "amount",
+        "Balance"
+      ],
+      [
+        "order_status",
+        "OrderStatus"
+      ]
+    ]
+  },
+  "Pledge": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "total",
+        "Balance"
+      ],
+      [
+        "used",
+        "Balance"
+      ]
+    ]
+  },
+  "PaymentLedger": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "total",
+        "Balance"
+      ],
+      [
+        "paid",
+        "Balance"
+      ],
+      [
+        "unreserved",
+        "Balance"
+      ]
+    ]
+  },
+  "MerchantPunishment": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "success",
+        "EraIndex"
+      ],
+      [
+        "failed",
+        "EraIndex"
+      ],
+      [
+        "value",
+        "Balance"
+      ]
+    ]
+  },
+  "EraPoints": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "total",
+        "Points"
+      ],
+      [
+        "individual",
+        "Vec<Points>"
+      ]
+    ]
+  },
+  "StakingLedger<AccountId, BalanceOf>": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "stash",
+        "AccountId"
+      ],
+      [
+        "total",
+        "Compact<Balance>"
+      ],
+      [
+        "active",
+        "Compact<Balance>"
+      ],
+      [
+        "unlocking",
+        "Vec<UnlockChunk<Balance>>"
+      ],
+      [
+        "claimed_rewards",
+        "Option<EraIndex>"
+      ]
+    ]
+  },
+  "UnlockChunk": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "value",
+        "Compact<Balance>"
+      ],
+      [
+        "era",
+        "Compact<EraIndex>"
+      ]
+    ]
+  },
+  "Guarantee": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "targets",
+        "Vec<IndividualExposure<AccountId, Balance>>"
+      ],
+      [
+        "total",
+        "Compact<Balance>"
+      ],
+      [
+        "submitted_in",
+        "EraIndex"
+      ],
+      [
+        "suppressed",
+        "bool"
+      ]
+    ]
+  },
+  "FileAlias": "Vec<u8>"
+}

@@ -1,6 +1,7 @@
 package scalecodec
 
 import (
+	"fmt"
 	scaleType "github.com/itering/scale.go/types"
 	"github.com/itering/scale.go/utiles"
 )
@@ -63,8 +64,13 @@ func (e *EventRecord) Process() map[string]interface{} {
 	}
 	e.Type = utiles.BytesToHex(e.NextBytes(2))
 
-	e.Event = e.Metadata.EventIndex[e.Type].Call
-	e.EventModule = e.Metadata.EventIndex[e.Type].Module
+	call, ok := e.Metadata.EventIndex[e.Type]
+	if !ok {
+		panic(fmt.Sprintf("Not find Extrinsic Lookup %s, please check metadata info", e.Type))
+	}
+
+	e.Event = call.Call
+	e.EventModule = call.Module
 
 	for _, argType := range e.Event.Args {
 		e.Params = append(e.Params, EventParam{Type: argType, Value: e.ProcessAndUpdateData(argType), ValueRaw: ""})

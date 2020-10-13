@@ -64,16 +64,16 @@
     "type": "struct",
     "type_mapping": [
       [
-        "id",
-        "H256"
+        "anchoredBlock",
+        "u64"
       ],
       [
         "docRoot",
         "H256"
       ],
       [
-        "anchoredBlock",
-        "u64"
+        "id",
+        "H256"
       ]
     ]
   },
@@ -94,16 +94,16 @@
     "type": "struct",
     "type_mapping": [
       [
-        "signingRoot",
-        "H256"
+        "expirationBlock",
+        "u64"
       ],
       [
         "identity",
         "H256"
       ],
       [
-        "expirationBlock",
-        "u64"
+        "signingRoot",
+        "H256"
       ]
     ]
   },
@@ -124,25 +124,47 @@
     "type": "struct",
     "type_mapping": [
       [
-        "threshold",
-        "u16"
-      ],
-      [
-        "signatories",
-        "Vec<AccountId>"
-      ],
-      [
         "deposit",
         "Balance"
       ],
       [
         "depositor",
         "AccountId"
+      ],
+      [
+        "signatories",
+        "Vec<AccountId>"
+      ],
+      [
+        "threshold",
+        "u16"
       ]
     ]
   },
   "Address#1-228": "AccountId",
   "LookupSource#1-228": "AccountId",
+  "Weight#235-?": "u64",
+  "ReferendumInfo#229-234": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "end",
+        "BlockNumber"
+      ],
+      [
+        "proposal",
+        "Proposal"
+      ],
+      [
+        "threshold",
+        "VoteThreshold"
+      ],
+      [
+        "delay",
+        "BlockNumber"
+      ]
+    ]
+  },
   "Linkage": {
     "type": "struct",
     "type_mapping": [

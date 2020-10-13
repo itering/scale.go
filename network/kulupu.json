@@ -1,4 +1,5 @@
 {
+  "Keys": "SessionKeysPolkadot",
   "U256": "[u8; 32]",
   "Difficulty": "U256",
   "weight": "u64",
@@ -12,6 +13,19 @@
       [
         "timestamp",
         "Moment"
+      ]
+    ]
+  },
+  "ReferendumInfo<BlockNumber, Hash, BalanceOf>": {
+    "type": "enum",
+    "type_mapping": [
+      [
+        "Ongoing",
+        "ReferendumStatus"
+      ],
+      [
+        "Finished",
+        "ReferendumInfoFinished"
       ]
     ]
   },

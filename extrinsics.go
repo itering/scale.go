@@ -128,8 +128,12 @@ func (e *ExtrinsicDecoder) Process() {
 	}
 
 	if e.CallIndex != "" {
-		e.Call = e.Metadata.CallIndex[e.CallIndex].Call
-		e.CallModule = e.Metadata.CallIndex[e.CallIndex].Module
+		call, ok := e.Metadata.CallIndex[e.CallIndex]
+		if !ok {
+			panic(fmt.Sprintf("Not find Extrinsic Lookup %s, please check metadata info", e.CallIndex))
+		}
+		e.Call = call.Call
+		e.CallModule = call.Module
 
 		for _, arg := range e.Call.Args {
 			e.Params = append(e.Params,
