@@ -196,7 +196,7 @@ func (r *RuntimeType) DecoderClass(typeString string, spec int) (reflect.Type, r
 		}
 	}
 
-	if typeString != "()" && string(typeString[0]) == "(" && string(typeString[len(typeString)-1:]) == ")" {
+	if typeString != "()" && string(typeString[0]) == "(" && typeString[len(typeString)-1:] == ")" {
 		decoderClass, rc, _ := r.getCodecInstant("Struct", spec)
 		s := rc.Interface().(*Struct)
 		s.TypeString = typeString

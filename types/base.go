@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/itering/scale.go/utiles"
 	"reflect"
+	"regexp"
 	"strings"
 )
 
@@ -89,11 +90,18 @@ func (s *ScaleDecoder) reset() {
 }
 
 func (s *ScaleDecoder) buildStruct() {
-	if s.TypeString != "" && string(s.TypeString[0]) == "(" && string(s.TypeString[len(s.TypeString)-1:]) == ")" {
+	if s.TypeString != "" && string(s.TypeString[0]) == "(" && s.TypeString[len(s.TypeString)-1:] == ")" {
 
 		var names, types []string
-		for k, v := range strings.Split(s.TypeString[1:len(s.TypeString)-1], ",") {
-			types = append(types, strings.TrimSpace(v))
+		reg := regexp.MustCompile(`\((.*?)\)`)
+		typeString := s.TypeString[1 : len(s.TypeString)-1]
+		typeParts := reg.FindAllString(typeString, -1)
+		for _, part := range typeParts {
+			typeString = strings.ReplaceAll(typeString, part, strings.ReplaceAll(part, ",", "#"))
+		}
+
+		for k, v := range strings.Split(typeString, ",") {
+			types = append(types, strings.ReplaceAll(strings.TrimSpace(v), "#", ","))
 			names = append(names, fmt.Sprintf("col%d", k+1))
 		}
 
