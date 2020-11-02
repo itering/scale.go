@@ -2401,6 +2401,10 @@
       [
         "maybePeriodic",
         "Option<SchedulePeriod>"
+      ],
+      [
+        "origin",
+        "PalletsOrigin"
       ]
     ]
   },
@@ -2958,5 +2962,48 @@
   "ValidatorIndexCompact": "Compact<ValidatorIndex>",
   "OffchainAccuracyCompact": "Compact<OffchainAccuracy>",
   "NominatorIndexCompact": "Compact<NominatorIndex>",
-  "TransactionPriority": "u64"
+  "TransactionPriority": "u64",
+  "SyncState": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "startingBlock",
+        "BlockNumber"
+      ],
+      [
+        "currentBlock",
+        "BlockNumber"
+      ],
+      [
+        "highestBlock",
+        "Option<BlockNumber>"
+      ]
+    ]
+  },
+  "GenericMultiAddress": {
+    "type": "enum",
+    "type_mapping": [
+      [
+        "Id",
+        "AccountId"
+      ],
+      [
+        "Index",
+        "Compact<AccountIndex>"
+      ],
+      [
+        "Raw",
+        "Bytes"
+      ],
+      [
+        "Address32",
+        "H256"
+      ],
+      [
+        "Address20",
+        "H160"
+      ]
+    ]
+  },
+  "MultiAddress": "GenericMultiAddress"
 }

@@ -11,6 +11,14 @@
         "u32"
       ],
       [
+        "emptyPairCount",
+        "u32"
+      ],
+      [
+        "totalPairCount",
+        "u32"
+      ],
+      [
         "codeHash",
         "CodeHash"
       ],
@@ -93,7 +101,7 @@
       ],
       [
         "data",
-        "Vec<u8>"
+        "Bytes"
       ],
       [
         "gasConsumed",
@@ -297,192 +305,12 @@
         "u32"
       ],
       [
-        "opCostGrowMem",
-        "Weight"
+        "instructionWeights",
+        "InstructionWeights"
       ],
       [
-        "opCostRegular",
-        "Weight"
-      ],
-      [
-        "apiCostCaller",
-        "Weight"
-      ],
-      [
-        "apiCostAddress",
-        "Weight"
-      ],
-      [
-        "apiCostGasLeft",
-        "Weight"
-      ],
-      [
-        "apiCostBalance",
-        "Weight"
-      ],
-      [
-        "apiCostValueTransferred",
-        "Weight"
-      ],
-      [
-        "apiCostMinimumBalance",
-        "Weight"
-      ],
-      [
-        "apiCostTombstoneDeposit",
-        "Weight"
-      ],
-      [
-        "apiCostRentAllowance",
-        "Weight"
-      ],
-      [
-        "apiCostBlockNumber",
-        "Weight"
-      ],
-      [
-        "apiCostNow",
-        "Weight"
-      ],
-      [
-        "apiCostWeightToFee",
-        "Weight"
-      ],
-      [
-        "apiCostGas",
-        "Weight"
-      ],
-      [
-        "apiCostInput",
-        "Weight"
-      ],
-      [
-        " apiCostInputPerByte",
-        "Weight"
-      ],
-      [
-        "apiCostReturn",
-        "Weight"
-      ],
-      [
-        "apiCostReturnPerByte",
-        "Weight"
-      ],
-      [
-        "apiCostTerminate",
-        "Weight"
-      ],
-      [
-        "apiCostRestoreTo",
-        "Weight"
-      ],
-      [
-        "apiCostRestoreToPer_delta",
-        "Weight"
-      ],
-      [
-        "apiCostRandom",
-        "Weight"
-      ],
-      [
-        "apiCostDepositEvent",
-        "Weight"
-      ],
-      [
-        "apiCostDepositEventPerTopic",
-        "Weight"
-      ],
-      [
-        "apiCostDepositEventPerByte",
-        "Weight"
-      ],
-      [
-        "apiCostSetRentAllowance",
-        "Weight"
-      ],
-      [
-        "apiCostSetStorage",
-        "Weight"
-      ],
-      [
-        " apiCostSetStoragePerByte",
-        "Weight"
-      ],
-      [
-        "apiCostClearStorage",
-        "Weight"
-      ],
-      [
-        "apiCostGetStorage",
-        "Weight"
-      ],
-      [
-        "apiCostGetStoragePerByte",
-        "Weight"
-      ],
-      [
-        "apiCostTransfer",
-        "Weight"
-      ],
-      [
-        "apiCostCall",
-        "Weight"
-      ],
-      [
-        "apiCostCallTransferSurcharge",
-        "Weight"
-      ],
-      [
-        "apiCostCallPerInputByte",
-        "Weight"
-      ],
-      [
-        "apiCostCallPerOutputByte",
-        "Weight"
-      ],
-      [
-        "apiCostInstantiate",
-        "Weight"
-      ],
-      [
-        "apiCostInstantiatePerInputByte",
-        "Weight"
-      ],
-      [
-        "apiCostInstantiatePerOutputByte",
-        "Weight"
-      ],
-      [
-        "apiCostHashSha2256",
-        "Weight"
-      ],
-      [
-        "apiCostHashSha2256PerByte",
-        "Weight"
-      ],
-      [
-        "apiCostHashKeccak256",
-        "Weight"
-      ],
-      [
-        "apiCostHashKeccak256PerByte",
-        "Weight"
-      ],
-      [
-        "apiCostHashBlake2256",
-        "Weight"
-      ],
-      [
-        "apiCostHashBlake2256PerByte",
-        "Weight"
-      ],
-      [
-        "apiCostHashBlake2128",
-        "Weight"
-      ],
-      [
-        "apiCostHashBlake2128PerByte",
-        "Weight"
+        "hostFnWeights",
+        "HostFnWeights"
       ],
       [
         "enablePrintln",
@@ -516,5 +344,462 @@
   },
   "SeedOf": "Hash",
   "TombstoneContractInfo": "Hash",
-  "TrieId": "Bytes"
+  "TrieId": "Bytes",
+  "OriginCaller": {
+    "type": "enum",
+    "type_mapping": [
+      [
+        "System",
+        "SystemOrigin"
+      ]
+    ]
+  },
+  "PalletsOrigin": "OriginCaller",
+  "HostFnWeights": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "caller",
+        "Weight"
+      ],
+      [
+        "address",
+        "Weight"
+      ],
+      [
+        "gasLeft",
+        "Weight"
+      ],
+      [
+        "balance",
+        "Weight"
+      ],
+      [
+        "valueTransferred",
+        "Weight"
+      ],
+      [
+        "minimumBalance",
+        "Weight"
+      ],
+      [
+        "tombstoneDeposit",
+        "Weight"
+      ],
+      [
+        "rentAllowance",
+        "Weight"
+      ],
+      [
+        "blockNumber",
+        "Weight"
+      ],
+      [
+        "now",
+        "Weight"
+      ],
+      [
+        "weightToFee",
+        "Weight"
+      ],
+      [
+        "gas",
+        "Weight"
+      ],
+      [
+        "input",
+        "Weight"
+      ],
+      [
+        "inputPerByte",
+        "Weight"
+      ],
+      [
+        "return",
+        "Weight"
+      ],
+      [
+        "returnPerByte",
+        "Weight"
+      ],
+      [
+        "terminate",
+        "Weight"
+      ],
+      [
+        "restoreTo",
+        "Weight"
+      ],
+      [
+        "restoreToPerDelta",
+        "Weight"
+      ],
+      [
+        "random",
+        "Weight"
+      ],
+      [
+        "depositEvent",
+        "Weight"
+      ],
+      [
+        "depositEventPerTopic",
+        "Weight"
+      ],
+      [
+        "depositEventPerByte",
+        "Weight"
+      ],
+      [
+        "setRentAllowance",
+        "Weight"
+      ],
+      [
+        "setStorage",
+        "Weight"
+      ],
+      [
+        "setStoragePerByte",
+        "Weight"
+      ],
+      [
+        "clearStorage",
+        "Weight"
+      ],
+      [
+        "getStorage",
+        "Weight"
+      ],
+      [
+        "getStoragePerByte",
+        "Weight"
+      ],
+      [
+        "transfer",
+        "Weight"
+      ],
+      [
+        "call",
+        "Weight"
+      ],
+      [
+        "callTransferSurcharge",
+        "Weight"
+      ],
+      [
+        "callPerInputByte",
+        "Weight"
+      ],
+      [
+        "callPerOutputByte",
+        "Weight"
+      ],
+      [
+        "instantiate",
+        "Weight"
+      ],
+      [
+        "instantiatePerInputByte",
+        "Weight"
+      ],
+      [
+        "instantiatePerOutputByte",
+        "Weight"
+      ],
+      [
+        "hashSha2256",
+        "Weight"
+      ],
+      [
+        "hashSha2256PerByte",
+        "Weight"
+      ],
+      [
+        "hashKeccak256",
+        "Weight"
+      ],
+      [
+        "hashKeccak256PerByte",
+        "Weight"
+      ],
+      [
+        "hashBlake2256",
+        "Weight"
+      ],
+      [
+        "hashBlake2256PerByte",
+        "Weight"
+      ],
+      [
+        "hashBlake2128",
+        "Weight"
+      ],
+      [
+        "hashBlake2128PerByte",
+        "Weight"
+      ]
+    ]
+  },
+  "InstructionWeights": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "growMem",
+        "Weight"
+      ],
+      [
+        "regular",
+        "Weight"
+      ]
+    ]
+  },
+  "ContractProject": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "metadataVersion",
+        "Text"
+      ],
+      [
+        "source",
+        "ContractProjectSource"
+      ],
+      [
+        "contract",
+        "ContractProjectContract"
+      ],
+      [
+        "types",
+        "Vec<SiType>"
+      ],
+      [
+        "spec",
+        "ContractContractSpec"
+      ]
+    ]
+  },
+  "ContractProjectContract": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "name",
+        "Text"
+      ],
+      [
+        "version",
+        "Text"
+      ],
+      [
+        "authors",
+        "Vec<Text>"
+      ],
+      [
+        "description",
+        "Option<Text>"
+      ],
+      [
+        "documentation",
+        "Option<Text>"
+      ],
+      [
+        "repository",
+        "Option<Text>"
+      ],
+      [
+        "homepage",
+        "Option<Text>"
+      ],
+      [
+        "license",
+        "Option<Text>"
+      ]
+    ]
+  },
+  "ContractProjectSource": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "hash",
+        "[u8; 32]"
+      ],
+      [
+        "language",
+        "Text"
+      ],
+      [
+        "compiler",
+        "Text"
+      ]
+    ]
+  },
+  "RawOrigin": {
+    "type": "enum",
+    "type_mapping": [
+      [
+        "Root",
+        "Null"
+      ],
+      [
+        "Signed",
+        "AccountId"
+      ],
+      [
+        "None",
+        "Null"
+      ]
+    ]
+  },
+  "SystemOrigin": "RawOrigin",
+  "CollectiveOrigin": {
+    "type": "enum",
+    "type_mapping": [
+      [
+        "Members",
+        "(MemberCount, MemberCount)"
+      ],
+      [
+        "Member",
+        "AccountId"
+      ]
+    ]
+  },
+  "SiField": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "name",
+        "Option<Text>"
+      ],
+      [
+        "type",
+        "SiLookupTypeId"
+      ]
+    ]
+  },
+  "SiLookupTypeId": "u32",
+  "SiPath": "Vec<Text>",
+  "SiType": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "path",
+        "SiPath"
+      ],
+      [
+        "params",
+        "Vec<SiLookupTypeId>"
+      ],
+      [
+        "def",
+        "SiTypeDef"
+      ]
+    ]
+  },
+  "SiTypeDef": {
+    "type": "enum",
+    "type_mapping": [
+      [
+        "Composite",
+        "SiTypeDefComposite"
+      ],
+      [
+        "Variant",
+        "SiTypeDefVariant"
+      ],
+      [
+        "Sequence",
+        "SiTypeDefSequence"
+      ],
+      [
+        "Array",
+        "SiTypeDefArray"
+      ],
+      [
+        "Tuple",
+        "SiTypeDefTuple"
+      ],
+      [
+        "Primitive",
+        "SiTypeDefPrimitive"
+      ]
+    ]
+  },
+  "SiTypeDefArray": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "len",
+        "u16"
+      ],
+      [
+        "type",
+        "SiLookupTypeId"
+      ]
+    ]
+  },
+  "SiTypeDefComposite": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "fields",
+        "Vec<SiField>"
+      ]
+    ]
+  },
+  "SiTypeDefVariant": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "variants",
+        "Vec<SiVariant>"
+      ]
+    ]
+  },
+  "SiTypeDefPrimitive": {
+    "type": "enum",
+    "value_list": [
+      "Bool",
+      "Char",
+      "Str",
+      "U8",
+      "U16",
+      "U32",
+      "U64",
+      "U128",
+      "U256",
+      "I8",
+      "I16",
+      "I32",
+      "I64",
+      "I128",
+      "I256"
+    ]
+  },
+  "SiTypeDefSequence": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "type",
+        "SiLookupTypeId"
+      ]
+    ]
+  },
+  "SiTypeDefTuple": "Vec<SiLookupTypeId>",
+  "SiVariant": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "name",
+        "Text"
+      ],
+      [
+        "fields",
+        "Vec<SiField>"
+      ],
+      [
+        "discriminant",
+        "Option<u64>"
+      ]
+    ]
+  }
 }
