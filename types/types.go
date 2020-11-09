@@ -12,6 +12,7 @@ import (
 	"io"
 	"math"
 	"math/big"
+	"strconv"
 	"unicode/utf8"
 )
 
@@ -713,4 +714,37 @@ func (f *OpaqueCall) Process() {
 	e.Init(ScaleBytes{Data: utiles.HexToBytes(f.Value.(string))}, &option)
 	value := e.ProcessAndUpdateData("Call")
 	f.Value = value
+}
+
+type GenericLookupSource struct {
+	ScaleDecoder
+}
+
+func (g *GenericLookupSource) Process() {
+	if len(g.Data.Data) == 32 {
+		g.Value = utiles.BytesToHex(g.NextBytes(32))
+	}
+	AccountLength := g.NextBytes(1)
+	accountLength := utiles.BytesToHex(AccountLength)
+	if accountLength == "ff" {
+		g.Value = utiles.BytesToHex(g.NextBytes(32))
+		return
+	}
+	offset, length := readLength(AccountLength)
+	e := ScaleDecoder{}
+	e.Init(ScaleBytes{Data: g.Data.Data[offset : offset+length]}, nil)
+	g.Value = strconv.Itoa(int(e.ProcessAndUpdateData("U32").(uint32)))
+}
+
+func readLength(value []byte) (int, int) {
+	first := value[0]
+	switch first {
+	case 0xfc:
+		return 1, 2
+	case 0xfd:
+		return 1, 4
+	case 0xfe:
+		return 1, 8
+	}
+	return 0, 1
 }

@@ -92,3 +92,11 @@ func ToString(i interface{}) string {
 func TrimHex(s string) string {
 	return strings.TrimPrefix(s, "0x")
 }
+
+func BytesToBnHex(value []byte) string {
+	var h string
+	for _, b := range value {
+		h += fmt.Sprintf("%d", int(b))
+	}
+	return h
+}

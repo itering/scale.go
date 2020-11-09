@@ -1,6 +1,7 @@
 package types_test
 
 import (
+	"encoding/binary"
 	"encoding/json"
 	"fmt"
 	"github.com/itering/scale.go/source"
@@ -153,4 +154,20 @@ func TestRewardDestinationLatest(t *testing.T) {
 	m.Init(types.ScaleBytes{Data: utiles.HexToBytes(raw)}, nil)
 	r := m.ProcessAndUpdateData("RewardDestination")
 	fmt.Println(r)
+}
+
+func TestGenericLookupSource(t *testing.T) {
+	bs := make([]byte, 4)
+	binary.LittleEndian.PutUint32(bs, uint32(256))
+	fmt.Println(bs)
+	c := []byte{255, 1, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8}
+	raw := utiles.BytesToHex(c)
+	m := types.ScaleDecoder{}
+	m.Init(types.ScaleBytes{Data: utiles.HexToBytes(raw)}, nil)
+	r := m.ProcessAndUpdateData("GenericLookupSource")
+	if r.(string) != "0102030405060708010203040506070801020304050607080102030405060708" {
+		t.Errorf("Test TestGenericLookupSource Process fail, decode return %d", r)
+	}
+	m.Init(types.ScaleBytes{Data: []byte{0xfc, 0, 1}}, nil)
+	r = m.ProcessAndUpdateData("GenericLookupSource")
 }
