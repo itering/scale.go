@@ -110,7 +110,7 @@ func (e *ExtrinsicDecoder) Process() {
 	} else if e.VersionInfo == "04" || e.VersionInfo == "84" {
 
 		if e.ContainsTransaction {
-			e.Address = e.ProcessAndUpdateData("GenericAddress").(string)
+			e.Address = e.ProcessAndUpdateData("Address").(string)
 			e.SignatureVersion = e.ProcessAndUpdateData("U8").(int)
 			if e.SignatureVersion == 2 {
 				e.Signature = e.ProcessAndUpdateData("EcdsaSignature").(string)
