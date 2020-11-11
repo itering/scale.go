@@ -171,3 +171,13 @@ func TestGenericLookupSource(t *testing.T) {
 	m.Init(types.ScaleBytes{Data: []byte{0xfc, 0, 1}}, nil)
 	r = m.ProcessAndUpdateData("GenericLookupSource")
 }
+
+func TestBTreeMap(t *testing.T) {
+	raw := "0x041c62617a7a696e6745000000"
+	m := types.ScaleDecoder{}
+	m.Init(types.ScaleBytes{Data: utiles.HexToBytes(raw)}, nil)
+	r := m.ProcessAndUpdateData("BTreeMap<Text,u32>")
+	if utiles.ToString(r) != `[{"bazzing":69}]` {
+		t.Errorf("Test TestBTreeMap Process fail, decode return %v", utiles.ToString(r))
+	}
+}

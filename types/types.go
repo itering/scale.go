@@ -13,6 +13,7 @@ import (
 	"math"
 	"math/big"
 	"strconv"
+	"strings"
 	"unicode/utf8"
 )
 
@@ -179,11 +180,9 @@ type BlockNumber struct {
 
 type Vec struct {
 	ScaleDecoder
-	Elements []interface{} `json:"elements"`
 }
 
 func (v *Vec) Init(data ScaleBytes, option *ScaleDecoderOption) {
-	v.Elements = []interface{}{}
 	if v.SubType != "" && option != nil {
 		option.SubType = v.SubType
 	}
@@ -198,7 +197,6 @@ func (v *Vec) Process() {
 	}
 	for i := 0; i < elementCount; i++ {
 		element := v.ProcessAndUpdateData(v.SubType)
-		v.Elements = append(v.Elements, element)
 		result = append(result, element)
 	}
 	v.Value = result
@@ -747,4 +745,22 @@ func readLength(value []byte) (int, int) {
 		return 1, 8
 	}
 	return 0, 1
+}
+
+type BTreeMap struct{ ScaleDecoder }
+
+func (b *BTreeMap) Process() {
+	elementCount := b.ProcessAndUpdateData("Compact<u32>").(int)
+	var result []interface{}
+	if elementCount > 1000 {
+		panic(fmt.Sprintf("BTreeMap length %d exceeds %d", elementCount, 1000))
+	}
+	for i := 0; i < elementCount; i++ {
+		subType := strings.Split(b.SubType, ",")
+		key := utiles.ToString(b.ProcessAndUpdateData(subType[0]))
+		result = append(result, map[string]interface{}{
+			key: b.ProcessAndUpdateData(subType[1]),
+		})
+	}
+	b.Value = result
 }
