@@ -517,7 +517,7 @@
       "Mandatory"
     ]
   },
-  "DispatchInfo": {
+  "DispatchInfo258": {
     "type": "struct",
     "type_mapping": [
       [
@@ -531,6 +531,23 @@
       [
         "paysFee",
         "bool"
+      ]
+    ]
+  },
+  "DispatchInfo": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "weight",
+        "Weight"
+      ],
+      [
+        "class",
+        "DispatchClass"
+      ],
+      [
+        "paysFee",
+        "Pays"
       ]
     ]
   },
@@ -3005,5 +3022,28 @@
       ]
     ]
   },
-  "MultiAddress": "GenericMultiAddress"
+  "MultiAddress": "GenericMultiAddress",
+  "EcdsaSignature": "[u8; 65]",
+  "Ed25519Signature": "H512",
+  "Sr25519Signature": "H512",
+  "AnySignature": "H512",
+  "ExtrinsicSignature": "MultiSignature",
+  "MultiSignature": {
+    "type": "enum",
+    "type_mapping": [
+      [
+        "Ed25519",
+        "Ed25519Signature"
+      ],
+      [
+        "Sr25519",
+        "Sr25519Signature"
+      ],
+      [
+        "Ecdsa",
+        "EcdsaSignature"
+      ]
+    ]
+  },
+  "SessionKeys2": "(AccountId, AccountId)"
 }

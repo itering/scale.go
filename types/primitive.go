@@ -49,7 +49,7 @@ func (c *Compact) Process() {
 		if c.CompactLength <= 4 {
 			switch v := byteData.(type) {
 			case uint64:
-				c.Value = uint64(v / 4)
+				c.Value = v / 4
 			case uint32:
 				c.Value = uint64(v / 4)
 			case int:
