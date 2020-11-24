@@ -27,7 +27,7 @@ type ExtrinsicDecoder struct {
 	Nonce               int                       `json:"nonce"`
 	Era                 string                    `json:"era"`
 	CallIndex           string                    `json:"call_index"`
-	Tip                 decimal.Decimal           `json:"tip"`
+	Tip                 interface{}               `json:"tip"`
 	CallModule          scaleType.MetadataModules `json:"call_module"`
 	Call                scaleType.MetadataCalls   `json:"call"`
 	Params              []ExtrinsicParam          `json:"params"`
@@ -119,7 +119,7 @@ func (e *ExtrinsicDecoder) Process() {
 			}
 			e.Era = e.ProcessAndUpdateData("EraExtrinsic").(string)
 			e.Nonce = int(e.ProcessAndUpdateData("Compact<U64>").(uint64))
-			e.Tip = e.ProcessAndUpdateData("Compact<Balance>").(decimal.Decimal)
+			e.Tip = e.ProcessAndUpdateData("Compact<Balance>")
 			e.ExtrinsicHash = e.generateHash()
 		}
 		e.CallIndex = utiles.BytesToHex(e.NextBytes(2))

@@ -1,0 +1,214 @@
+{
+  "Weight": "u64",
+  "RefCount": "u32",
+  "DispatchResult": {
+    "type": "enum",
+    "type_mapping": [
+      [
+        "Ok",
+        "Null"
+      ],
+      [
+        "Error",
+        "DispatchError"
+      ]
+    ]
+  },
+  "VestingInfo": {
+    "type_mapping": [
+      [
+        "locked",
+        "Balance"
+      ],
+      [
+        "perBlock",
+        "Balance"
+      ],
+      [
+        "startingBlock",
+        "BlockNumber"
+      ]
+    ],
+    "type": "struct"
+  },
+  "ChainId": "u8",
+  "BalancesAggregate": {
+    "type_mapping": [
+      [
+        "total_issuance",
+        "Balance"
+      ],
+      [
+        "total_debt",
+        "Balance"
+      ]
+    ],
+    "type": "struct"
+  },
+  "Currency": {
+    "value_list": [
+      "Unknown",
+      "Usd",
+      "EQ",
+      "Eth",
+      "Btc",
+      "Eos",
+      "Dot"
+    ],
+    "type": "enum"
+  },
+  "Keys": "SessionKeys2",
+  "ResourceId": "[u8; 32]",
+  "LookupSource": "AccountId",
+  "ProposalVotes": {
+    "type_mapping": [
+      [
+        "votes_for",
+        "Vec<AccountId>"
+      ],
+      [
+        "votes_against",
+        "Vec<AccountId>"
+      ],
+      [
+        "status",
+        "ProposalStatus"
+      ],
+      [
+        "expiry",
+        "BlockNumber"
+      ]
+    ],
+    "type": "struct"
+  },
+  "PricePeriod": {
+    "value_list": [
+      "Min",
+      "TenMin",
+      "Hour",
+      "FourHour",
+      "Day"
+    ],
+    "type": "enum"
+  },
+  "FixedI64": "i64",
+  "DataPoint": {
+    "type_mapping": [
+      [
+        "price",
+        "u64"
+      ],
+      [
+        "account_id",
+        "AccountId"
+      ],
+      [
+        "block_number",
+        "BlockNumber"
+      ],
+      [
+        "timestamp",
+        "u64"
+      ]
+    ],
+    "type": "struct"
+  },
+  "TransferReason": {
+    "value_list": [
+      "Common",
+      "InterestFee",
+      "MarginCall",
+      "BailsmenRedistribution",
+      "TreasuryEqBuyout",
+      "TreasuryBuyEq"
+    ],
+    "type": "enum"
+  },
+  "ReinitRequest": {
+    "type_mapping": [
+      [
+        "account",
+        "AccountId"
+      ],
+      [
+        "authority_index",
+        "AuthIndex"
+      ],
+      [
+        "validators_len",
+        "u32"
+      ],
+      [
+        "block_num",
+        "BlockNumber"
+      ]
+    ],
+    "type": "struct"
+  },
+  "ProposalStatus": {
+    "value_list": [
+      "Initiated",
+      "Approved",
+      "Rejected"
+    ],
+    "type": "enum"
+  },
+  "UserGroup": {
+    "value_list": [
+      "Unknown",
+      "Balances",
+      "Balsmen"
+    ],
+    "type": "enum"
+  },
+  "SignedBalance": {
+    "type_mapping": [
+      [
+        "Positive",
+        "Balance"
+      ],
+      [
+        "Negative",
+        "Balance"
+      ]
+    ],
+    "type": "enum"
+  },
+  "Balance": "u64",
+  "PricePoint": {
+    "type_mapping": [
+      [
+        "block_number",
+        "BlockNumber"
+      ],
+      [
+        "timestamp",
+        "u64"
+      ],
+      [
+        "price",
+        "u64"
+      ],
+      [
+        "data_points",
+        "Vec<DataPoint>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "TotalAggregates": {
+    "type_mapping": [
+      [
+        "collateral",
+        "Balance"
+      ],
+      [
+        "debt",
+        "Balance"
+      ]
+    ],
+    "type": "struct"
+  },
+  "BalanceOf": "Balance",
+  "DepositNonce": "u64"
+}
