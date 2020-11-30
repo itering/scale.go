@@ -27,6 +27,8 @@ func ConvertType(name string, option ...interface{}) string {
 		name = "Compact<Moment>"
 	case "<T as Trait<I>>::Proposal":
 		name = "Proposal"
+	case "wasm::PrefabWasmModule":
+		name = "PrefabWasmModule"
 	}
 	return name
 }

@@ -1,5 +1,6 @@
 {
   "Weight": "u64",
+  "RefCount": "u32",
   "DispatchResult": {
     "type": "enum",
     "type_mapping": [
@@ -13,28 +14,159 @@
       ]
     ]
   },
-  "Address": "GenericAddress",
-  "LookupSource": "GenericAddress",
-  "Keys": {
-    "type": "struct",
+  "RoundStats": {
     "type_mapping": [
       [
-        "grandpa",
-        "AccountId"
+        "round",
+        "u32"
       ],
       [
-        "babe",
-        "AccountId"
+        "onlineWorkers",
+        "u32"
       ],
       [
-        "im_online",
-        "AccountId"
+        "computeWorkers",
+        "u32"
       ],
       [
-        "authority_discovery",
+        "fracTargetOnlineReward",
+        "u32"
+      ],
+      [
+        "totalPower",
+        "u32"
+      ]
+    ],
+    "type": "struct"
+  },
+  "EthereumTxHash": "H256",
+  "EcdsaSignature": "[u8; 65]",
+  "EthereumAddress": "H160",
+  "WorkerInfo": {
+    "type_mapping": [
+      [
+        "machineId",
+        "Vec<u8>"
+      ],
+      [
+        "pubkey",
+        "Vec<u8>"
+      ],
+      [
+        "lastUpdated",
+        "u64"
+      ],
+      [
+        "state",
+        "WorkerStateEnum"
+      ],
+      [
+        "score",
+        "Option<Score>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "WorkerStateEnum": {
+    "type_mapping": [
+      [
+        "Empty",
+        "null"
+      ],
+      [
+        "Free",
+        "null"
+      ],
+      [
+        "Gatekeeper",
+        "null"
+      ],
+      [
+        "MiningPending",
+        "null"
+      ],
+      [
+        "Mining",
+        "BlockNumber"
+      ],
+      [
+        "MiningStopping",
+        "null"
+      ]
+    ],
+    "type": "enum"
+  },
+  "Score": {
+    "type_mapping": [
+      [
+        "overallScore",
+        "u32"
+      ],
+      [
+        "features",
+        "Vec<u32>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "BlockRewardInfo": {
+    "type_mapping": [
+      [
+        "seed",
+        "U256"
+      ],
+      [
+        "onlineTarget",
+        "U256"
+      ],
+      [
+        "computeTarget",
+        "U256"
+      ]
+    ],
+    "type": "struct"
+  },
+  "Address": "GenericAddress",
+  "RoundInfo": {
+    "type_mapping": [
+      [
+        "round",
+        "u32"
+      ],
+      [
+        "startBlock",
+        "BlockNumber"
+      ]
+    ],
+    "type": "struct"
+  },
+  "PayoutPrefs": {
+    "type_mapping": [
+      [
+        "commission",
+        "u32"
+      ],
+      [
+        "target",
         "AccountId"
       ]
-    ]
+    ],
+    "type": "struct"
   },
-  "SequenceType": "u32"
+  "StashInfo": {
+    "type_mapping": [
+      [
+        "controller",
+        "AccountId"
+      ],
+      [
+        "payoutPrefs",
+        "PayoutPrefs"
+      ]
+    ],
+    "type": "struct"
+  },
+  "LookupSource": "GenericLookupSource",
+  "U256": "[u8; 32]",
+  "CompactAssignments": "CompactAssignmentsLatest"
 }
