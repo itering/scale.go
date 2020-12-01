@@ -237,6 +237,8 @@ func (a *GenericAddress) Process() {
 		a.NextBytes(4)
 	case "fe":
 		a.NextBytes(8)
+	default:
+		a.Value = utiles.BytesToHex(append(AccountLength, a.NextBytes(31)...))
 	}
 }
 
