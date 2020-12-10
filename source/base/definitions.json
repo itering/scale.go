@@ -88,8 +88,6 @@
   "&[u8]": "Bytes",
   "ConsensusEngineId": "[u8; 4]",
   "StrikeCount": "u32",
-  "RefCount": "u8",
-  "RefCount1": "u32",
   "ValidatorId": "AccountId",
   "CallHash": "H256",
   "CallHashOf": "H256",
@@ -506,48 +504,6 @@
       [
         "col2",
         "u64"
-      ]
-    ]
-  },
-  "DispatchClass": {
-    "type": "enum",
-    "value_list": [
-      "Normal",
-      "Operational",
-      "Mandatory"
-    ]
-  },
-  "DispatchInfo258": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "weight",
-        "Weight"
-      ],
-      [
-        "class",
-        "DispatchClass"
-      ],
-      [
-        "paysFee",
-        "bool"
-      ]
-    ]
-  },
-  "DispatchInfo": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "weight",
-        "Weight"
-      ],
-      [
-        "class",
-        "DispatchClass"
-      ],
-      [
-        "paysFee",
-        "Pays"
       ]
     ]
   },
@@ -1093,53 +1049,6 @@
       ]
     ]
   },
-  "DispatchErrorModule": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "index",
-        "u8"
-      ],
-      [
-        "error",
-        "u8"
-      ]
-    ]
-  },
-  "DispatchError": {
-    "type": "enum",
-    "type_mapping": [
-      [
-        "Other",
-        "Null"
-      ],
-      [
-        "CannotLookup",
-        "Null"
-      ],
-      [
-        "BadOrigin",
-        "Null"
-      ],
-      [
-        "Module",
-        "DispatchErrorModule"
-      ]
-    ]
-  },
-  "DispatchResult": {
-    "type": "enum",
-    "type_mapping": [
-      [
-        "Error",
-        "DispatchError"
-      ],
-      [
-        "Ok",
-        "Null"
-      ]
-    ]
-  },
   "ActiveRecovery": {
     "type": "struct",
     "type_mapping": [
@@ -1238,23 +1147,6 @@
       [
         "signedExtensions",
         "Vec<Bytes>"
-      ]
-    ]
-  },
-  "AccountInfo<Index, AccountData>": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "nonce",
-        "Index"
-      ],
-      [
-        "refcount",
-        "RefCount"
-      ],
-      [
-        "data",
-        "AccountData"
       ]
     ]
   },
