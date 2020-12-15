@@ -21,7 +21,7 @@ type ExtrinsicDecoder struct {
 	ExtrinsicHash       string                    `json:"extrinsic_hash"`
 	VersionInfo         string                    `json:"version_info"`
 	ContainsTransaction bool                      `json:"contains_transaction"`
-	Address             string                    `json:"address"`
+	Address             interface{}               `json:"address"`
 	Signature           string                    `json:"signature"`
 	SignatureVersion    int                       `json:"signature_version"`
 	Nonce               int                       `json:"nonce"`
@@ -44,21 +44,21 @@ func (e *ExtrinsicDecoder) Init(data scaleType.ScaleBytes, option *scaleType.Sca
 }
 
 func (e *ExtrinsicDecoder) generateHash() string {
-	if e.ContainsTransaction {
-		var extrinsicData []byte
-		if e.ExtrinsicLength > 0 {
-			extrinsicData = e.Data.Data
-		} else {
-			extrinsicLengthType := scaleType.CompactU32{}
-			extrinsicLengthType.Encode(len(e.Data.Data))
-			extrinsicData = append(extrinsicLengthType.Data.Data[:], e.Data.Data[:]...)
-		}
-		checksum, _ := blake2b.New(32, []byte{})
-		_, _ = checksum.Write(extrinsicData)
-		h := checksum.Sum(nil)
-		return utiles.BytesToHex(h)
+	if !e.ContainsTransaction {
+		return ""
 	}
-	return ""
+	var extrinsicData []byte
+	if e.ExtrinsicLength > 0 {
+		extrinsicData = e.Data.Data
+	} else {
+		extrinsicLengthType := scaleType.CompactU32{}
+		extrinsicLengthType.Encode(len(e.Data.Data))
+		extrinsicData = append(extrinsicLengthType.Data.Data[:], e.Data.Data[:]...)
+	}
+	checksum, _ := blake2b.New(32, []byte{})
+	_, _ = checksum.Write(extrinsicData)
+	h := checksum.Sum(nil)
+	return utiles.BytesToHex(h)
 }
 
 func (e *ExtrinsicDecoder) Process() {
@@ -71,6 +71,11 @@ func (e *ExtrinsicDecoder) Process() {
 	e.VersionInfo = utiles.BytesToHex(e.NextBytes(1))
 
 	e.ContainsTransaction = utiles.U256(e.VersionInfo).Int64() >= 80
+
+	result := map[string]interface{}{
+		"extrinsic_length": e.ExtrinsicLength,
+		"version_info":     e.VersionInfo,
+	}
 
 	if e.VersionInfo == "01" || e.VersionInfo == "81" {
 
@@ -110,7 +115,18 @@ func (e *ExtrinsicDecoder) Process() {
 	} else if e.VersionInfo == "04" || e.VersionInfo == "84" {
 
 		if e.ContainsTransaction {
-			e.Address = e.ProcessAndUpdateData("Address").(string)
+
+			address := e.ProcessAndUpdateData("Address")
+			switch v := address.(type) {
+			case string:
+				e.Address = v
+				result["address_type"] = "AccountId"
+			case map[string]interface{}:
+				for name, value := range v {
+					result["address_type"] = name
+					e.Address = value
+				}
+			}
 			e.SignatureVersion = e.ProcessAndUpdateData("U8").(int)
 			if e.SignatureVersion == 2 {
 				e.Signature = e.ProcessAndUpdateData("EcdsaSignature").(string)
@@ -126,28 +142,22 @@ func (e *ExtrinsicDecoder) Process() {
 	} else {
 		panic(fmt.Sprintf("Extrinsics version %s is not support", e.VersionInfo))
 	}
-
-	if e.CallIndex != "" {
-		call, ok := e.Metadata.CallIndex[e.CallIndex]
-		if !ok {
-			panic(fmt.Sprintf("Not find Extrinsic Lookup %s, please check metadata info", e.CallIndex))
-		}
-		e.Call = call.Call
-		e.CallModule = call.Module
-
-		for _, arg := range e.Call.Args {
-			e.Params = append(e.Params,
-				ExtrinsicParam{
-					Name:  arg.Name,
-					Type:  arg.Type,
-					Value: e.ProcessAndUpdateData(arg.Type),
-				})
-		}
+	if e.CallIndex == "" {
+		panic("Not find Extrinsic Lookup, please check type registry")
 	}
 
-	result := map[string]interface{}{
-		"extrinsic_length": e.ExtrinsicLength,
-		"version_info":     e.VersionInfo,
+	call, ok := e.Metadata.CallIndex[e.CallIndex]
+	if !ok {
+		panic(fmt.Sprintf("Not find Extrinsic Lookup %s, please check metadata info", e.CallIndex))
+	}
+	e.Call = call.Call
+	e.CallModule = call.Module
+
+	for _, arg := range e.Call.Args {
+		e.Params = append(e.Params, ExtrinsicParam{
+			Name:  arg.Name,
+			Type:  arg.Type,
+			Value: e.ProcessAndUpdateData(arg.Type)})
 	}
 
 	if e.ContainsTransaction {
