@@ -8,6 +8,7 @@ func ConvertType(name string, option ...interface{}) string {
 			RuntimeCodecType = append(RuntimeCodecType, name)
 		}
 	}()
+	name = strings.TrimSpace(name)
 	name = strings.ReplaceAll(name, "T::", "")
 	name = strings.ReplaceAll(name, "<T>", "")
 	name = strings.ReplaceAll(name, "<T as Trait>::", "")
