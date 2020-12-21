@@ -1,310 +1,138 @@
 {
-  "BlockNumber": "U32",
-  "SessionIndex": "U32",
-  "AuctionIndex": "U32",
-  "AuthIndex": "U32",
-  "BalanceUpload": "(AccountId, u64)",
-  "EgressQueueRoot": "(ParaId, Hash)",
-  "EventIndex": "u32",
-  "LeasePeriodOf": "BlockNumber",
-  "LeasePeriod": "BlockNumber",
-  "MemberCount": "u32",
-  "MomentOf": "Moment",
-  "Offender": "(ValidatorId, Exposure)",
-  "ReportIdOf": "Hash",
-  "SubId": "u32",
-  "Weight": "u32",
-  "WeightMultiplier": "u64",
-  "WinningData": "Vec<WinningDataEntry>",
-  "Index": "U32",
-  "Kind": "[u8; 16]",
-  "OpaqueTimeSlot": "Bytes",
-  "Box<<T as Trait<I>>::Proposal>": "BoxProposal",
-  "ValidatorPrefs": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "Commission",
-        "Compact<Balance>"
-      ]
-    ]
+  "ProposalRecord": {
+    "index": "u32",
+    "author": "AccountId",
+    "stage": "VoteStage",
+    "transition_time": "u32",
+    "title": "Text",
+    "contents": "Text",
+    "vote_id": "u64"
   },
-  "Keys": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "grandpa",
-        "AccountId"
-      ],
-      [
-        "babe",
-        "AccountId"
-      ],
-      [
-        "im_online",
-        "AccountId"
-      ],
-      [
-        "authority_discovery",
-        "AccountId"
-      ]
-    ]
-  },
-  "Forcing": {
-    "type": "enum",
-    "value_list": [
-      "NotForcing",
-      "ForceNew",
-      "ForceNone"
-    ]
-  },
-  "VoteData": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "initiator",
-        "AccountId"
-      ],
-      [
-        "stage",
-        "VoteStage"
-      ],
-      [
-        "vote_type",
-        "VoteType"
-      ],
-      [
-        "tally_type",
-        "TallyType"
-      ],
-      [
-        "is_commit_reveal",
-        "Bool"
-      ]
-    ]
-  },
-  "VoteRecord": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "id",
-        "u64"
-      ],
-      [
-        "commitments",
-        "Vec<(AccountId, VoteOutcome)>"
-      ],
-      [
-        "reveals",
-        "Vec<(AccountId, VoteOutcome)>"
-      ],
-      [
-        "data",
-        "VoteData"
-      ],
-      [
-        "outcomes",
-        "Vec<(VoteOutcome)>"
-      ]
-    ]
-  },
-  "VoteType": {
-    "type": "enum",
-    "value_list": [
-      "Binary",
-      "MultiOption"
-    ]
-  },
-  "IdentityStage": {
-    "type": "enum",
-    "value_list": [
-      "Registered",
-      "Attested",
-      "Verified"
-    ]
-  },
-  "IdentityRecord": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "account",
-        "AccountId"
-      ],
-      [
-        "identity_type",
-        "String"
-      ],
-      [
-        "identity",
-        "Bytes"
-      ],
-      [
-        "stage",
-        "IdentityStage"
-      ],
-      [
-        "expiration_time",
-        "BlockNumber"
-      ],
-      [
-        "proof",
-        "Bytes"
-      ],
-      [
-        "metadata",
-        "Bytes"
-      ]
-    ]
-  },
-  "MetadataRecord": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "avatar",
-        "String"
-      ],
-      [
-        "display_name",
-        "String"
-      ],
-      [
-        "tagline",
-        "String"
-      ]
-    ]
-  },
-  "ProposalCategory": {
-    "type": "enum",
-    "value_list": [
-      "Signaling"
-    ]
-  },
-  "ProposalStage": {
-    "type": "enum",
-    "value_list": [
+  "ProposalContents": "Bytes",
+  "ProposalTitle": "Bytes",
+  "Balance2": "u128",
+  "VoteStage": {
+    "_enum": [
       "PreVoting",
+      "Commit",
       "Voting",
       "Completed"
     ]
   },
-  "ProposalRecord": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "index",
-        "u32"
-      ],
-      [
-        "author",
-        "AccountId"
-      ],
-      [
-        "stage",
-        "ProposalStage"
-      ],
-      [
-        "transition_time",
-        "BlockNumber"
-      ],
-      [
-        "category",
-        "ProposalCategory"
-      ],
-      [
-        "title",
-        "Vec<u8>"
-      ],
-      [
-        "contents",
-        "Vec<u8>"
-      ],
-      [
-        "vote_id",
-        "u64"
-      ],
-      [
-        "ProposalTitle",
-        "Vec<u8>"
-      ],
-      [
-        "ProposalContents",
-        "Vec<u8>"
-      ]
-    ]
-  },
-  "Balance2": "Balance",
-  "BalanceLock<Balance, BlockNumber>": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "id",
-        "LockIdentifier"
-      ],
-      [
-        "amount",
-        "Balance"
-      ],
-      [
-        "reasons",
-        "Reasons"
-      ]
-    ]
-  },
-  "Linkage": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "previous",
-        "Option<AccountId>"
-      ],
-      [
-        "next",
-        "Option<AccountId>"
-      ]
-    ]
-  },
-  "voting::VoteType": {
-    "type": "enum",
-    "value_list": [
+  "VoteType": {
+    "_enum": [
       "Binary",
-      "MultiOption"
+      "MultiOption",
+      "RankedChoice"
     ]
   },
-  "voting::TallyType": {
-    "type": "enum",
-    "value_list": [
+  "TallyType": {
+    "_enum": [
       "OnePerson",
       "OneCoin"
     ]
   },
-  "Points": "u32",
-  "EraPoints": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "total",
-        "Points"
-      ],
-      [
-        "individual",
-        "Vec<Points>"
-      ]
+  "VotingScheme": {
+    "_enum": [
+      "Simple",
+      "CommitReveal"
     ]
   },
-  "Weight#38-?": "u64",
-  "DispatchResult#38-?": {
-    "type": "enum",
-    "type_mapping": [
-      [
-        "Ok",
-        "Null"
-      ],
-      [
-        "Error",
-        "DispatchError"
-      ]
+  "VoteOutcome": "[u8; 32]",
+  "VoteCommitment": "[u8; 32]",
+  "VoteData": {
+    "initiator": "AccountId",
+    "stage": "VoteStage",
+    "vote_type": "VoteType",
+    "tally_type": "TallyType",
+    "voting_scheme": "VotingScheme"
+  },
+  "VoteRecord": {
+    "id": "u64",
+    "commitments": "Vec<(AccountId, VoteOutcome)>",
+    "reveals": "Vec<(AccountId, Vec<VoteOutcome>)>",
+    "data": "VoteData",
+    "outcomes": "Vec<VoteOutcome>"
+  },
+  "ChainId": "u8",
+  "DepositNonce": "u64",
+  "ResourceId": "[u8; 32]",
+  "ProposalStatus": {
+    "_enum": [
+      "Initiated",
+      "Approved",
+      "Rejected"
     ]
   },
-  "Address#38-?": "GenericAddress",
-  "LookupSource#38-?": "GenericAddress"
+  "ProposalVotes": {
+    "votes_for": "Vec<AccountId>",
+    "votes_against": "Vec<AccountId>",
+    "staus": "ProposalStatus",
+    "expiry": "BlockNumber"
+  },
+  "TransactionCondition": {
+    "_enum": {
+      "block": "u64",
+      "time": "u64"
+    }
+  },
+  "Transaction": {
+    "block_hash": "Option<H256>",
+    "block_number": "Option<U256>",
+    "chain_id": "Option<u64>",
+    "condition": "Option<TransactionCondition>",
+    "creates": "Option<H160>",
+    "from": "H160",
+    "gas": "U256",
+    "gas_price": "U256",
+    "hash": "H256",
+    "input": "Bytes",
+    "nonce": "U256",
+    "public_key": "Option<H512>",
+    "r": "U256",
+    "raw": "Bytes",
+    "s": "U256",
+    "standard_v": "U256",
+    "to": "Option<H160>",
+    "transaction_index": "Option<U256>",
+    "v": "U256",
+    "value": "U256"
+  },
+  "Bloom": "[u8; 256]",
+  "TransactionStatus": {
+    "transaction_hash": "H256",
+    "transaction_index": "u32",
+    "from": "H160",
+    "to": "Option<H160>",
+    "contract_address": "Option<H160>",
+    "logs": "Vec<Log>",
+    "logs_bloom": "Bloom"
+  },
+  "H2048": "Bloom",
+  "Receipt": {
+    "transaction_hash": "Option<H256>",
+    "transaction_index": "Option<U256>",
+    "block_hash": "Option<H256>",
+    "from": "Option<H160>",
+    "to": "Option<H160>",
+    "block_number": "Option<U256>",
+    "cumulative_gas_used": "U256",
+    "gas_used": "Option<U256>",
+    "contract_address": "Option<H160>",
+    "logs": "Vec<Log>",
+    "state_root": "Option<H256>",
+    "logs_bloom": "H2048",
+    "status_code": "Option<U64>"
+  },
+  "ExitReason": {
+    "_enum": {
+      "ExitSucceed": "bool",
+      "ExitError": "bool",
+      "ExitRevert": "bool",
+      "ExitFatal": "bool"
+    }
+  },
+  "voting::VoteType": "VoteType",
+  "voting::TallyType": "TallyType",
+  "voting::Tally": "VotingTally"
 }
