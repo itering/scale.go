@@ -1,0 +1,1636 @@
+{
+  "InboundDownwardMessage": {
+    "type_mapping": [
+      [
+        "pubSentAt",
+        "BlockNumber"
+      ],
+      [
+        "pubMsg",
+        "DownwardMessage"
+      ]
+    ],
+    "type": "struct"
+  },
+  "MultiAsset": {
+    "type_mapping": [
+      [
+        "None",
+        "Null"
+      ],
+      [
+        "All",
+        "Null"
+      ],
+      [
+        "AllFungible",
+        "Null"
+      ],
+      [
+        "AllNonFungible",
+        "Null"
+      ],
+      [
+        "AllAbstractFungible",
+        "Vec<u8>"
+      ],
+      [
+        "AllAbstractNonFungible",
+        "Vec<u8>"
+      ],
+      [
+        "AllConcreteFungible",
+        "MultiLocation"
+      ],
+      [
+        "AllConcreteNonFungible",
+        "MultiLocation"
+      ],
+      [
+        "AbstractFungible",
+        "AbstractFungible"
+      ],
+      [
+        "AbstractNonFungible",
+        "AbstractNonFungible"
+      ],
+      [
+        "ConcreteFungible",
+        "ConcreteFungible"
+      ],
+      [
+        "ConcreteNonFungible",
+        "ConcreteNonFungible"
+      ]
+    ],
+    "type": "enum"
+  },
+  "LeasePeriod": "BlockNumber",
+  "OriginKind": {
+    "value_list": [
+      "Native",
+      "SovereignAccount",
+      "Superuser"
+    ],
+    "type": "enum"
+  },
+  "HrmpOpenChannelRequest": {
+    "type_mapping": [
+      [
+        "confirmed",
+        "bool"
+      ],
+      [
+        "age",
+        "SessionIndex"
+      ],
+      [
+        "senderDeposit",
+        "Balance"
+      ],
+      [
+        "maxMessageSize",
+        "u32"
+      ],
+      [
+        "maxCapacity",
+        "u32"
+      ],
+      [
+        "maxTotalSize",
+        "u32"
+      ]
+    ],
+    "type": "struct"
+  },
+  "IncomingParachain": {
+    "type_mapping": [
+      [
+        "Unset",
+        "NewBidder"
+      ],
+      [
+        "Fixed",
+        "IncomingParachainFixed"
+      ],
+      [
+        "Deploy",
+        "IncomingParachainDeploy"
+      ]
+    ],
+    "type": "enum"
+  },
+  "CoreAssignment": {
+    "type_mapping": [
+      [
+        "core",
+        "CoreIndex"
+      ],
+      [
+        "paraId",
+        "ParaId"
+      ],
+      [
+        "kind",
+        "AssignmentKind"
+      ],
+      [
+        "groupIdx",
+        "GroupIndex"
+      ]
+    ],
+    "type": "struct"
+  },
+  "ParaId": "u32",
+  "TransientValidationData": {
+    "type_mapping": [
+      [
+        "maxCodeSize",
+        "u32"
+      ],
+      [
+        "maxHeadDataSize",
+        "u32"
+      ],
+      [
+        "balance",
+        "Balance"
+      ],
+      [
+        "codeUpgradeAllowed",
+        "Option<BlockNumber>"
+      ],
+      [
+        "dmqLength",
+        "u32"
+      ]
+    ],
+    "type": "struct"
+  },
+  "Remark": "[u8; 32]",
+  "AssignmentId": "AccountId",
+  "InitiateReserveWithdraw": {
+    "type_mapping": [
+      [
+        "assets",
+        "Vec<MultiAsset>"
+      ],
+      [
+        "reserve",
+        "MultiLocation"
+      ],
+      [
+        "effects",
+        "Vec<Order>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "AvailabilityBitfield": "BitVec",
+  "HeadData": "Bytes",
+  "LocalValidationData": {
+    "type_mapping": [
+      [
+        "parentHead",
+        "HeadData"
+      ],
+      [
+        "balance",
+        "Balance"
+      ],
+      [
+        "codeUpgradeAllowed",
+        "Option<BlockNumber>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "ConcreteFungible": {
+    "type_mapping": [
+      [
+        "id",
+        "MultiLocation"
+      ],
+      [
+        "amount",
+        "Compact<u128>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "ExchangeAsset": {
+    "type_mapping": [
+      [
+        "give",
+        "Vec<MultiAsset>"
+      ],
+      [
+        "receive",
+        "Vec<MultiAsset>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "IncomingParachainFixed": {
+    "type_mapping": [
+      [
+        "codeHash",
+        "Hash"
+      ],
+      [
+        "codeSize",
+        "u32"
+      ],
+      [
+        "initialHeadData",
+        "HeadData"
+      ]
+    ],
+    "type": "struct"
+  },
+  "CandidateCommitments": {
+    "type_mapping": [
+      [
+        "upwardMessages",
+        "Vec<UpwardMessage>"
+      ],
+      [
+        "horizontalMessages",
+        "Vec<OutboundHrmpMessage>"
+      ],
+      [
+        "newValidationCode",
+        "Option<ValidationCode>"
+      ],
+      [
+        "headData",
+        "HeadData"
+      ],
+      [
+        "processedDownwardMessages",
+        "u32"
+      ],
+      [
+        "hrmpWatermark",
+        "BlockNumber"
+      ]
+    ],
+    "type": "struct"
+  },
+  "Statement": {
+    "type_mapping": [
+      [
+        "Never",
+        "Null"
+      ],
+      [
+        "Candidate",
+        "Hash"
+      ],
+      [
+        "Valid",
+        "Hash"
+      ],
+      [
+        "Invalid",
+        "Hash"
+      ]
+    ],
+    "type": "enum"
+  },
+  "ReserveAssetDeposit": {
+    "type_mapping": [
+      [
+        "assets",
+        "Vec<MultiAsset>"
+      ],
+      [
+        "effects",
+        "Vec<Order>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "Transact": {
+    "type_mapping": [
+      [
+        "originType",
+        "OriginKind"
+      ],
+      [
+        "call",
+        "Vec<u8>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "InboundHrmpMessage": {
+    "type_mapping": [
+      [
+        "sentAt",
+        "BlockNumber"
+      ],
+      [
+        "data",
+        "Bytes"
+      ]
+    ],
+    "type": "struct"
+  },
+  "Balances": {
+    "type_mapping": [
+      [
+        "queryId",
+        "Compact<u64>"
+      ],
+      [
+        "assets",
+        "Vec<MultiAsset>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "XcmError": {
+    "value_list": [
+      "Undefined",
+      "Unimplemented",
+      "UnhandledXcmVersion",
+      "UnhandledXcmMessage",
+      "UnhandledEffect",
+      "EscalationOfPrivilege",
+      "UntrustedReserveLocation",
+      "UntrustedTeleportLocation",
+      "DestinationBufferOverflow",
+      "CannotReachDestination",
+      "MultiLocationFull",
+      "FailedToDecode",
+      "BadOrigin"
+    ],
+    "type": "enum"
+  },
+  "Junction": {
+    "type_mapping": [
+      [
+        "Parent",
+        "Null"
+      ],
+      [
+        "Parachain",
+        "Compact<u32>"
+      ],
+      [
+        "AccountId32",
+        "AccountId32Junction"
+      ],
+      [
+        "AccountIndex64",
+        "AccountIndex64Junction"
+      ],
+      [
+        "AccountKey20",
+        "AccountKey20Junction"
+      ],
+      [
+        "PalletInstance",
+        "u8"
+      ],
+      [
+        "GeneralIndex",
+        "Compact<u128>"
+      ],
+      [
+        "GeneralKey",
+        "Vec<u8>"
+      ],
+      [
+        "OnlyChild",
+        "Null"
+      ]
+    ],
+    "type": "enum"
+  },
+  "QueryHolding": {
+    "type_mapping": [
+      [
+        "query_id",
+        "Compact<u64>"
+      ],
+      [
+        "dest",
+        "MultiLocation"
+      ],
+      [
+        "assets",
+        "Vec<MultiAsset>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "AbstractNonFungible": {
+    "type_mapping": [
+      [
+        "class",
+        "Vec<u8>"
+      ],
+      [
+        "instance",
+        "AssetInstance"
+      ]
+    ],
+    "type": "struct"
+  },
+  "CoreIndex": "u32",
+  "AvailabilityBitfieldRecord": {
+    "type_mapping": [
+      [
+        "bitfield",
+        "AvailabilityBitfield"
+      ],
+      [
+        "submittedTt",
+        "BlockNumber"
+      ]
+    ],
+    "type": "struct"
+  },
+  "SubId": "u32",
+  "AccountKey20Junction": {
+    "type_mapping": [
+      [
+        "network",
+        "NetworkId"
+      ],
+      [
+        "index",
+        "[u8; 20]"
+      ]
+    ],
+    "type": "struct"
+  },
+  "PersistedValidationData": {
+    "type_mapping": [
+      [
+        "parentHead",
+        "HeadData"
+      ],
+      [
+        "blockNumber",
+        "BlockNumber"
+      ],
+      [
+        "hrmpMqcHeads",
+        "Vec<(u32, Hash)>"
+      ],
+      [
+        "dmqMqcHead",
+        "Hash"
+      ],
+      [
+        "maxPovSize",
+        "u32"
+      ]
+    ],
+    "type": "struct"
+  },
+  "InitiateTeleport": {
+    "type_mapping": [
+      [
+        "assets",
+        "Vec<MultiAsset>"
+      ],
+      [
+        "dest",
+        "MultiLocation"
+      ],
+      [
+        "effects",
+        "Vec<Order>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "NetworkId": {
+    "type_mapping": [
+      [
+        "Any",
+        "Null"
+      ],
+      [
+        "Named",
+        "Vec<u8>"
+      ],
+      [
+        "Polkadot",
+        "Null"
+      ],
+      [
+        "Kusama",
+        "Null"
+      ]
+    ],
+    "type": "enum"
+  },
+  "AttestedCandidate": {
+    "type_mapping": [
+      [
+        "candidate",
+        "AbridgedCandidateReceipt"
+      ],
+      [
+        "validityVotes",
+        "Vec<ValidityAttestation>"
+      ],
+      [
+        "validatorIndices",
+        "BitVec"
+      ]
+    ],
+    "type": "struct"
+  },
+  "ValidationFunctionParams": {
+    "type_mapping": [
+      [
+        "maxCodeSize",
+        "u32"
+      ],
+      [
+        "relayChainHeight",
+        "RelayChainBlockNumber"
+      ],
+      [
+        "codeUpgradeAllowed",
+        "Option<RelayChainBlockNumber>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "ParaPastCodeMeta": {
+    "type_mapping": [
+      [
+        "upgradeTimes",
+        "Vec<BlockNumber>"
+      ],
+      [
+        "lastPruned",
+        "Option<BlockNumber>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "Retriable": {
+    "type_mapping": [
+      [
+        "Never",
+        "Null"
+      ],
+      [
+        "WithRetries",
+        "u32"
+      ]
+    ],
+    "type": "enum"
+  },
+  "SigningContext": {
+    "type_mapping": [
+      [
+        "sessionIndex",
+        "SessionIndex"
+      ],
+      [
+        "parentHash",
+        "Hash"
+      ]
+    ],
+    "type": "struct"
+  },
+  "ValidatorSignature": "Signature",
+  "DepositReserveAsset": {
+    "type_mapping": [
+      [
+        "assets",
+        "Vec<MultiAsset>"
+      ],
+      [
+        "dest",
+        "MultiLocation"
+      ],
+      [
+        "effects",
+        "Vec<Order>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "Bidder": {
+    "type_mapping": [
+      [
+        "New",
+        "NewBidder"
+      ],
+      [
+        "Existing",
+        "ParaId"
+      ]
+    ],
+    "type": "enum"
+  },
+  "RelayTo": {
+    "type_mapping": [
+      [
+        "dest",
+        "MultiLocation"
+      ],
+      [
+        "inner",
+        "VersionedXcm"
+      ]
+    ],
+    "type": "struct"
+  },
+  "ValidationCode": "Bytes",
+  "AssetInstance": {
+    "type_mapping": [
+      [
+        "Undefined",
+        "Null"
+      ],
+      [
+        "Index8",
+        "u8"
+      ],
+      [
+        "Index16",
+        "Compact<u16>"
+      ],
+      [
+        "Index32",
+        "Compact<u32>"
+      ],
+      [
+        "Index64",
+        "Compact<u64>"
+      ],
+      [
+        "Index128",
+        "Compact<u128>"
+      ],
+      [
+        "Array4",
+        "[u8; 4]"
+      ],
+      [
+        "Array8",
+        "[u8; 8]"
+      ],
+      [
+        "Array16",
+        "[u8; 16]"
+      ],
+      [
+        "Array32",
+        "[u8; 32]"
+      ],
+      [
+        "Blob",
+        "Vec<u8>"
+      ]
+    ],
+    "type": "enum"
+  },
+  "CoreOccupied": {
+    "type_mapping": [
+      [
+        "Parathread",
+        "ParathreadEntry"
+      ],
+      [
+        "Parachain",
+        "Null"
+      ]
+    ],
+    "type": "enum"
+  },
+  "CandidateHash": "Hash",
+  "HrmpChannel": {
+    "type_mapping": [
+      [
+        "senderDeposit",
+        "Balance"
+      ],
+      [
+        "recipientDeposit",
+        "Balance"
+      ],
+      [
+        "maxCapacity",
+        "u32"
+      ],
+      [
+        "maxTotalSize",
+        "u32"
+      ],
+      [
+        "max_MessageSize",
+        "u32"
+      ],
+      [
+        "msgCount",
+        "u32"
+      ],
+      [
+        "totalSize",
+        "u32"
+      ],
+      [
+        "mqcHead",
+        "Option<Hash>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "DoubleVoteReport": {
+    "type_mapping": [
+      [
+        "identity",
+        "ValidatorId"
+      ],
+      [
+        "first",
+        "(Statement, ValidatorSignature)"
+      ],
+      [
+        "second",
+        "(Statement, ValidatorSignature)"
+      ],
+      [
+        "proof",
+        "MembershipProof"
+      ],
+      [
+        "signingContext",
+        "SigningContext"
+      ]
+    ],
+    "type": "struct"
+  },
+  "ParathreadClaim": "(ParaId, CollatorId)",
+  "HostConfiguration": {
+    "type_mapping": [
+      [
+        "validationUpgradeFrequency",
+        "BlockNumber"
+      ],
+      [
+        "validationUpgradeDelay",
+        "BlockNumber"
+      ],
+      [
+        "acceptancePeriod",
+        "BlockNumber"
+      ],
+      [
+        "maxCodeSize",
+        "u32"
+      ],
+      [
+        "maxHeadDataSize",
+        "u32"
+      ],
+      [
+        "maxPovSize",
+        "u32"
+      ],
+      [
+        "parathreadCores",
+        "u32"
+      ],
+      [
+        "parathreadRetries",
+        "u32"
+      ],
+      [
+        "groupRotationFrequency",
+        "BlockNumber"
+      ],
+      [
+        "chainAvailabilityPeriod",
+        "BlockNumber"
+      ],
+      [
+        "threadAvailabilityPeriod",
+        "BlockNumber"
+      ],
+      [
+        "schedulingLookahead",
+        "u32"
+      ],
+      [
+        "maxValidatorsPerCore",
+        "Option<u32>"
+      ],
+      [
+        "disputePeriod",
+        "SessionIndex"
+      ],
+      [
+        "noShowSlots",
+        "u32"
+      ],
+      [
+        "nDelayTranches",
+        "u32"
+      ],
+      [
+        "zerothDelayTrancheWidth",
+        "u32"
+      ],
+      [
+        "neededApprovals",
+        "u32"
+      ],
+      [
+        "relayVrfModuloSamples",
+        "u32"
+      ],
+      [
+        "maxUpwardQueueCount",
+        "u32"
+      ],
+      [
+        "maxUpwardQueueSize",
+        "u32"
+      ],
+      [
+        "maxDownwardMessageSize",
+        "u32"
+      ],
+      [
+        "preferredDispatchableUpwardMessagesStepWeight",
+        "Weight"
+      ],
+      [
+        "maxUpwardMessageSize",
+        "u32"
+      ],
+      [
+        "maxUpwardMessageNumPerCandidate",
+        "u32"
+      ],
+      [
+        "hrmpOpenRequestTtl",
+        "u32"
+      ],
+      [
+        "hrmpSenderDeposit",
+        "Balance"
+      ],
+      [
+        "hrmpRecipientDeposit",
+        "Balance"
+      ],
+      [
+        "hrmpChannelMaxCapacity",
+        "u32"
+      ],
+      [
+        "hrmpChannelMaxTotalSize",
+        "u32"
+      ],
+      [
+        "hrmpMaxParachainInboundChannels",
+        "u32"
+      ],
+      [
+        "hrmpMaxParathreadInboundChannels",
+        "u32"
+      ],
+      [
+        "hrmpChannelMaxMessageSize",
+        "u32"
+      ],
+      [
+        "hrmpMaxParachainOutboundChannels",
+        "u32"
+      ],
+      [
+        "hrmpMaxParathreadOutboundChannels",
+        "u32"
+      ],
+      [
+        "hrmpMaxMessageNumPerCandidate",
+        "u32"
+      ]
+    ],
+    "type": "struct"
+  },
+  "TeleportAsset": {
+    "type_mapping": [
+      [
+        "assets",
+        "Vec<MultiAsset>"
+      ],
+      [
+        "effects",
+        "Vec<Order>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "CommittedCandidateReceipt": {
+    "type_mapping": [
+      [
+        "descriptor",
+        "CandidateDescriptor"
+      ],
+      [
+        "commitments",
+        "CandidateCommitments"
+      ]
+    ],
+    "type": "struct"
+  },
+  "RelayedFrom": {
+    "type_mapping": [
+      [
+        "superorigin",
+        "MultiLocation"
+      ],
+      [
+        "inner",
+        "VersionedXcm"
+      ]
+    ],
+    "type": "struct"
+  },
+  "CandidatePendingAvailability": {
+    "type_mapping": [
+      [
+        "core",
+        "CoreIndex"
+      ],
+      [
+        "hash",
+        "CandidateHash"
+      ],
+      [
+        "descriptor",
+        "CandidateDescriptor"
+      ],
+      [
+        "availabilityVotes",
+        "BitVec"
+      ],
+      [
+        "backers",
+        "BitVec"
+      ],
+      [
+        "relayParentNumber",
+        "BlockNumber"
+      ],
+      [
+        "backedInNumber",
+        "BlockNumber"
+      ]
+    ],
+    "type": "struct"
+  },
+  "LeasePeriodOf": "LeasePeriod",
+  "VersionedMultiAsset": {
+    "type_mapping": [
+      [
+        "V0",
+        "MultiAsset"
+      ]
+    ],
+    "type": "enum"
+  },
+  "CollatorId": "[u8; 32]",
+  "DepositAsset": {
+    "type_mapping": [
+      [
+        "assets",
+        "Vec<MultiAsset>"
+      ],
+      [
+        "dest",
+        "MultiLocation"
+      ]
+    ],
+    "type": "struct"
+  },
+  "AccountIndex64Junction": {
+    "type_mapping": [
+      [
+        "network",
+        "NetworkId"
+      ],
+      [
+        "index",
+        "Compact<u64>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "BackedCandidate": {
+    "type_mapping": [
+      [
+        "candidate",
+        "CommittedCandidateReceipt"
+      ],
+      [
+        "validityVotes",
+        "Vec<ValidityAttestation>"
+      ],
+      [
+        "validatorIndices",
+        "BitVec"
+      ]
+    ],
+    "type": "struct"
+  },
+  "Order": {
+    "type_mapping": [
+      [
+        "Null",
+        "Null"
+      ],
+      [
+        "DepositAsset",
+        "DepositAsset"
+      ],
+      [
+        "DepositReserveAsset",
+        "DepositReserveAsset"
+      ],
+      [
+        "ExchangeAsset",
+        "ExchangeAsset"
+      ],
+      [
+        "InitiateReserveWithdraw",
+        "InitiateReserveWithdraw"
+      ],
+      [
+        "InitiateTeleport",
+        "InitiateTeleport"
+      ],
+      [
+        "QueryHolding",
+        "QueryHolding"
+      ]
+    ],
+    "type": "enum"
+  },
+  "WithdrawAsset": {
+    "type_mapping": [
+      [
+        "assets",
+        "Vec<MultiAsset>"
+      ],
+      [
+        "effects",
+        "Vec<Order>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "SignedAvailabilityBitfields": "Vec<SignedAvailabilityBitfield>",
+  "UpwardMessage": "Bytes",
+  "AbstractFungible": {
+    "type_mapping": [
+      [
+        "id",
+        "Vec<u8>"
+      ],
+      [
+        "instance",
+        "Compact<u128>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "ValidationData": {
+    "type_mapping": [
+      [
+        "persisted",
+        "PersistedValidationData"
+      ],
+      [
+        "transient",
+        "TransientValidationData"
+      ]
+    ],
+    "type": "struct"
+  },
+  "ValidityAttestation": {
+    "type_mapping": [
+      [
+        "Never",
+        "Null"
+      ],
+      [
+        "Implicit",
+        "ValidatorSignature"
+      ],
+      [
+        "Explicit",
+        "ValidatorSignature"
+      ]
+    ],
+    "type": "enum"
+  },
+  "MultiLocation": {
+    "type_mapping": [
+      [
+        "Null",
+        "Null"
+      ],
+      [
+        "X1",
+        "Junction"
+      ],
+      [
+        "X2",
+        "(Junction, Junction)"
+      ],
+      [
+        "X3",
+        "(Junction, Junction, Junction)"
+      ],
+      [
+        "X4",
+        "(Junction, Junction, Junction, Junction)"
+      ]
+    ],
+    "type": "enum"
+  },
+  "AbridgedCandidateReceipt": {
+    "type_mapping": [
+      [
+        "parachainIndex",
+        "ParaId"
+      ],
+      [
+        "relayParent",
+        "Hash"
+      ],
+      [
+        "headData",
+        "HeadData"
+      ],
+      [
+        "collator",
+        "CollatorId"
+      ],
+      [
+        "signature",
+        "CollatorSignature"
+      ],
+      [
+        "povBlockHash",
+        "Hash"
+      ],
+      [
+        "commitments",
+        "CandidateCommitments"
+      ]
+    ],
+    "type": "struct"
+  },
+  "SignedAvailabilityBitfield": {
+    "type_mapping": [
+      [
+        "payload",
+        "BitVec"
+      ],
+      [
+        "validatorIndex",
+        "u32"
+      ],
+      [
+        "signature",
+        "Signature"
+      ]
+    ],
+    "type": "struct"
+  },
+  "ParaScheduling": {
+    "value_list": [
+      "Always",
+      "Dynamic"
+    ],
+    "type": "enum"
+  },
+  "ValidatorGroup": "Vec<ValidatorIndex>",
+  "AccountId32Junction": {
+    "type_mapping": [
+      [
+        "network",
+        "NetworkId"
+      ],
+      [
+        "id",
+        "AccountId"
+      ]
+    ],
+    "type": "struct"
+  },
+  "DownwardMessage": "Bytes",
+  "Xcm": {
+    "type_mapping": [
+      [
+        "WithdrawAsset",
+        "WithdrawAsset"
+      ],
+      [
+        "ReserveAssetDeposit",
+        "ReserveAssetDeposit"
+      ],
+      [
+        "TeleportAsset",
+        "TeleportAsset"
+      ],
+      [
+        "Balances",
+        "Balances"
+      ],
+      [
+        "Transact",
+        "Transact"
+      ],
+      [
+        "RelayTo",
+        "RelayTo"
+      ],
+      [
+        "RelayedFrom",
+        "RelayedFrom"
+      ]
+    ],
+    "type": "enum"
+  },
+  "ParathreadEntry": {
+    "type_mapping": [
+      [
+        "claim",
+        "ParathreadClaim"
+      ],
+      [
+        "retries",
+        "u32"
+      ]
+    ],
+    "type": "struct"
+  },
+  "IncomingParachainDeploy": {
+    "type_mapping": [
+      [
+        "code",
+        "ValidationCode"
+      ],
+      [
+        "initialHeadData",
+        "HeadData"
+      ]
+    ],
+    "type": "struct"
+  },
+  "QueuedParathread": {
+    "type_mapping": [
+      [
+        "claim",
+        "ParathreadEntry"
+      ],
+      [
+        "coreOffset",
+        "u32"
+      ]
+    ],
+    "type": "struct"
+  },
+  "AuthorityDiscoveryId": "AccountId",
+  "CandidateReceipt": {
+    "type_mapping": [
+      [
+        "descriptor",
+        "CandidateDescriptor"
+      ],
+      [
+        "commitmentsHash",
+        "Hash"
+      ]
+    ],
+    "type": "struct"
+  },
+  "CandidateDescriptor": {
+    "type_mapping": [
+      [
+        "paraId",
+        "ParaId"
+      ],
+      [
+        "relayParent",
+        "Hash"
+      ],
+      [
+        "collatorId",
+        "Hash"
+      ],
+      [
+        "persistedValidationDataHash",
+        "Hash"
+      ],
+      [
+        "povHash",
+        "Hash"
+      ],
+      [
+        "erasureRoot",
+        "Hash"
+      ],
+      [
+        "signature",
+        "Signature"
+      ]
+    ],
+    "type": "struct"
+  },
+  "ParachainDispatchOrigin": {
+    "value_list": [
+      "Signed",
+      "Parachain",
+      "Root"
+    ],
+    "type": "enum"
+  },
+  "SessionInfo": {
+    "type_mapping": [
+      [
+        "validators",
+        "Vec<ValidatorId>"
+      ],
+      [
+        "discoveryKeys",
+        "Vec<AuthorityDiscoveryId>"
+      ],
+      [
+        "assignmentKeys",
+        "Vec<AssignmentId>"
+      ],
+      [
+        "validatorGroups",
+        "Vec<ValidatorGroup>"
+      ],
+      [
+        "nCores",
+        "u32"
+      ],
+      [
+        "zerothDelayTrancheWidth",
+        "u32"
+      ],
+      [
+        "relayVrfModuloSamples",
+        "u32"
+      ],
+      [
+        "nDelayTranches",
+        "u32"
+      ],
+      [
+        "noShowSlots",
+        "u32"
+      ],
+      [
+        "neededApprovals",
+        "u32"
+      ]
+    ],
+    "type": "struct"
+  },
+  "HrmpChannelId": {
+    "type_mapping": [
+      [
+        "sender",
+        "u32"
+      ],
+      [
+        "receiver",
+        "u32"
+      ]
+    ],
+    "type": "struct"
+  },
+  "RegisteredParachainInfo": {
+    "type_mapping": [
+      [
+        "validators",
+        "Vec<ValidatorId>"
+      ],
+      [
+        "proposer",
+        "AccountId"
+      ]
+    ],
+    "type": "struct"
+  },
+  "ConcreteNonFungible": {
+    "type_mapping": [
+      [
+        "class",
+        "MultiLocation"
+      ],
+      [
+        "instance",
+        "AssetInstance"
+      ]
+    ],
+    "type": "struct"
+  },
+  "VersionedXcm": {
+    "type_mapping": [
+      [
+        "V0",
+        "Xcm"
+      ]
+    ],
+    "type": "enum"
+  },
+  "XcmResult": {
+    "type_mapping": [
+      [
+        "Ok",
+        "()"
+      ],
+      [
+        "Err",
+        "XcmError"
+      ]
+    ],
+    "type": "enum"
+  },
+  "ParathreadClaimQueue": {
+    "type_mapping": [
+      [
+        "queue",
+        "Vec<QueuedParathread>"
+      ],
+      [
+        "nextCoreOffset",
+        "u32"
+      ]
+    ],
+    "type": "struct"
+  },
+  "ParachainProposal": {
+    "type_mapping": [
+      [
+        "proposer",
+        "AccountId"
+      ],
+      [
+        "validationFunction",
+        "ValidationCode"
+      ],
+      [
+        "initialHeadState",
+        "HeadData"
+      ],
+      [
+        "validators",
+        "Vec<ValidatorId>"
+      ],
+      [
+        "name",
+        "Vec<u8>"
+      ],
+      [
+        "balance",
+        "Balance"
+      ]
+    ],
+    "type": "struct"
+  },
+  "SlotRange": {
+    "value_list": [
+      "ZeroZero",
+      "ZeroOne",
+      "ZeroTwo",
+      "ZeroThree",
+      "OneOne",
+      "OneTwo",
+      "OneThree",
+      "TwoTwo",
+      "TwoThree",
+      "ThreeThree"
+    ],
+    "type": "enum"
+  },
+  "ParaInfo": {
+    "type_mapping": [
+      [
+        "scheduling",
+        "Scheduling"
+      ]
+    ],
+    "type": "struct"
+  },
+  "OutboundHrmpMessage": {
+    "type_mapping": [
+      [
+        "recipient",
+        "u32"
+      ],
+      [
+        "data",
+        "Bytes"
+      ]
+    ],
+    "type": "struct"
+  },
+  "GroupIndex": "u32",
+  "BufferedSessionChange": {
+    "type_mapping": [
+      [
+        "applyAt",
+        "BlockNumber"
+      ],
+      [
+        "validators",
+        "Vec<ValidatorId>"
+      ],
+      [
+        "queued",
+        "Vec<ValidatorId>"
+      ],
+      [
+        "sessionIndex",
+        "SessionIndex"
+      ]
+    ],
+    "type": "struct"
+  },
+  "NewBidder": {
+    "type_mapping": [
+      [
+        "who",
+        "AccountId"
+      ],
+      [
+        "sub",
+        "SubId"
+      ]
+    ],
+    "type": "struct"
+  },
+  "AssignmentKind": {
+    "type_mapping": [
+      [
+        "Parachain",
+        "Null"
+      ],
+      [
+        "Parathread",
+        "(CollatorId, u32)"
+      ]
+    ],
+    "type": "enum"
+  },
+  "WinningData": "[WinningDataEntry; 10]",
+  "WinningDataEntry": "Option<Bidder>",
+  "GlobalValidationSchedule": {
+    "type_mapping": [
+      [
+        "maxCodeSize",
+        "u32"
+      ],
+      [
+        "maxHeadDataSize",
+        "u32"
+      ],
+      [
+        "blockNumber",
+        "BlockNumber"
+      ]
+    ],
+    "type": "struct"
+  },
+  "VersionedMultiLocation": {
+    "type_mapping": [
+      [
+        "V0",
+        "MultiLocation"
+      ]
+    ],
+    "type": "enum"
+  },
+  "Scheduling": {
+    "value_list": [
+      "Always",
+      "Dynamic"
+    ],
+    "type": "enum"
+  },
+  "RelayChainBlockNumber": "BlockNumber"
+}

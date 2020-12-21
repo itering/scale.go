@@ -59,14 +59,10 @@
   "SetId": "U64",
   "RoundNumber": "U64",
   "SessionIndex": "U32",
-  "AuctionIndex": "U32",
   "AuthIndex": "U32",
   "AuthorityIndex": "u64",
   "AuthorityWeight": "u64",
-  "CollatorId": "H256",
   "EventIndex": "u32",
-  "LeasePeriod": "BlockNumber",
-  "LeasePeriodOf": "BlockNumber",
   "MaybeVrf": "[u8; 32]",
   "MemberCount": "u32",
   "MomentOf": "Moment",
@@ -76,7 +72,6 @@
   "Reporter": "AccountId",
   "RegistrarIndex": "u32",
   "ReportIdOf": "Hash",
-  "SubId": "u32",
   "Weight": "u32",
   "WeightMultiplier": "u64",
   "Index": "U32",
@@ -119,9 +114,6 @@
   "DigestOf": "Digest",
   "Permill": "u32",
   "Percent": "u8",
-  "HeadData": "Bytes",
-  "Remark": "[u8; 32]",
-  "ValidatorSignature": "Signature",
   "Status": "BalanceStatus",
   "weights::ExtrinsicsWeight": "ExtrinsicsWeight",
   "OpenTipTip": "(AccountId, Balance)",
@@ -379,60 +371,6 @@
       [
         "feeFrozen",
         "Balance"
-      ]
-    ]
-  },
-  "CandidateReceipt": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "parachainIndex",
-        "ParaId"
-      ],
-      [
-        "collator",
-        "AccountId"
-      ],
-      [
-        "signature",
-        "CollatorSignature"
-      ],
-      [
-        "headData",
-        "HeadData"
-      ],
-      [
-        "balanceUploads",
-        "Vec<BalanceUpload>"
-      ],
-      [
-        "egressQueueRoots",
-        "Vec<EgressQueueRoot>"
-      ],
-      [
-        "fees",
-        "u64"
-      ],
-      [
-        "blockDataHash",
-        "Hash"
-      ]
-    ]
-  },
-  "AttestedCandidate": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "candidate",
-        "AbridgedCandidateReceipt"
-      ],
-      [
-        "validityVotes",
-        "Vec<ValidityAttestation>"
-      ],
-      [
-        "validatorIndices",
-        "BitVec"
       ]
     ]
   },
@@ -705,29 +643,6 @@
       ]
     ]
   },
-  "ParaScheduling": {
-    "type": "enum",
-    "value_list": [
-      "Always",
-      "Dynamic"
-    ]
-  },
-  "Scheduling": {
-    "type": "enum",
-    "value_list": [
-      "Always",
-      "Dynamic"
-    ]
-  },
-  "ParaInfo": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "scheduling",
-        "ParaScheduling"
-      ]
-    ]
-  },
   "ReferendumInfo": {
     "type": "struct",
     "type_mapping": [
@@ -835,24 +750,6 @@
       [
         "col2",
         "Judgement"
-      ]
-    ]
-  },
-  "WinningData": "Vec<WinningDataEntry>",
-  "WinningDataEntry": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "col1",
-        "AccountId"
-      ],
-      [
-        "col2",
-        "ParaIdOf"
-      ],
-      [
-        "col3",
-        "BalanceOf"
       ]
     ]
   },
@@ -1657,21 +1554,7 @@
       ]
     ]
   },
-  "ValidationCode": "Bytes",
   "ValidatorIndex": "u16",
-  "ParaPastCodeMeta": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "upgrade_times",
-        "Vec<BlockNumber>"
-      ],
-      [
-        "last_pruned",
-        "Option<BlockNumber>"
-      ]
-    ]
-  },
   "CompactScore": {
     "type": "struct",
     "type_mapping": [
@@ -1779,38 +1662,6 @@
     ]
   },
   "Releases": "ReleasesBalances",
-  "SlotRange": {
-    "type": "enum",
-    "value_list": [
-      "ZeroZero",
-      "ZeroOne",
-      "ZeroTwo",
-      "ZeroThree",
-      "OneOne",
-      "OneTwo",
-      "OneThree",
-      "TwoTwo",
-      "TwoThree",
-      "ThreeThree"
-    ]
-  },
-  "ValidityAttestation": {
-    "type": "enum",
-    "type_mapping": [
-      [
-        "Never",
-        "Null"
-      ],
-      [
-        "Implicit",
-        "CollatorSignature"
-      ],
-      [
-        "Explicit",
-        "CollatorSignature"
-      ]
-    ]
-  },
   "VestingInfo": {
     "type": "struct",
     "type_mapping": [
@@ -1838,66 +1689,6 @@
       [
         "Active",
         "AccountId"
-      ]
-    ]
-  },
-  "IncomingParachainFixed": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "codeHash",
-        "Hash"
-      ],
-      [
-        "codeSize",
-        "u32"
-      ],
-      [
-        "initialHeadData",
-        "Bytes"
-      ]
-    ]
-  },
-  "IncomingParachain": {
-    "type": "enum",
-    "type_mapping": [
-      [
-        "Unset",
-        "NewBidder"
-      ],
-      [
-        "Fixed",
-        "IncomingParachainFixed"
-      ],
-      [
-        "Deploy",
-        "IncomingParachainDeploy"
-      ]
-    ]
-  },
-  "Bidder": {
-    "type": "enum",
-    "type_mapping": [
-      [
-        "New",
-        "NewBidder"
-      ],
-      [
-        "Existing",
-        "ParaId"
-      ]
-    ]
-  },
-  "NewBidder": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "who",
-        "AccountId"
-      ],
-      [
-        "sub",
-        "SubId"
       ]
     ]
   },
@@ -2085,19 +1876,6 @@
       ]
     ]
   },
-  "SigningContext": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "sessionIndex",
-        "sessionIndex"
-      ],
-      [
-        "parentHash",
-        "Hash"
-      ]
-    ]
-  },
   "MembershipProof": {
     "type": "struct",
     "type_mapping": [
@@ -2115,31 +1893,6 @@
       ]
     ]
   },
-  "DoubleVoteReport": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "identity",
-        "ValidatorId"
-      ],
-      [
-        "first",
-        "(Statement, ValidatorSignature)"
-      ],
-      [
-        "second",
-        "(Statement, ValidatorSignature)"
-      ],
-      [
-        "proof",
-        "MembershipProof"
-      ],
-      [
-        "signingContext",
-        "SigningContext"
-      ]
-    ]
-  },
   "ProxyType": {
     "type": "enum",
     "value_list": [
@@ -2147,145 +1900,6 @@
       "NonTransfer",
       "Governance",
       "Staking"
-    ]
-  },
-  "AbridgedCandidateReceipt": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "parachainIndex",
-        "ParaId"
-      ],
-      [
-        "relayParent",
-        "Hash"
-      ],
-      [
-        "headData",
-        "HeadData"
-      ],
-      [
-        "collator",
-        "CollatorId"
-      ],
-      [
-        "signature",
-        "CollatorSignature"
-      ],
-      [
-        "povBlockHash",
-        "Hash"
-      ],
-      [
-        "commitments",
-        "CandidateCommitments"
-      ]
-    ]
-  },
-  "UpwardMessage": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "origin",
-        "ParachainDispatchOrigin"
-      ],
-      [
-        "data",
-        "Vec<u8>"
-      ]
-    ]
-  },
-  "CandidateCommitments": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "fees",
-        "Balance"
-      ],
-      [
-        "upwardMessages",
-        "Vec<UpwardMessage>"
-      ],
-      [
-        "erasureRoot",
-        "Hash"
-      ],
-      [
-        "newValidationCode",
-        "Option<ValidationCode>"
-      ],
-      [
-        "processedDownwardMessages",
-        "u32"
-      ]
-    ]
-  },
-  "DownwardMessage": {
-    "type": "enum",
-    "type_mapping": [
-      [
-        "TransferInto",
-        "(AccountId, Balance, Remark)"
-      ],
-      [
-        "Opaque",
-        "Vec<u8>"
-      ]
-    ]
-  },
-  "GlobalValidationSchedule": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "maxCodeSize",
-        "u32"
-      ],
-      [
-        "maxHeadDataSize",
-        "u32"
-      ],
-      [
-        "blockNumber",
-        "BlockNumber"
-      ]
-    ]
-  },
-  "IncomingParachainDeploy": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "code",
-        "ValidationCode"
-      ],
-      [
-        "initialHeadData",
-        "HeadData"
-      ]
-    ]
-  },
-  "LocalValidationData": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "parentHead",
-        "HeadData"
-      ],
-      [
-        "balance",
-        "Balance"
-      ],
-      [
-        "codeUpgradeAllowed",
-        "Option<BlockNumber>"
-      ]
-    ]
-  },
-  "ParachainDispatchOrigin": {
-    "type": "enum",
-    "value_list": [
-      "Signed",
-      "Parachain",
-      "Root"
     ]
   },
   "Period": "(BlockNumber, u32)",
@@ -2733,24 +2347,6 @@
   },
   "EquivocationProof<Header>": "BabeEquivocationProof",
   "EquivocationProof<Hash, BlockNumber>": "GrandpaEquivocationProof",
-  "RelayChainBlockNumber": "BlockNumber",
-  "ValidationFunctionParams": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "maxCodeSize",
-        "u32"
-      ],
-      [
-        "relayChainHeight",
-        "RelayChainBlockNumber"
-      ],
-      [
-        "codeUpgradeAllowed",
-        "Option<RelayChainBlockNumber>"
-      ]
-    ]
-  },
   "Announcement": "ProxyAnnouncement",
   "ProxyDefinition": {
     "type": "struct",

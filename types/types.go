@@ -45,7 +45,7 @@ func (u *U16) Process() {
 	_, _ = buf.Write(u.NextBytes(2))
 	c := make([]byte, 2)
 	_, _ = u.Reader.Read(c)
-	u.Value = binary.LittleEndian.Uint16(c)
+	u.Value = binary.BigEndian.Uint16(c)
 }
 
 type U32 struct {
