@@ -120,8 +120,9 @@
   "RewardPoint": "u32",
   "CodeHash": "Hash",
   "gas": "u64",
-  "EthereumLookupSource": "EthereumAddress",
-  "EthereumAccountId": "EthereumAddress",
+  "U256": "[u8; 32]",
+  "H1024": "[u8; 128]",
+  "H2048": "[u8; 256]",
   "Linkage": {
     "type": "struct",
     "type_mapping": [

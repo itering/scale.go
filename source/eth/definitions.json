@@ -1,0 +1,708 @@
+{
+  "EthCallRequest": {
+    "type_mapping": [
+      [
+        "from",
+        "Option<H160>"
+      ],
+      [
+        "to",
+        "Option<H160>"
+      ],
+      [
+        "gasPrice",
+        "Option<U256>"
+      ],
+      [
+        "gas",
+        "Option<U256>"
+      ],
+      [
+        "value",
+        "Option<U256>"
+      ],
+      [
+        "data",
+        "Option<Bytes>"
+      ],
+      [
+        "nonce",
+        "Option<U256>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "EthereumLookupSource": "EthereumAddress",
+  "EthReceipt": {
+    "type_mapping": [
+      [
+        "transactionHash",
+        "Option<H256>"
+      ],
+      [
+        "transactionIndex",
+        "Option<U256>"
+      ],
+      [
+        "blockHash",
+        "Option<H256>"
+      ],
+      [
+        "from",
+        "Option<H160>"
+      ],
+      [
+        "to",
+        "Option<H160>"
+      ],
+      [
+        "blockNumber",
+        "Option<U256>"
+      ],
+      [
+        "cumulativeGasUsed",
+        "U256"
+      ],
+      [
+        "gasUsed",
+        "Option<U256>"
+      ],
+      [
+        "contractAddress",
+        "Option<H160>"
+      ],
+      [
+        "logs",
+        "Vec<EthLog>"
+      ],
+      [
+        "root",
+        "Option<H256>"
+      ],
+      [
+        "logsBloom",
+        "H2048"
+      ],
+      [
+        "statusCode",
+        "Option<U64>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "EthFilterTopicEntry": "Option<H256>",
+  "EthFilterTopic": {
+    "type_mapping": [
+      [
+        "Single",
+        "EthFilterTopicInner"
+      ],
+      [
+        "Multiple",
+        "Vec<EthFilterTopicInner>"
+      ],
+      [
+        "Null",
+        "Null"
+      ]
+    ],
+    "type": "enum"
+  },
+  "EthStorageProof": {
+    "type_mapping": [
+      [
+        "key",
+        "U256"
+      ],
+      [
+        "value",
+        "U256"
+      ],
+      [
+        "proof",
+        "Vec<Bytes>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "EthTransaction": {
+    "type_mapping": [
+      [
+        "blockHash",
+        "Option<H256>"
+      ],
+      [
+        "blockNumber",
+        "Option<U256>"
+      ],
+      [
+        "chainId",
+        "Option<u64>"
+      ],
+      [
+        "condition",
+        "Option<EthTransactionCondition>"
+      ],
+      [
+        "creates",
+        "Option<H160>"
+      ],
+      [
+        "from",
+        "H160"
+      ],
+      [
+        "gas",
+        "U256"
+      ],
+      [
+        "gasPrice",
+        "U256"
+      ],
+      [
+        "hash",
+        "H256"
+      ],
+      [
+        "input",
+        "Bytes"
+      ],
+      [
+        "nonce",
+        "U256"
+      ],
+      [
+        "publicKey",
+        "Option<H512>"
+      ],
+      [
+        "r",
+        "U256"
+      ],
+      [
+        "raw",
+        "Bytes"
+      ],
+      [
+        "s",
+        "U256"
+      ],
+      [
+        "standardV",
+        "U256"
+      ],
+      [
+        "to",
+        "Option<H160>"
+      ],
+      [
+        "transactionIndex",
+        "Option<U256>"
+      ],
+      [
+        "v",
+        "U256"
+      ],
+      [
+        "value",
+        "U256"
+      ]
+    ],
+    "type": "struct"
+  },
+  "EthSubParams": {
+    "type_mapping": [
+      [
+        "None",
+        "Null"
+      ],
+      [
+        "Logs",
+        "EthFilter"
+      ]
+    ],
+    "type": "enum"
+  },
+  "EthTransactionCondition": {
+    "type_mapping": [
+      [
+        "block",
+        "u64"
+      ],
+      [
+        "time",
+        "u64"
+      ]
+    ],
+    "type": "enum"
+  },
+  "EthSyncStatus": {
+    "type_mapping": [
+      [
+        "Info",
+        "EthSyncInfo"
+      ],
+      [
+        "None",
+        "Null"
+      ]
+    ],
+    "type": "enum"
+  },
+  "EthAccount": {
+    "type_mapping": [
+      [
+        "address",
+        "H160"
+      ],
+      [
+        "balance",
+        "U256"
+      ],
+      [
+        "nonce",
+        "U256"
+      ],
+      [
+        "codeHash",
+        "H256"
+      ],
+      [
+        "storageHash",
+        "H256"
+      ],
+      [
+        "accountProof",
+        "Vec<Bytes>"
+      ],
+      [
+        "storageProof",
+        "Vec<EthStorageProof>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "EthFilterAddress": {
+    "type_mapping": [
+      [
+        "Single",
+        "H160"
+      ],
+      [
+        "Multiple",
+        "Vec<H160>"
+      ],
+      [
+        "Null",
+        "Null"
+      ]
+    ],
+    "type": "enum"
+  },
+  "EthWork": {
+    "type_mapping": [
+      [
+        "pow_hash",
+        "H256"
+      ],
+      [
+        "seed_hash",
+        "H256"
+      ],
+      [
+        "target",
+        "H256"
+      ],
+      [
+        "number",
+        "Option<u64>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "EthRichHeader": "EthHeader",
+  "EthSubResult": {
+    "type_mapping": [
+      [
+        "Header",
+        "EthRichHeader"
+      ],
+      [
+        "Log",
+        "EthLog"
+      ],
+      [
+        "TransactionHash",
+        "H256"
+      ],
+      [
+        "SyncState",
+        "EthSyncStatus"
+      ]
+    ],
+    "type": "enum"
+  },
+  "EthFilterTopicInner": {
+    "type_mapping": [
+      [
+        "Single",
+        "EthFilterTopicEntry"
+      ],
+      [
+        "Multiple",
+        "Vec<EthFilterTopicEntry>"
+      ],
+      [
+        "Null",
+        "Null"
+      ]
+    ],
+    "type": "enum"
+  },
+  "EthTransactionRequest": {
+    "type_mapping": [
+      [
+        "from",
+        "Option<H160>"
+      ],
+      [
+        "to",
+        "Option<H160>"
+      ],
+      [
+        "gasPrice",
+        "Option<U256>"
+      ],
+      [
+        "gas",
+        "Option<U256>"
+      ],
+      [
+        "value",
+        "Option<U256>"
+      ],
+      [
+        "data",
+        "Option<Bytes>"
+      ],
+      [
+        "nonce",
+        "Option<U256>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "EthereumSignature": "[u8; 65]",
+  "EthTransactionStatus": {
+    "type_mapping": [
+      [
+        "transactionHash",
+        "H256"
+      ],
+      [
+        "transactionIndex",
+        "u32"
+      ],
+      [
+        "from",
+        "H160"
+      ],
+      [
+        "to",
+        "Option<H160>"
+      ],
+      [
+        "contractAddress",
+        "Option<H160>"
+      ],
+      [
+        "logs",
+        "Vec<EthLog>"
+      ],
+      [
+        "logsBloom",
+        "EthBloom"
+      ]
+    ],
+    "type": "struct"
+  },
+  "EthLog": {
+    "type_mapping": [
+      [
+        "address",
+        "H160"
+      ],
+      [
+        "topics",
+        "Vec<H256>"
+      ],
+      [
+        "data",
+        "Bytes"
+      ],
+      [
+        "blockHash",
+        "Option<H256>"
+      ],
+      [
+        "blockNumber",
+        "Option<U256>"
+      ],
+      [
+        "transactionHash",
+        "Option<H256>"
+      ],
+      [
+        "transactionIndex",
+        "Option<U256>"
+      ],
+      [
+        "logIndex",
+        "Option<U256>"
+      ],
+      [
+        "transactionLogIndex",
+        "Option<U256>"
+      ],
+      [
+        "removed",
+        "bool"
+      ]
+    ],
+    "type": "struct"
+  },
+  "EthBlock": {
+    "type_mapping": [
+      [
+        "_alias",
+        {
+          "blockHash": "hash",
+          "blockSize": "size"
+        }
+      ],
+      [
+        "blockHash",
+        "Option<H256>"
+      ],
+      [
+        "parentHash",
+        "H256"
+      ],
+      [
+        "sha3Uncles",
+        "H256"
+      ],
+      [
+        "author",
+        "H160"
+      ],
+      [
+        "miner",
+        "H160"
+      ],
+      [
+        "stateRoot",
+        "H256"
+      ],
+      [
+        "transactionsRoot",
+        "H256"
+      ],
+      [
+        "receiptsRoot",
+        "H256"
+      ],
+      [
+        "number",
+        "Option<U256>"
+      ],
+      [
+        "gasUsed",
+        "U256"
+      ],
+      [
+        "gasLimit",
+        "U256"
+      ],
+      [
+        "extraData",
+        "Bytes"
+      ],
+      [
+        "logsBloom",
+        "H2048"
+      ],
+      [
+        "timestamp",
+        "U256"
+      ],
+      [
+        "difficulty",
+        "U256"
+      ],
+      [
+        "totalDifficulty",
+        "Option<U256>"
+      ],
+      [
+        "sealFields",
+        "Vec<Bytes>"
+      ],
+      [
+        "uncles",
+        "Vec<H256>"
+      ],
+      [
+        "transactions",
+        "Vec<EthTransaction>"
+      ],
+      [
+        "blockSize",
+        "Option<U256>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "EthRichBlock": "EthBlock",
+  "EthereumAccountId": "EthereumAddress",
+  "EthBloom": "H2048",
+  "EthHeader": {
+    "type_mapping": [
+      [
+        "_alias",
+        {
+          "blockHash": "hash",
+          "blockSize": "size"
+        }
+      ],
+      [
+        "blockHash",
+        "Option<H256>"
+      ],
+      [
+        "parentHash",
+        "H256"
+      ],
+      [
+        "sha3Uncles",
+        "H256"
+      ],
+      [
+        "author",
+        "H160"
+      ],
+      [
+        "miner",
+        "H160"
+      ],
+      [
+        "stateRoot",
+        "H256"
+      ],
+      [
+        "transactionsRoot",
+        "H256"
+      ],
+      [
+        "receiptsRoot",
+        "H256"
+      ],
+      [
+        "number",
+        "Option<U256>"
+      ],
+      [
+        "gasUsed",
+        "U256"
+      ],
+      [
+        "gasLimit",
+        "U256"
+      ],
+      [
+        "extraData",
+        "Bytes"
+      ],
+      [
+        "logsBloom",
+        "H2048"
+      ],
+      [
+        "timestamp",
+        "U256"
+      ],
+      [
+        "difficulty",
+        "U256"
+      ],
+      [
+        "sealFields",
+        "Vec<Bytes>"
+      ],
+      [
+        "blockSize",
+        "Option<U256>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "EthSyncInfo": {
+    "type_mapping": [
+      [
+        "startingBlock",
+        "U256"
+      ],
+      [
+        "currentBlock",
+        "U256"
+      ],
+      [
+        "highestBlock",
+        "U256"
+      ],
+      [
+        "warpChunksAmount",
+        "Option<U256>"
+      ],
+      [
+        "warpChunksProcessed",
+        "Option<U256>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "EthSubKind": {
+    "value_list": [
+      "newHeads",
+      "logs",
+      "newPendingTransactions",
+      "syncing"
+    ],
+    "type": "enum"
+  },
+  "EthFilter": {
+    "type_mapping": [
+      [
+        "fromBlock",
+        "Option<BlockNumber>"
+      ],
+      [
+        "toBlock",
+        "Option<BlockNumber>"
+      ],
+      [
+        "blockHash",
+        "Option<H256>"
+      ],
+      [
+        "address",
+        "Option<EthFilterAddress>"
+      ],
+      [
+        "topics",
+        "Option<EthFilterTopic>"
+      ]
+    ],
+    "type": "struct"
+  }
+}
