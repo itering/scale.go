@@ -2534,5 +2534,6 @@
       ]
     ]
   },
-  "SessionKeys2": "(AccountId, AccountId)"
+  "SessionKeys2": "(AccountId, AccountId)",
+  "<T as Config>::Call": "Call"
 }

@@ -58,5 +58,8 @@
         "DispatchError"
       ]
     ]
-  }
+  },
+  "RefCount#10-?": "u32",
+  "Address": "MultiAddress",
+  "LookupSource": "MultiAddress"
 }
