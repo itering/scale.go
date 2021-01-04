@@ -32,6 +32,16 @@ func TestU32(t *testing.T) {
 	}
 }
 
+func TestU16(t *testing.T) {
+	raw := "0300"
+	m := types.ScaleDecoder{}
+	m.Init(types.ScaleBytes{Data: utiles.HexToBytes(raw)}, nil)
+	r := m.ProcessAndUpdateData("u16").(uint16)
+	if r != 3 {
+		t.Errorf("Test TestU16 Process fail, expect return 3, decode return %d", r)
+	}
+}
+
 func TestRawBabePreDigest(t *testing.T) {
 	raw := "0x02020000008b86750900000000"
 	m := types.ScaleDecoder{}
