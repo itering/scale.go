@@ -1457,6 +1457,7 @@
     ],
     "type": "enum"
   },
+  "xcm::VersionedXcm": "VersionedXcm",
   "XcmResult": {
     "type_mapping": [
       [
@@ -1580,6 +1581,23 @@
       [
         "sub",
         "SubId"
+      ]
+    ],
+    "type": "struct"
+  },
+  "ParaGenesisArgs": {
+    "type_mapping": [
+      [
+        "genesisHead",
+        "Bytes"
+      ],
+      [
+        "validationCode",
+        "Bytes"
+      ],
+      [
+        "parachain",
+        "bool"
       ]
     ],
     "type": "struct"

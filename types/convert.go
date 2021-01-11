@@ -10,6 +10,7 @@ func ConvertType(name string, option ...interface{}) string {
 	}()
 	name = strings.TrimSpace(name)
 	name = strings.ReplaceAll(name, "T::", "")
+	name = strings.ReplaceAll(name, "VecDeque<", "Vec<")
 	name = strings.ReplaceAll(name, "<T>", "")
 	name = strings.ReplaceAll(name, "<T as Trait>::", "")
 	name = strings.ReplaceAll(name, "\n", " ")
