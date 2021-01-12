@@ -1495,7 +1495,7 @@
         "ValidationCode"
       ],
       [
-        "initialHeadState",
+        "genesisHead",
         "HeadData"
       ],
       [
@@ -1504,7 +1504,7 @@
       ],
       [
         "name",
-        "Vec<u8>"
+        "Bytes"
       ],
       [
         "balance",

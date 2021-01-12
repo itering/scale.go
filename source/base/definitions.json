@@ -84,6 +84,7 @@
   "ConsensusEngineId": "[u8; 4]",
   "StrikeCount": "u32",
   "ValidatorId": "AccountId",
+  "ValidatorIdOf": "ValidatorId",
   "CallHash": "H256",
   "CallHashOf": "H256",
   "PhragmenScore": "[u128; 3]",
