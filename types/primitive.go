@@ -131,11 +131,11 @@ func (b *Bytes) Init(data ScaleBytes, option *ScaleDecoderOption) {
 func (b *Bytes) Process() {
 	length := b.ProcessAndUpdateData("Compact<u32>").(int)
 	value := b.NextBytes(length)
-	if utf8.Valid(value) {
-		b.Value = string(value)
-	} else {
-		b.Value = utiles.BytesToHex(value)
-	}
+	// if utf8.Valid(value) {
+	// 	b.Value = string(value)
+	// } else {
+	b.Value = utiles.BytesToHex(value)
+	// }
 }
 
 type String struct {
