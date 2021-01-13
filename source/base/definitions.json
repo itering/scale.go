@@ -54,7 +54,7 @@
     ]
   },
   "ElectionScore": "[u128; 3]",
-  "Text": "Bytes",
+  "Text": "String",
   "LookupSource": "AccountId",
   "SetId": "U64",
   "RoundNumber": "U64",
