@@ -186,6 +186,19 @@
     ],
     "type": "struct"
   },
+  "ValidationDataType": {
+    "type_mapping": [
+      [
+        "validationData",
+        "ValidationData"
+      ],
+      [
+        "relayChainState",
+        "Vec<Bytes>"
+      ]
+    ],
+    "type": "struct"
+  },
   "AvailabilityBitfield": "BitVec",
   "HeadData": "Bytes",
   "LocalValidationData": {
@@ -476,6 +489,10 @@
       [
         "blockNumber",
         "BlockNumber"
+      ],
+      [
+        "relayStorageRoot",
+        "Hash"
       ],
       [
         "hrmpMqcHeads",
