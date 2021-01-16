@@ -7,7 +7,6 @@ import (
 	"github.com/shopspring/decimal"
 	"io"
 	"math"
-	"unicode/utf8"
 )
 
 type Compact struct {
@@ -131,11 +130,11 @@ func (b *Bytes) Init(data ScaleBytes, option *ScaleDecoderOption) {
 func (b *Bytes) Process() {
 	length := b.ProcessAndUpdateData("Compact<u32>").(int)
 	value := b.NextBytes(length)
-	// if utf8.Valid(value) {
-	// 	b.Value = string(value)
-	// } else {
-	b.Value = utiles.BytesToHex(value)
-	// }
+	if utiles.IsASCII(value) {
+		b.Value = string(value)
+	} else {
+		b.Value = utiles.BytesToHex(value)
+	}
 }
 
 type String struct {
@@ -145,7 +144,7 @@ type String struct {
 func (b *String) Process() {
 	length := b.ProcessAndUpdateData("Compact<u32>").(int)
 	value := b.NextBytes(length)
-	if utf8.Valid(value) {
+	if utiles.IsASCII(value) {
 		b.Value = string(value)
 	} else {
 		b.Value = utiles.BytesToHex(value)

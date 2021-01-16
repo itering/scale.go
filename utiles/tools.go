@@ -116,3 +116,12 @@ func Debug(i interface{}) {
 	}
 	fmt.Println(val)
 }
+
+func IsASCII(b []byte) bool {
+	for _, c := range b {
+		if c > 127 || (c < 32 && !IntInSlice(int(c), []int{9, 10, 13})) {
+			return false
+		}
+	}
+	return true
+}
