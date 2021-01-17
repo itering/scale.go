@@ -836,7 +836,7 @@
     ],
     "type": "enum"
   },
-  "CollatorId": "[u8; 32]",
+  "CollatorId": "H256",
   "DepositAsset": {
     "type_mapping": [
       [
@@ -1041,7 +1041,7 @@
       ],
       [
         "signature",
-        "Signature"
+        "ValidatorSignature"
       ]
     ],
     "type": "struct"
@@ -1053,7 +1053,6 @@
     ],
     "type": "enum"
   },
-  "ValidatorGroup": "Vec<ValidatorIndex>",
   "AccountId32Junction": {
     "type_mapping": [
       [
@@ -1166,7 +1165,7 @@
       ],
       [
         "collatorId",
-        "Hash"
+        "CollatorId"
       ],
       [
         "persistedValidationDataHash",
@@ -1182,7 +1181,7 @@
       ],
       [
         "signature",
-        "Signature"
+        "CollatorSignature"
       ]
     ],
     "type": "struct"
@@ -1195,6 +1194,7 @@
     ],
     "type": "enum"
   },
+  "SessionInfoValidatorGroup": "Vec<u32>",
   "SessionInfo": {
     "type_mapping": [
       [
@@ -1211,7 +1211,7 @@
       ],
       [
         "validatorGroups",
-        "Vec<ValidatorGroup>"
+        "Vec<SessionInfoValidatorGroup>"
       ],
       [
         "nCores",
