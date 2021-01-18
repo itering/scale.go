@@ -68,7 +68,7 @@ func RegCustomTypes(registry map[string]source.TypeStruct) {
 			}
 
 			// Tuple
-			if typeString != "()" && string(typeString[0]) == "(" && string(typeString[len(typeString)-1:]) == ")" {
+			if typeString != "()" && string(typeString[0]) == "(" && typeString[len(typeString)-1:] == ")" {
 				s := Struct{}
 				s.TypeString = typeString
 				s.buildStruct()

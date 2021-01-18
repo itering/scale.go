@@ -126,89 +126,37 @@
     "type": "struct"
   },
   "EthTransaction": {
+    "type": "struct",
     "type_mapping": [
-      [
-        "blockHash",
-        "Option<H256>"
-      ],
-      [
-        "blockNumber",
-        "Option<U256>"
-      ],
-      [
-        "chainId",
-        "Option<u64>"
-      ],
-      [
-        "condition",
-        "Option<EthTransactionCondition>"
-      ],
-      [
-        "creates",
-        "Option<H160>"
-      ],
-      [
-        "from",
-        "H160"
-      ],
-      [
-        "gas",
-        "U256"
-      ],
-      [
-        "gasPrice",
-        "U256"
-      ],
-      [
-        "hash",
-        "H256"
-      ],
-      [
-        "input",
-        "Bytes"
-      ],
       [
         "nonce",
         "U256"
       ],
       [
-        "publicKey",
-        "Option<H512>"
-      ],
-      [
-        "r",
+        "gas_price",
         "U256"
       ],
       [
-        "raw",
-        "Bytes"
-      ],
-      [
-        "s",
+        "gas_limit",
         "U256"
       ],
       [
-        "standardV",
-        "U256"
-      ],
-      [
-        "to",
-        "Option<H160>"
-      ],
-      [
-        "transactionIndex",
-        "Option<U256>"
-      ],
-      [
-        "v",
-        "U256"
+        "action",
+        "TransactionAction"
       ],
       [
         "value",
         "U256"
+      ],
+      [
+        "inputs",
+        "Bytes"
+      ],
+      [
+        "signature",
+        "TransactionSignature"
       ]
-    ],
-    "type": "struct"
+    ]
   },
   "EthSubParams": {
     "type_mapping": [
@@ -471,6 +419,46 @@
     ],
     "type": "struct"
   },
+  "ethereum::Block": "EthBlock",
+  "ethereum::Header": "EthHeader",
+  "ethereum::Receipt": "EthReceipt",
+  "ethereum::Transaction": "EthTransaction",
+  "Log": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "address",
+        "H160"
+      ],
+      [
+        "topics",
+        "Vec<H256>"
+      ],
+      [
+        "data",
+        "Vec<u8>"
+      ]
+    ]
+  },
+  "ExitRevert": {
+    "type": "enum",
+    "value_list": [
+      "Reverted"
+    ]
+  },
+  "TransactionAction": {
+    "type": "enum",
+    "type_mapping": [
+      [
+        "Call",
+        "H160"
+      ],
+      [
+        "Create",
+        "NULL"
+      ]
+    ]
+  },
   "EthBlock": {
     "type_mapping": [
       [
@@ -704,5 +692,129 @@
       ]
     ],
     "type": "struct"
+  },
+  "ExitReason": {
+    "type": "enum",
+    "type_mapping": [
+      [
+        "Succeed",
+        "ExitSucceed"
+      ],
+      [
+        "Error",
+        "ExitError"
+      ],
+      [
+        "Revert",
+        "ExitRevert"
+      ],
+      [
+        "Fatal",
+        "ExitFatal"
+      ]
+    ]
+  },
+  "ExitSucceed": {
+    "type": "enum",
+    "value_list": [
+      "Stopped",
+      "Returned",
+      "Suicided"
+    ]
+  },
+  "ExitError": {
+    "type": "enum",
+    "type_mapping": [
+      [
+        "StackUnderflow",
+        "NULL"
+      ],
+      [
+        "StackOverflow",
+        "NULL"
+      ],
+      [
+        "InvalidJump",
+        "NULL"
+      ],
+      [
+        "InvalidRange",
+        "NULL"
+      ],
+      [
+        "DesignatedInvalid",
+        "NULL"
+      ],
+      [
+        "CallTooDeep",
+        "NULL"
+      ],
+      [
+        "CreateCollision",
+        "NULL"
+      ],
+      [
+        "CreateContractLimit",
+        "NULL"
+      ],
+      [
+        "OutOfOffset",
+        "NULL"
+      ],
+      [
+        "OutOfGas",
+        "NULL"
+      ],
+      [
+        "OutOfFund",
+        "NULL"
+      ],
+      [
+        "PCUnderflow",
+        "NULL"
+      ],
+      [
+        "CreateEmpty",
+        "NULL"
+      ],
+      [
+        "Other",
+        "string"
+      ]
+    ]
+  },
+  "ExitFatal": {
+    "type": "enum",
+    "type_mapping": [
+      [
+        "NotSupported",
+        "NULL"
+      ],
+      [
+        "UnhandledInterrupt",
+        "NULL"
+      ],
+      [
+        "CallErrorAsFatal",
+        "NULL"
+      ],
+      [
+        "Other",
+        "string"
+      ]
+    ]
+  },
+  "BlockTransactions": {
+    "type": "enum",
+    "type_mapping": [
+      [
+        "Hashes",
+        "Vec<H256>"
+      ],
+      [
+        "Full",
+        "Vec<ethereum::Transaction>"
+      ]
+    ]
   }
 }

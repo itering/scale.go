@@ -1,0 +1,28 @@
+{
+  "CallIndex": "(u8, u8)",
+  "LotteryConfig": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "price",
+        "Balance"
+      ],
+      [
+        "start",
+        "BlockNumber"
+      ],
+      [
+        "length",
+        "BlockNumber"
+      ],
+      [
+        "delay",
+        "BlockNumber"
+      ],
+      [
+        "repeat",
+        "bool"
+      ]
+    ]
+  }
+}

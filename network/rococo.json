@@ -1,5 +1,7 @@
 {
   "Weight": "u64",
+  "CompactAssignments": "CompactAssignmentsLatest",
+  "RefCount": "u32",
   "DispatchResult": {
     "type": "enum",
     "type_mapping": [
@@ -14,5 +16,62 @@
     ]
   },
   "Address": "AccountId",
-  "LookupSource": "AccountId"
+  "LookupSource": "AccountId",
+  "Box<<T as Config>::Call>": "Call",
+  "Keys#0-12": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "grandpa",
+        "AccountId"
+      ],
+      [
+        "babe",
+        "AccountId"
+      ],
+      [
+        "im_online",
+        "AccountId"
+      ],
+      [
+        "authority_discovery",
+        "AccountId"
+      ],
+      [
+        "parachains",
+        "AccountId"
+      ]
+    ]
+  },
+  "Keys#13-?": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "grandpa",
+        "AccountId"
+      ],
+      [
+        "babe",
+        "AccountId"
+      ],
+      [
+        "im_online",
+        "AccountId"
+      ],
+      [
+        "para_validator",
+        "AccountId"
+      ],
+      [
+        "para_assignment",
+        "AccountId"
+      ],
+      [
+        "authority_discovery",
+        "AccountId"
+      ]
+    ]
+  },
+  "Proposal<AccountId, ValidatorId, BalanceOf>": "ParachainProposal",
+  "FullIdentification": "NULL"
 }
