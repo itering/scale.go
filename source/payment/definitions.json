@@ -1,0 +1,28 @@
+{
+  "FeeDetails": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "inclusionFee",
+        "Option<InclusionFee>"
+      ]
+    ]
+  },
+  "InclusionFee": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "baseFee",
+        "Balance"
+      ],
+      [
+        "lenFee",
+        "Balance"
+      ],
+      [
+        "adjustedWeightFee",
+        "Balance"
+      ]
+    ]
+  }
+}

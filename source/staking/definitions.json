@@ -1,0 +1,25 @@
+{
+  "ValidatorPrefsWithCommission": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "commission",
+        "Compact<Perbill>"
+      ]
+    ]
+  },
+  "ValidatorPrefsWithBlocked": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "commission",
+        "Compact<Perbill>"
+      ],
+      [
+        "blocked",
+        "bool"
+      ]
+    ]
+  },
+  "ValidatorPrefs": "ValidatorPrefsWithCommission"
+}

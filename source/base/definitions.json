@@ -1835,15 +1835,6 @@
     ]
   },
   "Equivocation": "GrandpaEquivocation",
-  "ValidatorPrefs": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "Commission",
-        "Compact<Balance>"
-      ]
-    ]
-  },
   "StoredPendingChange": {
     "type": "struct",
     "type_mapping": [

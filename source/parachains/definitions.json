@@ -1037,7 +1037,7 @@
       ],
       [
         "validatorIndex",
-        "u32"
+        "ParaValidatorIndex"
       ],
       [
         "signature",
@@ -1194,7 +1194,8 @@
     ],
     "type": "enum"
   },
-  "SessionInfoValidatorGroup": "Vec<u32>",
+  "ParaValidatorIndex": "u32",
+  "SessionInfoValidatorGroup": "Vec<ParaValidatorIndex>",
   "SessionInfo": {
     "type_mapping": [
       [
