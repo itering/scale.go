@@ -162,5 +162,31 @@
     ]
   },
   "RefCount": "u8",
-  "RefCount1": "u32"
+  "RefCount1": "u32",
+  "BlockLength": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "max",
+        "PerDispatchClassU32"
+      ]
+    ]
+  },
+  "PerDispatchClassU32": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "normal",
+        "u32"
+      ],
+      [
+        "operational",
+        "u32"
+      ],
+      [
+        "mandatory",
+        "u32"
+      ]
+    ]
+  }
 }

@@ -21,5 +21,39 @@
       ]
     ]
   },
-  "ValidatorPrefs": "ValidatorPrefsWithCommission"
+  "ValidatorPrefs": "ValidatorPrefsWithCommission",
+  "SeatHolder": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "who",
+        "AccountId"
+      ],
+      [
+        "stake",
+        "Balance"
+      ],
+      [
+        "deposit",
+        "Balance"
+      ]
+    ]
+  },
+  "Voter": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "votes",
+        "Vec<AccountId>"
+      ],
+      [
+        "stake",
+        "Balance"
+      ],
+      [
+        "deposit",
+        "Balance"
+      ]
+    ]
+  }
 }
