@@ -13,6 +13,7 @@ func ConvertType(name string, option ...interface{}) string {
 	name = strings.ReplaceAll(name, "VecDeque<", "Vec<")
 	name = strings.ReplaceAll(name, "<T>", "")
 	name = strings.ReplaceAll(name, "<T as Trait>::", "")
+	name = strings.ReplaceAll(name, "<T, I>", "")
 	name = strings.ReplaceAll(name, "\n", " ")
 	switch name {
 	case "()", "<InherentOfflineReport as InherentOfflineReport>::Inherent":
