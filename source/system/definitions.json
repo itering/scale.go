@@ -55,7 +55,7 @@
       ]
     ]
   },
-  "AccountInfo<Index, AccountData>": {
+  "AccountInfo": {
     "type": "struct",
     "type_mapping": [
       [
@@ -186,6 +186,27 @@
       [
         "mandatory",
         "u32"
+      ]
+    ]
+  },
+  "AccountInfoWithProviders": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "nonce",
+        "Index"
+      ],
+      [
+        "consumers",
+        "RefCount"
+      ],
+      [
+        "providers",
+        "RefCount"
+      ],
+      [
+        "data",
+        "AccountData"
       ]
     ]
   }

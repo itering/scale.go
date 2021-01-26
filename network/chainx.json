@@ -1,0 +1,1221 @@
+{
+  "Weight": "u64",
+  "CompactAssignments": "CompactAssignmentsLatest",
+  "RefCount": "u32",
+  "BalanceOf": "Balance",
+  "DispatchResult": {
+    "type": "enum",
+    "type_mapping": [
+      [
+        "Ok",
+        "Null"
+      ],
+      [
+        "Error",
+        "DispatchError"
+      ]
+    ]
+  },
+  "Address": "GenericLookupSource",
+  "LookupSource": "GenericLookupSource",
+  "OrderInfo": "Order",
+  "OrderProperty": {
+    "type_mapping": [
+      [
+        "id",
+        "OrderId"
+      ],
+      [
+        "side",
+        "Side"
+      ],
+      [
+        "price",
+        "Price"
+      ],
+      [
+        "amount",
+        "Amount"
+      ],
+      [
+        "pairId",
+        "TradingPairId"
+      ],
+      [
+        "submitter",
+        "AccountId"
+      ],
+      [
+        "orderType",
+        "OrderType"
+      ],
+      [
+        "createdAt",
+        "BlockNumber"
+      ]
+    ],
+    "type": "struct"
+  },
+  "RpcBalance": "String",
+  "Token": "Text",
+  "MinerLedger": {
+    "type_mapping": [
+      [
+        "lastMiningWeight",
+        "MiningWeight"
+      ],
+      [
+        "lastMiningWeightUpdate",
+        "BlockNumber"
+      ],
+      [
+        "lastClaim",
+        "Option<BlockNumber>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "UnbondedIndex": "u32",
+  "ValidatorInfo": {
+    "type_mapping": [
+      [
+        "account",
+        "AccountId"
+      ],
+      [
+        "registeredAt",
+        "BlockNumber"
+      ],
+      [
+        "isChilled",
+        "bool"
+      ],
+      [
+        "lastChilled",
+        "Option<BlockNumber>"
+      ],
+      [
+        "totalNomination",
+        "RpcBalance"
+      ],
+      [
+        "lastTotalVoteWeight",
+        "RpcVoteWeight"
+      ],
+      [
+        "lastTotalVoteWeightUpdate",
+        "BlockNumber"
+      ],
+      [
+        "isValidating",
+        "bool"
+      ],
+      [
+        "selfBonded",
+        "RpcBalance"
+      ],
+      [
+        "referralId",
+        "String"
+      ],
+      [
+        "rewardPotAccount",
+        "AccountId"
+      ],
+      [
+        "rewardPotBalance",
+        "RpcBalance"
+      ]
+    ],
+    "type": "struct"
+  },
+  "Handicap": {
+    "type_mapping": [
+      [
+        "highestBid",
+        "Price"
+      ],
+      [
+        "lowestAsk",
+        "Price"
+      ]
+    ],
+    "type": "struct"
+  },
+  "BtcVoteResult": {
+    "value_list": [
+      "Unfinish",
+      "Finish"
+    ],
+    "type": "enum"
+  },
+  "MiningDistribution": {
+    "type_mapping": [
+      [
+        "asset",
+        "u32"
+      ],
+      [
+        "staking",
+        "u32"
+      ]
+    ],
+    "type": "struct"
+  },
+  "BtcTxState": {
+    "type_mapping": [
+      [
+        "txType",
+        "BtcTxType"
+      ],
+      [
+        "result",
+        "BtcTxResult"
+      ]
+    ],
+    "type": "struct"
+  },
+  "ValidatorProfile": {
+    "type_mapping": [
+      [
+        "registeredAt",
+        "BlockNumber"
+      ],
+      [
+        "isChilled",
+        "bool"
+      ],
+      [
+        "lastChilled",
+        "Option<BlockNumber>"
+      ],
+      [
+        "referralId",
+        "ReferralId"
+      ]
+    ],
+    "type": "struct"
+  },
+  "Amount": "i128",
+  "FeeDetails": {
+    "type_mapping": [
+      [
+        "inclusionFee",
+        "Option<InclusionFee<Balance>>"
+      ],
+      [
+        "extraFee",
+        "Balance"
+      ],
+      [
+        "tip",
+        "Balance"
+      ],
+      [
+        "finalFee",
+        "Balance"
+      ]
+    ],
+    "type": "struct"
+  },
+  "BtcTxResult": {
+    "value_list": [
+      "Success",
+      "Failure"
+    ],
+    "type": "enum"
+  },
+  "TrusteeInfoConfig": {
+    "type_mapping": [
+      [
+        "minTrusteeCount",
+        "u32"
+      ],
+      [
+        "maxTrusteeCount",
+        "u32"
+      ]
+    ],
+    "type": "struct"
+  },
+  "AssetRestriction": {
+    "value_list": [
+      "Move",
+      "Transfer",
+      "Deposit",
+      "Withdraw",
+      "DestroyWithdrawal",
+      "DestroyFree"
+    ],
+    "type": "enum"
+  },
+  "AssetLedger": {
+    "type_mapping": [
+      [
+        "lastTotalMiningWeight",
+        "MiningWeight"
+      ],
+      [
+        "lastTotalMiningWeightUpdate",
+        "BlockNumber"
+      ]
+    ],
+    "type": "struct"
+  },
+  "RpcTotalAssetInfo": {
+    "type_mapping": [
+      [
+        "info",
+        "AssetInfo"
+      ],
+      [
+        "balance",
+        "BTreeMap<AssetType, RpcBalance>"
+      ],
+      [
+        "isOnline",
+        "bool"
+      ],
+      [
+        "restrictions",
+        "AssetRestrictions"
+      ]
+    ],
+    "type": "struct"
+  },
+  "FullPairInfo": {
+    "type_mapping": [
+      [
+        "baseCurrency",
+        "AssetId"
+      ],
+      [
+        "highestBid",
+        "RpcPrice"
+      ],
+      [
+        "id",
+        "TradingPairId"
+      ],
+      [
+        "latestPrice",
+        "RpcPrice"
+      ],
+      [
+        "latestPriceUpdatedAt",
+        "BlockNumber"
+      ],
+      [
+        "lowestAsk",
+        "RpcPrice"
+      ],
+      [
+        "maxValidBid",
+        "RpcPrice"
+      ],
+      [
+        "minValidAsk",
+        "RpcPrice"
+      ],
+      [
+        "pipDecimals",
+        "u32"
+      ],
+      [
+        "quoteCurrency",
+        "AssetId"
+      ],
+      [
+        "tickDecimals",
+        "u32"
+      ],
+      [
+        "tradable",
+        "bool"
+      ]
+    ],
+    "type": "struct"
+  },
+  "InclusionFee": {
+    "type_mapping": [
+      [
+        "baseFee",
+        "Balance"
+      ],
+      [
+        "lenFee",
+        "Balance"
+      ],
+      [
+        "adjustedWeightFee",
+        "Balance"
+      ]
+    ],
+    "type": "struct"
+  },
+  "BtcTrusteeSessionInfo": {
+    "type_mapping": [
+      [
+        "trusteeList",
+        "Vec<AccountId>"
+      ],
+      [
+        "threshold",
+        "u16"
+      ],
+      [
+        "hotAddress",
+        "BtcTrusteeAddrInfo"
+      ],
+      [
+        "coldAddress",
+        "BtcTrusteeAddrInfo"
+      ]
+    ],
+    "type": "struct"
+  },
+  "BtcDepositCache": {
+    "type_mapping": [
+      [
+        "txid",
+        "H256"
+      ],
+      [
+        "balance",
+        "u64"
+      ]
+    ],
+    "type": "struct"
+  },
+  "RpcFeeDetails": {
+    "type_mapping": [
+      [
+        "inclusionFee",
+        "Option<RpcInclusionFee>"
+      ],
+      [
+        "tip",
+        "RpcBalance"
+      ],
+      [
+        "extraFee",
+        "RpcBalance"
+      ],
+      [
+        "finalFee",
+        "RpcBalance"
+      ]
+    ],
+    "type": "struct"
+  },
+  "RpcOrder": {
+    "type_mapping": [
+      [
+        "orderId",
+        "OrderId"
+      ],
+      [
+        "side",
+        "Side"
+      ],
+      [
+        "price",
+        "RpcPrice"
+      ],
+      [
+        "amount",
+        "RpcBalance"
+      ],
+      [
+        "pairId",
+        "TradingPairId"
+      ],
+      [
+        "submitter",
+        "AccountId"
+      ],
+      [
+        "orderType",
+        "OrderType"
+      ],
+      [
+        "createdAt",
+        "BlockNumber"
+      ],
+      [
+        "status",
+        "OrderStatus"
+      ],
+      [
+        "remaining",
+        "RpcBalance"
+      ],
+      [
+        "executedIndices",
+        "Vec<TradingHistoryIndex>"
+      ],
+      [
+        "alreadyFilled",
+        "RpcBalance"
+      ],
+      [
+        "reservedBalance",
+        "RpcBalance"
+      ],
+      [
+        "lastUpdateAt",
+        "BlockNumber"
+      ]
+    ],
+    "type": "struct"
+  },
+  "WithdrawalRecordId": "u32",
+  "TradingHistoryIndex": "u64",
+  "AssetInfo": {
+    "type_mapping": [
+      [
+        "token",
+        "String"
+      ],
+      [
+        "tokenName",
+        "String"
+      ],
+      [
+        "chain",
+        "Chain"
+      ],
+      [
+        "decimals",
+        "Decimals"
+      ],
+      [
+        "desc",
+        "String"
+      ]
+    ],
+    "type": "struct"
+  },
+  "String": "Text",
+  "BtcNetwork": {
+    "value_list": [
+      "Mainnet",
+      "Testnet"
+    ],
+    "type": "enum"
+  },
+  "Memo": "Text",
+  "AddrStr": "Text",
+  "GenericTrusteeSessionInfo": {
+    "type_mapping": [
+      [
+        "trusteeList",
+        "Vec<AccountId>"
+      ],
+      [
+        "threshold",
+        "u16"
+      ],
+      [
+        "hotAddress",
+        "Vec<u8>"
+      ],
+      [
+        "coldAddress",
+        "Vec<u8>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "AssetType": {
+    "value_list": [
+      "Usable",
+      "Locked",
+      "Reserved",
+      "ReservedWithdrawal",
+      "ReservedDexSpot"
+    ],
+    "type": "enum"
+  },
+  "RpcMiningWeight": "String",
+  "VoteWeight": "u128",
+  "CurrencyId": "AssetId",
+  "BtcAddress": "Text",
+  "MiningWeight": "u128",
+  "ClaimRestriction": {
+    "type_mapping": [
+      [
+        "stakingRequirement",
+        "StakingRequirement"
+      ],
+      [
+        "frequencyLimit",
+        "BlockNumber"
+      ]
+    ],
+    "type": "struct"
+  },
+  "BtcPartialMerkleTree": "Vec<u8>",
+  "Chain": {
+    "value_list": [
+      "ChainX",
+      "Bitcoin",
+      "Ethereum",
+      "Polkadot"
+    ],
+    "type": "enum"
+  },
+  "OrderExecutedInfo": {
+    "type_mapping": [
+      [
+        "tradingHistoryIdx",
+        "TradingHistoryIndex"
+      ],
+      [
+        "pairId",
+        "TradingPairId"
+      ],
+      [
+        "price",
+        "Price"
+      ],
+      [
+        "maker",
+        "AccountId"
+      ],
+      [
+        "taker",
+        "AccountId"
+      ],
+      [
+        "makerOrderId",
+        "OrderId"
+      ],
+      [
+        "takerOrderId",
+        "OrderId"
+      ],
+      [
+        "turnover",
+        "Balance"
+      ],
+      [
+        "executedAt",
+        "BlockNumber"
+      ]
+    ],
+    "type": "struct"
+  },
+  "RpcMiningDividendInfo": {
+    "type_mapping": [
+      [
+        "own",
+        "RpcBalance"
+      ],
+      [
+        "other",
+        "RpcBalance"
+      ],
+      [
+        "insufficientStake",
+        "RpcBalance"
+      ]
+    ],
+    "type": "struct"
+  },
+  "NominatorInfo": {
+    "type_mapping": [
+      [
+        "lastRebond",
+        "Option<BlockNumber>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "BtcTrusteeAddrInfo": {
+    "type_mapping": [
+      [
+        "addr",
+        "BtcAddress"
+      ],
+      [
+        "redeemScript",
+        "Vec<u8>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "BtcTxVerifier": {
+    "value_list": [
+      "Recover",
+      "RuntimeInterface"
+    ],
+    "type": "enum"
+  },
+  "WithdrawalLimit": {
+    "type_mapping": [
+      [
+        "minimalWithdrawal",
+        "Balance"
+      ],
+      [
+        "fee",
+        "Balance"
+      ]
+    ],
+    "type": "struct"
+  },
+  "FullIdentification": "ValidatorId",
+  "ChainAddress": "Vec<u8>",
+  "BtcTransaction": "Vec<u8>",
+  "GlobalDistribution": {
+    "type_mapping": [
+      [
+        "treasury",
+        "u32"
+      ],
+      [
+        "mining",
+        "u32"
+      ]
+    ],
+    "type": "struct"
+  },
+  "TradingPairId": "u32",
+  "RpcVoteWeight": "String",
+  "BondRequirement": {
+    "type_mapping": [
+      [
+        "selfBonded",
+        "Balance"
+      ],
+      [
+        "total",
+        "Balance"
+      ]
+    ],
+    "type": "struct"
+  },
+  "RpcInclusionFee": {
+    "type_mapping": [
+      [
+        "baseFee",
+        "RpcBalance"
+      ],
+      [
+        "lenFee",
+        "RpcBalance"
+      ],
+      [
+        "adjustedWeightFee",
+        "RpcBalance"
+      ]
+    ],
+    "type": "struct"
+  },
+  "WithdrawalRecordOf": "WithdrawalRecord",
+  "Order": {
+    "type_mapping": [
+      [
+        "props",
+        "OrderProperty"
+      ],
+      [
+        "status",
+        "OrderStatus"
+      ],
+      [
+        "remaining",
+        "Balance"
+      ],
+      [
+        "executedIndices",
+        "Vec<TradingHistoryIndex>"
+      ],
+      [
+        "alreadyFilled",
+        "Balance"
+      ],
+      [
+        "lastUpdateAt",
+        "BlockNumber"
+      ]
+    ],
+    "type": "struct"
+  },
+  "OrderStatus": {
+    "value_list": [
+      "Created",
+      "PartialFill",
+      "Filled",
+      "PartialFillAndCanceled",
+      "Canceled"
+    ],
+    "type": "enum"
+  },
+  "GenericTrusteeIntentionProps": {
+    "type_mapping": [
+      [
+        "about",
+        "Text"
+      ],
+      [
+        "hotEntity",
+        "Vec<u8>"
+      ],
+      [
+        "coldEntity",
+        "Vec<u8>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "WithdrawalRecord": {
+    "type_mapping": [
+      [
+        "assetId",
+        "AssetId"
+      ],
+      [
+        "applicant",
+        "AccountId"
+      ],
+      [
+        "balance",
+        "Balance"
+      ],
+      [
+        "addr",
+        "AddrStr"
+      ],
+      [
+        "ext",
+        "Memo"
+      ],
+      [
+        "height",
+        "BlockNumber"
+      ]
+    ],
+    "type": "struct"
+  },
+  "ReferralId": "Text",
+  "BtcWithdrawalProposal": {
+    "type_mapping": [
+      [
+        "sigState",
+        "BtcVoteResult"
+      ],
+      [
+        "withdrawalIdList",
+        "Vec<u32>"
+      ],
+      [
+        "tx",
+        "BtcTransaction"
+      ],
+      [
+        "trusteeList",
+        "Vec<(AccountId, bool)>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "OrderType": {
+    "value_list": [
+      "Limit",
+      "Market"
+    ],
+    "type": "enum"
+  },
+  "FixedAssetPower": "u32",
+  "MiningAssetInfo": {
+    "type_mapping": [
+      [
+        "assetId",
+        "AssetId"
+      ],
+      [
+        "miningPower",
+        "FixedAssetPower"
+      ],
+      [
+        "rewardPot",
+        "AccountId"
+      ],
+      [
+        "rewardPotBalance",
+        "RpcBalance"
+      ],
+      [
+        "lastTotalMiningWeight",
+        "RpcMiningWeight"
+      ],
+      [
+        "lastTotalMiningWeightUpdate",
+        "BlockNumber"
+      ]
+    ],
+    "type": "struct"
+  },
+  "StakingRequirement": "u32",
+  "BtcHeaderIndex": {
+    "type_mapping": [
+      [
+        "hash",
+        "H256"
+      ],
+      [
+        "height",
+        "u32"
+      ]
+    ],
+    "type": "struct"
+  },
+  "MiningDividendInfo": {
+    "type_mapping": [
+      [
+        "own",
+        "Balance"
+      ],
+      [
+        "other",
+        "Balance"
+      ],
+      [
+        "insufficientStake",
+        "Balance"
+      ]
+    ],
+    "type": "struct"
+  },
+  "Decimals": "u8",
+  "RpcWithdrawalRecord": {
+    "type_mapping": [
+      [
+        "assetId",
+        "AssetId"
+      ],
+      [
+        "applicant",
+        "AccountId"
+      ],
+      [
+        "balance",
+        "RpcBalance"
+      ],
+      [
+        "addr",
+        "String"
+      ],
+      [
+        "ext",
+        "String"
+      ],
+      [
+        "height",
+        "BlockNumber"
+      ],
+      [
+        "state",
+        "WithdrawalState"
+      ]
+    ],
+    "type": "struct"
+  },
+  "Unbonded": {
+    "type_mapping": [
+      [
+        "value",
+        "Balance"
+      ],
+      [
+        "lockedUntil",
+        "BlockNumber"
+      ]
+    ],
+    "type": "struct"
+  },
+  "BtcHeaderInfo": {
+    "type_mapping": [
+      [
+        "header",
+        "BtcHeader"
+      ],
+      [
+        "height",
+        "u32"
+      ]
+    ],
+    "type": "struct"
+  },
+  "BtcTrusteeType": "Vec<u8>",
+  "CurrencyPair": {
+    "type_mapping": [
+      [
+        "base",
+        "AssetId"
+      ],
+      [
+        "quote",
+        "AssetId"
+      ]
+    ],
+    "type": "struct"
+  },
+  "BtcTxType": {
+    "value_list": [
+      "Withdrawal",
+      "Deposit",
+      "HotAndCold",
+      "TrusteeTransition",
+      "Irrelevance"
+    ],
+    "type": "enum"
+  },
+  "NetworkType": {
+    "value_list": [
+      "Mainnet",
+      "Testnet"
+    ],
+    "type": "enum"
+  },
+  "BtcHeader": "Vec<u8>",
+  "AssetRestrictions": {
+    "type_mapping": [
+      [
+        "bits",
+        "u32"
+      ]
+    ],
+    "type": "struct"
+  },
+  "TradingPairInfo": {
+    "type_mapping": [
+      [
+        "latestPrice",
+        "Price"
+      ],
+      [
+        "lastUpdated",
+        "BlockNumber"
+      ]
+    ],
+    "type": "struct"
+  },
+  "NominatorLedger": {
+    "type_mapping": [
+      [
+        "nomination",
+        "Balance"
+      ],
+      [
+        "lastVoteWeight",
+        "VoteWeight"
+      ],
+      [
+        "lastVoteWeightUpdate",
+        "BlockNumber"
+      ],
+      [
+        "unbondedChunks",
+        "Vec<Unbonded>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "TradingPairProfile": {
+    "type_mapping": [
+      [
+        "id",
+        "TradingPairId"
+      ],
+      [
+        "currencyPair",
+        "CurrencyPair"
+      ],
+      [
+        "pipDecimals",
+        "u32"
+      ],
+      [
+        "tickDecimals",
+        "u32"
+      ],
+      [
+        "tradable",
+        "bool"
+      ]
+    ],
+    "type": "struct"
+  },
+  "HandicapInfo": "Handicap",
+  "Price": "u128",
+  "CurrencyIdOf": "AssetId",
+  "BtcParams": {
+    "type_mapping": [
+      [
+        "maxBits",
+        "u32"
+      ],
+      [
+        "blockMaxFuture",
+        "u32"
+      ],
+      [
+        "targetTimespanSeconds",
+        "u32"
+      ],
+      [
+        "targetSpacingSeconds",
+        "u32"
+      ],
+      [
+        "retargetingFactor",
+        "u32"
+      ],
+      [
+        "retargetingInterval",
+        "u32"
+      ],
+      [
+        "minTimespan",
+        "u32"
+      ],
+      [
+        "maxTimespan",
+        "u32"
+      ]
+    ],
+    "type": "struct"
+  },
+  "AmountOf": "Amount",
+  "LockedType": {
+    "value_list": [
+      "Bonded",
+      "BondedWithdrawal"
+    ],
+    "type": "enum"
+  },
+  "Page": {
+    "type_mapping": [
+      [
+        "pageIndex",
+        "u32"
+      ],
+      [
+        "pageSize",
+        "u32"
+      ],
+      [
+        "data",
+        "Vec<RpcOrder>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "Desc": "Text",
+  "AssetId": "u32",
+  "Depth": {
+    "type_mapping": [
+      [
+        "asks",
+        "Vec<(RpcPrice, RpcBalance)>"
+      ],
+      [
+        "bids",
+        "Vec<(RpcPrice, RpcBalance)>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "Side": {
+    "value_list": [
+      "Buy",
+      "Sell"
+    ],
+    "type": "enum"
+  },
+  "OrderId": "u64",
+  "TotalAssetInfo": {
+    "type_mapping": [
+      [
+        "info",
+        "AssetInfo"
+      ],
+      [
+        "balance",
+        "BTreeMap<AssetType, Balance>"
+      ],
+      [
+        "isOnline",
+        "bool"
+      ],
+      [
+        "restrictions",
+        "AssetRestrictions"
+      ]
+    ],
+    "type": "struct"
+  },
+  "WithdrawalState": {
+    "value_list": [
+      "Applying",
+      "Processing",
+      "NormalFinish",
+      "RootFinish",
+      "NormalCancel",
+      "RootCancel"
+    ],
+    "type": "enum"
+  },
+  "RpcPrice": "String",
+  "ValidatorLedger": {
+    "type_mapping": [
+      [
+        "totalNomination",
+        "Balance"
+      ],
+      [
+        "lastTotalVoteWeight",
+        "VoteWeight"
+      ],
+      [
+        "lastTotalVoteWeightUpdate",
+        "BlockNumber"
+      ]
+    ],
+    "type": "struct"
+  },
+  "PriceFluctuation": "u32",
+  "BtcTrusteeIntentionProps": {
+    "type_mapping": [
+      [
+        "about",
+        "Text"
+      ],
+      [
+        "hotEntity",
+        "BtcTrusteeType"
+      ],
+      [
+        "coldEntity",
+        "BtcTrusteeType"
+      ]
+    ],
+    "type": "struct"
+  },
+  "BtcRelayedTxInfo": {
+    "type_mapping": [
+      [
+        "blockHash",
+        "H256"
+      ],
+      [
+        "merkleProof",
+        "BtcPartialMerkleTree"
+      ]
+    ],
+    "type": "struct"
+  }
+}
