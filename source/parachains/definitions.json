@@ -1182,6 +1182,10 @@
       [
         "signature",
         "CollatorSignature"
+      ],
+      [
+        "paraHead",
+        "Hash"
       ]
     ],
     "type": "struct"
