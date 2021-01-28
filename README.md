@@ -1,6 +1,6 @@
 # Scale codec golang
 
-Scale Codec written by golang, Reference from https://github.com/polkascan/py-scale-codec
+Scale Codec written by golang, reference from https://github.com/polkascan/py-scale-codec
 
 ## Features
 
