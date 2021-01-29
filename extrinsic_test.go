@@ -62,6 +62,7 @@ func TestCanvasExtrinsicDecoder(t *testing.T) {
 		panic(err)
 	}
 	types.RegCustomTypes(source.LoadTypeRegistry(c))
+	types.RegCustomTypes(source.LoadTypeRegistry([]byte(`{"Address": "GenericAddress","LookupSource": "GenericAddress"}`)))
 	e := scalecodec.ExtrinsicDecoder{}
 	option := types.ScaleDecoderOption{Metadata: &m.Metadata}
 	extrinsicRaw := "0x490284c4429847f3598f40008d0cbab53476a2f19165696aa41002778524b3ecf829380154ca18b59609a122e873e24e4170af4d80daa8185d614f0808a901a2044fae73aea6f9bd93142561dba80ec88af41a251d6728d6dd5b811d8a598e48cdb5a78175020c000802121c70882742309b5b86b88a425abd8b93dd8a0c30a20b0b0ffefb9308fca14a00021bdbf410c096a5f3"
