@@ -19,7 +19,6 @@
   "H": "Hash",
   "Address": "AccountId",
   "LookupSource": "AccountId",
-  "EthereumAddress": "H160",
   "MappedRing": "u128",
   "Keys": {
     "type": "struct",
@@ -945,7 +944,6 @@
       "NonTransfer",
       "Governance",
       "Staking",
-      "IdentityJudgement",
       "EthereumBridge"
     ]
   },
@@ -1064,49 +1062,310 @@
       ]
     ]
   },
-  "Signer": "EthereumAddress",
-  "RelayAuthorityT": {
+  "ethereum::Transaction": {
+    "type": "struct",
     "type_mapping": [
       [
-        "accountId",
-        "AccountId"
+        "nonce",
+        "U256"
       ],
       [
-        "signer",
-        "Signer"
+        "gas_price",
+        "U256"
       ],
       [
-        "stake",
-        "Balance"
+        "gas_limit",
+        "U256"
       ],
       [
-        "term",
-        "BlockNumber"
+        "action",
+        "TransactionAction"
+      ],
+      [
+        "value",
+        "U256"
+      ],
+      [
+        "inputs",
+        "Bytes"
+      ],
+      [
+        "signature",
+        "TransactionSignature"
       ]
-    ],
-    "type": "struct"
+    ]
+  },
+  "TransactionRecoveryId": "U64",
+  "TransactionSignature": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "v",
+        "TransactionRecoveryId"
+      ],
+      [
+        "r",
+        "H256"
+      ],
+      [
+        "s",
+        "H256"
+      ]
+    ]
   },
   "MMRRoot": "Hash",
   "EcdsaAddress": "EthereumAddress",
-  "EcdsaSignature": "[u8; 65]",
-  "EcdsaMessage": "H256",
+  "ExitReason": {
+    "type": "enum",
+    "type_mapping": [
+      [
+        "Succeed",
+        "ExitSucceed"
+      ],
+      [
+        "Error",
+        "ExitError"
+      ],
+      [
+        "Revert",
+        "ExitRevert"
+      ],
+      [
+        "Fatal",
+        "ExitFatal"
+      ]
+    ]
+  },
+  "ExitSucceed": {
+    "type": "enum",
+    "value_list": [
+      "Stopped",
+      "Returned",
+      "Suicided"
+    ]
+  },
+  "ExitError": {
+    "type": "enum",
+    "type_mapping": [
+      [
+        "StackUnderflow",
+        "NULL"
+      ],
+      [
+        "StackOverflow",
+        "NULL"
+      ],
+      [
+        "InvalidJump",
+        "NULL"
+      ],
+      [
+        "InvalidRange",
+        "NULL"
+      ],
+      [
+        "DesignatedInvalid",
+        "NULL"
+      ],
+      [
+        "CallTooDeep",
+        "NULL"
+      ],
+      [
+        "CreateCollision",
+        "NULL"
+      ],
+      [
+        "CreateContractLimit",
+        "NULL"
+      ],
+      [
+        "OutOfOffset",
+        "NULL"
+      ],
+      [
+        "OutOfGas",
+        "NULL"
+      ],
+      [
+        "OutOfFund",
+        "NULL"
+      ],
+      [
+        "PCUnderflow",
+        "NULL"
+      ],
+      [
+        "CreateEmpty",
+        "NULL"
+      ],
+      [
+        "Other",
+        "string"
+      ]
+    ]
+  },
+  "ExitFatal": {
+    "type": "enum",
+    "type_mapping": [
+      [
+        "NotSupported",
+        "NULL"
+      ],
+      [
+        "UnhandledInterrupt",
+        "NULL"
+      ],
+      [
+        "CallErrorAsFatal",
+        "NULL"
+      ],
+      [
+        "Other",
+        "string"
+      ]
+    ]
+  },
+  "BlockTransactions": {
+    "type": "enum",
+    "type_mapping": [
+      [
+        "Hashes",
+        "Vec<H256>"
+      ],
+      [
+        "Full",
+        "Vec<ethereum::Transaction>"
+      ]
+    ]
+  },
+  "ExitRevert": {
+    "type": "enum",
+    "value_list": [
+      "Reverted"
+    ]
+  },
+  "ethereum::Block": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "hash",
+        "Option<H256>"
+      ],
+      [
+        "parent_hash",
+        "H256"
+      ],
+      [
+        "uncles_hash",
+        "H256"
+      ],
+      [
+        "author",
+        "H160"
+      ],
+      [
+        "miner",
+        "H160"
+      ],
+      [
+        "state_root",
+        "H256"
+      ],
+      [
+        "transactions_root",
+        "H256"
+      ],
+      [
+        "receipts_root",
+        "H256"
+      ],
+      [
+        "number",
+        "Option<U256>"
+      ],
+      [
+        "gas_used",
+        "U256"
+      ],
+      [
+        "gas_limit",
+        "U256"
+      ],
+      [
+        "extra_data",
+        "Bytes"
+      ],
+      [
+        "logs_bloom",
+        "Option<H2048>"
+      ],
+      [
+        "timestamp",
+        "U256"
+      ],
+      [
+        "difficulty",
+        "U256"
+      ],
+      [
+        "total_difficulty",
+        "Option<U256>"
+      ],
+      [
+        "seal_fields",
+        "Vec<Bytes>"
+      ],
+      [
+        "uncles",
+        "Vec<H256>"
+      ],
+      [
+        "transactions",
+        "BlockTransactions"
+      ],
+      [
+        "size",
+        "Option<U256>"
+      ]
+    ]
+  },
+  "TransactionAction": {
+    "type": "enum",
+    "type_mapping": [
+      [
+        "Call",
+        "H160"
+      ],
+      [
+        "Create",
+        "NULL"
+      ]
+    ]
+  },
+  "Log": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "address",
+        "H160"
+      ],
+      [
+        "topics",
+        "Vec<H256>"
+      ],
+      [
+        "data",
+        "Vec<u8>"
+      ]
+    ]
+  },
+  "Signer<T, I>": "EcdsaMessage",
+  "EcdsaMessage": "[u8; 32]",
+  "RelaySignature": "EcdsaSignature",
+  "RelaySignature<T, I>": "RelaySignature",
   "RelayAuthoritySigner": "EcdsaAddress",
   "RelayAuthorityMessage": "EcdsaMessage",
   "RelayAuthoritySignature": "EcdsaSignature",
-  "RelayAuthoritySignature<T, I>": "EcdsaSignature",
-  "Term": "u32",
-  "OpCode": "[u8; 4]",
-  "ScheduledAuthoritiesChange": {
-    "type_mapping": [
-      [
-        "next_authorities",
-        "Vec<RelayAuthorityT>"
-      ],
-      [
-        "deadline",
-        "BlockNumber"
-      ]
-    ],
-    "type": "struct"
-  }
+  "Term": "u32"
 }

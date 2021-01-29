@@ -21,14 +21,6 @@
       ]
     ]
   },
-  "DispatchClass": {
-    "type": "enum",
-    "value_list": [
-      "Normal",
-      "Operational",
-      "Mandatory"
-    ]
-  },
   "DispatchResult": {
     "type": "enum",
     "type_mapping": [
@@ -119,5 +111,8 @@
   },
   "CompactAssignments#23-?": "CompactAssignmentsLatest",
   "RewardDestination#23-?": "RewardDestinationLatest",
-  "RefCount#25-?": "u32"
+  "RefCount": "u32",
+  "AccountInfo#28-?": "AccountInfoWithProviders",
+  "Address#28-?": "MultiAddress",
+  "LookupSource#28-?": "MultiAddress"
 }

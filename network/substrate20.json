@@ -14,5 +14,7 @@
         "DispatchError"
       ]
     ]
-  }
+  },
+  "Address": "GenericLookupSource",
+  "LookupSource": "GenericLookupSource"
 }

@@ -13,8 +13,8 @@
       ]
     ]
   },
-  "Address": "GenericAddress",
-  "LookupSource": "GenericAddress",
+  "Address": "GenericLookupSource",
+  "LookupSource": "GenericLookupSource",
   "Keys": {
     "type": "struct",
     "type_mapping": [
@@ -35,5 +35,27 @@
         "AccountId"
       ]
     ]
-  }
+  },
+  "RefCount#7-?": "u32",
+  "ChainId": "u8",
+  "ResourceId": "[u8; 32]",
+  "DepositNonce": "u64",
+  "U256": "[u8; 32]",
+  "RateType": "u64",
+  "AccountRData": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "free",
+        "u128"
+      ]
+    ]
+  },
+  "RSymbol": {
+    "type": "enum",
+    "value_list": [
+      "RFIS"
+    ]
+  },
+  "Box<Proposal>": "BoxProposal"
 }

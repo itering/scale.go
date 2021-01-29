@@ -1,0 +1,620 @@
+{
+  "RefCount": "u32",
+  "Weight": "u64",
+  "PositionId": "u64",
+  "FixedU128": "u128",
+  "<T as Trait<I>>::OracleKey": "CurrencyId",
+  "DispatchResult": {
+    "type": "enum",
+    "type_mapping": [
+      [
+        "Ok",
+        "Null"
+      ],
+      [
+        "Error",
+        "DispatchError"
+      ]
+    ]
+  },
+  "AuctionInfo": {
+    "type_mapping": [
+      [
+        "bid",
+        "Option<(AccountId, Balance)>"
+      ],
+      [
+        "start",
+        "BlockNumber"
+      ],
+      [
+        "end",
+        "Option<BlockNumber>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "Leverage": {
+    "value_list": [
+      "LongTwo",
+      "LongThree",
+      "LongFive",
+      "LongTen",
+      "LongTwenty",
+      "LongThirty",
+      "LongFifty",
+      "LongReserved",
+      "ShortTwo",
+      "ShortThree",
+      "ShortFive",
+      "ShortTen",
+      "ShortTwenty",
+      "ShortThirty",
+      "ShortFifty",
+      "ShortReserved"
+    ],
+    "type": "enum"
+  },
+  "RiskThreshold": {
+    "type_mapping": [
+      [
+        "marginCall",
+        "Permill"
+      ],
+      [
+        "stopOut",
+        "Permill"
+      ]
+    ],
+    "type": "struct"
+  },
+  "SyntheticTokensRatio": {
+    "type_mapping": [
+      [
+        "extreme",
+        "Option<Permill>"
+      ],
+      [
+        "liquidation",
+        "Option<Permill>"
+      ],
+      [
+        "collateral",
+        "Option<Permill>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "OrmlBalanceLock": {
+    "type_mapping": [
+      [
+        "amount",
+        "Balance"
+      ],
+      [
+        "id",
+        "LockIdentifier"
+      ]
+    ],
+    "type": "struct"
+  },
+  "VestingScheduleOf": "OrmlVestingSchedule",
+  "PairInfo": {
+    "type_mapping": [
+      [
+        "baseAmount",
+        "FixedI128"
+      ],
+      [
+        "quoteAmount",
+        "FixedI128"
+      ]
+    ],
+    "type": "struct"
+  },
+  "PositionsSnapshot": {
+    "type_mapping": [
+      [
+        "positionsCount",
+        "PositionId"
+      ],
+      [
+        "long",
+        "LeveragedAmounts"
+      ],
+      [
+        "short",
+        "LeveragedAmounts"
+      ]
+    ],
+    "type": "struct"
+  },
+  "GraduallyUpdate": {
+    "type_mapping": [
+      [
+        "key",
+        "StorageKey"
+      ],
+      [
+        "targetValue",
+        "StorageValue"
+      ],
+      [
+        "perBlock",
+        "StorageValue"
+      ]
+    ],
+    "type": "struct"
+  },
+  "MarginTraderState": {
+    "type_mapping": [
+      [
+        "equity",
+        "FixedI128"
+      ],
+      [
+        "margin_held",
+        "FixedI128"
+      ],
+      [
+        "margin_level",
+        "FixedI128"
+      ],
+      [
+        "free_margin",
+        "FixedI128"
+      ],
+      [
+        "unrealized_pl",
+        "FixedI128"
+      ]
+    ],
+    "type": "struct"
+  },
+  "LiquidityPoolIdentityInfo": {
+    "type_mapping": [
+      [
+        "legalName",
+        "Vec<u8>"
+      ],
+      [
+        "displayName",
+        "Vec<u8>"
+      ],
+      [
+        "web",
+        "Vec<u8>"
+      ],
+      [
+        "email",
+        "Vec<u8>"
+      ],
+      [
+        "image_url",
+        "Vec<u8>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "TimestampedValueOf": "TimestampedValue",
+  "LiquidityPoolId": "u32",
+  "Leverages": {
+    "bit_length": 16,
+    "type_mapping": [
+      "LongTwo",
+      "LongThree",
+      "LongFive",
+      "LongTen",
+      "LongTwenty",
+      "LongThirty",
+      "LongFifty",
+      "LongReserved",
+      "ShortTwo",
+      "ShortThree",
+      "ShortFive",
+      "ShortTen",
+      "ShortTwenty",
+      "ShortThirty",
+      "ShortFifty",
+      "ShortReserved"
+    ],
+    "type": "set"
+  },
+  "MarginPoolOption": {
+    "type_mapping": [
+      [
+        "additionalSwapRate",
+        "FixedI128"
+      ],
+      [
+        "minLeveragedAmount",
+        "FixedU128"
+      ]
+    ],
+    "type": "struct"
+  },
+  "AccumulateConfig": {
+    "type_mapping": [
+      [
+        "frequency",
+        "Moment"
+      ],
+      [
+        "offset",
+        "Moment"
+      ]
+    ],
+    "type": "struct"
+  },
+  "DelayedDispatchTime": {
+    "type_mapping": [
+      [
+        "At",
+        "BlockNumber"
+      ],
+      [
+        "After",
+        "BlockNumber"
+      ]
+    ],
+    "type": "enum"
+  },
+  "SyntheticPoolState": {
+    "type_mapping": [
+      [
+        "collateral_ratio",
+        "FixedI128"
+      ],
+      [
+        "is_safe",
+        "boolean"
+      ]
+    ],
+    "type": "struct"
+  },
+  "TimestampedValue": {
+    "type_mapping": [
+      [
+        "value",
+        "OracleValue"
+      ],
+      [
+        "timestamp",
+        "Moment"
+      ]
+    ],
+    "type": "struct"
+  },
+  "TradingPair": {
+    "type_mapping": [
+      [
+        "base",
+        "CurrencyId"
+      ],
+      [
+        "quote",
+        "CurrencyId"
+      ]
+    ],
+    "type": "struct"
+  },
+  "Rate": "FixedI128",
+  "DispatchTime": {
+    "type_mapping": [
+      [
+        "At",
+        "BlockNumber"
+      ],
+      [
+        "After",
+        "BlockNumber"
+      ]
+    ],
+    "type": "enum"
+  },
+  "CurrencyIdOf": "CurrencyId",
+  "AmountOf": "Amount",
+  "OrderedSet": "Vec<AccountId>",
+  "RpcDataProviderId": "Text",
+  "MarginPoolTradingPairOption": {
+    "type_mapping": [
+      [
+        "enabled",
+        "bool"
+      ],
+      [
+        "bidSpread",
+        "Option<FixedU128>"
+      ],
+      [
+        "askSpread",
+        "Option<FixedU128>"
+      ],
+      [
+        "enabledTrades",
+        "Leverages"
+      ]
+    ],
+    "type": "struct"
+  },
+  "Pool": {
+    "type_mapping": [
+      [
+        "owner",
+        "AccountId"
+      ],
+      [
+        "balance",
+        "Balance"
+      ]
+    ],
+    "type": "struct"
+  },
+  "TradingPairRiskThreshold": {
+    "type_mapping": [
+      [
+        "trader",
+        "Option<RiskThreshold>"
+      ],
+      [
+        "enp",
+        "Option<RiskThreshold>"
+      ],
+      [
+        "ell",
+        "Option<RiskThreshold>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "ScheduleTaskIndex": "u32",
+  "PoolInfo": {
+    "type_mapping": [
+      [
+        "totalShares",
+        "Compact<Share>"
+      ],
+      [
+        "totalRewards",
+        "Compact<Balance>"
+      ],
+      [
+        "totalWithdrawnRewards",
+        "Compact<Balance>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "LeveragedAmounts": {
+    "type_mapping": [
+      [
+        "held",
+        "FixedI128"
+      ],
+      [
+        "debits",
+        "FixedI128"
+      ]
+    ],
+    "type": "struct"
+  },
+  "CurrencyId": {
+    "value_list": [
+      "LAMI",
+      "AUSD",
+      "FEUR",
+      "FJPY",
+      "FBTC",
+      "FETH",
+      "FAUD",
+      "FCAD",
+      "FCHF",
+      "FXAU",
+      "FOIL",
+      "FGBP"
+    ],
+    "type": "enum"
+  },
+  "MarginTradingPairOption": {
+    "type_mapping": [
+      [
+        "enabled",
+        "bool"
+      ],
+      [
+        "maxSpread",
+        "Option<FixedU128>"
+      ],
+      [
+        "swapRate",
+        "SwapRate"
+      ],
+      [
+        "accumulateConfig",
+        "Option<AccumulateConfig>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "FixedI128": "i128",
+  "Amount": "FixedI128",
+  "StorageValue": "Vec<u8>",
+  "MarginPoolState": {
+    "type_mapping": [
+      [
+        "enp",
+        "FixedI128"
+      ],
+      [
+        "ell",
+        "FixedI128"
+      ],
+      [
+        "required_deposit",
+        "FixedI128"
+      ]
+    ],
+    "type": "struct"
+  },
+  "CallOf": "Call",
+  "OrmlAccountData": {
+    "type_mapping": [
+      [
+        "free",
+        "Balance"
+      ],
+      [
+        "frozen",
+        "Balance"
+      ],
+      [
+        "reserved",
+        "Balance"
+      ]
+    ],
+    "type": "struct"
+  },
+  "DispatchId": "u32",
+  "IdentityDepositBalanceOf": "Balance",
+  "DelayedOrigin": {
+    "type_mapping": [
+      [
+        "delay",
+        "BlockNumber"
+      ],
+      [
+        "origin",
+        "PalletsOrigin"
+      ]
+    ],
+    "type": "struct"
+  },
+  "SyntheticPosition": {
+    "type_mapping": [
+      [
+        "collateral",
+        "FixedU128"
+      ],
+      [
+        "synthetic",
+        "FixedU128"
+      ]
+    ],
+    "type": "struct"
+  },
+  "Share": "u128",
+  "DataProviderId": "u8",
+  "Keys": "SessionKeys2",
+  "OracleKey": "CurrencyId",
+  "SyntheticPoolCurrencyOption": {
+    "type_mapping": [
+      [
+        "bidSpread",
+        "Option<FixedU128>"
+      ],
+      [
+        "askSpread",
+        "Option<FixedU128>"
+      ],
+      [
+        "additionalCollateralRatio",
+        "Option<Permill>"
+      ],
+      [
+        "syntheticEnabled",
+        "bool"
+      ]
+    ],
+    "type": "struct"
+  },
+  "MarginPosition": {
+    "type_mapping": [
+      [
+        "owner",
+        "AccountId"
+      ],
+      [
+        "poolId",
+        "LiquidityPoolId"
+      ],
+      [
+        "pair",
+        "TradingPair"
+      ],
+      [
+        "leverage",
+        "Leverage"
+      ],
+      [
+        "leveragedHeld",
+        "FixedI128"
+      ],
+      [
+        "leveragedDebits",
+        "FixedI128"
+      ],
+      [
+        "openAccumulatedSwapRate",
+        "Rate"
+      ],
+      [
+        "marginHeld",
+        "FixedI128"
+      ]
+    ],
+    "type": "struct"
+  },
+  "PoolTraderInfo": {
+    "type_mapping": [
+      [
+        "positionNum",
+        "PositionId"
+      ],
+      [
+        "long",
+        "PairInfo"
+      ],
+      [
+        "short",
+        "PairInfo"
+      ]
+    ],
+    "type": "struct"
+  },
+  "OracleValue": "Price",
+  "SwapRate": {
+    "type_mapping": [
+      [
+        "long",
+        "Rate"
+      ],
+      [
+        "short",
+        "Rate"
+      ]
+    ],
+    "type": "struct"
+  },
+  "Price": "FixedU128",
+  "OrmlVestingSchedule": {
+    "type_mapping": [
+      [
+        "start",
+        "BlockNumber"
+      ],
+      [
+        "period",
+        "BlockNumber"
+      ],
+      [
+        "periodCount",
+        "u32"
+      ],
+      [
+        "perPeriod",
+        "Compact<Balance>"
+      ]
+    ],
+    "type": "struct"
+  }
+}

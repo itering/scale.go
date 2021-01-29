@@ -38,31 +38,6 @@
       ]
     ]
   },
-  "WorkReport": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "block_number",
-        "u64"
-      ],
-      [
-        "used",
-        "u64"
-      ],
-      [
-        "reserved",
-        "u64"
-      ],
-      [
-        "cached_reserved",
-        "u64"
-      ],
-      [
-        "files",
-        "Vec<(Vec<u8>, u64)>"
-      ]
-    ]
-  },
   "StakingLedger": {
     "type": "struct",
     "type_mapping": [
@@ -124,31 +99,6 @@
         "suppressed",
         "bool"
       ]
-    ]
-  },
-  "MerchantInfo": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "address",
-        "Vec<u8>"
-      ],
-      [
-        "storage_price",
-        "Balance"
-      ],
-      [
-        "file_map:",
-        "Vec<(Vec<u8>, Vec<Hash>)>"
-      ]
-    ]
-  },
-  "OrderStatus": {
-    "type": "enum",
-    "value_list": [
-      "Success",
-      "Failed",
-      "Pending"
     ]
   },
   "StorageOrder": {
@@ -311,5 +261,175 @@
       ]
     ]
   },
-  "FileAlias": "Vec<u8>"
+  "SorderStatus": {
+    "type_mapping": [
+      [
+        "completed_on",
+        "BlockNumber"
+      ],
+      [
+        "expired_on",
+        "BlockNumber"
+      ],
+      [
+        "status",
+        "OrderStatus"
+      ],
+      [
+        "claimed_at",
+        "BlockNumber"
+      ]
+    ],
+    "type": "struct"
+  },
+  "MerchantInfo": {
+    "type_mapping": [
+      [
+        "address",
+        "Vec<u8>"
+      ],
+      [
+        "storage_price",
+        "Balance"
+      ],
+      [
+        "file_map",
+        "Vec<(Vec<u8>, Vec<Hash>)>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "Status": {
+    "value_list": [
+      "Free",
+      "Reserved"
+    ],
+    "type": "enum"
+  },
+  "Releases": {
+    "value_list": [
+      "V1_0_0",
+      "V2_0_0"
+    ],
+    "type": "enum"
+  },
+  "OrderStatus": {
+    "value_list": [
+      "Success",
+      "Failed",
+      "Pending"
+    ],
+    "type": "enum"
+  },
+  "FileAlias": "Vec<u8>",
+  "WorkReport": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "block_number",
+        "u64"
+      ],
+      [
+        "used",
+        "u64"
+      ],
+      [
+        "reserved",
+        "u64"
+      ],
+      [
+        "cached_reserved",
+        "u64"
+      ],
+      [
+        "files",
+        "Vec<(Vec<u8>, u64)>"
+      ]
+    ]
+  },
+  "WorkReport#5-?": {
+    "type_mapping": [
+      [
+        "report_slot",
+        "u64"
+      ],
+      [
+        "used",
+        "u64"
+      ],
+      [
+        "free",
+        "u64"
+      ],
+      [
+        "files",
+        "BTreeMap<MerkleRoot, u64>"
+      ],
+      [
+        "reported_files_size",
+        "u64"
+      ],
+      [
+        "reported_srd_root",
+        "MerkleRoot"
+      ],
+      [
+        "reported_files_root",
+        "MerkleRoot"
+      ]
+    ],
+    "type": "struct"
+  },
+  "SorderPunishment": {
+    "type_mapping": [
+      [
+        "success",
+        "BlockNumber"
+      ],
+      [
+        "failed",
+        "BlockNumber"
+      ],
+      [
+        "updated_at",
+        "BlockNumber"
+      ]
+    ],
+    "type": "struct"
+  },
+  "SorderInfo": {
+    "type_mapping": [
+      [
+        "file_identifier",
+        "MerkleRoot"
+      ],
+      [
+        "file_size",
+        "u64"
+      ],
+      [
+        "created_on",
+        "BlockNumber"
+      ],
+      [
+        "merchant",
+        "AccountId"
+      ],
+      [
+        "client",
+        "AccountId"
+      ],
+      [
+        "amount",
+        "Balance"
+      ],
+      [
+        "duration",
+        "BlockNumber"
+      ]
+    ],
+    "type": "struct"
+  },
+  "ETHAddress": "Vec<u8>",
+  "RefCount": "u32"
 }

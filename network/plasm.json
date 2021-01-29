@@ -1,13 +1,5 @@
 {
   "Weight": "u32",
-  "DispatchClass": {
-    "type": "enum",
-    "value_list": [
-      "Normal",
-      "Operational",
-      "Mandatory"
-    ]
-  },
   "DispatchResult": {
     "type": "enum",
     "type_mapping": [

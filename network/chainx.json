@@ -1050,7 +1050,7 @@
     "type": "struct"
   },
   "HandicapInfo": "Handicap",
-  "Price": "u128",
+  "Price": "Balance",
   "CurrencyIdOf": "AssetId",
   "BtcParams": {
     "type_mapping": [

@@ -73,14 +73,6 @@
       ]
     ]
   },
-  "DispatchClass": {
-    "type": "enum",
-    "value_list": [
-      "Normal",
-      "Operational",
-      "Mandatory"
-    ]
-  },
   "DispatchResult": {
     "type": "enum",
     "type_mapping": [
@@ -154,6 +146,7 @@
       ]
     ]
   },
+  "DispatchInfo#1019-1061": "DispatchInfo258",
   "DispatchInfo#1062-?": {
     "type": "struct",
     "type_mapping": [
@@ -219,5 +212,9 @@
   "Box<Proposal>": "BoxProposal",
   "CompactAssignments#2023-?": "CompactAssignmentsLatest",
   "RewardDestination#2023-?": "RewardDestinationLatest",
-  "RefCount": "u32"
+  "RefCount": "u32",
+  "Box<<T as Config>::Call>": "Call",
+  "AccountInfo#2028-?": "AccountInfoWithProviders",
+  "Address#2028-?": "MultiAddress",
+  "LookupSource#2028-?": "MultiAddress"
 }

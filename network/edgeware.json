@@ -306,5 +306,6 @@
     ]
   },
   "Address#38-?": "GenericAddress",
-  "LookupSource#38-?": "GenericAddress"
+  "LookupSource#38-?": "GenericAddress",
+  "RefCount": "u32"
 }

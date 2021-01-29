@@ -60,6 +60,7 @@
     ]
   },
   "RefCount#10-?": "u32",
-  "Address": "MultiAddress",
-  "LookupSource": "MultiAddress"
+  "Address#13-?": "MultiAddress",
+  "LookupSource#13-?": "MultiAddress",
+  "Box<<T as Config>::Call>": "Call"
 }

@@ -209,5 +209,6 @@
         "AccountData"
       ]
     ]
-  }
+  },
+  "Box<<T as Config>::Call>": "Call"
 }
