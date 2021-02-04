@@ -1327,11 +1327,7 @@
         "AccountId"
       ],
       [
-        "validationFunction",
-        "ValidationCode"
-      ],
-      [
-        "genesisHead",
+        "genesis_head",
         "HeadData"
       ],
       [
@@ -1340,7 +1336,7 @@
       ],
       [
         "name",
-        "Bytes"
+        "Vec<U8>"
       ],
       [
         "balance",
