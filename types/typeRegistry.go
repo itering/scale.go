@@ -19,7 +19,7 @@ type Special struct {
 
 var TypeRegistry map[string]interface{}
 
-var specialRegistry map[string]Special
+var specialRegistry map[string][]Special
 
 func (r RuntimeType) Reg() *RuntimeType {
 	registry := make(map[string]interface{})
@@ -211,10 +211,12 @@ func (r *RuntimeType) DecoderClass(typeString string, spec int) (reflect.Type, r
 func (r *RuntimeType) specialVersionCodec(t string, spec int) (interface{}, error) {
 	var rt interface{}
 
-	if special, ok := specialRegistry[t]; ok {
-		if spec >= special.Version[0] && spec <= special.Version[1] {
-			rt = special.Registry
-			return rt, nil
+	if specials, ok := specialRegistry[t]; ok {
+		for _, special := range specials {
+			if spec >= special.Version[0] && spec <= special.Version[1] {
+				rt = special.Registry
+				return rt, nil
+			}
 		}
 	}
 	return rt, fmt.Errorf("not found")

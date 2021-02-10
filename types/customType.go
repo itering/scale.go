@@ -123,9 +123,15 @@ func regCustomKey(key string, rt interface{}) {
 			}
 		}
 		if specialRegistry == nil {
-			specialRegistry = make(map[string]Special)
+			specialRegistry = make(map[string][]Special)
 		}
-		specialRegistry[slice[0]] = special
+		if instant, ok := specialRegistry[slice[0]]; ok {
+			instant = append(instant, special)
+			specialRegistry[slice[0]] = instant
+		} else {
+			specialRegistry[slice[0]] = []Special{special}
+		}
+
 	} else {
 		TypeRegistry[key] = rt
 	}
