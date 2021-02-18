@@ -1743,5 +1743,28 @@
     ],
     "type": "struct"
   },
-  "Slot": "u64"
+  "Slot": "u64",
+  "ParachainInherentData": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "validationData",
+        "PersistedValidationData"
+      ],
+      [
+        "relayChainState",
+        "StorageProof"
+      ],
+      [
+        "downwardMessages",
+        "Vec<InboundDownwardMessage>"
+      ],
+      [
+        "horizontalMessages",
+        "BTreeMap<ParaId, VecInboundHrmpMessage>"
+      ]
+    ]
+  },
+  "SystemInherentData": "ParachainInherentData",
+  "RelayChainHash": "Hash"
 }
