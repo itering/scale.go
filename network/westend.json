@@ -1,5 +1,4 @@
 {
-  "Address": "AccountId",
   "BlockNumber": "u32",
   "LeasePeriod": "BlockNumber",
   "Keys": "SessionKeysPolkadot",
@@ -42,7 +41,8 @@
       "NonTransfer",
       "Staking",
       "SudoBalances",
-      "IdentityJudgement"
+      "IdentityJudgement",
+      "CancelProxy"
     ]
   },
   "CompactAssignments#43-?": "CompactAssignmentsLatest",
@@ -50,6 +50,36 @@
   "RefCount#45-?": "u32",
   "Box<<T as Config>::Call>": "Call",
   "AccountInfo#48-?": "AccountInfoWithProviders",
-  "Address#48-?": "MultiAddress",
-  "LookupSource#48-?": "MultiAddress"
+  "Address": "MultiAddress",
+  "LookupSource": "MultiAddress",
+  "ValidatorPrefs": "ValidatorPrefsWithBlocked",
+  "Keys#48-?": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "grandpa",
+        "AccountId"
+      ],
+      [
+        "babe",
+        "AccountId"
+      ],
+      [
+        "im_online",
+        "AccountId"
+      ],
+      [
+        "para_validator",
+        "AccountId"
+      ],
+      [
+        "para_assignment",
+        "AccountId"
+      ],
+      [
+        "authority_discovery",
+        "AccountId"
+      ]
+    ]
+  }
 }

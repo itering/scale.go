@@ -218,5 +218,35 @@
   "Box<<T as Config<I>>::Proposal>": "Proposal",
   "AccountInfo": "AccountInfoWithProviders",
   "Address#2028-?": "MultiAddress",
-  "LookupSource#2028-?": "MultiAddress"
+  "LookupSource#2028-?": "MultiAddress",
+  "Keys#2028-?": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "grandpa",
+        "AccountId"
+      ],
+      [
+        "babe",
+        "AccountId"
+      ],
+      [
+        "im_online",
+        "AccountId"
+      ],
+      [
+        "para_validator",
+        "AccountId"
+      ],
+      [
+        "para_assignment",
+        "AccountId"
+      ],
+      [
+        "authority_discovery",
+        "AccountId"
+      ]
+    ]
+  },
+  "ValidatorPrefs#2028-?": "ValidatorPrefsWithBlocked"
 }

@@ -710,7 +710,7 @@ type OpaqueCall struct {
 func (f *OpaqueCall) Process() {
 	f.Bytes.Process()
 	e := ScaleDecoder{}
-	option := ScaleDecoderOption{Metadata: f.Metadata}
+	option := ScaleDecoderOption{Metadata: f.Metadata, Spec: f.Spec}
 	e.Init(ScaleBytes{Data: utiles.HexToBytes(f.Value.(string))}, &option)
 	value := e.ProcessAndUpdateData("Call")
 	f.Value = value
