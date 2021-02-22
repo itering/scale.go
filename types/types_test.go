@@ -12,6 +12,16 @@ import (
 	"testing"
 )
 
+func TestString(t *testing.T) {
+	raw := "1054657374"
+	m := types.ScaleDecoder{}
+	m.Init(types.ScaleBytes{Data: utiles.HexToBytes(raw)}, nil)
+	r := m.ProcessAndUpdateData("String").(string)
+	if r != "Test" {
+		t.Errorf("Test String Process fail, decode return %s", r)
+	}
+}
+
 func TestCompactU64(t *testing.T) {
 	raw := "10"
 	m := types.ScaleDecoder{}

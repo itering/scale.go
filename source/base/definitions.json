@@ -2481,6 +2481,16 @@
       ]
     ]
   },
+  "StorageProof": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "trieNodes",
+        "Vec<Bytes>"
+      ]
+    ]
+  },
+  "StorageData": "Bytes",
   "GenericMultiAddress": {
     "type": "enum",
     "type_mapping": [
