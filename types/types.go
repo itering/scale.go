@@ -12,6 +12,7 @@ import (
 	"io"
 	"math"
 	"math/big"
+	"regexp"
 	"strconv"
 	"strings"
 	"unicode/utf8"
@@ -270,10 +271,24 @@ func (e *Enum) Process() {
 		e.Index = int(utiles.U256(index).Uint64())
 	}
 	if e.TypeMapping != nil {
-		if e.TypeMapping.Types[e.Index] != "" {
-			e.Value = map[string]interface{}{
-				e.TypeMapping.Names[e.Index]: e.ProcessAndUpdateData(e.TypeMapping.Types[e.Index]),
+		// check c-like enum
+		isCLikeEnum := true
+		for _, subType := range e.TypeMapping.Types {
+			if !regexp.MustCompile("[0-9]+").MatchString(subType) {
+				isCLikeEnum = false
+				break
 			}
+		}
+		rustEnum := make(map[int]string)
+		if isCLikeEnum {
+			for index, v := range e.TypeMapping.Names {
+				rustEnum[utiles.StringToInt(e.TypeMapping.Types[index])] = v
+			}
+			e.Value = rustEnum[e.Index]
+			return
+		}
+		if subType := e.TypeMapping.Types[e.Index]; subType != "" {
+			e.Value = map[string]interface{}{e.TypeMapping.Names[e.Index]: e.ProcessAndUpdateData(subType)}
 			return
 		}
 	}

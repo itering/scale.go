@@ -201,3 +201,15 @@ func TestBTreeMap(t *testing.T) {
 		t.Errorf("Test TestBTreeMap Process fail, decode return %v", utiles.ToString(r))
 	}
 }
+
+func TestClikeEnum(t *testing.T) {
+	raw := "0x45"
+	m := types.ScaleDecoder{}
+	m.Init(types.ScaleBytes{Data: utiles.HexToBytes(raw)}, nil)
+	types.RuntimeType{}.Reg()
+	types.RegCustomTypes(source.LoadTypeRegistry([]byte(`{"t": {"type": "enum","type_mapping": [["A","42"],["B","69"],["C","255"]]}}`)))
+	r := m.ProcessAndUpdateData("t")
+	if utiles.ToString(r) != `B` {
+		t.Errorf("Test TestClikeEnum Process fail, decode return %v", utiles.ToString(r))
+	}
+}
