@@ -2540,5 +2540,6 @@
     ]
   },
   "SessionKeys2": "(AccountId, AccountId)",
-  "<T as Config>::Call": "Call"
+  "<T as Config>::Call": "Call",
+  "Perquintill": "u64"
 }

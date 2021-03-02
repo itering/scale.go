@@ -1,0 +1,58 @@
+{
+  "ActiveGilt": {
+    "type_mapping": [
+      [
+        "proportion",
+        "Perquintill"
+      ],
+      [
+        "amount",
+        "Balance"
+      ],
+      [
+        "who",
+        "AccountId"
+      ],
+      [
+        "expiry",
+        "BlockNumber"
+      ]
+    ],
+    "type": "struct"
+  },
+  "ActiveGiltsTotal": {
+    "type_mapping": [
+      [
+        "frozen",
+        "Balance"
+      ],
+      [
+        "proportion",
+        "Perquintill"
+      ],
+      [
+        "index",
+        "ActiveIndex"
+      ],
+      [
+        "target",
+        "Perquintill"
+      ]
+    ],
+    "type": "struct"
+  },
+  "ActiveIndex": "u32",
+  "GiltBid": {
+    "type_mapping": [
+      [
+        "amount",
+        "Balance"
+      ],
+      [
+        "who",
+        "AccountId"
+      ]
+    ],
+    "type": "struct"
+  }
+}
