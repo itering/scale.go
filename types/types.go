@@ -607,9 +607,9 @@ func (s *Call) Process() {
 	callIndex := utiles.BytesToHex(s.NextBytes(2))
 	callModule := s.Metadata.CallIndex[callIndex]
 	result := map[string]interface{}{
-		"call_index":    callIndex,
-		"call_function": callModule.Call.Name,
-		"call_module":   callModule.Module.Name,
+		"call_index":  callIndex,
+		"call_name":   callModule.Call.Name,
+		"call_module": callModule.Module.Name,
 	}
 	var param []ExtrinsicParam
 	for _, arg := range callModule.Call.Args {
@@ -620,7 +620,7 @@ func (s *Call) Process() {
 			ValueRaw: s.RawValue,
 		})
 	}
-	result["call_args"] = param
+	result["params"] = param
 	s.Value = result
 
 }
