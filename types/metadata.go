@@ -79,8 +79,7 @@ type MetadataConstants struct {
 }
 
 type ExtrinsicParam struct {
-	Name     string      `json:"name"`
-	Type     string      `json:"type"`
-	Value    interface{} `json:"value"`
-	ValueRaw string      `json:"value_raw"`
+	Name  string      `json:"name"`
+	Type  string      `json:"type"`
+	Value interface{} `json:"value"`
 }
