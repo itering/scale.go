@@ -210,5 +210,30 @@
       ]
     ]
   },
-  "Box<<T as Config>::Call>": "Call"
+  "Box<<T as Config>::Call>": "Call",
+  "AccountInfoWithTripleRefCount": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "nonce",
+        "Index"
+      ],
+      [
+        "consumers",
+        "RefCount"
+      ],
+      [
+        "providers",
+        "RefCount"
+      ],
+      [
+        "sufficients",
+        "RefCount"
+      ],
+      [
+        "data",
+        "AccountData"
+      ]
+    ]
+  }
 }
