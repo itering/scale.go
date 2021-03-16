@@ -138,6 +138,8 @@ func (e *ExtrinsicDecoder) Process() {
 				if utiles.SliceIndex("ChargeTransactionPayment", e.Metadata.Extrinsic.SignedExtensions) != -1 {
 					e.Tip = e.ProcessAndUpdateData("Compact<Balance>")
 				}
+			} else {
+				e.Tip = e.ProcessAndUpdateData("Compact<Balance>")
 			}
 			e.ExtrinsicHash = e.generateHash()
 		}
