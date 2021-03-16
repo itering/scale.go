@@ -10,6 +10,10 @@ type MetadataV12Decoder struct {
 	ScaleDecoder
 }
 
+type ExtrinsicMetadata struct {
+	SignedExtensions []string `json:"signedExtensions"`
+}
+
 func (m *MetadataV12Decoder) Init(data ScaleBytes, option *ScaleDecoderOption) {
 	m.ScaleDecoder.Init(data, option)
 }
@@ -45,6 +49,10 @@ func (m *MetadataV12Decoder) Process() {
 	}
 
 	result.Metadata.Modules = modulesType
+	extrinsicMetadata := m.ProcessAndUpdateData("ExtrinsicMetadata").(map[string]interface{})
+	bm, _ = json.Marshal(extrinsicMetadata)
+	_ = json.Unmarshal(bm, &result.Extrinsic)
+
 	m.Value = result
 }
 

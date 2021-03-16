@@ -274,7 +274,7 @@ func (e *Enum) Process() {
 		// check c-like enum
 		isCLikeEnum := true
 		for _, subType := range e.TypeMapping.Types {
-			if !regexp.MustCompile("[0-9]+").MatchString(subType) {
+			if !regexp.MustCompile("^[0-9]+$").MatchString(subType) {
 				isCLikeEnum = false
 				break
 			}

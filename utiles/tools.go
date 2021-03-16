@@ -125,3 +125,12 @@ func IsASCII(b []byte) bool {
 	}
 	return true
 }
+
+func SliceIndex(a string, list []string) int {
+	for index, b := range list {
+		if b == a {
+			return index
+		}
+	}
+	return -1
+}
