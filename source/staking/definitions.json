@@ -55,5 +55,76 @@
         "Balance"
       ]
     ]
+  },
+  "RawSolution": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "compact",
+        "CompactAssignments"
+      ],
+      [
+        "score",
+        "ElectionScore"
+      ],
+      [
+        "round",
+        "u32"
+      ]
+    ]
+  },
+  "ReadySolution": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "supports",
+        "SolutionSupports"
+      ],
+      [
+        "score",
+        "ElectionScore"
+      ],
+      [
+        "compute",
+        "ElectionCompute"
+      ]
+    ]
+  },
+  "ElectionScore": "[u128; 3]",
+  "SolutionSupports": "Vec<(AccountId, SolutionSupport)>",
+  "SolutionSupport": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "total",
+        "ExtendedBalance"
+      ],
+      [
+        "voters",
+        "Vec<(AccountId, ExtendedBalance)>"
+      ]
+    ]
+  },
+  "SolutionOrSnapshotSize": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "voters",
+        "Compact<u32>"
+      ],
+      [
+        "targets",
+        "Compact<u32>"
+      ]
+    ]
+  },
+  "ExtendedBalance": "u128",
+  "ElectionCompute": {
+    "type": "enum",
+    "value_list": [
+      "OnChain",
+      "Signed",
+      "Unsigned"
+    ]
   }
 }
