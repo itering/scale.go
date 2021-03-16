@@ -133,6 +133,7 @@ func (r RuntimeType) Reg() *RuntimeType {
 	registry["[u8; 64]"] = &VecU8FixedLength{FixedLength: 64}
 	registry["[u8; 65]"] = &VecU8FixedLength{FixedLength: 65}
 	registry["[u8; 16]"] = &VecU8FixedLength{FixedLength: 16}
+	registry["[u8; 20]"] = &VecU8FixedLength{FixedLength: 20}
 	registry["[u8; 8]"] = &VecU8FixedLength{FixedLength: 8}
 	registry["[u8; 4]"] = &VecU8FixedLength{FixedLength: 4}
 	registry["[u8; 2]"] = &VecU8FixedLength{FixedLength: 2}
