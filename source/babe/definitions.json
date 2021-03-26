@@ -1,0 +1,47 @@
+{
+  "AllowedSlots": {
+    "type": "enum",
+    "value_list": [
+      "PrimarySlots",
+      "PrimaryAndSecondaryPlainSlots",
+      "PrimaryAndSecondaryVRFSlots"
+    ]
+  },
+  "BabeAuthorityWeight": "u64",
+  "BabeBlockWeight": "u32",
+  "BabeEquivocationProof": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "offender",
+        "AuthorityId"
+      ],
+      [
+        "slotNumber",
+        "SlotNumber"
+      ],
+      [
+        "firstHeader",
+        "Header"
+      ],
+      [
+        "secondHeader",
+        "Header"
+      ]
+    ]
+  },
+  "BabeEpochConfiguration": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "c",
+        "(u64,u64)"
+      ],
+      [
+        "allowedSlots",
+        "AllowedSlots"
+      ]
+    ]
+  },
+  "BabeWeight": "u64"
+}

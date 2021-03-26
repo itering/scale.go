@@ -1,0 +1,98 @@
+{
+  "Bidder": {
+    "type_mapping": [
+      [
+        "New",
+        "NewBidder"
+      ],
+      [
+        "Existing",
+        "ParaId"
+      ]
+    ],
+    "type": "enum"
+  },
+  "IncomingParachain": {
+    "type_mapping": [
+      [
+        "Unset",
+        "NewBidder"
+      ],
+      [
+        "Fixed",
+        "IncomingParachainFixed"
+      ],
+      [
+        "Deploy",
+        "IncomingParachainDeploy"
+      ]
+    ],
+    "type": "enum"
+  },
+  "IncomingParachainDeploy": {
+    "type_mapping": [
+      [
+        "code",
+        "ValidationCode"
+      ],
+      [
+        "initialHeadData",
+        "HeadData"
+      ]
+    ],
+    "type": "struct"
+  },
+  "IncomingParachainFixed": {
+    "type_mapping": [
+      [
+        "codeHash",
+        "Hash"
+      ],
+      [
+        "codeSize",
+        "u32"
+      ],
+      [
+        "initialHeadData",
+        "HeadData"
+      ]
+    ],
+    "type": "struct"
+  },
+  "NewBidder": {
+    "type_mapping": [
+      [
+        "who",
+        "AccountId"
+      ],
+      [
+        "sub",
+        "SubId"
+      ]
+    ],
+    "type": "struct"
+  },
+  "SubId": "u32",
+  "AuctionIndex": "u32",
+  "LeasePeriod": "BlockNumber",
+  "LeasePeriodOf": "LeasePeriod",
+  "WinningData": "[WinningDataEntry; 10]",
+  "WinningDataEntry": "Option<(AccountId, ParaId, BalanceOf)>",
+  "WinnersData": "Vec<WinnersDataTuple>",
+  "WinnersDataTuple": "(AccountId, ParaId, BalanceOf, SlotRange)",
+  "SlotRange": {
+    "value_list": [
+      "ZeroZero",
+      "ZeroOne",
+      "ZeroTwo",
+      "ZeroThree",
+      "OneOne",
+      "OneTwo",
+      "OneThree",
+      "TwoTwo",
+      "TwoThree",
+      "ThreeThree"
+    ],
+    "type": "enum"
+  }
+}

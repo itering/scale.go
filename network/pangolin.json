@@ -17,30 +17,7 @@
   "TronAddress": "EthereumAddress",
   "Bloom": "[u8; 256]",
   "H": "Hash",
-  "Address": "AccountId",
-  "LookupSource": "AccountId",
   "MappedRing": "u128",
-  "Keys": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "babe",
-        "AccountId"
-      ],
-      [
-        "grandpa",
-        "AccountId"
-      ],
-      [
-        "im_online",
-        "AccountId"
-      ],
-      [
-        "authority_discovery",
-        "AccountId"
-      ]
-    ]
-  },
   "Weight": "u64",
   "ModuleId": "[u8; 8]",
   "RuntimeDbWeight": {
@@ -612,15 +589,6 @@
       ]
     ]
   },
-  "ValidatorPrefs": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "commission",
-        "Compact<Balance>"
-      ]
-    ]
-  },
   "MerkleMountainRangeRootLog": {
     "type": "struct",
     "type_mapping": [
@@ -976,7 +944,6 @@
       ]
     ]
   },
-  "RewardDestination": "RewardDestinationLatest",
   "RefCount": "u32",
   "EthereumRelayHeaderParcel": {
     "type": "struct",
@@ -1367,5 +1334,38 @@
   "RelayAuthoritySigner": "EcdsaAddress",
   "RelayAuthorityMessage": "EcdsaMessage",
   "RelayAuthoritySignature": "EcdsaSignature",
-  "Term": "u32"
+  "Term": "u32",
+  "AccountInfo": "AccountInfoWithProviders",
+  "Address": "MultiAddress",
+  "LookupSource": "MultiAddress",
+  "Keys": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "grandpa",
+        "AccountId"
+      ],
+      [
+        "babe",
+        "AccountId"
+      ],
+      [
+        "im_online",
+        "AccountId"
+      ],
+      [
+        "para_validator",
+        "AccountId"
+      ],
+      [
+        "para_assignment",
+        "AccountId"
+      ],
+      [
+        "authority_discovery",
+        "AccountId"
+      ]
+    ]
+  },
+  "ValidatorPrefs": "ValidatorPrefsWithBlocked"
 }

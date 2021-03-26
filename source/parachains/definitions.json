@@ -12,6 +12,7 @@
     ],
     "type": "struct"
   },
+  "InboundHrmpMessages": "Vec<InboundHrmpMessage>",
   "MultiAsset": {
     "type_mapping": [
       [
@@ -65,58 +66,11 @@
     ],
     "type": "enum"
   },
-  "LeasePeriod": "BlockNumber",
   "OriginKind": {
     "value_list": [
       "Native",
       "SovereignAccount",
       "Superuser"
-    ],
-    "type": "enum"
-  },
-  "HrmpOpenChannelRequest": {
-    "type_mapping": [
-      [
-        "confirmed",
-        "bool"
-      ],
-      [
-        "age",
-        "SessionIndex"
-      ],
-      [
-        "senderDeposit",
-        "Balance"
-      ],
-      [
-        "maxMessageSize",
-        "u32"
-      ],
-      [
-        "maxCapacity",
-        "u32"
-      ],
-      [
-        "maxTotalSize",
-        "u32"
-      ]
-    ],
-    "type": "struct"
-  },
-  "IncomingParachain": {
-    "type_mapping": [
-      [
-        "Unset",
-        "NewBidder"
-      ],
-      [
-        "Fixed",
-        "IncomingParachainFixed"
-      ],
-      [
-        "Deploy",
-        "IncomingParachainDeploy"
-      ]
     ],
     "type": "enum"
   },
@@ -218,6 +172,20 @@
     ],
     "type": "struct"
   },
+  "MessageQueueChain": "RelayChainHash",
+  "MessageIngestionType": {
+    "type_mapping": [
+      [
+        "downwardMessages",
+        "Vec<InboundDownwardMessage>"
+      ],
+      [
+        "horizontalMessages",
+        "BTreeMap<ParaId, InboundHrmpMessages>"
+      ]
+    ],
+    "type": "struct"
+  },
   "ConcreteFungible": {
     "type_mapping": [
       [
@@ -240,23 +208,6 @@
       [
         "receive",
         "Vec<MultiAsset>"
-      ]
-    ],
-    "type": "struct"
-  },
-  "IncomingParachainFixed": {
-    "type_mapping": [
-      [
-        "codeHash",
-        "Hash"
-      ],
-      [
-        "codeSize",
-        "u32"
-      ],
-      [
-        "initialHeadData",
-        "HeadData"
       ]
     ],
     "type": "struct"
@@ -466,7 +417,6 @@
     ],
     "type": "struct"
   },
-  "SubId": "u32",
   "AccountKey20Junction": {
     "type_mapping": [
       [
@@ -487,19 +437,11 @@
         "HeadData"
       ],
       [
-        "blockNumber",
-        "BlockNumber"
+        "relayParentNumber",
+        "RelayChainBlockNumber"
       ],
       [
-        "relayStorageRoot",
-        "Hash"
-      ],
-      [
-        "hrmpMqcHeads",
-        "Vec<(u32, Hash)>"
-      ],
-      [
-        "dmqMqcHead",
+        "relayParentStorageRoot",
         "Hash"
       ],
       [
@@ -637,19 +579,6 @@
       ]
     ],
     "type": "struct"
-  },
-  "Bidder": {
-    "type_mapping": [
-      [
-        "New",
-        "NewBidder"
-      ],
-      [
-        "Existing",
-        "ParaId"
-      ]
-    ],
-    "type": "enum"
   },
   "RelayTo": {
     "type_mapping": [
@@ -826,7 +755,6 @@
     ],
     "type": "struct"
   },
-  "LeasePeriodOf": "LeasePeriod",
   "VersionedMultiAsset": {
     "type_mapping": [
       [
@@ -1113,19 +1041,6 @@
     ],
     "type": "struct"
   },
-  "IncomingParachainDeploy": {
-    "type_mapping": [
-      [
-        "code",
-        "ValidationCode"
-      ],
-      [
-        "initialHeadData",
-        "HeadData"
-      ]
-    ],
-    "type": "struct"
-  },
   "QueuedParathread": {
     "type_mapping": [
       [
@@ -1190,6 +1105,7 @@
     ],
     "type": "struct"
   },
+  "CollatorSignature": "Signature",
   "ParachainDispatchOrigin": {
     "value_list": [
       "Signed",
@@ -1240,19 +1156,6 @@
       ],
       [
         "neededApprovals",
-        "u32"
-      ]
-    ],
-    "type": "struct"
-  },
-  "HrmpChannelId": {
-    "type_mapping": [
-      [
-        "sender",
-        "u32"
-      ],
-      [
-        "receiver",
         "u32"
       ]
     ],
@@ -1345,26 +1248,27 @@
     ],
     "type": "struct"
   },
-  "SlotRange": {
+  "ParaLifecycle": {
     "value_list": [
-      "ZeroZero",
-      "ZeroOne",
-      "ZeroTwo",
-      "ZeroThree",
-      "OneOne",
-      "OneTwo",
-      "OneThree",
-      "TwoTwo",
-      "TwoThree",
-      "ThreeThree"
+      "Onboarding",
+      "Parathread",
+      "Parachain",
+      "UpgradingToParachain",
+      "DowngradingToParathread",
+      "OutgoingParathread",
+      "OutgoingParachain"
     ],
     "type": "enum"
   },
   "ParaInfo": {
     "type_mapping": [
       [
-        "scheduling",
-        "Scheduling"
+        "manager",
+        "AccountId"
+      ],
+      [
+        "deposit",
+        "Balance"
       ]
     ],
     "type": "struct"
@@ -1404,19 +1308,6 @@
     ],
     "type": "struct"
   },
-  "NewBidder": {
-    "type_mapping": [
-      [
-        "who",
-        "AccountId"
-      ],
-      [
-        "sub",
-        "SubId"
-      ]
-    ],
-    "type": "struct"
-  },
   "ParaGenesisArgs": {
     "type_mapping": [
       [
@@ -1447,8 +1338,6 @@
     ],
     "type": "enum"
   },
-  "WinningData": "[WinningDataEntry; 10]",
-  "WinningDataEntry": "Option<Bidder>",
   "GlobalValidationSchedule": {
     "type_mapping": [
       [
@@ -1482,7 +1371,7 @@
     ],
     "type": "enum"
   },
-  "RelayChainBlockNumber": "BlockNumber",
+  "RelayChainBlockNumber": "u32",
   "HostConfiguration": {
     "type_mapping": [
       [
@@ -1702,43 +1591,6 @@
     ],
     "type": "struct"
   },
-  "HrmpChannel": {
-    "type_mapping": [
-      [
-        "maxCapacity",
-        "u32"
-      ],
-      [
-        "maxTotalSize",
-        "u32"
-      ],
-      [
-        "maxMessageSize",
-        "u32"
-      ],
-      [
-        "msgCount",
-        "u32"
-      ],
-      [
-        "totalSize",
-        "u32"
-      ],
-      [
-        "mqcHead",
-        "Option<Hash>"
-      ],
-      [
-        "senderDeposit",
-        "Balance"
-      ],
-      [
-        "recipientDeposit",
-        "Balance"
-      ]
-    ],
-    "type": "struct"
-  },
   "Slot": "u64",
   "ParachainInherentData": {
     "type": "struct",
@@ -1761,6 +1613,21 @@
       ]
     ]
   },
+  "MessagingStateSnapshot": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "relayDispatchQueueSize",
+        "(u32, u32)"
+      ],
+      [
+        "egressChannels",
+        "Vec<MessagingStateSnapshotEgressEntry>"
+      ]
+    ]
+  },
+  "MessagingStateSnapshotEgressEntry": "(ParaId, AbridgedHrmpChannel)",
   "SystemInherentData": "ParachainInherentData",
-  "RelayChainHash": "Hash"
+  "RelayChainHash": "Hash",
+  "VecInboundHrmpMessage": "Vec<InboundHrmpMessage>"
 }

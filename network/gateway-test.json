@@ -99,47 +99,47 @@
     "type_mapping": [
       [
         "AssetExtractionNotSupported",
-        ""
+        "NULL"
       ],
       [
         "AssetNotSupported",
-        ""
+        "NULL"
       ],
       [
         "BadAccount",
-        ""
+        "NULL"
       ],
       [
         "BadAddress",
-        ""
+        "NULL"
       ],
       [
         "BadAsset",
-        ""
+        "NULL"
       ],
       [
         "BadChainId",
-        ""
+        "NULL"
       ],
       [
         "BadFactor",
-        ""
+        "NULL"
       ],
       [
         "BadSymbol",
-        ""
+        "NULL"
       ],
       [
         "BadTicker",
-        ""
+        "NULL"
       ],
       [
         "BadUnits",
-        ""
+        "NULL"
       ],
       [
         "ChainMismatch",
-        ""
+        "NULL"
       ],
       [
         "CryptoError",
@@ -147,11 +147,11 @@
       ],
       [
         "FailedToSubmitExtrinsic",
-        ""
+        "NULL"
       ],
       [
         "FetchError",
-        ""
+        "NULL"
       ],
       [
         "IncorrectNonce",
@@ -159,39 +159,39 @@
       ],
       [
         "InKindLiquidation",
-        ""
+        "NULL"
       ],
       [
         "InsufficientChainCash",
-        ""
+        "NULL"
       ],
       [
         "InsufficientLiquidity",
-        ""
+        "NULL"
       ],
       [
         "InsufficientTotalFunds",
-        ""
+        "NULL"
       ],
       [
         "InvalidAPR",
-        ""
+        "NULL"
       ],
       [
         "InvalidCodeHash",
-        ""
+        "NULL"
       ],
       [
         "InvalidLiquidation",
-        ""
+        "NULL"
       ],
       [
         "InvalidUTF8",
-        ""
+        "NULL"
       ],
       [
         "KeyNotFound",
-        ""
+        "NULL"
       ],
       [
         "MathError",
@@ -199,31 +199,31 @@
       ],
       [
         "MaxForNonCashAsset",
-        ""
+        "NULL"
       ],
       [
         "MinTxValueNotMet",
-        ""
+        "NULL"
       ],
       [
         "None",
-        ""
+        "NULL"
       ],
       [
         "NoPrice",
-        ""
+        "NULL"
       ],
       [
         "NoSuchAsset",
-        ""
+        "NULL"
       ],
       [
         "DeprecatedNoticeAlreadySigned",
-        ""
+        "NULL"
       ],
       [
         "NoticeHashMismatch",
-        ""
+        "NULL"
       ],
       [
         "NoticeMissing",
@@ -231,7 +231,7 @@
       ],
       [
         "NotImplemented",
-        ""
+        "NULL"
       ],
       [
         "OracleError",
@@ -243,15 +243,15 @@
       ],
       [
         "RepayTooMuch",
-        ""
+        "NULL"
       ],
       [
         "SelfTransfer",
-        ""
+        "NULL"
       ],
       [
         "SerdeError",
-        ""
+        "NULL"
       ],
       [
         "SetYieldNextError",
@@ -259,15 +259,15 @@
       ],
       [
         "SignatureAccountMismatch",
-        ""
+        "NULL"
       ],
       [
         "SignatureMismatch",
-        ""
+        "NULL"
       ],
       [
         "TimeTravelNotAllowed",
-        ""
+        "NULL"
       ],
       [
         "TrxRequestParseError",
@@ -275,19 +275,19 @@
       ],
       [
         "UnknownValidator",
-        ""
+        "NULL"
       ],
       [
         "InvalidChain",
-        ""
+        "NULL"
       ],
       [
         "PendingEraNotice",
-        ""
+        "NULL"
       ],
       [
         "ChangeValidatorsError",
-        ""
+        "NULL"
       ]
     ],
     "type": "enum"
@@ -682,11 +682,11 @@
     "type_mapping": [
       [
         "TimestampTooSoonToNow",
-        ""
+        "NULL"
       ],
       [
         "TimestampTooSoonToNext",
-        ""
+        "NULL"
       ]
     ],
     "type": "enum"
@@ -720,11 +720,11 @@
     "type_mapping": [
       [
         "FailedToDecodeCall",
-        ""
+        "NULL"
       ],
       [
         "DispatchSuccess",
-        ""
+        "NULL"
       ],
       [
         "DispatchFailure",
@@ -1016,7 +1016,7 @@
     "type_mapping": [
       [
         "Cash",
-        ""
+        "NULL"
       ],
       [
         "Asset",
@@ -1102,7 +1102,7 @@
     "type_mapping": [
       [
         "Missing",
-        ""
+        "NULL"
       ],
       [
         "Pending",
@@ -1110,7 +1110,7 @@
       ],
       [
         "Executed",
-        ""
+        "NULL"
       ]
     ],
     "type": "enum"

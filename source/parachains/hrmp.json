@@ -1,0 +1,81 @@
+{
+  "HrmpChannel": {
+    "type_mapping": [
+      [
+        "maxCapacity",
+        "u32"
+      ],
+      [
+        "maxTotalSize",
+        "u32"
+      ],
+      [
+        "maxMessageSize",
+        "u32"
+      ],
+      [
+        "msgCount",
+        "u32"
+      ],
+      [
+        "totalSize",
+        "u32"
+      ],
+      [
+        "mqcHead",
+        "Option<Hash>"
+      ],
+      [
+        "senderDeposit",
+        "Balance"
+      ],
+      [
+        "recipientDeposit",
+        "Balance"
+      ]
+    ],
+    "type": "struct"
+  },
+  "HrmpChannelId": {
+    "type_mapping": [
+      [
+        "sender",
+        "u32"
+      ],
+      [
+        "receiver",
+        "u32"
+      ]
+    ],
+    "type": "struct"
+  },
+  "HrmpOpenChannelRequest": {
+    "type_mapping": [
+      [
+        "confirmed",
+        "bool"
+      ],
+      [
+        "age",
+        "SessionIndex"
+      ],
+      [
+        "senderDeposit",
+        "Balance"
+      ],
+      [
+        "maxMessageSize",
+        "u32"
+      ],
+      [
+        "maxCapacity",
+        "u32"
+      ],
+      [
+        "maxTotalSize",
+        "u32"
+      ]
+    ],
+    "type": "struct"
+  }
+}

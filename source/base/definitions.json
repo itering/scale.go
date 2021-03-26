@@ -57,7 +57,6 @@
   "LookupSource": "AccountId",
   "SetId": "U64",
   "RoundNumber": "U64",
-  "SessionIndex": "U32",
   "AuthIndex": "U32",
   "AuthorityIndex": "u64",
   "AuthorityWeight": "u64",
@@ -108,7 +107,6 @@
   "Perbill": "u32",
   "Proposal": "BoxProposal",
   "AuthoritySignature": "Signature",
-  "CollatorSignature": "Signature",
   "VrfData": "[u8; 32]",
   "VrfProof": "[u8; 64]",
   "DigestOf": "Digest",
@@ -372,36 +370,6 @@
       [
         "feeFrozen",
         "Balance"
-      ]
-    ]
-  },
-  "FullIdentification": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "total",
-        "Compact<Balance>"
-      ],
-      [
-        "own",
-        "Compact<Balance>"
-      ],
-      [
-        "others",
-        "Vec<IndividualExposure>"
-      ]
-    ]
-  },
-  "IdentificationTuple": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "validatorId",
-        "ValidatorId"
-      ],
-      [
-        "exposure",
-        "FullIdentification"
       ]
     ]
   },
@@ -1725,7 +1693,6 @@
       ]
     ]
   },
-  "ValidatorCount": "u32",
   "KeyOwnerProof": {
     "type": "struct",
     "type_mapping": [
@@ -1771,14 +1738,6 @@
         "nominators",
         "NominatorIndex"
       ]
-    ]
-  },
-  "AllowedSlots": {
-    "type": "enum",
-    "value_list": [
-      "PrimarySlots",
-      "PrimaryAndSecondaryPlainSlots",
-      "PrimaryAndSecondaryVRFSlots"
     ]
   },
   "NextConfigDescriptorV1": {
@@ -1860,23 +1819,6 @@
       [
         "nays",
         "Vec<AccountId>"
-      ]
-    ]
-  },
-  "MembershipProof": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "session",
-        "sessionIndex"
-      ],
-      [
-        "trieNodes",
-        "Vec<Vec<u8>>"
-      ],
-      [
-        "validatorCount",
-        "ValidatorCount"
       ]
     ]
   },
@@ -2189,30 +2131,6 @@
       ]
     ]
   },
-  "BabeAuthorityWeight": "u64",
-  "BabeBlockWeight": "u32",
-  "BabeEquivocationProof": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "offender",
-        "AuthorityId"
-      ],
-      [
-        "slotNumber",
-        "SlotNumber"
-      ],
-      [
-        "firstHeader",
-        "Header"
-      ],
-      [
-        "secondHeader",
-        "Header"
-      ]
-    ]
-  },
-  "BabeWeight": "u64",
   "EpochAuthorship": {
     "type": "struct",
     "type_mapping": [
@@ -2530,7 +2448,9 @@
       ]
     ]
   },
-  "SessionKeys2": "(AccountId, AccountId)",
   "<T as Config>::Call": "Call",
-  "Perquintill": "u64"
+  "Perquintill": "u64",
+  "Box<Proposal>": "BoxProposal",
+  "Box<<T as Config>::Call>": "Call",
+  "Box<<T as Config<I>>::Proposal>": "Proposal"
 }

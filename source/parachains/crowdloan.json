@@ -1,0 +1,70 @@
+{
+  "FundIndex": "u32",
+  "LastContribution": {
+    "type_mapping": [
+      [
+        "Never",
+        "Null"
+      ],
+      [
+        "PreEnding",
+        "u32"
+      ],
+      [
+        "Ending",
+        "BlockNumber"
+      ]
+    ],
+    "type": "enum"
+  },
+  "FundInfo": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "retiring",
+        "bool"
+      ],
+      [
+        "depositor",
+        "AccountId"
+      ],
+      [
+        "verifier",
+        "Option<MultiSigner>"
+      ],
+      [
+        "deposit",
+        "Balance"
+      ],
+      [
+        "raised",
+        "Balance"
+      ],
+      [
+        "end",
+        "BlockNumber"
+      ],
+      [
+        "cap",
+        "Balance"
+      ],
+      [
+        "last_contribution",
+        "LastContribution<BlockNumber>"
+      ],
+      [
+        "first_slot",
+        "LeasePeriod"
+      ],
+      [
+        "last_slot",
+        "LeasePeriod"
+      ],
+      [
+        "trie_index",
+        "TrieIndex"
+      ]
+    ]
+  },
+  "TrieIndex": "u32"
+}

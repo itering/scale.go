@@ -26,7 +26,7 @@ type EventParam struct {
 }
 
 func (e *EventsDecoder) Process() {
-	elementCount := int(e.ProcessAndUpdateData("Compact<u32>").(int))
+	elementCount := e.ProcessAndUpdateData("Compact<u32>").(int)
 
 	er := EventRecord{Metadata: e.Metadata}
 	er.Data = e.Data

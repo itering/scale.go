@@ -1,0 +1,60 @@
+{
+  "SessionKeys1": "(AccountId)",
+  "SessionKeys2": "(AccountId, AccountId)",
+  "SessionKeys3": "(AccountId, AccountId, AccountId)",
+  "SessionKeys4": "(AccountId, AccountId, AccountId, AccountId)",
+  "SessionKeys5": "(AccountId, AccountId, AccountId, AccountId, AccountId)",
+  "SessionKeys6": "(AccountId, AccountId, AccountId, AccountId, AccountId, AccountId)",
+  "SessionKeys7": "(AccountId, AccountId, AccountId, AccountId, AccountId, AccountId, AccountId)",
+  "SessionKeys8": "(AccountId, AccountId, AccountId, AccountId, AccountId, AccountId, AccountId, AccountId)",
+  "SessionKeys9": "(AccountId, AccountId, AccountId, AccountId, AccountId, AccountId, AccountId, AccountId, AccountId)",
+  "FullIdentification": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "total",
+        "Compact<Balance>"
+      ],
+      [
+        "own",
+        "Compact<Balance>"
+      ],
+      [
+        "others",
+        "Vec<IndividualExposure>"
+      ]
+    ]
+  },
+  "IdentificationTuple": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "validatorId",
+        "ValidatorId"
+      ],
+      [
+        "exposure",
+        "FullIdentification"
+      ]
+    ]
+  },
+  "MembershipProof": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "session",
+        "sessionIndex"
+      ],
+      [
+        "trieNodes",
+        "Vec<Vec<u8>>"
+      ],
+      [
+        "validatorCount",
+        "ValidatorCount"
+      ]
+    ]
+  },
+  "SessionIndex": "U32",
+  "ValidatorCount": "u32"
+}
