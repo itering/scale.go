@@ -1,0 +1,176 @@
+
+{
+  "Address": "AccountId",
+  "LookupSource": "AccountId",
+  "Keys": "SessionKeys2",
+  "Did": "[u8;32]",
+  "Bytes32": {
+    "type": "struct",
+    "type_mapping": [
+      ["value", "[u8;32]"]
+    ]
+  },
+  "Bytes33": {
+    "type": "struct",
+    "type_mapping": [
+      ["value", "[u8;33]"]
+    ]
+  },
+  "Bytes64": {
+    "type": "struct",
+    "type_mapping": [
+      ["value", "[u8;64]"]
+    ]
+  },
+  "Bytes65": {
+    "type": "struct",
+    "type_mapping": [
+      ["value", "[u8;65]"]
+    ]
+  },
+  "PublicKey": {
+    "type": "enum",
+    "type_mapping": [
+      ["Sr25519", "Bytes32"],
+      ["Ed25519", "Bytes32"],
+      ["Secp256k1", "Bytes33"]
+    ]
+  },
+  "DidSignature": {
+    "type": "enum",
+    "type_mapping": [
+      ["Sr25519", "Bytes64"],
+      ["Ed25519", "Bytes64"],
+      ["Secp256k1", "Bytes65"]
+    ]
+  },
+  "KeyDetail": {
+    "type": "struct",
+    "type_mapping": [
+      ["controller", "Did"],
+      ["public_key", "PublicKey"]
+    ]
+  },
+  "KeyUpdate": {
+    "type": "struct",
+    "type_mapping": [
+      ["did", "Did"],
+      ["public_key", "PublicKey"],
+      ["controller", "Option<Did>"],
+      ["last_modified_in_block", "BlockNumber"]
+    ]
+  },
+  "DidRemoval": {
+    "type": "struct",
+    "type_mapping": [
+      ["did", "Did"],
+      ["last_modified_in_block", "BlockNumber"]
+    ]
+  },
+  "RegistryId": "[u8;32]",
+  "RevokeId": "[u8;32]",
+  "Registry": {
+    "type": "struct",
+    "type_mapping": [
+      ["policy", "Policy"],
+      ["add_only", "bool"]
+    ]
+  },
+  "Revoke": {
+    "type": "struct",
+    "type_mapping": [
+      ["registry_id", "RegistryId"],
+      ["revoke_ids", "BTreeSet<RevokeId>"],
+      ["last_modified", "BlockNumber"]
+    ]
+  },
+  "UnRevoke": {
+    "type": "struct",
+    "type_mapping": [
+      ["registry_id", "RegistryId"],
+      ["revoke_ids", "BTreeSet<RevokeId>"],
+      ["last_modified", "BlockNumber"]
+    ]
+  },
+  "RemoveRegistry": {
+    "type": "struct",
+    "type_mapping": [
+      ["registry_id", "RegistryId"],
+      ["last_modified", "BlockNumber"] 
+    ]
+  },
+  "PAuth": "BTreeMap<Did, DidSignature>",
+  "Policy": {
+    "type": "enum",
+    "type_mapping": [
+      ["OneOf", "BTreeSet<Did>"]
+    ]
+  },
+  "BlobId": "[u8;32]",
+  "Blob": {
+    "type": "struct",
+    "type_mapping": [
+      ["id", "BlobId"],
+      ["blob", "Vec<u8>"],
+      ["author", "Did"]
+    ]
+  },
+  "EpochNo": "u32",
+  "EpochLen": "u32",
+  "SlotNo": "u64",
+  "Balance": "u64",
+  "BlockNumber": "u32",
+  "EpochDetail<Balance>": {
+    "type": "struct",
+    "type_mapping": [
+      ["validator_count", "u8"],
+      ["starting_slot", "SlotNo"],
+      ["expected_ending_slot", "SlotNo"],
+      ["ending_slot", "Option<SlotNo>"],
+      ["emission_for_validators", "Option<Balance>"],
+      ["emission_for_treasury", "Option<Balance>"]
+    ]
+  },
+  "ValidatorStatsPerEpoch<Balance>": {
+    "type": "struct",
+    "type_mapping": [
+      ["block_count", "EpochLen"],
+      ["locked_reward", "Option<Balance>"],
+      ["unlocked_reward", "Option<Balance>"]
+    ]
+  },
+  "Bonus<Balance, BlockNumber>": {
+    "type": "struct",
+    "type_mapping": [
+      ["swap_bonuses", "Vec<(Balance, BlockNumber)>"],
+      ["vesting_bonuses", "Vec<(Balance, Balance, BlockNumber)>"]
+    ]
+  },
+  "Payload": {
+    "type": "struct",
+    "type_mapping": [
+      ["proposal", "Vec<u8>"],
+      ["round_no", "u64"]
+    ]
+  },
+  "Membership": {
+    "type": "struct",
+    "type_mapping": [
+      ["members", "BTreeSet<Did>"],
+      ["vote_requirement", "u64"]
+    ]
+  },
+  "PMAuth": "BTreeMap<Did, DidSignature>",
+  "StateChange": {
+    "type": "enum",
+    "type_mapping": [
+      ["KeyUpdate", "KeyUpdate"],
+      ["DidRemoval", "DidRemoval"],
+      ["Revoke", "Revoke"],
+      ["UnRevoke", "UnRevoke"],
+      ["RemoveRegistry", "RemoveRegistry"],
+      ["Blob", "Blob"],
+      ["MasterVote", "Payload"]
+    ]
+  }
+}
