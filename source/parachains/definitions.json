@@ -1645,5 +1645,12 @@
         "(Junction, Junction, Junction, Junction, Junction, Junction, Junction, Junction)"
       ]
     ]
+  },
+  "ServiceQuality": {
+    "value_list": [
+      "Ordered",
+      "Fast"
+    ],
+    "type": "enum"
   }
 }
