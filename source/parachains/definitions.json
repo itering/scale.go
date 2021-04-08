@@ -1051,7 +1051,7 @@
       ],
       [
         "relayParent",
-        "Hash"
+        "RelayChainHash"
       ],
       [
         "collatorId",
@@ -1075,6 +1075,10 @@
       ],
       [
         "paraHead",
+        "Hash"
+      ],
+      [
+        "validationCodeHash",
         "Hash"
       ]
     ],
@@ -1650,6 +1654,107 @@
     "value_list": [
       "Ordered",
       "Fast"
+    ],
+    "type": "enum"
+  },
+  "ParachainsInherentData": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "bitfields",
+        "SignedAvailabilityBitfields"
+      ],
+      [
+        "backedCandidates",
+        "Vec<BackedCandidate>"
+      ],
+      [
+        "disputes",
+        "MultiDisputeStatementSet"
+      ],
+      [
+        "parentHeader",
+        "Header"
+      ]
+    ]
+  },
+  "MultiDisputeStatementSet": "Vec<DisputeStatementSet>",
+  "DisputeStatementSet": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "candidateHash",
+        "CandidateHash"
+      ],
+      [
+        "session",
+        "SessionIndex"
+      ],
+      [
+        "statements",
+        "Vec<(DisputeStatement, ValidatorIndex, ValidatorSignature)>"
+      ]
+    ]
+  },
+  "ExplicitDisputeStatement": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "valid",
+        "bool"
+      ],
+      [
+        "candidateHash",
+        "CandidateHash"
+      ],
+      [
+        "session",
+        "SessionIndex"
+      ]
+    ]
+  },
+  "GlobalValidationData": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "maxCodeSize",
+        "u32"
+      ],
+      [
+        "maxHeadDataSize",
+        "u32"
+      ],
+      [
+        "blockNumber",
+        "blockNumber"
+      ]
+    ]
+  },
+  "DisputeStatement": {
+    "type_mapping": [
+      [
+        "Valid",
+        "ValidDisputeStatementKind"
+      ],
+      [
+        "Invalid",
+        "InvalidDisputeStatementKind"
+      ]
+    ],
+    "type": "enum"
+  },
+  "ValidDisputeStatementKind": {
+    "value_list": [
+      "Explicit",
+      "BackingSeconded",
+      "BackingValid",
+      "ApprovalChecking"
+    ],
+    "type": "enum"
+  },
+  "InvalidDisputeStatementKind": {
+    "value_list": [
+      "Explicit"
     ],
     "type": "enum"
   }
