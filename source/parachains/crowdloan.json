@@ -21,10 +21,6 @@
     "type": "struct",
     "type_mapping": [
       [
-        "retiring",
-        "bool"
-      ],
-      [
         "depositor",
         "AccountId"
       ],
