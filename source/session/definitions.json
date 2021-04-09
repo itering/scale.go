@@ -1,13 +1,20 @@
 {
+  "BeefyKey": "[u8; 33]",
   "SessionKeys1": "(AccountId)",
   "SessionKeys2": "(AccountId, AccountId)",
   "SessionKeys3": "(AccountId, AccountId, AccountId)",
   "SessionKeys4": "(AccountId, AccountId, AccountId, AccountId)",
   "SessionKeys5": "(AccountId, AccountId, AccountId, AccountId, AccountId)",
   "SessionKeys6": "(AccountId, AccountId, AccountId, AccountId, AccountId, AccountId)",
+  "SessionKeys6B": "(AccountId, AccountId, AccountId, AccountId, AccountId, BeefyKey)",
   "SessionKeys7": "(AccountId, AccountId, AccountId, AccountId, AccountId, AccountId, AccountId)",
+  "SessionKeys7B": "(AccountId, AccountId, AccountId, AccountId, AccountId, AccountId, BeefyKey)",
   "SessionKeys8": "(AccountId, AccountId, AccountId, AccountId, AccountId, AccountId, AccountId, AccountId)",
+  "SessionKeys8B": "(AccountId, AccountId, AccountId, AccountId, AccountId, AccountId, AccountId, BeefyKey)",
   "SessionKeys9": "(AccountId, AccountId, AccountId, AccountId, AccountId, AccountId, AccountId, AccountId, AccountId)",
+  "SessionKeys9B": "(AccountId, AccountId, AccountId, AccountId, AccountId, AccountId, AccountId, AccountId, BeefyKey)",
+  "SessionKeys10": "(AccountId, AccountId, AccountId, AccountId, AccountId, AccountId, AccountId, AccountId, AccountId, AccountId)",
+  "SessionKeys10B": "(AccountId, AccountId, AccountId, AccountId, AccountId, AccountId, AccountId, AccountId, AccountId, BeefyKey)",
   "FullIdentification": {
     "type": "struct",
     "type_mapping": [
