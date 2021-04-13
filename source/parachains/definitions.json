@@ -13,59 +13,6 @@
     "type": "struct"
   },
   "InboundHrmpMessages": "Vec<InboundHrmpMessage>",
-  "MultiAsset": {
-    "type_mapping": [
-      [
-        "None",
-        "Null"
-      ],
-      [
-        "All",
-        "Null"
-      ],
-      [
-        "AllFungible",
-        "Null"
-      ],
-      [
-        "AllNonFungible",
-        "Null"
-      ],
-      [
-        "AllAbstractFungible",
-        "Vec<u8>"
-      ],
-      [
-        "AllAbstractNonFungible",
-        "Vec<u8>"
-      ],
-      [
-        "AllConcreteFungible",
-        "MultiLocation"
-      ],
-      [
-        "AllConcreteNonFungible",
-        "MultiLocation"
-      ],
-      [
-        "AbstractFungible",
-        "AbstractFungible"
-      ],
-      [
-        "AbstractNonFungible",
-        "AbstractNonFungible"
-      ],
-      [
-        "ConcreteFungible",
-        "ConcreteFungible"
-      ],
-      [
-        "ConcreteNonFungible",
-        "ConcreteNonFungible"
-      ]
-    ],
-    "type": "enum"
-  },
   "OriginKind": {
     "value_list": [
       "Native",
@@ -314,65 +261,6 @@
     ],
     "type": "struct"
   },
-  "XcmError": {
-    "value_list": [
-      "Undefined",
-      "Unimplemented",
-      "UnhandledXcmVersion",
-      "UnhandledXcmMessage",
-      "UnhandledEffect",
-      "EscalationOfPrivilege",
-      "UntrustedReserveLocation",
-      "UntrustedTeleportLocation",
-      "DestinationBufferOverflow",
-      "CannotReachDestination",
-      "MultiLocationFull",
-      "FailedToDecode",
-      "BadOrigin"
-    ],
-    "type": "enum"
-  },
-  "Junction": {
-    "type_mapping": [
-      [
-        "Parent",
-        "Null"
-      ],
-      [
-        "Parachain",
-        "Compact<u32>"
-      ],
-      [
-        "AccountId32",
-        "AccountId32Junction"
-      ],
-      [
-        "AccountIndex64",
-        "AccountIndex64Junction"
-      ],
-      [
-        "AccountKey20",
-        "AccountKey20Junction"
-      ],
-      [
-        "PalletInstance",
-        "u8"
-      ],
-      [
-        "GeneralIndex",
-        "Compact<u128>"
-      ],
-      [
-        "GeneralKey",
-        "Vec<u8>"
-      ],
-      [
-        "OnlyChild",
-        "Null"
-      ]
-    ],
-    "type": "enum"
-  },
   "QueryHolding": {
     "type_mapping": [
       [
@@ -417,19 +305,6 @@
     ],
     "type": "struct"
   },
-  "AccountKey20Junction": {
-    "type_mapping": [
-      [
-        "network",
-        "NetworkId"
-      ],
-      [
-        "index",
-        "[u8; 20]"
-      ]
-    ],
-    "type": "struct"
-  },
   "PersistedValidationData": {
     "type_mapping": [
       [
@@ -467,27 +342,6 @@
       ]
     ],
     "type": "struct"
-  },
-  "NetworkId": {
-    "type_mapping": [
-      [
-        "Any",
-        "Null"
-      ],
-      [
-        "Named",
-        "Vec<u8>"
-      ],
-      [
-        "Polkadot",
-        "Null"
-      ],
-      [
-        "Kusama",
-        "Null"
-      ]
-    ],
-    "type": "enum"
   },
   "AttestedCandidate": {
     "type_mapping": [
@@ -594,55 +448,6 @@
     "type": "struct"
   },
   "ValidationCode": "Bytes",
-  "AssetInstance": {
-    "type_mapping": [
-      [
-        "Undefined",
-        "Null"
-      ],
-      [
-        "Index8",
-        "u8"
-      ],
-      [
-        "Index16",
-        "Compact<u16>"
-      ],
-      [
-        "Index32",
-        "Compact<u32>"
-      ],
-      [
-        "Index64",
-        "Compact<u64>"
-      ],
-      [
-        "Index128",
-        "Compact<u128>"
-      ],
-      [
-        "Array4",
-        "[u8; 4]"
-      ],
-      [
-        "Array8",
-        "[u8; 8]"
-      ],
-      [
-        "Array16",
-        "[u8; 16]"
-      ],
-      [
-        "Array32",
-        "[u8; 32]"
-      ],
-      [
-        "Blob",
-        "Vec<u8>"
-      ]
-    ],
-    "type": "enum"
-  },
   "CoreOccupied": {
     "type_mapping": [
       [
@@ -755,15 +560,6 @@
     ],
     "type": "struct"
   },
-  "VersionedMultiAsset": {
-    "type_mapping": [
-      [
-        "V0",
-        "MultiAsset"
-      ]
-    ],
-    "type": "enum"
-  },
   "CollatorId": "H256",
   "DepositAsset": {
     "type_mapping": [
@@ -774,19 +570,6 @@
       [
         "dest",
         "MultiLocation"
-      ]
-    ],
-    "type": "struct"
-  },
-  "AccountIndex64Junction": {
-    "type_mapping": [
-      [
-        "network",
-        "NetworkId"
-      ],
-      [
-        "index",
-        "Compact<u64>"
       ]
     ],
     "type": "struct"
@@ -956,53 +739,7 @@
     ],
     "type": "enum"
   },
-  "AccountId32Junction": {
-    "type_mapping": [
-      [
-        "network",
-        "NetworkId"
-      ],
-      [
-        "id",
-        "AccountId"
-      ]
-    ],
-    "type": "struct"
-  },
   "DownwardMessage": "Bytes",
-  "Xcm": {
-    "type_mapping": [
-      [
-        "WithdrawAsset",
-        "WithdrawAsset"
-      ],
-      [
-        "ReserveAssetDeposit",
-        "ReserveAssetDeposit"
-      ],
-      [
-        "TeleportAsset",
-        "TeleportAsset"
-      ],
-      [
-        "Balances",
-        "Balances"
-      ],
-      [
-        "Transact",
-        "Transact"
-      ],
-      [
-        "RelayTo",
-        "RelayTo"
-      ],
-      [
-        "RelayedFrom",
-        "RelayedFrom"
-      ]
-    ],
-    "type": "enum"
-  },
   "ParathreadEntry": {
     "type_mapping": [
       [
@@ -1166,15 +903,6 @@
     ],
     "type": "struct"
   },
-  "VersionedXcm": {
-    "type_mapping": [
-      [
-        "V0",
-        "Xcm"
-      ]
-    ],
-    "type": "enum"
-  },
   "xcm::VersionedXcm": "VersionedXcm",
   "XcmResult": {
     "type_mapping": [
@@ -1333,15 +1061,6 @@
       ]
     ],
     "type": "struct"
-  },
-  "VersionedMultiLocation": {
-    "type_mapping": [
-      [
-        "V0",
-        "MultiLocation"
-      ]
-    ],
-    "type": "enum"
   },
   "Scheduling": {
     "value_list": [
@@ -1609,47 +1328,6 @@
   "SystemInherentData": "ParachainInherentData",
   "RelayChainHash": "Hash",
   "VecInboundHrmpMessage": "Vec<InboundHrmpMessage>",
-  "MultiLocation": {
-    "type": "enum",
-    "type_mapping": [
-      [
-        "Null",
-        "Null"
-      ],
-      [
-        "X1",
-        "Junction"
-      ],
-      [
-        "X2",
-        "(Junction, Junction)"
-      ],
-      [
-        "X3",
-        "(Junction, Junction, Junction)"
-      ],
-      [
-        "X4",
-        "(Junction, Junction, Junction, Junction)"
-      ],
-      [
-        "X5",
-        "(Junction, Junction, Junction, Junction, Junction)"
-      ],
-      [
-        "X6",
-        "(Junction, Junction, Junction, Junction, Junction, Junction)"
-      ],
-      [
-        "X7",
-        "(Junction, Junction, Junction, Junction, Junction, Junction, Junction)"
-      ],
-      [
-        "X8",
-        "(Junction, Junction, Junction, Junction, Junction, Junction, Junction, Junction)"
-      ]
-    ]
-  },
   "ServiceQuality": {
     "value_list": [
       "Ordered",
