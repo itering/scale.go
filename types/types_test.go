@@ -7,6 +7,7 @@ import (
 	"github.com/itering/scale.go/source"
 	"github.com/itering/scale.go/types"
 	"github.com/itering/scale.go/utiles"
+	"math/big"
 	"reflect"
 	"strings"
 	"testing"
@@ -211,5 +212,15 @@ func TestClikeEnum(t *testing.T) {
 	r := m.ProcessAndUpdateData("t")
 	if utiles.ToString(r) != `B` {
 		t.Errorf("Test TestClikeEnum Process fail, decode return %v", utiles.ToString(r))
+	}
+}
+
+func TestNamespaceInt(t *testing.T) {
+	raw := "0x2efb"
+	m := types.ScaleDecoder{}
+	m.Init(types.ScaleBytes{Data: utiles.HexToBytes(raw)}, nil)
+	r := m.ProcessAndUpdateData("Eth::i16")
+	if r.(*big.Int).String() != `-1234` {
+		t.Errorf("Test TestNamespaceInt Process fail, decode return %v", utiles.ToString(r))
 	}
 }

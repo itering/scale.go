@@ -178,6 +178,7 @@ func (r *RuntimeType) DecoderClass(typeString string, spec int) (reflect.Type, r
 	var typeParts []string
 	typeString = ConvertType(typeString, true)
 
+	// complex
 	if typeString[len(typeString)-1:] == ">" {
 		decoderClass, rc, err := r.getCodecInstant(typeString, spec)
 		if err == nil {
@@ -199,6 +200,7 @@ func (r *RuntimeType) DecoderClass(typeString string, spec int) (reflect.Type, r
 		}
 	}
 
+	// Tuple
 	if typeString != "()" && string(typeString[0]) == "(" && typeString[len(typeString)-1:] == ")" {
 		decoderClass, rc, _ := r.getCodecInstant("Struct", spec)
 		s := rc.Interface().(*Struct)
@@ -206,6 +208,16 @@ func (r *RuntimeType) DecoderClass(typeString string, spec int) (reflect.Type, r
 		s.buildStruct()
 		return decoderClass, rc, ""
 	}
+
+	// namespace
+	if strings.Contains(typeString, "::") && typeString != "::" {
+		namespaceSlice := strings.Split(typeString, "::")
+		class, rc, err := r.getCodecInstant(namespaceSlice[len(namespaceSlice)-1], spec)
+		if err == nil {
+			return class, rc, ""
+		}
+	}
+
 	return nil, reflect.ValueOf((*error)(nil)).Elem(), ""
 }
 
