@@ -816,5 +816,23 @@
         "Vec<ethereum::Transaction>"
       ]
     ]
-  }
+  },
+  "TransactionSignature": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "v",
+        "TransactionRecoveryId"
+      ],
+      [
+        "r",
+        "H256"
+      ],
+      [
+        "s",
+        "H256"
+      ]
+    ]
+  },
+  "TransactionRecoveryId": "U64"
 }
