@@ -203,6 +203,23 @@ func (v *Vec) Process() {
 	v.Value = result
 }
 
+type BoundedVec struct {
+	Vec
+}
+
+// BoundedVec<Type, Size> to Vec<Type>
+// https://github.com/paritytech/substrate/pull/8556
+func (v *BoundedVec) Init(data ScaleBytes, option *ScaleDecoderOption) {
+	if option != nil {
+		if BoundedArr := strings.Split(option.SubType, ","); len(BoundedArr) > 2 {
+			size := BoundedArr[len(BoundedArr)-1]
+			v.SubType = strings.Replace(option.SubType, fmt.Sprintf(",%s", size), "", 1)
+			option.SubType = v.SubType
+		}
+	}
+	v.ScaleDecoder.Init(data, option)
+}
+
 type Address struct {
 	ScaleDecoder
 	AccountLength string `json:"account_length"`

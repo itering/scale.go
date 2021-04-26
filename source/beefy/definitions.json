@@ -1,0 +1,52 @@
+{
+  "BeefyCommitment": {
+    "type_mapping": [
+      [
+        "payload",
+        "BeefyPayload"
+      ],
+      [
+        "blockNumber",
+        "BlockNumber"
+      ],
+      [
+        "validatorSetId",
+        "ValidatorSetId"
+      ]
+    ],
+    "type": "struct"
+  },
+  "BeefySignedCommitment": {
+    "type_mapping": [
+      [
+        "commitment",
+        "BeefyCommitment"
+      ],
+      [
+        "signatures",
+        "Vec<Option<Signature>>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "BeefyNextAuthoritySet": {
+    "type_mapping": [
+      [
+        "id",
+        "u64"
+      ],
+      [
+        "len",
+        "u32"
+      ],
+      [
+        "root",
+        "H256"
+      ]
+    ],
+    "type": "struct"
+  },
+  "BeefyPayload": "MmrRootHash",
+  "MmrRootHash": "H256",
+  "ValidatorSetId": "u64"
+}

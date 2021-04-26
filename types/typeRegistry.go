@@ -40,6 +40,7 @@ func (r RuntimeType) Reg() *RuntimeType {
 		&Enum{},
 		&Bytes{},
 		&Vec{},
+		&BoundedVec{},
 		&Set{},
 		&CompactU32{},
 		&Bool{},

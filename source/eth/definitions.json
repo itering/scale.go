@@ -142,7 +142,7 @@
       ],
       [
         "action",
-        "TransactionAction"
+        "EthTransactionAction"
       ],
       [
         "value",
@@ -242,6 +242,23 @@
       ],
       [
         "Null",
+        "Null"
+      ]
+    ],
+    "type": "enum"
+  },
+  "EthFilterChanges": {
+    "type_mapping": [
+      [
+        "Logs",
+        "Vec<EthLog>"
+      ],
+      [
+        "Hashes",
+        "Vec<H256>"
+      ],
+      [
+        "Empty",
         "Null"
       ]
     ],
@@ -446,7 +463,7 @@
       "Reverted"
     ]
   },
-  "TransactionAction": {
+  "EthTransactionAction": {
     "type": "enum",
     "type_mapping": [
       [
@@ -462,91 +479,16 @@
   "EthBlock": {
     "type_mapping": [
       [
-        "_alias",
-        {
-          "blockHash": "hash",
-          "blockSize": "size"
-        }
-      ],
-      [
-        "blockHash",
-        "Option<H256>"
-      ],
-      [
-        "parentHash",
-        "H256"
-      ],
-      [
-        "sha3Uncles",
-        "H256"
-      ],
-      [
-        "author",
-        "H160"
-      ],
-      [
-        "miner",
-        "H160"
-      ],
-      [
-        "stateRoot",
-        "H256"
-      ],
-      [
-        "transactionsRoot",
-        "H256"
-      ],
-      [
-        "receiptsRoot",
-        "H256"
-      ],
-      [
-        "number",
-        "Option<U256>"
-      ],
-      [
-        "gasUsed",
-        "U256"
-      ],
-      [
-        "gasLimit",
-        "U256"
-      ],
-      [
-        "extraData",
-        "Bytes"
-      ],
-      [
-        "logsBloom",
-        "H2048"
-      ],
-      [
-        "timestamp",
-        "U256"
-      ],
-      [
-        "difficulty",
-        "U256"
-      ],
-      [
-        "totalDifficulty",
-        "Option<U256>"
-      ],
-      [
-        "sealFields",
-        "Vec<Bytes>"
-      ],
-      [
-        "uncles",
-        "Vec<H256>"
+        "header",
+        "EthHeader"
       ],
       [
         "transactions",
         "Vec<EthTransaction>"
       ],
       [
-        "blockSize",
-        "Option<U256>"
+        "ommers",
+        "Vec<EthHeader>"
       ]
     ],
     "type": "struct"
@@ -557,30 +499,15 @@
   "EthHeader": {
     "type_mapping": [
       [
-        "_alias",
-        {
-          "blockHash": "hash",
-          "blockSize": "size"
-        }
-      ],
-      [
-        "blockHash",
-        "Option<H256>"
-      ],
-      [
         "parentHash",
         "H256"
       ],
       [
-        "sha3Uncles",
+        "ommersHash",
         "H256"
       ],
       [
-        "author",
-        "H160"
-      ],
-      [
-        "miner",
+        "beneficiary",
         "H160"
       ],
       [
@@ -596,11 +523,15 @@
         "H256"
       ],
       [
-        "number",
-        "Option<U256>"
+        "logsBloom",
+        "EthBloom"
       ],
       [
-        "gasUsed",
+        "difficulty",
+        "U256"
+      ],
+      [
+        "number",
         "U256"
       ],
       [
@@ -608,28 +539,24 @@
         "U256"
       ],
       [
+        "gasUsed",
+        "U256"
+      ],
+      [
+        "timestamp",
+        "U64"
+      ],
+      [
         "extraData",
         "Bytes"
       ],
       [
-        "logsBloom",
-        "H2048"
+        "mixMash",
+        "H256"
       ],
       [
-        "timestamp",
-        "U256"
-      ],
-      [
-        "difficulty",
-        "U256"
-      ],
-      [
-        "sealFields",
-        "Vec<Bytes>"
-      ],
-      [
-        "blockSize",
-        "Option<U256>"
+        "nonce",
+        "H64"
       ]
     ],
     "type": "struct"
@@ -817,6 +744,7 @@
       ]
     ]
   },
+  "EthTransactionSignature": "TransactionSignature",
   "TransactionSignature": {
     "type": "struct",
     "type_mapping": [

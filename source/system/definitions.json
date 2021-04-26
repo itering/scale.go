@@ -145,7 +145,32 @@
       [
         "Module",
         "DispatchErrorModule"
+      ],
+      [
+        "ConsumerRemaining",
+        "Null"
+      ],
+      [
+        "NoProviders",
+        "Null"
+      ],
+      [
+        "Token",
+        "TokenError"
       ]
+    ]
+  },
+  "TokenError": {
+    "type": "enum",
+    "value_list": [
+      "NoFunds",
+      "WouldDie",
+      "BelowMinimum",
+      "CannotCreate",
+      "UnknownAsset",
+      "Frozen",
+      "Underflow",
+      "Overflow"
     ]
   },
   "DispatchResult": {
