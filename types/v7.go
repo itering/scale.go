@@ -172,6 +172,18 @@ func (m *MetadataV7ModuleStorageEntry) Process() {
 				Key2Hasher: key2Hasher,
 			},
 		}
+	} else if storageFunctionType == "NMapType" {
+		hashers := m.ProcessAndUpdateData("Vec<StorageHasher>").([]string)
+		keys := m.ProcessAndUpdateData("Vec<String>").([]string)
+		value := ConvertType(m.ProcessAndUpdateData("String").(string))
+		m.Type = StorageType{
+			Origin: "NMapType",
+			NMapType: &NMapType{
+				Hasher:     hashers,
+				Key:        keys,
+				Value:      value,
+			},
+		}
 	} else if storageFunctionType == "PlainType" {
 		plainType := ConvertType(m.ProcessAndUpdateData("String").(string))
 		m.Type = StorageType{

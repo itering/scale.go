@@ -38,7 +38,8 @@
     "value_list": [
       "PlainType",
       "MapType",
-      "DoubleMapType"
+      "DoubleMapType",
+      "NMapType"
     ]
   },
   "Conviction": {

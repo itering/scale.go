@@ -25,6 +25,7 @@ type StorageType struct {
 	PlainType     *string  `json:"plain_type,omitempty"`
 	MapType       *MapType `json:"map_type,omitempty"`
 	DoubleMapType *MapType `json:"double_map_type,omitempty"`
+	NMapType      *NMapType `json:"n_map_type,omitempty"`
 }
 
 type MapType struct {
@@ -32,6 +33,13 @@ type MapType struct {
 	Key        string `json:"key"`
 	Key2       string `json:"key2,omitempty"`
 	Key2Hasher string `json:"key2Hasher,omitempty"`
+	Value      string `json:"value"`
+	IsLinked   bool   `json:"isLinked"`
+}
+
+type NMapType struct {
+	Hasher     []string `json:"hasher"`
+	Key        []string `json:"key"`
 	Value      string `json:"value"`
 	IsLinked   bool   `json:"isLinked"`
 }
