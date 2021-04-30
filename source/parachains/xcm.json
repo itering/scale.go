@@ -329,7 +329,7 @@
     ],
     "type": "enum"
   },
-  "XcmOutcome": {
+  "Outcome": {
     "type_mapping": [
       [
         "Complete",
@@ -499,7 +499,7 @@
       ],
       [
         "WeightLimitReached",
-        "Null"
+        "Weight"
       ],
       [
         "Wildcard",
