@@ -15,54 +15,51 @@ type Compact struct {
 	CompactBytes  []byte `json:"compact_bytes"`
 }
 
-func (c *Compact) ProcessCompactBytes() []byte {
+func (c *Compact) ProcessCompactBytes() {
 	compactByte := c.NextBytes(1)
 	var byteMod = 0
 	if len(compactByte) != 0 {
 		byteMod = int(compactByte[0]) % 4
 	}
-	if byteMod == 0 {
+	switch byteMod {
+	case 0:
 		c.CompactLength = 1
-	} else if byteMod == 1 {
-		c.CompactLength = 2
-	} else if byteMod == 2 {
-		c.CompactLength = 4
-	} else {
-		c.CompactLength = 5 + ((int(compactByte[0]) - 3) / 4)
-	}
-	if c.CompactLength == 1 {
 		c.CompactBytes = compactByte
-	} else if utiles.IntInSlice(c.CompactLength, []int{2, 4}) {
+	case 1:
+		c.CompactLength = 2
 		c.CompactBytes = append(compactByte[:], c.NextBytes(c.CompactLength - 1)[:]...)
-	} else {
+	case 2:
+		c.CompactLength = 4
+		c.CompactBytes = append(compactByte[:], c.NextBytes(c.CompactLength - 1)[:]...)
+	default:
+		c.CompactLength = 5 + ((int(compactByte[0]) - 3) / 4)
 		c.CompactBytes = c.NextBytes(c.CompactLength - 1)
 	}
-	return c.CompactBytes
 }
 
 func (c *Compact) Process() {
 	c.ProcessCompactBytes()
-	if c.SubType != "" {
-		s := ScaleDecoder{TypeString: c.SubType, Data: ScaleBytes{Data: c.CompactBytes}}
-		byteData := s.ProcessAndUpdateData(c.SubType)
-		if c.CompactLength <= 4 {
-			switch v := byteData.(type) {
-			case uint64:
-				c.Value = v / 4
-			case uint32:
-				c.Value = uint64(v / 4)
-			case int:
-				c.Value = uint64(v / 4)
-			case decimal.Decimal:
-				c.Value = v.Div(decimal.New(4, 0)).Floor()
-			default:
-				c.Value = byteData
-			}
-		} else {
+	if c.SubType == "" {
+		c.Value = c.CompactBytes
+		return
+	}
+	s := ScaleDecoder{TypeString: c.SubType, Data: ScaleBytes{Data: c.CompactBytes}}
+	byteData := s.ProcessAndUpdateData(c.SubType)
+	if c.CompactLength <= 4 {
+		switch v := byteData.(type) {
+		case uint64:
+			c.Value = v / 4
+		case uint32:
+			c.Value = uint64(v / 4)
+		case int:
+			c.Value = uint64(v / 4)
+		case decimal.Decimal:
+			c.Value = v.Div(decimal.New(4, 0)).Floor()
+		default:
 			c.Value = byteData
 		}
 	} else {
-		c.Value = c.CompactBytes
+		c.Value = byteData
 	}
 }
 
