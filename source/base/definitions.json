@@ -14,7 +14,8 @@
       "MetadataV9Decoder",
       "MetadataV10Decoder",
       "MetadataV11Decoder",
-      "MetadataV12Decoder"
+      "MetadataV12Decoder",
+      "MetadataV13Decoder"
     ]
   },
   "StorageModify": {
@@ -38,7 +39,8 @@
     "value_list": [
       "PlainType",
       "MapType",
-      "DoubleMapType"
+      "DoubleMapType",
+      "NMap"
     ]
   },
   "Conviction": {

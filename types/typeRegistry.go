@@ -101,15 +101,19 @@ func (r RuntimeType) Reg() *RuntimeType {
 		&MetadataV7Decoder{},
 		&MetadataV7Module{},
 		&MetadataV7ModuleStorage{},
+		&MetadataV13ModuleStorage{},
 		&MetadataV7ModuleConstants{},
 		&MetadataV7ModuleStorageEntry{},
+		&MetadataV13ModuleStorageEntry{},
 		&MetadataV8Module{},
-		&MetadataV8Decoder{},
-		&MetadataV9Decoder{},
-		&MetadataV10Decoder{},
+		// &MetadataV8Decoder{},
+		// &MetadataV9Decoder{},
+		// &MetadataV10Decoder{},
 		&MetadataV11Decoder{},
 		&MetadataV12Decoder{},
+		&MetadataV13Decoder{},
 		&MetadataV12Module{},
+		&MetadataV13Module{},
 		&MetadataModuleError{},
 		&GenericLookupSource{},
 		&BTreeMap{},
@@ -152,8 +156,8 @@ func (r *RuntimeType) getCodecInstant(t string, spec int) (reflect.Type, reflect
 
 	if err != nil {
 		rt = TypeRegistry[strings.ToLower(t)]
-		if rt == nil && t != "[]" && string(t[0]) == "[" && string(t[len(t)-1:]) == "]" {
-			if typePart := strings.Split(string(t[1:len(t)-1]), ";"); len(typePart) == 2 {
+		if rt == nil && t != "[]" && string(t[0]) == "[" && t[len(t)-1:] == "]" {
+			if typePart := strings.Split(t[1:len(t)-1], ";"); len(typePart) == 2 {
 				fixed := FixedLengthArray{
 					FixedLength: utiles.StringToInt(strings.TrimSpace(typePart[1])),
 					SubType:     strings.TrimSpace(typePart[0]),

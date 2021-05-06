@@ -21,10 +21,11 @@ type MetadataStorage struct {
 }
 
 type StorageType struct {
-	Origin        string   `json:"origin"`
-	PlainType     *string  `json:"plain_type,omitempty"`
-	MapType       *MapType `json:"map_type,omitempty"`
-	DoubleMapType *MapType `json:"double_map_type,omitempty"`
+	Origin        string    `json:"origin"`
+	PlainType     *string   `json:"plain_type,omitempty"`
+	MapType       *MapType  `json:"map_type,omitempty"`
+	DoubleMapType *MapType  `json:"double_map_type,omitempty"`
+	NMapType      *NMapType `json:"n_map_type,omitempty"`
 }
 
 type MapType struct {
@@ -34,6 +35,12 @@ type MapType struct {
 	Key2Hasher string `json:"key2Hasher,omitempty"`
 	Value      string `json:"value"`
 	IsLinked   bool   `json:"isLinked"`
+}
+
+type NMapType struct {
+	Hashers []string `json:"hashers"`
+	KeyVec  []string `json:"key_vec"`
+	Value   string   `json:"value"`
 }
 
 type MetadataCalls struct {

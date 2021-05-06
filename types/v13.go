@@ -6,27 +6,21 @@ import (
 	"github.com/itering/scale.go/utiles"
 )
 
-type MetadataV12Decoder struct {
+type MetadataV13Decoder struct {
 	ScaleDecoder
 }
 
-type ExtrinsicMetadata struct {
-	SignedExtensions []string `json:"signedExtensions"`
-}
-
-func (m *MetadataV12Decoder) Init(data ScaleBytes, option *ScaleDecoderOption) {
+func (m *MetadataV13Decoder) Init(data ScaleBytes, option *ScaleDecoderOption) {
 	m.ScaleDecoder.Init(data, option)
 }
 
-func (m *MetadataV12Decoder) Process() {
-	// var callModuleIndex, eventModuleIndex int
-
+func (m *MetadataV13Decoder) Process() {
 	result := MetadataStruct{
 		Metadata: MetadataTag{
 			Modules: nil,
 		},
 	}
-	MetadataV11ModuleCall := m.ProcessAndUpdateData("Vec<MetadataV12Module>").([]interface{})
+	MetadataV11ModuleCall := m.ProcessAndUpdateData("Vec<MetadataV13Module>").([]interface{})
 	bm, _ := json.Marshal(MetadataV11ModuleCall)
 
 	var modulesType []MetadataModules
@@ -56,7 +50,7 @@ func (m *MetadataV12Decoder) Process() {
 	m.Value = result
 }
 
-type MetadataV12Module struct {
+type MetadataV13Module struct {
 	ScaleDecoder
 	Name       string                   `json:"name"`
 	Prefix     string                   `json:"prefix"`
@@ -72,14 +66,14 @@ type MetadataV12Module struct {
 	Index      int                      `json:"index"`
 }
 
-func (m *MetadataV12Module) Process() {
-	cm := MetadataV12Module{}
+func (m *MetadataV13Module) Process() {
+	cm := MetadataV13Module{}
 	cm.Name = m.ProcessAndUpdateData("String").(string)
 
 	// storage
 	cm.HasStorage = m.ProcessAndUpdateData("bool").(bool)
 	if cm.HasStorage {
-		storageValue := m.ProcessAndUpdateData("MetadataV7ModuleStorage").(MetadataV7ModuleStorage)
+		storageValue := m.ProcessAndUpdateData("MetadataV13ModuleStorage").(MetadataV7ModuleStorage)
 		cm.Storage = storageValue.Items
 		cm.Prefix = storageValue.Prefix
 	}
@@ -122,4 +116,102 @@ func (m *MetadataV12Module) Process() {
 	cm.Errors = errors
 	cm.Index = m.ProcessAndUpdateData("U8").(int)
 	m.Value = cm
+}
+
+type MetadataV13ModuleStorage struct {
+	MetadataV6ModuleStorage
+	Prefix string            `json:"prefix"`
+	Items  []MetadataStorage `json:"items"`
+}
+
+func (m *MetadataV13ModuleStorage) Process() {
+	cm := MetadataV7ModuleStorage{}
+	cm.Prefix = m.ProcessAndUpdateData("String").(string)
+	itemsValue := m.ProcessAndUpdateData("Vec<MetadataV13ModuleStorageEntry>").([]interface{})
+	var items []MetadataStorage
+	for _, v := range itemsValue {
+		items = append(items, v.(MetadataStorage))
+	}
+	cm.Items = items
+	m.Value = cm
+}
+
+type MetadataV13ModuleStorageEntry struct {
+	ScaleDecoder
+	Name     string      `json:"name"`
+	Modifier string      `json:"modifier"`
+	Type     StorageType `json:"type"`
+	Fallback string      `json:"fallback"`
+	Docs     []string    `json:"docs"`
+	Hasher   string      `json:"hasher"`
+}
+
+func (m *MetadataV13ModuleStorageEntry) Init(data ScaleBytes, option *ScaleDecoderOption) {
+	m.ScaleDecoder.Init(data, option)
+}
+
+func (m *MetadataV13ModuleStorageEntry) Process() {
+	m.Name = m.ProcessAndUpdateData("String").(string)
+	m.Modifier = m.ProcessAndUpdateData("StorageModify").(string)
+	storageFunctionType := m.ProcessAndUpdateData("StorageFunctionType").(string)
+
+	switch storageFunctionType {
+	case "MapType":
+		m.Hasher = m.ProcessAndUpdateData("StorageHasher").(string)
+		m.Type = StorageType{
+			Origin: "MapType",
+			MapType: &MapType{
+				Hasher:   m.Hasher,
+				Key:      ConvertType(m.ProcessAndUpdateData("String").(string)),
+				Value:    ConvertType(m.ProcessAndUpdateData("String").(string)),
+				IsLinked: m.ProcessAndUpdateData("bool").(bool)},
+		}
+	case "DoubleMapType":
+		m.Hasher = m.ProcessAndUpdateData("StorageHasher").(string)
+		key1 := ConvertType(m.ProcessAndUpdateData("String").(string))
+		key2 := ConvertType(m.ProcessAndUpdateData("String").(string))
+		value := ConvertType(m.ProcessAndUpdateData("String").(string))
+		key2Hasher := m.ProcessAndUpdateData("StorageHasher").(string)
+		m.Type = StorageType{
+			Origin: "DoubleMapType",
+			DoubleMapType: &MapType{
+				Hasher:     m.Hasher,
+				Key:        key1,
+				Key2:       key2,
+				Value:      value,
+				Key2Hasher: key2Hasher,
+			},
+		}
+	case "PlainType":
+		plainType := ConvertType(m.ProcessAndUpdateData("String").(string))
+		m.Type = StorageType{
+			Origin:    "PlainType",
+			PlainType: &plainType}
+	case "NMap":
+		hashers := m.ProcessAndUpdateData("Vec<StorageHasher>").([]string)
+		var KeyVec []string
+		for _, v := range m.ProcessAndUpdateData("Vec<String>").([]string) {
+			KeyVec = append(KeyVec, ConvertType(v))
+		}
+		m.Type = StorageType{
+			Origin: "NMapType",
+			NMapType: &NMapType{
+				Hashers: hashers,
+				KeyVec:  KeyVec,
+				Value:   ConvertType(m.ProcessAndUpdateData("String").(string)),
+			}}
+	}
+
+	m.Fallback = m.ProcessAndUpdateData("HexBytes").(string)
+	docs := m.ProcessAndUpdateData("Vec<String>").([]interface{})
+	for _, v := range docs {
+		m.Docs = append(m.Docs, v.(string))
+	}
+	m.Value = MetadataStorage{
+		Name:     m.Name,
+		Modifier: m.Modifier,
+		Type:     m.Type,
+		Fallback: m.Fallback,
+		Docs:     m.Docs,
+	}
 }
