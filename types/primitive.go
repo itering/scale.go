@@ -32,7 +32,7 @@ func (c *Compact) ProcessCompactBytes() {
 		c.CompactLength = 4
 		c.CompactBytes = append(compactByte[:], c.NextBytes(c.CompactLength - 1)[:]...)
 	default:
-		c.CompactLength = 5 + ((int(compactByte[0]) - 3) / 4)
+		c.CompactLength = 5 + (int(compactByte[0])-3)/4
 		c.CompactBytes = c.NextBytes(c.CompactLength - 1)
 	}
 }

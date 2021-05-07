@@ -753,6 +753,10 @@
     ],
     "type": "struct"
   },
+  "RelayBlockNumber": "u32",
+  "RelayChainBlockNumber": "RelayBlockNumber",
+  "RelayHash": "Hash",
+  "RelayChainHash": "RelayHash",
   "QueuedParathread": {
     "type_mapping": [
       [
@@ -1069,7 +1073,6 @@
     ],
     "type": "enum"
   },
-  "RelayChainBlockNumber": "u32",
   "HostConfiguration": {
     "type_mapping": [
       [
@@ -1326,7 +1329,6 @@
   },
   "MessagingStateSnapshotEgressEntry": "(ParaId, AbridgedHrmpChannel)",
   "SystemInherentData": "ParachainInherentData",
-  "RelayChainHash": "Hash",
   "VecInboundHrmpMessage": "Vec<InboundHrmpMessage>",
   "ServiceQuality": {
     "value_list": [

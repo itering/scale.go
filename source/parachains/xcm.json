@@ -541,6 +541,28 @@
     ],
     "type": "enum"
   },
+  "XcmpMessageFormat": {
+    "value_list": [
+      "ConcatenatedVersionedXcm",
+      "ConcatenatedEncodedBlob",
+      "Signals"
+    ],
+    "type": "enum"
+  },
+  "InboundStatus": {
+    "value_list": [
+      "Ok",
+      "Suspended"
+    ],
+    "type": "enum"
+  },
+  "OutboundStatus": {
+    "value_list": [
+      "Ok",
+      "Suspended"
+    ],
+    "type": "enum"
+  },
   "DoubleEncodedCall": {
     "type_mapping": [
       [
@@ -804,6 +826,31 @@
       [
         "recipient",
         "Compact<u32>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "QueueConfigData": {
+    "type_mapping": [
+      [
+        "suspendThreshold",
+        "u32"
+      ],
+      [
+        "dropThreshold",
+        "u32"
+      ],
+      [
+        "resumeThreshold",
+        "u32"
+      ],
+      [
+        "thresholdWeight",
+        "Weight"
+      ],
+      [
+        "weightRestrictDecay",
+        "Weight"
       ]
     ],
     "type": "struct"
