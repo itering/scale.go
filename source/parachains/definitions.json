@@ -542,7 +542,7 @@
         "CandidateDescriptor"
       ],
       [
-        "availabilityVotes",
+        "availabilityoVotes",
         "BitVec"
       ],
       [
@@ -556,6 +556,10 @@
       [
         "backedInNumber",
         "BlockNumber"
+      ],
+      [
+        "backingGroup",
+        "GroupIndex"
       ]
     ],
     "type": "struct"
@@ -1164,7 +1168,7 @@
         "u32"
       ],
       [
-        "acceptancePeriod",
+        "codeRetentionPeriod",
         "BlockNumber"
       ],
       [
@@ -1198,6 +1202,18 @@
       [
         "disputePeriod",
         "SessionIndex"
+      ],
+      [
+        "disputePostConclusionAcceptancePeriod",
+        "BlockNumber"
+      ],
+      [
+        "disputeMaxSpamSlots",
+        "u32"
+      ],
+      [
+        "disputeConclusionByTimeOutPeriod",
+        "BlockNumber"
       ],
       [
         "noShowSlots",

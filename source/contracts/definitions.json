@@ -11,19 +11,15 @@
         "u32"
       ],
       [
-        "emptyPairCount",
-        "u32"
-      ],
-      [
-        "totalPairCount",
-        "u32"
-      ],
-      [
         "codeHash",
         "CodeHash"
       ],
       [
         "rentAllowance",
+        "Balance"
+      ],
+      [
+        "rentPaid",
         "Balance"
       ],
       [
@@ -75,6 +71,19 @@
       ]
     ]
   },
+  "ExecReturnValue": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "flags",
+        "u32"
+      ],
+      [
+        "data",
+        "Bytes"
+      ]
+    ]
+  },
   "ContractExecResultTo255": {
     "type": "enum",
     "type_mapping": [
@@ -89,6 +98,32 @@
       [
         "gasConsumed",
         "u64"
+      ]
+    ]
+  },
+  "ContractInstantiateResult": {
+    "type": "enum",
+    "type_mapping": [
+      [
+        "Ok",
+        "InstantiateReturnValue"
+      ],
+      [
+        "Err",
+        "Null"
+      ]
+    ]
+  },
+  "RentProjection": {
+    "type": "enum",
+    "type_mapping": [
+      [
+        "EvictionAt",
+        "BlockNumber"
+      ],
+      [
+        "NoEviction",
+        "Null"
       ]
     ]
   },
@@ -1015,6 +1050,52 @@
       [
         "hostFnWeights",
         "HostFnWeights"
+      ]
+    ],
+    "type": "struct"
+  },
+  "InstantiateRequest": {
+    "type_mapping": [
+      [
+        "origin",
+        "AccountId"
+      ],
+      [
+        "endowment",
+        "Balance"
+      ],
+      [
+        "gasLimit",
+        "Gas"
+      ],
+      [
+        "code",
+        "Bytes"
+      ],
+      [
+        "code",
+        "Bytes"
+      ],
+      [
+        "salt",
+        "Bytes"
+      ]
+    ],
+    "type": "struct"
+  },
+  "InstantiateReturnValue": {
+    "type_mapping": [
+      [
+        "result",
+        "ExecReturnValue"
+      ],
+      [
+        "accountId",
+        "AccountId"
+      ],
+      [
+        "rentProjection",
+        "Option<RentProjection>"
       ]
     ],
     "type": "struct"

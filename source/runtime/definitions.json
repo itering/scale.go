@@ -15,5 +15,14 @@
         "u8"
       ]
     ]
+  },
+  "ChangesTrieSignal": {
+    "type": "enum",
+    "type_mapping": [
+      [
+        "NewConfiguration",
+        "Option<ChangesTrieConfiguration>"
+      ]
+    ]
   }
 }

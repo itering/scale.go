@@ -1,0 +1,166 @@
+{
+  "KeyValueOption": "(StorageKey, Option<StorageData>)",
+  "TraceError": {
+    "type_mapping": [
+      [
+        "error",
+        "Text"
+      ]
+    ],
+    "type": "struct"
+  },
+  "RuntimeVersion": {
+    "type_mapping": [
+      [
+        "specName",
+        "Text"
+      ],
+      [
+        "implName",
+        "Text"
+      ],
+      [
+        "authoringVersion",
+        "u32"
+      ],
+      [
+        "specVersion",
+        "u32"
+      ],
+      [
+        "implVersion",
+        "u32"
+      ],
+      [
+        "apis",
+        "Vec<RuntimeVersionApi>"
+      ],
+      [
+        "transactionVersion",
+        "u32"
+      ]
+    ],
+    "type": "struct"
+  },
+  "BlockTraceSpan": {
+    "type_mapping": [
+      [
+        "id",
+        "u64"
+      ],
+      [
+        "parentId",
+        "Option<u64>"
+      ],
+      [
+        "name",
+        "Text"
+      ],
+      [
+        "target",
+        "Text"
+      ],
+      [
+        "wasm",
+        "bool"
+      ]
+    ],
+    "type": "struct"
+  },
+  "BlockTraceEventData": {
+    "type_mapping": [
+      [
+        "stringValues",
+        "HashMap<Text, Text>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "ApiId": "[u8; 8]",
+  "TraceBlockResponse": {
+    "type_mapping": [
+      [
+        "TraceError",
+        "TraceError"
+      ],
+      [
+        "BlockTrace",
+        "BlockTrace"
+      ]
+    ],
+    "type": "enum"
+  },
+  "BlockTrace": {
+    "type_mapping": [
+      [
+        "blockHash",
+        "Text"
+      ],
+      [
+        "parentHash",
+        "Text"
+      ],
+      [
+        "tracingTargets",
+        "Text"
+      ],
+      [
+        "storageKeys",
+        "Text"
+      ],
+      [
+        "spans",
+        "Vec<BlockTraceSpan>"
+      ],
+      [
+        "events",
+        "Vec<BlockTraceEvent>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "StorageChangeSet": {
+    "type_mapping": [
+      [
+        "block",
+        "Hash"
+      ],
+      [
+        "changes",
+        "Vec<KeyValueOption>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "ReadProof": {
+    "type_mapping": [
+      [
+        "at",
+        "Hash"
+      ],
+      [
+        "proof",
+        "Vec<Bytes>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "BlockTraceEvent": {
+    "type_mapping": [
+      [
+        "target",
+        "Text"
+      ],
+      [
+        "data",
+        "BlockTraceEventData"
+      ],
+      [
+        "parentId",
+        "Option<u64>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "RuntimeVersionApi": "(ApiId, u32)"
+}

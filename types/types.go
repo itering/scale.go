@@ -435,7 +435,7 @@ func (s *Set) Process() {
 type LogDigest struct{ Enum }
 
 func (l *LogDigest) Init(data ScaleBytes, option *ScaleDecoderOption) {
-	l.ValueList = []string{"Other", "AuthoritiesChange", "ChangesTrieRoot", "SealV0", "Consensus", "Seal", "PreRuntime"}
+	l.ValueList = []string{"Other", "AuthoritiesChange", "ChangesTrieRoot", "SealV0", "Consensus", "Seal", "PreRuntime", "ChangesTrieSignal"}
 	l.Enum.Init(data, option)
 }
 
