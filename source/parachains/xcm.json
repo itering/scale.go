@@ -223,9 +223,26 @@
       [
         "OnlyChild",
         "Null"
+      ],
+      [
+        "Plurality",
+        "PluralityJunction"
       ]
     ],
     "type": "enum"
+  },
+  "PluralityJunction": {
+    "type_mapping": [
+      [
+        "id",
+        "BodyId"
+      ],
+      [
+        "part",
+        "BodyPart"
+      ]
+    ],
+    "type": "struct"
   },
   "XcmOrder": {
     "type_mapping": [
@@ -325,6 +342,31 @@
       [
         "V0",
         "Xcm"
+      ]
+    ],
+    "type": "enum"
+  },
+  "BodyPart": {
+    "type_mapping": [
+      [
+        "Voice",
+        "NULL"
+      ],
+      [
+        "Members",
+        "Compact<u32>"
+      ],
+      [
+        "Fraction",
+        "BodyPartFraction"
+      ],
+      [
+        "AtLeastProportion",
+        "BodyPartAtLeastProportion"
+      ],
+      [
+        "Voice",
+        "NULL"
       ]
     ],
     "type": "enum"
@@ -563,6 +605,39 @@
     ],
     "type": "enum"
   },
+  "BodyId": {
+    "type_mapping": [
+      [
+        "Unit",
+        "NULL"
+      ],
+      [
+        "Named",
+        "Vec<u8>"
+      ],
+      [
+        "Index",
+        "Compact<u32>"
+      ],
+      [
+        "Executive",
+        "NULL"
+      ],
+      [
+        "Technical",
+        "NULL"
+      ],
+      [
+        "Legislative",
+        "NULL"
+      ],
+      [
+        "Judicial",
+        "NULL"
+      ]
+    ],
+    "type": "enum"
+  },
   "DoubleEncodedCall": {
     "type_mapping": [
       [
@@ -701,6 +776,45 @@
       [
         "id",
         "AccountId"
+      ]
+    ],
+    "type": "struct"
+  },
+  "BodyPartFraction": {
+    "type_mapping": [
+      [
+        "nom",
+        "Compact<u32>"
+      ],
+      [
+        "denom",
+        "Compact<u32>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "BodyPartAtLeastProportion": {
+    "type_mapping": [
+      [
+        "nom",
+        "Compact<u32>"
+      ],
+      [
+        "denom",
+        "Compact<u32>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "BodyPartMoreThanProportion": {
+    "type_mapping": [
+      [
+        "nom",
+        "Compact<u32>"
+      ],
+      [
+        "denom",
+        "Compact<u32>"
       ]
     ],
     "type": "struct"
