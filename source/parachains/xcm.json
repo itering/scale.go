@@ -346,6 +346,7 @@
     ],
     "type": "enum"
   },
+  "Xcm<Call>": "Xcm",
   "BodyPart": {
     "type_mapping": [
       [

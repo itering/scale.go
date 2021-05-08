@@ -796,3 +796,11 @@ func (b *BTreeMap) Process() {
 	}
 	b.Value = result
 }
+
+type Box struct {
+	ScaleDecoder
+}
+
+func (b *Box) Process() {
+	b.Value = b.ProcessAndUpdateData(b.SubType)
+}

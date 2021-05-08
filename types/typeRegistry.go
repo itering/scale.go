@@ -117,6 +117,7 @@ func (r RuntimeType) Reg() *RuntimeType {
 		&MetadataModuleError{},
 		&GenericLookupSource{},
 		&BTreeMap{},
+		&Box{},
 	}
 	for _, class := range scales {
 		valueOf := reflect.ValueOf(class)
