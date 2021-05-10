@@ -1,0 +1,31 @@
+{
+  "ConfigData": {
+    "type_mapping": [
+      [
+        "maxIndividual",
+        "Weight"
+      ]
+    ],
+    "type": "struct"
+  },
+  "PageCounter": "u32",
+  "OverweightIndex": "u64",
+  "PageIndexData": {
+    "type_mapping": [
+      [
+        "beginUsed",
+        "PageCounter"
+      ],
+      [
+        "endUsed",
+        "PageCounter"
+      ],
+      [
+        "overweightCount",
+        "OverweightIndex"
+      ]
+    ],
+    "type": "struct"
+  },
+  "MessageId": "[u8; 32]"
+}

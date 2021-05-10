@@ -157,6 +157,10 @@
       [
         "Token",
         "TokenError"
+      ],
+      [
+        "Arithmetic",
+        "ArithmeticError"
       ]
     ]
   },
@@ -171,6 +175,14 @@
       "Frozen",
       "Underflow",
       "Overflow"
+    ]
+  },
+  "ArithmeticError": {
+    "type": "enum",
+    "value_list": [
+      "Underflow",
+      "Overflow",
+      "DivisionByZero"
     ]
   },
   "DispatchResult": {
