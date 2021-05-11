@@ -117,6 +117,7 @@ func (r RuntimeType) Reg() *RuntimeType {
 		&MetadataModuleError{},
 		&GenericLookupSource{},
 		&BTreeMap{},
+		&BTreeSet{},
 		&Box{},
 	}
 	for _, class := range scales {

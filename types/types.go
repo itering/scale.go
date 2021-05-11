@@ -804,3 +804,5 @@ type Box struct {
 func (b *Box) Process() {
 	b.Value = b.ProcessAndUpdateData(b.SubType)
 }
+
+type BTreeSet struct{ Vec }

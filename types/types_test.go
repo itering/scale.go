@@ -227,8 +227,14 @@ func TestNamespaceInt(t *testing.T) {
 
 func TestBoundedVec(t *testing.T) {
 	raw := "0x08014c4bf7f93d0a5ed801ef778f8e7ef58201bdd7e33e167faf42a01d439283cb430000000000000000000000000000000000000000000000000112ccb53338ac0da571d3697548346fb5f0b637ac9412f8abbf6d13588be7563200d8c3795800000000000000000000000000000000000000"
-	fmt.Println(len(utiles.HexToBytes(raw)))
 	m := types.ScaleDecoder{}
 	m.Init(types.ScaleBytes{Data: utiles.HexToBytes(raw)}, nil)
 	m.ProcessAndUpdateData("BoundedVec<Option<RegistrarInfo<BalanceOf, AccountId>>,5>")
+}
+
+func TestBTreeSet(t *testing.T) {
+	raw := "0x1002000000180000001e00000050000000"
+	m := types.ScaleDecoder{}
+	m.Init(types.ScaleBytes{Data: utiles.HexToBytes(raw)}, nil)
+	m.ProcessAndUpdateData("BTreeSet<U32>")
 }
