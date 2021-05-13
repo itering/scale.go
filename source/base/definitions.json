@@ -2459,5 +2459,6 @@
   "Box<Proposal>": "BoxProposal",
   "Box<<T as Config>::Call>": "Call",
   "Box<<T as Config<I>>::Proposal>": "Proposal",
-  "FixedU128": "u128"
+  "FixedU128": "u128",
+  "PalletId": "LockIdentifier"
 }
