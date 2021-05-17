@@ -43,35 +43,7 @@
       ]
     ]
   },
-  "Keys": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "grandpa",
-        "AccountId"
-      ],
-      [
-        "babe",
-        "AccountId"
-      ],
-      [
-        "im_online",
-        "AccountId"
-      ],
-      [
-        "para_validator",
-        "AccountId"
-      ],
-      [
-        "para_assignment",
-        "AccountId"
-      ],
-      [
-        "authority_discovery",
-        "AccountId"
-      ]
-    ]
-  },
+  "Keys": "SessionKeys7B",
   "Proposal<AccountId, ValidatorId, BalanceOf>": "ParachainProposal",
   "FullIdentification": "NULL",
   "AccountInfo": "AccountInfoWithTripleRefCount",
@@ -162,5 +134,6 @@
       ]
     ]
   },
-  "ValidatorIndex": "u32"
+  "ValidatorIndex": "u32",
+  "CompactAssignments#9010-?": "CompactAssignmentsWith24"
 }

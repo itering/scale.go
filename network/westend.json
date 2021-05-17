@@ -1,4 +1,5 @@
 {
+  "Address": "AccountId",
   "BlockNumber": "u32",
   "LeasePeriod": "BlockNumber",
   "Keys": "SessionKeysPolkadot",
@@ -45,14 +46,13 @@
       "CancelProxy"
     ]
   },
-  "CompactAssignments#43-?": "CompactAssignmentsLatest",
-  "RewardDestination#43-?": "RewardDestinationLatest",
+  "CompactAssignments#43-9000": "CompactAssignmentsLatest",
   "RefCount#45-?": "u32",
   "Box<<T as Config>::Call>": "Call",
-  "AccountInfo#48-?": "AccountInfoWithProviders",
-  "Address": "MultiAddress",
-  "LookupSource": "MultiAddress",
-  "ValidatorPrefs": "ValidatorPrefsWithBlocked",
+  "AccountInfo#48-49": "AccountInfoWithProviders",
+  "Address#48-?": "MultiAddress",
+  "LookupSource#48-?": "MultiAddress",
+  "ValidatorPrefs#48-?": "ValidatorPrefsWithBlocked",
   "Keys#48-?": {
     "type": "struct",
     "type_mapping": [
@@ -81,5 +81,7 @@
         "AccountId"
       ]
     ]
-  }
+  },
+  "AccountInfo#50-?": "AccountInfoWithTripleRefCount",
+  "CompactAssignments#9010-?": "CompactAssignmentsWith24"
 }
