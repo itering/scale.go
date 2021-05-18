@@ -357,6 +357,7 @@ func (s *BoxProposal) Process() {
 		"call_module": callModule.Module.Name,
 	}
 	var param []ExtrinsicParam
+	s.Module = callModule.Module.Name
 	for _, arg := range callModule.Call.Args {
 		param = append(param, ExtrinsicParam{
 			Name:  arg.Name,
@@ -628,6 +629,7 @@ func (s *Call) Process() {
 		"call_module": callModule.Module.Name,
 	}
 	var param []ExtrinsicParam
+	s.Module = callModule.Module.Name
 	for _, arg := range callModule.Call.Args {
 		param = append(param, ExtrinsicParam{
 			Name:  arg.Name,

@@ -13,6 +13,7 @@ var RuntimeCodecType []string
 type ScaleDecoderOption struct {
 	Spec        int
 	SubType     string
+	Module      string
 	ValueList   []string
 	Metadata    *MetadataStruct
 	FixedLength int
@@ -41,6 +42,7 @@ type ScaleDecoder struct {
 	TypeMapping *TypeMapping    `json:"-"`
 	Metadata    *MetadataStruct `json:"-"`
 	Spec        int             `json:"-"`
+	Module      string          `json:"-"`
 }
 
 func (s *ScaleDecoder) Init(data ScaleBytes, option *ScaleDecoderOption) {
@@ -53,6 +55,9 @@ func (s *ScaleDecoder) Init(data ScaleBytes, option *ScaleDecoderOption) {
 		}
 		if option.Spec != 0 {
 			s.Spec = option.Spec
+		}
+		if option.Module != "" {
+			s.Module = option.Module
 		}
 	}
 	s.Data = data
@@ -110,7 +115,7 @@ func (s *ScaleDecoder) buildStruct() {
 }
 
 func (s *ScaleDecoder) ProcessAndUpdateData(typeString string) interface{} {
-	r := RuntimeType{}
+	r := RuntimeType{Module: s.Module}
 
 	if TypeRegistry == nil {
 		r.Reg()
@@ -128,7 +133,7 @@ func (s *ScaleDecoder) ProcessAndUpdateData(typeString string) interface{} {
 	if !exist {
 		panic(fmt.Sprintf("%s not implement init function", typeString))
 	}
-	option := ScaleDecoderOption{SubType: subType, Spec: s.Spec, Metadata: s.Metadata}
+	option := ScaleDecoderOption{SubType: subType, Spec: s.Spec, Metadata: s.Metadata, Module: s.Module}
 	method.Func.Call([]reflect.Value{value, reflect.ValueOf(s.Data), reflect.ValueOf(&option)})
 
 	// process

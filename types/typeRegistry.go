@@ -10,7 +10,9 @@ import (
 	"strings"
 )
 
-type RuntimeType struct{}
+type RuntimeType struct {
+	Module string
+}
 
 type Special struct {
 	Version  []int
@@ -154,6 +156,7 @@ func (r RuntimeType) Reg() *RuntimeType {
 
 func (r *RuntimeType) getCodecInstant(t string, spec int) (reflect.Type, reflect.Value, error) {
 	t = strings.ToLower(t)
+	t = r.overrideModuleType(t)
 	rt, err := r.specialVersionCodec(t, spec)
 
 	if err != nil {
@@ -240,4 +243,25 @@ func (r *RuntimeType) specialVersionCodec(t string, spec int) (interface{}, erro
 		}
 	}
 	return rt, fmt.Errorf("not found")
+}
+
+var typesModules = map[string]map[string]string{
+	"parasInclusion": {"validatorindex": "ParaValidatorIndex"},
+	"inclusion":      {"validatorindex": "ParaValidatorIndex"},
+	"parasScheduler": {"validatorindex": "ParaValidatorIndex"},
+	"parasShared":    {"validatorindex": "ParaValidatorIndex"},
+	"scheduler":      {"validatorindex": "ParaValidatorIndex"},
+	"shared":         {"validatorindex": "ParaValidatorIndex"},
+	"assets":         {"Approval": "AssetApproval", "ApprovalKey": "AssetApprovalKey", "Balance": "TAssetBalance", "DestroyWitness": "AssetDestroyWitness"},
+}
+
+func (r *RuntimeType) overrideModuleType(t string) string {
+	moduleTypes, ok := typesModules[r.Module]
+	if !ok {
+		return t
+	}
+	if overrideType, ok := moduleTypes[t]; ok {
+		return overrideType
+	}
+	return t
 }

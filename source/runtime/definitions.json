@@ -24,5 +24,6 @@
         "Option<ChangesTrieConfiguration>"
       ]
     ]
-  }
+  },
+  "AssetId": "u32"
 }
