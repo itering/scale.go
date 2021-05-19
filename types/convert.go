@@ -15,6 +15,7 @@ func ConvertType(name string, option ...interface{}) string {
 	name = strings.ReplaceAll(name, "<T as Trait>::", "")
 	name = strings.ReplaceAll(name, "<T, I>", "")
 	name = strings.ReplaceAll(name, "\n", " ")
+	name = strings.ReplaceAll(name, `&'static[u8]`, "Bytes")
 	switch name {
 	case "()", "<InherentOfflineReport as InherentOfflineReport>::Inherent":
 		name = "Null"
