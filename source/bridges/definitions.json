@@ -1,0 +1,58 @@
+{
+  "BridgedBlockHash": "H256",
+  "BridgedBlockNumber": "BlockNumber",
+  "BridgedHeader": "Header",
+  "Precommit": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "target_hash",
+        "BridgedBlockHash"
+      ],
+      [
+        "target_number",
+        "BridgedBlockNumber"
+      ]
+    ]
+  },
+  "InitializationData": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "header",
+        "Header"
+      ],
+      [
+        "authorityList",
+        "AuthorityList"
+      ],
+      [
+        "setId",
+        "SetId"
+      ],
+      [
+        "isHalted",
+        "bool"
+      ]
+    ]
+  },
+  "super::initializationdata<bridgedheader<t, i>>": "InitializationData",
+  "Commit": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "target_hash",
+        "BridgedBlockHash"
+      ],
+      [
+        "target_number",
+        "BridgedBlockNumber"
+      ],
+      [
+        "precommits",
+        "Vec<SignedPrecommit>"
+      ]
+    ]
+  },
+
+}

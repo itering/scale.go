@@ -245,3 +245,9 @@ func TestModuleTypeOverride(t *testing.T) {
 	m.Init(types.ScaleBytes{Data: utiles.HexToBytes(raw)}, &types.ScaleDecoderOption{Module: "parasShared"})
 	m.ProcessAndUpdateData("Vec<ValidatorIndex>")
 }
+
+func TestAccountInfo(t *testing.T) {
+	m := types.ScaleDecoder{}
+	m.Init(types.ScaleBytes{Data: utiles.HexToBytes(`0x0100000001000000`)}, nil)
+	utiles.Debug(m.ProcessAndUpdateData("AccountInfo<Index, AccountData>"))
+}
