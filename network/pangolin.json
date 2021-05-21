@@ -1367,5 +1367,111 @@
       ]
     ]
   },
-  "ValidatorPrefs": "ValidatorPrefsWithBlocked"
+  "ValidatorPrefs": "ValidatorPrefsWithBlocked",
+  "BridgedHeader": "MillauHeader",
+  "MillauHeader": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "parent_hash",
+        "H512"
+      ],
+      [
+        "number",
+        "Compact<u64>"
+      ],
+      [
+        "state_root",
+        "H512"
+      ],
+      [
+        "extrinsics_root",
+        "H512"
+      ],
+      [
+        "digest",
+        "MillauDigest"
+      ]
+    ]
+  },
+  "MillauDigest": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "logs",
+        "Vec<MillauDigestItem>"
+      ]
+    ]
+  },
+  "MillauDigestItem": {
+    "type": "enum",
+    "type_mapping": [
+      [
+        "Other",
+        "Vec<u8>"
+      ],
+      [
+        "AuthoritiesChange",
+        "Vec<AuthorityId>"
+      ],
+      [
+        "ChangesTrieRoot",
+        "H512"
+      ],
+      [
+        "SealV0",
+        "SealV0"
+      ],
+      [
+        "Consensus",
+        "Consensus"
+      ],
+      [
+        "Seal",
+        "Seal"
+      ],
+      [
+        "PreRuntime",
+        "PreRuntime"
+      ],
+      [
+        "ChangesTrieSignal",
+        "ChangesTrieSignal"
+      ]
+    ]
+  },
+  "GrandpaJustification": {
+    "type_mapping": [
+      [
+        "round",
+        "u64"
+      ],
+      [
+        "commit",
+        "GrandpaCommit"
+      ],
+      [
+        "votesAncestries",
+        "Vec<MillauHeader>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "GrandpaCommit": {
+    "type_mapping": [
+      [
+        "targetHash",
+        "H512"
+      ],
+      [
+        "targetNumber",
+        "BlockNumber"
+      ],
+      [
+        "precommits",
+        "Vec<GrandpaSignedPrecommit>"
+      ]
+    ],
+    "type": "struct"
+  }
 }

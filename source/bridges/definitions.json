@@ -1,7 +1,4 @@
 {
-  "BridgedBlockHash": "H256",
-  "BridgedBlockNumber": "BlockNumber",
-  "BridgedHeader": "Header",
   "Precommit": {
     "type": "struct",
     "type_mapping": [
@@ -54,5 +51,8 @@
       ]
     ]
   },
-
+  "BlockHash": "H256",
+  "BridgedBlockHash": "H256",
+  "BridgedBlockNumber": "BlockNumber",
+  "BridgedHeader": "Header"
 }

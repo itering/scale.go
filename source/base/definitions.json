@@ -859,6 +859,10 @@
       [
         "PreRuntime",
         "PreRuntime"
+      ],
+      [
+        "ChangesTrieSignal",
+        "ChangesTrieSignal"
       ]
     ]
   },
