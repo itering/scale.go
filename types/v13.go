@@ -188,7 +188,6 @@ func (m *MetadataV13ModuleStorageEntry) Process() {
 			Origin:    "PlainType",
 			PlainType: &plainType}
 	case "NMap":
-		hashers := m.ProcessAndUpdateData("Vec<StorageHasher>").([]string)
 		var KeyVec []string
 		for _, v := range m.ProcessAndUpdateData("Vec<String>").([]string) {
 			KeyVec = append(KeyVec, ConvertType(v))
@@ -196,7 +195,7 @@ func (m *MetadataV13ModuleStorageEntry) Process() {
 		m.Type = StorageType{
 			Origin: "NMapType",
 			NMapType: &NMapType{
-				Hashers: hashers,
+				Hashers: m.ProcessAndUpdateData("Vec<StorageHasher>").([]string),
 				KeyVec:  KeyVec,
 				Value:   ConvertType(m.ProcessAndUpdateData("String").(string)),
 			}}

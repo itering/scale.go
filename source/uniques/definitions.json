@@ -1,0 +1,123 @@
+{
+  "ClassId": "u32",
+  "DepositBalance": "Balance",
+  "InstanceMetadata": {
+    "type_mapping": [
+      [
+        "deposit",
+        "DepositBalance"
+      ],
+      [
+        "name",
+        "Vec<u8>"
+      ],
+      [
+        "information",
+        "Vec<u8>"
+      ],
+      [
+        "isFrozen",
+        "bool"
+      ]
+    ],
+    "type": "struct"
+  },
+  "InstanceDetails": {
+    "type_mapping": [
+      [
+        "owner",
+        "AccountId"
+      ],
+      [
+        "approved",
+        "Option<AccountId>"
+      ],
+      [
+        "isFrozen",
+        "bool"
+      ],
+      [
+        "deposit",
+        "DepositBalance"
+      ]
+    ],
+    "type": "struct"
+  },
+  "InstanceId": "u32",
+  "ClassMetadata": {
+    "type_mapping": [
+      [
+        "deposit",
+        "DepositBalance"
+      ],
+      [
+        "name",
+        "Vec<u8>"
+      ],
+      [
+        "information",
+        "Vec<u8>"
+      ],
+      [
+        "isFrozen",
+        "bool"
+      ]
+    ],
+    "type": "struct"
+  },
+  "DestroyWitness": {
+    "type_mapping": [
+      [
+        "instances",
+        "Compact<u32>"
+      ],
+      [
+        "instanceMetadatas",
+        "Compact<u32>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "ClassDetails": {
+    "type_mapping": [
+      [
+        "owner",
+        "AccountId"
+      ],
+      [
+        "issuer",
+        "AccountId"
+      ],
+      [
+        "admin",
+        "AccountId"
+      ],
+      [
+        "freezer",
+        "AccountId"
+      ],
+      [
+        "totalTeposit",
+        "DepositBalance"
+      ],
+      [
+        "freeHolding",
+        "bool"
+      ],
+      [
+        "instances",
+        "u32"
+      ],
+      [
+        "instanceMetadatas",
+        "u32"
+      ],
+      [
+        "isFrozen",
+        "bool"
+      ]
+    ],
+    "type": "struct"
+  },
+  "DepositBalanceOf": "Balance"
+}
