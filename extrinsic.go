@@ -159,6 +159,7 @@ func (e *ExtrinsicDecoder) Process() {
 	e.CallModule = call.Module
 
 	for _, arg := range e.Call.Args {
+		e.Module = e.CallModule.Name
 		e.Params = append(e.Params, ExtrinsicParam{
 			Name:  arg.Name,
 			Type:  arg.Type,

@@ -49,11 +49,11 @@
         "LastContribution<BlockNumber>"
       ],
       [
-        "first_slot",
+        "first_period",
         "LeasePeriod"
       ],
       [
-        "last_slot",
+        "last_period",
         "LeasePeriod"
       ],
       [
