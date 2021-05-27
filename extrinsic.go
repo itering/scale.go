@@ -114,7 +114,7 @@ func (e *ExtrinsicDecoder) Process() {
 	} else if e.VersionInfo == "04" || e.VersionInfo == "84" {
 
 		if e.ContainsTransaction {
-
+			// Address
 			address := e.ProcessAndUpdateData("Address")
 			switch v := address.(type) {
 			case string:
@@ -126,11 +126,15 @@ func (e *ExtrinsicDecoder) Process() {
 					e.Address = value
 				}
 			}
-			e.SignatureVersion = e.ProcessAndUpdateData("U8").(int)
-			if e.SignatureVersion == 2 {
-				e.Signature = e.ProcessAndUpdateData("EcdsaSignature").(string)
-			} else {
-				e.Signature = e.ProcessAndUpdateData("Signature").(string)
+			// ExtrinsicSignature
+			signature := e.ProcessAndUpdateData("ExtrinsicSignature")
+			switch v := signature.(type) {
+			case string:
+				e.Signature = v
+			case map[string]interface{}:
+				for _, value := range v {
+					e.Signature = value.(string)
+				}
 			}
 			e.Era = e.ProcessAndUpdateData("EraExtrinsic").(string)
 			e.Nonce = int(e.ProcessAndUpdateData("Compact<U64>").(uint64))

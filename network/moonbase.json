@@ -3,6 +3,7 @@
   "CompactAssignments": "CompactAssignmentsLatest",
   "RefCount": "u32",
   "Box<<T as Config>::Call>": "Call",
+  "AccountInfo": "AccountInfoWithTripleRefCount",
   "DispatchResult": {
     "type": "enum",
     "type_mapping": [
@@ -34,12 +35,188 @@
       ]
     ]
   },
-  "AccountId": "EthereumAccountId",
+  "RoundInfo": {
+    "type_mapping": [
+      [
+        "current",
+        "RoundIndex"
+      ],
+      [
+        "first",
+        "BlockNumber"
+      ],
+      [
+        "length",
+        "u32"
+      ]
+    ],
+    "type": "struct"
+  },
+  "Candidate": {
+    "type_mapping": [
+      [
+        "id",
+        "AccountId"
+      ],
+      [
+        "fee",
+        "Perbill"
+      ],
+      [
+        "bond",
+        "Balance"
+      ],
+      [
+        "nominators",
+        "Vec<Bond>"
+      ],
+      [
+        "total",
+        "Balance"
+      ],
+      [
+        "state",
+        "CollatorStatus"
+      ]
+    ],
+    "type": "struct"
+  },
+  "TxPoolResultStatus": {
+    "type_mapping": [
+      [
+        "pending",
+        "U256"
+      ],
+      [
+        "queued",
+        "U256"
+      ]
+    ],
+    "type": "struct"
+  },
+  "CollatorStatus": {
+    "value_list": [
+      "Active",
+      "Idle",
+      {
+        "Leaving": "RoundIndex"
+      }
+    ],
+    "type": "enum"
+  },
+  "PoolTransaction": {
+    "type_mapping": [
+      [
+        "hash",
+        "H256"
+      ],
+      [
+        "nonce",
+        "U256"
+      ],
+      [
+        "block_hash",
+        "Option<H256>"
+      ],
+      [
+        "block_number",
+        "Option<U256>"
+      ],
+      [
+        "from",
+        "H160"
+      ],
+      [
+        "to",
+        "Option<H160>"
+      ],
+      [
+        "value",
+        "U256"
+      ],
+      [
+        "gas_price",
+        "U256"
+      ],
+      [
+        "gas",
+        "U256"
+      ],
+      [
+        "input",
+        "Bytes"
+      ]
+    ],
+    "type": "struct"
+  },
+  "ExtrinsicSignature": "EthereumSignature",
+  "Collator": {
+    "type_mapping": [
+      [
+        "id",
+        "AccountId"
+      ],
+      [
+        "bond",
+        "Balance"
+      ],
+      [
+        "nominators",
+        "Vec<Bond>"
+      ],
+      [
+        "total",
+        "Balance"
+      ],
+      [
+        "state",
+        "CollatorStatus"
+      ]
+    ],
+    "type": "struct"
+  },
+  "CollatorSnapshot": {
+    "type_mapping": [
+      [
+        "bond",
+        "Balance"
+      ],
+      [
+        "nominators",
+        "Vec<Bond>"
+      ],
+      [
+        "total",
+        "Balance"
+      ]
+    ],
+    "type": "struct"
+  },
   "Address": "AccountId",
-  "Balance": "u128",
-  "LookupSource": "AccountId",
+  "SystemInherentData": {
+    "type_mapping": [
+      [
+        "validation_data",
+        "PersistedValidationData"
+      ],
+      [
+        "relay_chain_state",
+        "StorageProof"
+      ],
+      [
+        "downward_messages",
+        "Vec<InboundDownwardMessage>"
+      ],
+      [
+        "horizontal_messages",
+        "BTreeMap<ParaId, Vec<InboundHrmpMessage>>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "OrderedSet": "Vec<Bond>",
+  "AccountId": "EthereumAccountId",
   "Account": {
-    "type": "struct",
     "type_mapping": [
       [
         "nonce",
@@ -49,7 +226,111 @@
         "balance",
         "u128"
       ]
-    ]
+    ],
+    "type": "struct"
   },
-  "RoundIndex": "u32"
+  "LookupSource": "AccountId",
+  "InflationInfo": {
+    "type_mapping": [
+      [
+        "expect",
+        "RangeBalance"
+      ],
+      [
+        "round",
+        "RangePerbill"
+      ]
+    ],
+    "type": "struct"
+  },
+  "Summary": "Bytes",
+  "Range": "RangeBalance",
+  "TxPoolResultInspect": {
+    "type_mapping": [
+      [
+        "pending",
+        "HashMap<H160, HashMap<U256, Summary>>"
+      ],
+      [
+        "queued",
+        "HashMap<H160, HashMap<U256, Summary>>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "RangeBalance": {
+    "type_mapping": [
+      [
+        "min",
+        "Balance"
+      ],
+      [
+        "ideal",
+        "Balance"
+      ],
+      [
+        "max",
+        "Balance"
+      ]
+    ],
+    "type": "struct"
+  },
+  "RoundIndex": "u32",
+  "Nominator": {
+    "type_mapping": [
+      [
+        "nominations",
+        "Vec<Bond>"
+      ],
+      [
+        "total",
+        "Balance"
+      ]
+    ],
+    "type": "struct"
+  },
+  "Balance": "u128",
+  "Bond": {
+    "type_mapping": [
+      [
+        "owner",
+        "AccountId"
+      ],
+      [
+        "amount",
+        "Balance"
+      ]
+    ],
+    "type": "struct"
+  },
+  "RangePerbill": {
+    "type_mapping": [
+      [
+        "min",
+        "Perbill"
+      ],
+      [
+        "ideal",
+        "Perbill"
+      ],
+      [
+        "max",
+        "Perbill"
+      ]
+    ],
+    "type": "struct"
+  },
+  "TxPoolResultContent": {
+    "type_mapping": [
+      [
+        "pending",
+        "HashMap<H160, HashMap<U256, PoolTransaction>>"
+      ],
+      [
+        "queued",
+        "HashMap<H160, HashMap<U256, PoolTransaction>>"
+      ]
+    ],
+    "type": "struct"
+  }
 }
