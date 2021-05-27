@@ -252,11 +252,11 @@ var typesModules = map[string]map[string]string{
 	"parasShared":    {"validatorindex": "ParaValidatorIndex"},
 	"scheduler":      {"validatorindex": "ParaValidatorIndex"},
 	"shared":         {"validatorindex": "ParaValidatorIndex"},
-	"assets":         {"Approval": "AssetApproval", "ApprovalKey": "AssetApprovalKey", "Balance": "TAssetBalance", "DestroyWitness": "AssetDestroyWitness"},
+	"assets":         {"approval": "AssetApproval", "approvalkey": "AssetApprovalKey", "balance": "TAssetBalance", "destroywitness": "AssetDestroyWitness"},
 }
 
 func (r *RuntimeType) overrideModuleType(t string) string {
-	moduleTypes, ok := typesModules[r.Module]
+	moduleTypes, ok := typesModules[strings.ToLower(r.Module)]
 	if !ok {
 		return t
 	}

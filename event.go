@@ -72,6 +72,7 @@ func (e *EventRecord) Process() map[string]interface{} {
 	e.EventModule = call.Module
 
 	for _, argType := range e.Event.Args {
+		e.Module = e.EventModule.Name
 		e.Params = append(e.Params, EventParam{Type: argType, Value: e.ProcessAndUpdateData(argType)})
 	}
 
