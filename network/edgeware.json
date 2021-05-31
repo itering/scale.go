@@ -19,6 +19,10 @@
   "Index": "U32",
   "Kind": "[u8; 16]",
   "OpaqueTimeSlot": "Bytes",
+  "ProposalContents": "Bytes",
+  "ProposalTitle": "Bytes",
+  "VoteOutcome": "[u8; 32]",
+  "VotingTally": "Option<Vec<(VoteOutcome, u128)>>",
   "Box<<T as Trait<I>>::Proposal>": "BoxProposal",
   "ValidatorPrefs": {
     "type": "struct",
@@ -58,6 +62,15 @@
       "ForceNone"
     ]
   },
+  "VoteStage": {
+    "type": "enum",
+    "value_list": [
+      "PreVoting",
+      "Commit",
+      "Voting",
+      "Completed"
+    ]
+  },
   "VoteData": {
     "type": "struct",
     "type_mapping": [
@@ -92,11 +105,11 @@
       ],
       [
         "commitments",
-        "Vec<(AccountId, VoteOutcome)>"
+        "Commitments"
       ],
       [
         "reveals",
-        "Vec<(AccountId, VoteOutcome)>"
+        "Reveals"
       ],
       [
         "data",
@@ -108,11 +121,14 @@
       ]
     ]
   },
+  "Commitments": "Vec<(AccountId, VoteOutcome)>",
+  "Reveals": "Vec<(AccountId, Vec<VoteOutcome>)>",
   "VoteType": {
     "type": "enum",
     "value_list": [
       "Binary",
-      "MultiOption"
+      "MultiOption",
+      "RankedChoice"
     ]
   },
   "IdentityStage": {
@@ -200,11 +216,11 @@
       ],
       [
         "stage",
-        "ProposalStage"
+        "VoteStage"
       ],
       [
         "transition_time",
-        "BlockNumber"
+        "u32"
       ],
       [
         "category",
@@ -212,23 +228,15 @@
       ],
       [
         "title",
-        "Vec<u8>"
+        "Text"
       ],
       [
         "contents",
-        "Vec<u8>"
+        "Text"
       ],
       [
         "vote_id",
         "u64"
-      ],
-      [
-        "ProposalTitle",
-        "Vec<u8>"
-      ],
-      [
-        "ProposalContents",
-        "Vec<u8>"
       ]
     ]
   },
@@ -292,20 +300,24 @@
     ]
   },
   "Weight#38-?": "u64",
-  "DispatchResult#38-?": {
+  "DispatchResult#0-37": {
     "type": "enum",
     "type_mapping": [
       [
-        "Ok",
-        "Null"
-      ],
-      [
         "Error",
         "DispatchError"
+      ],
+      [
+        "Ok",
+        "Null"
       ]
     ]
   },
-  "Address#38-?": "GenericAddress",
-  "LookupSource#38-?": "GenericAddress",
-  "RefCount": "u32"
+  "Address#38-41": "GenericAddress",
+  "LookupSource#38-41": "GenericAddress",
+  "RefCount": "u32",
+  "voting::Tally": "VotingTally",
+  "Address#45-?": "MultiAddress",
+  "LookupSource#45-?": "MultiAddress",
+  "AssetId": "u32"
 }

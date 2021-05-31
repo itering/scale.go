@@ -332,5 +332,6 @@
       ]
     ],
     "type": "struct"
-  }
+  },
+  "AuthorId": "[u8; 32]"
 }

@@ -47,18 +47,23 @@ func RegCustomTypes(registry map[string]source.TypeStruct) {
 				reg := regexp.MustCompile("^([^<]*)<(.+)>$")
 				typeParts := reg.FindStringSubmatch(typeString)
 				if len(typeParts) > 2 {
-					if strings.ToLower(typeParts[1]) == "vec" {
+					if strings.EqualFold(typeParts[1], "vec") {
 						v := Vec{}
 						v.SubType = typeParts[2]
 						regCustomKey(key, &v)
 						continue
-					} else if strings.ToLower(typeParts[1]) == "option" {
+					} else if strings.EqualFold(typeParts[1], "option") {
 						v := Option{}
 						v.SubType = typeParts[2]
 						regCustomKey(key, &v)
 						continue
-					} else if strings.ToLower(typeParts[1]) == "compact" {
+					} else if strings.EqualFold(typeParts[1], "compact") {
 						v := Compact{}
+						v.SubType = typeParts[2]
+						regCustomKey(key, &v)
+						continue
+					} else if strings.EqualFold(typeParts[1], "BTreeMap") {
+						v := BTreeMap{}
 						v.SubType = typeParts[2]
 						regCustomKey(key, &v)
 						continue
@@ -77,8 +82,8 @@ func RegCustomTypes(registry map[string]source.TypeStruct) {
 			}
 
 			// Array
-			if typeString != "[]" && string(typeString[0]) == "[" && string(typeString[len(typeString)-1:]) == "]" {
-				if typePart := strings.Split(string(typeString[1:len(typeString)-1]), ";"); len(typePart) == 2 {
+			if typeString != "[]" && string(typeString[0]) == "[" && typeString[len(typeString)-1:] == "]" {
+				if typePart := strings.Split(typeString[1:len(typeString)-1], ";"); len(typePart) == 2 {
 					fixed := FixedLengthArray{
 						FixedLength: utiles.StringToInt(strings.TrimSpace(typePart[1])),
 						SubType:     strings.TrimSpace(typePart[0]),
