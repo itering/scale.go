@@ -251,3 +251,10 @@ func TestAccountInfo(t *testing.T) {
 	m.Init(types.ScaleBytes{Data: utiles.HexToBytes(`0x0100000001000000`)}, nil)
 	utiles.Debug(m.ProcessAndUpdateData("AccountInfo<Index, AccountData>"))
 }
+
+func TestWeakBoundedVec(t *testing.T) {
+	raw := "0x047374616b696e672063fae72d71290000000000000000000002"
+	m := types.ScaleDecoder{}
+	m.Init(types.ScaleBytes{Data: utiles.HexToBytes(raw)}, nil)
+	m.ProcessAndUpdateData("WeakBoundedVec<BalanceLock<Balance>, MaxLocks>")
+}

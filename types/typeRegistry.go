@@ -43,6 +43,7 @@ func (r RuntimeType) Reg() *RuntimeType {
 		&Bytes{},
 		&Vec{},
 		&BoundedVec{},
+		&WeakBoundedVec{},
 		&Set{},
 		&CompactU32{},
 		&Bool{},
