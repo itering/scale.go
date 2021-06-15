@@ -97,7 +97,7 @@
         "AccountId"
       ],
       [
-        "totalTeposit",
+        "totalDeposit",
         "DepositBalance"
       ],
       [
@@ -110,6 +110,10 @@
       ],
       [
         "instanceMetadatas",
+        "u32"
+      ],
+      [
+        "attributes",
         "u32"
       ],
       [

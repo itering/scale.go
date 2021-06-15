@@ -223,10 +223,7 @@ func (r *RuntimeType) DecoderClass(typeString string, spec int) (reflect.Type, r
 	// namespace
 	if strings.Contains(typeString, "::") && typeString != "::" {
 		namespaceSlice := strings.Split(typeString, "::")
-		class, rc, err := r.getCodecInstant(namespaceSlice[len(namespaceSlice)-1], spec)
-		if err == nil {
-			return class, rc, ""
-		}
+		return r.DecoderClass(namespaceSlice[len(namespaceSlice)-1], spec)
 	}
 
 	return nil, reflect.ValueOf((*error)(nil)).Elem(), ""
