@@ -48,5 +48,6 @@
   },
   "BeefyPayload": "MmrRootHash",
   "MmrRootHash": "H256",
-  "ValidatorSetId": "u64"
+  "ValidatorSetId": "u64",
+  "BeefyId": "[u8; 33]"
 }

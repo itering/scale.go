@@ -244,13 +244,33 @@ func (r *RuntimeType) specialVersionCodec(t string, spec int) (interface{}, erro
 }
 
 var typesModules = map[string]map[string]string{
-	"parasInclusion": {"validatorindex": "ParaValidatorIndex"},
-	"inclusion":      {"validatorindex": "ParaValidatorIndex"},
-	"parasScheduler": {"validatorindex": "ParaValidatorIndex"},
-	"parasShared":    {"validatorindex": "ParaValidatorIndex"},
-	"scheduler":      {"validatorindex": "ParaValidatorIndex"},
-	"shared":         {"validatorindex": "ParaValidatorIndex"},
-	"assets":         {"approval": "AssetApproval", "approvalkey": "AssetApprovalKey", "balance": "TAssetBalance", "destroywitness": "AssetDestroyWitness"},
+	"parasInclusion": {
+		"validatorindex": "ParaValidatorIndex",
+	},
+	"inclusion": {
+		"validatorindex": "ParaValidatorIndex",
+	},
+	"parasScheduler": {
+		"validatorindex": "ParaValidatorIndex",
+	},
+	"parasShared": {
+		"validatorindex": "ParaValidatorIndex",
+	},
+	"scheduler": {
+		"validatorindex": "ParaValidatorIndex",
+	},
+	"shared": {
+		"validatorindex": "ParaValidatorIndex",
+	},
+	"assets": {
+		"approval":       "AssetApproval",
+		"approvalkey":    "AssetApprovalKey",
+		"balance":        "TAssetBalance",
+		"destroywitness": "AssetDestroyWitness",
+	},
+	"beefy": {
+		"authorityid": "BeefyId",
+	},
 }
 
 func (r *RuntimeType) overrideModuleType(t string) string {

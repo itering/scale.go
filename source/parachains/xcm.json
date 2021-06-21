@@ -311,6 +311,15 @@
     ],
     "type": "struct"
   },
+  "XcmOrigin": {
+    "type_mapping": [
+      [
+        "Xcm",
+        "MultiLocation"
+      ]
+    ],
+    "type": "enum"
+  },
   "MultiAssetAbstractFungible": {
     "type_mapping": [
       [
