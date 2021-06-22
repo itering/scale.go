@@ -163,10 +163,11 @@ func (r *RuntimeType) getCodecInstant(t string, spec int) (reflect.Type, reflect
 	if err != nil {
 		rt = TypeRegistry[strings.ToLower(t)]
 		if rt == nil && t != "[]" && string(t[0]) == "[" && t[len(t)-1:] == "]" {
-			if typePart := strings.Split(t[1:len(t)-1], ";"); len(typePart) == 2 {
+			if typePart := strings.Split(t[1:len(t)-1], ";"); len(typePart) >= 2 {
+				remainPart := typePart[0 : len(typePart)-1]
 				fixed := FixedLengthArray{
-					FixedLength: utiles.StringToInt(strings.TrimSpace(typePart[1])),
-					SubType:     strings.TrimSpace(typePart[0]),
+					FixedLength: utiles.StringToInt(strings.TrimSpace(typePart[len(typePart)-1])),
+					SubType:     strings.TrimSpace(strings.Join(remainPart, ";")),
 				}
 				rt = &fixed
 			}

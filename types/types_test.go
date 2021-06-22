@@ -7,6 +7,7 @@ import (
 	"github.com/itering/scale.go/source"
 	"github.com/itering/scale.go/types"
 	"github.com/itering/scale.go/utiles"
+	"github.com/stretchr/testify/assert"
 	"math/big"
 	"reflect"
 	"strings"
@@ -257,4 +258,15 @@ func TestWeakBoundedVec(t *testing.T) {
 	m := types.ScaleDecoder{}
 	m.Init(types.ScaleBytes{Data: utiles.HexToBytes(raw)}, nil)
 	m.ProcessAndUpdateData("WeakBoundedVec<BalanceLock<Balance>, MaxLocks>")
+}
+
+func TestNestFixedArray(t *testing.T) {
+	raw := "0x010101010101010101"
+	m := types.ScaleDecoder{}
+	m.Init(types.ScaleBytes{Data: utiles.HexToBytes(raw)}, nil)
+	assert.Equal(
+		t,
+		[]interface{}{[]interface{}{1, 1, 1}, []interface{}{1, 1, 1}, []interface{}{1, 1, 1}},
+		m.ProcessAndUpdateData("[[u8; 3]; 3]"),
+	)
 }
