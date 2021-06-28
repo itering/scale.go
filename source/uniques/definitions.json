@@ -8,11 +8,7 @@
         "DepositBalance"
       ],
       [
-        "name",
-        "Vec<u8>"
-      ],
-      [
-        "information",
+        "data",
         "Vec<u8>"
       ],
       [
@@ -51,11 +47,7 @@
         "DepositBalance"
       ],
       [
-        "name",
-        "Vec<u8>"
-      ],
-      [
-        "information",
+        "data",
         "Vec<u8>"
       ],
       [
@@ -73,6 +65,10 @@
       ],
       [
         "instanceMetadatas",
+        "Compact<u32>"
+      ],
+      [
+        "attributes",
         "Compact<u32>"
       ]
     ],
