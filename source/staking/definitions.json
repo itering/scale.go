@@ -126,5 +126,26 @@
       "Signed",
       "Unsigned"
     ]
+  },
+  "ElectionPhase": {
+    "type": "enum",
+    "type_mapping": [
+      [
+        "Off",
+        "Null"
+      ],
+      [
+        "Signed",
+        "Null"
+      ],
+      [
+        "Unsigned",
+        "(bool, BlockNumber)"
+      ],
+      [
+        "Emergency",
+        "Null"
+      ]
+    ]
   }
 }
