@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"github.com/huandu/xstrings"
 	"github.com/itering/scale.go/utiles"
+	"sort"
+	"strings"
 )
 
 type MetadataV13Decoder struct {
@@ -12,6 +14,24 @@ type MetadataV13Decoder struct {
 
 func (m *MetadataV13Decoder) Init(data ScaleBytes, option *ScaleDecoderOption) {
 	m.ScaleDecoder.Init(data, option)
+}
+
+// https://github.com/polkadot-js/api/blob/ddf6f574f616d28cc0c59354baaf58208a776274/packages/metadata/src/v13/toLatest.ts#L14
+var KnownOrigins = map[string]string{
+	"Council":            "CollectiveOrigin",
+	"System":             "SystemOrigin",
+	"TechnicalCommittee": "CollectiveOrigin",
+	// Polkadot
+	"Xcm":       "XcmOrigin",
+	"XcmPallet": "XcmOrigin",
+	// Acala
+	"Authority":      "AuthorityOrigin",
+	"GeneralCouncil": "CollectiveOrigin",
+}
+
+type OriginCaller struct {
+	Name  string
+	Index int
 }
 
 func (m *MetadataV13Decoder) Process() {
@@ -27,7 +47,10 @@ func (m *MetadataV13Decoder) Process() {
 	_ = json.Unmarshal(bm, &modulesType)
 	result.CallIndex = make(map[string]CallIndex)
 	result.EventIndex = make(map[string]EventIndex)
+
+	var originCallers []OriginCaller
 	for k, module := range modulesType {
+		originCallers = append(originCallers, OriginCaller{Name: module.Name, Index: module.Index})
 		if module.Calls != nil {
 			for callIndex, call := range module.Calls {
 				modulesType[k].Calls[callIndex].Lookup = xstrings.RightJustify(utiles.IntToHex(module.Index), 2, "0") + xstrings.RightJustify(utiles.IntToHex(callIndex), 2, "0")
@@ -41,13 +64,28 @@ func (m *MetadataV13Decoder) Process() {
 			}
 		}
 	}
-
 	result.Metadata.Modules = modulesType
 	extrinsicMetadata := m.ProcessAndUpdateData("ExtrinsicMetadata").(map[string]interface{})
 	bm, _ = json.Marshal(extrinsicMetadata)
 	_ = json.Unmarshal(bm, &result.Extrinsic)
-
+	registerOriginCaller(originCallers)
 	m.Value = result
+}
+
+// https://github.com/polkadot-js/api/blob/ddf6f574f616d28cc0c59354baaf58208a776274/packages/metadata/src/v13/toLatest.ts#L117
+func registerOriginCaller(originCallers []OriginCaller) {
+	sort.Slice(originCallers[:], func(i, j int) bool { return originCallers[i].Index < originCallers[j].Index })
+	e := Enum{}
+	e.TypeMapping = &TypeMapping{}
+	for _, caller := range originCallers {
+		e.TypeMapping.Names = append(e.TypeMapping.Names, caller.Name)
+		if t, ok := KnownOrigins[caller.Name]; ok {
+			e.TypeMapping.Types = append(e.TypeMapping.Types, t)
+		} else {
+			e.TypeMapping.Types = append(e.TypeMapping.Types, "NULL")
+		}
+	}
+	regCustomKey(strings.ToLower("OriginCaller"), &e)
 }
 
 type MetadataV13Module struct {
