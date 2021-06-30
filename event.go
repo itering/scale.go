@@ -65,7 +65,7 @@ func (e *EventRecord) Process() map[string]interface{} {
 
 	call, ok := e.Metadata.EventIndex[e.Type]
 	if !ok {
-		panic(fmt.Sprintf("Not find Extrinsic Lookup %s, please check metadata info", e.Type))
+		panic(fmt.Sprintf("Not find Event Lookup %s, please check metadata info", e.Type))
 	}
 
 	e.Event = call.Call

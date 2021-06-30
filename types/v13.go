@@ -2,6 +2,7 @@ package types
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/huandu/xstrings"
 	"github.com/itering/scale.go/utiles"
 	"sort"
@@ -78,6 +79,10 @@ func registerOriginCaller(originCallers []OriginCaller) {
 	e := Enum{}
 	e.TypeMapping = &TypeMapping{}
 	for _, caller := range originCallers {
+		for i := len(e.TypeMapping.Names); i < caller.Index; i++ {
+			e.TypeMapping.Names = append(e.TypeMapping.Names, fmt.Sprintf("EMPTY%d", i))
+			e.TypeMapping.Types = append(e.TypeMapping.Types, "NULL")
+		}
 		e.TypeMapping.Names = append(e.TypeMapping.Names, caller.Name)
 		if t, ok := KnownOrigins[caller.Name]; ok {
 			e.TypeMapping.Types = append(e.TypeMapping.Types, t)
