@@ -98,7 +98,7 @@ func (s *ScaleDecoder) buildStruct() {
 	if s.TypeString != "" && string(s.TypeString[0]) == "(" && s.TypeString[len(s.TypeString)-1:] == ")" {
 
 		var names, types []string
-		reg := regexp.MustCompile(`\((.*?)\)`)
+		reg := regexp.MustCompile(`[\<\(](.*?)[\>\)]`)
 		typeString := s.TypeString[1 : len(s.TypeString)-1]
 		typeParts := reg.FindAllString(typeString, -1)
 		for _, part := range typeParts {
