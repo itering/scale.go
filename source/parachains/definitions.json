@@ -381,11 +381,24 @@
     "type_mapping": [
       [
         "upgradeTimes",
-        "Vec<BlockNumber>"
+        "Vec<ReplacementTimes>"
       ],
       [
         "lastPruned",
         "Option<BlockNumber>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "ReplacementTimes": {
+    "type_mapping": [
+      [
+        "expectedAt",
+        "BlockNumber"
+      ],
+      [
+        "activatedAt",
+        "BlockNumber"
       ]
     ],
     "type": "struct"
