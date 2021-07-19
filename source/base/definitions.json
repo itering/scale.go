@@ -15,7 +15,8 @@
       "MetadataV10Decoder",
       "MetadataV11Decoder",
       "MetadataV12Decoder",
-      "MetadataV13Decoder"
+      "MetadataV13Decoder",
+      "MetadataV14Decoder"
     ]
   },
   "StorageModify": {

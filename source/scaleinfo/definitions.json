@@ -1,0 +1,219 @@
+{
+  "PortableRegistry": "GenericPortableRegistry",
+  "GenericPortableRegistry": "Vec<PortableType>",
+  "PortableType": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "id",
+        "SiLookupTypeId"
+      ],
+      [
+        "type",
+        "SiType"
+      ]
+    ]
+  },
+  "SiTypeDefVariant": {
+    "type_mapping": [
+      [
+        "variants",
+        "Vec<SiVariant>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "SiField": {
+    "type_mapping": [
+      [
+        "name",
+        "Option<Text>"
+      ],
+      [
+        "type",
+        "SiLookupTypeId"
+      ],
+      [
+        "typeName",
+        "Option<Text>"
+      ],
+      [
+        "docs",
+        "Vec<Text>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "SiTypeDefBitSequence": {
+    "type_mapping": [
+      [
+        "bitStoreType",
+        "SiLookupTypeId"
+      ],
+      [
+        "bitOrderType",
+        "SiLookupTypeId"
+      ]
+    ],
+    "type": "struct"
+  },
+  "SiTypeDefCompact": {
+    "type_mapping": [
+      [
+        "type",
+        "SiLookupTypeId"
+      ]
+    ],
+    "type": "struct"
+  },
+  "SiTypeDefArray": {
+    "type_mapping": [
+      [
+        "len",
+        "u32"
+      ],
+      [
+        "type",
+        "SiLookupTypeId"
+      ]
+    ],
+    "type": "struct"
+  },
+  "SiPath": "Vec<Text>",
+  "SiVariant": {
+    "type_mapping": [
+      [
+        "name",
+        "Text"
+      ],
+      [
+        "fields",
+        "Vec<SiField>"
+      ],
+      [
+        "index",
+        "u8"
+      ],
+      [
+        "docs",
+        "Vec<Text>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "SiType": {
+    "type_mapping": [
+      [
+        "path",
+        "SiPath"
+      ],
+      [
+        "params",
+        "Vec<SiTypeParameter>"
+      ],
+      [
+        "def",
+        "SiTypeDef"
+      ],
+      [
+        "docs",
+        "Vec<Text>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "SiTypeParameter": {
+    "type_mapping": [
+      [
+        "name",
+        "Text"
+      ],
+      [
+        "type",
+        "Option<SiLookupTypeId>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "SiTypeDefSequence": {
+    "type_mapping": [
+      [
+        "type",
+        "SiLookupTypeId"
+      ]
+    ],
+    "type": "struct"
+  },
+  "SiTypeDefComposite": {
+    "type_mapping": [
+      [
+        "fields",
+        "Vec<SiField>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "SiLookupTypeId": "Compact<u32>",
+  "SiTypeDefTuple": "Vec<SiLookupTypeId>",
+  "SiTypeDef": {
+    "type_mapping": [
+      [
+        "Composite",
+        "SiTypeDefComposite"
+      ],
+      [
+        "Variant",
+        "SiTypeDefVariant"
+      ],
+      [
+        "Sequence",
+        "SiTypeDefSequence"
+      ],
+      [
+        "Array",
+        "SiTypeDefArray"
+      ],
+      [
+        "Tuple",
+        "SiTypeDefTuple"
+      ],
+      [
+        "Primitive",
+        "SiTypeDefPrimitive"
+      ],
+      [
+        "Compact",
+        "SiTypeDefCompact"
+      ],
+      [
+        "BitSequence",
+        "SiTypeDefBitSequence"
+      ],
+      [
+        "HistoricMetaCompat",
+        "Type"
+      ]
+    ],
+    "type": "enum"
+  },
+  "SiTypeDefPrimitive": {
+    "value_list": [
+      "Bool",
+      "Char",
+      "Str",
+      "U8",
+      "U16",
+      "U32",
+      "U64",
+      "U128",
+      "U256",
+      "I8",
+      "I16",
+      "I32",
+      "I64",
+      "I128",
+      "I256"
+    ],
+    "type": "enum"
+  }
+}

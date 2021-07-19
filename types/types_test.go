@@ -270,3 +270,9 @@ func TestNestFixedArray(t *testing.T) {
 		m.ProcessAndUpdateData("[[u8; 3]; 3]"),
 	)
 }
+
+func TestCompactU32_Encode(t *testing.T) {
+	compactU32 := types.CompactU32{}
+	compactU32.Encode(100)
+	assert.Equal(t, "0x9101", compactU32.Data.String())
+}
