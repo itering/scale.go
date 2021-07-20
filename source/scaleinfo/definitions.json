@@ -191,7 +191,7 @@
       ],
       [
         "HistoricMetaCompat",
-        "Type"
+        "String"
       ]
     ],
     "type": "enum"
