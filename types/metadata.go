@@ -59,7 +59,7 @@ type NMapType struct {
 
 type NMapTypeValue struct {
 	Hashers []string `json:"hashers"`
-	KeyVec  []int    `json:"key_vec"`
+	KeyVec  int      `json:"key_vec"`
 	Value   int      `json:"value"`
 }
 
@@ -86,6 +86,13 @@ type MetadataStruct struct {
 	Extrinsic       *ExtrinsicMetadata    `json:"extrinsic"`
 }
 
+type ExtrinsicMetadata struct {
+	Type             int                `json:"type"`
+	Version          int                `json:"version"`
+	SignedExtensions []SignedExtensions `json:"signedExtensions"`
+	SignedIdentifier []string           `json:"signed_identifier"`
+}
+
 type CallIndex struct {
 	Module MetadataModules `json:"module"`
 	Call   MetadataCalls   `json:"call"`
@@ -103,6 +110,7 @@ type MetadataTag struct {
 type MetadataConstants struct {
 	Name           string   `json:"name"`
 	Type           string   `json:"type"`
+	TypeValue      int      `json:"type_value"`
 	ConstantsValue string   `json:"constants_value"`
 	Docs           []string `json:"docs"`
 }

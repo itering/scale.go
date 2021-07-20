@@ -25,5 +25,39 @@
       ]
     ],
     "type": "struct"
+  },
+  "ExtrinsicMetadataV14": {
+    "type_mapping": [
+      [
+        "type",
+        "SiLookupTypeId"
+      ],
+      [
+        "version",
+        "u8"
+      ],
+      [
+        "signedExtensions",
+        "Vec<SignedExtensionMetadataV14>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "SignedExtensionMetadataV14": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "identifier",
+        "Text"
+      ],
+      [
+        "type",
+        "SiLookupTypeId"
+      ],
+      [
+        "additionalSigned",
+        "SiLookupTypeId"
+      ]
+    ]
   }
 }

@@ -100,7 +100,7 @@ func (e *ExtrinsicDecoder) Process() {
 			e.Era = e.ProcessAndUpdateData("EraExtrinsic").(string)
 			e.Nonce = int(e.ProcessAndUpdateData("Compact<U64>").(uint64))
 			if e.Metadata.Extrinsic != nil {
-				if utiles.SliceIndex("ChargeTransactionPayment", e.Metadata.Extrinsic.SignedExtensions) != -1 {
+				if utiles.SliceIndex("ChargeTransactionPayment", e.Metadata.Extrinsic.SignedIdentifier) != -1 {
 					e.Tip = e.ProcessAndUpdateData("Compact<Balance>")
 				}
 			} else {

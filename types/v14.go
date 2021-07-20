@@ -52,29 +52,33 @@ func (m *MetadataV14Decoder) Process() {
 		}
 	}
 	result.Metadata.Modules = modulesType
-	extrinsicMetadata := m.ProcessAndUpdateData("ExtrinsicMetadata").(map[string]interface{})
+	extrinsicMetadata := m.ProcessAndUpdateData("ExtrinsicMetadataV14").(map[string]interface{})
 	bm, _ = json.Marshal(extrinsicMetadata)
 	_ = json.Unmarshal(bm, &result.Extrinsic)
+	for _, Extension := range result.Extrinsic.SignedExtensions {
+		result.Extrinsic.SignedIdentifier = append(result.Extrinsic.SignedIdentifier, Extension.Identifier)
+	}
+
 	registerOriginCaller(originCallers)
 	m.Value = result
 }
 
 type MetadataV14Module struct {
 	ScaleDecoder
-	Name        string                   `json:"name"`
-	Prefix      string                   `json:"prefix"`
-	CallIndex   string                   `json:"call_index"`
-	HasStorage  bool                     `json:"has_storage"`
-	Storage     []MetadataStorage        `json:"storage"`
-	HasCalls    bool                     `json:"has_calls"`
-	Calls       []MetadataModuleCall     `json:"calls"`
-	CallsValue  map[string]interface{}   `json:"calls_value"`
-	HasEvents   bool                     `json:"has_events"`
-	Events      []MetadataEvents         `json:"events"`
-	EventsValue map[string]interface{}   `json:"events_value"`
-	Constants   []map[string]interface{} `json:"constants"`
-	Errors      []MetadataModuleError    `json:"errors"`
-	Index       int                      `json:"index"`
+	Name        string                 `json:"name"`
+	Prefix      string                 `json:"prefix"`
+	CallIndex   string                 `json:"call_index"`
+	HasStorage  bool                   `json:"has_storage"`
+	Storage     []MetadataStorage      `json:"storage"`
+	HasCalls    bool                   `json:"has_calls"`
+	Calls       []MetadataModuleCall   `json:"calls"`
+	CallsValue  map[string]interface{} `json:"calls_value"`
+	HasEvents   bool                   `json:"has_events"`
+	Events      []MetadataEvents       `json:"events"`
+	EventsValue map[string]interface{} `json:"events_value"`
+	Constants   []MetadataConstants    `json:"constants"`
+	Errors      []MetadataModuleError  `json:"errors"`
+	Index       int                    `json:"index"`
 }
 
 func (m *MetadataV14Module) Process() {
@@ -105,16 +109,16 @@ func (m *MetadataV14Module) Process() {
 
 	// constant
 	constantValue := m.ProcessAndUpdateData("Vec<PalletConstantMetadataV14>").([]interface{})
-	var constants []map[string]interface{}
+	var constants []MetadataConstants
 	for _, v := range constantValue {
-		constants = append(constants, v.(map[string]interface{}))
+		constants = append(constants, v.(MetadataConstants))
 	}
 	cm.Constants = constants
 
 	hasError := m.ProcessAndUpdateData("bool").(bool)
 	if hasError {
-		// todo Events
-		_ = m.ProcessAndUpdateData("Option<PalletErrorMetadataV14>").(map[string]interface{})
+		// todo Errors
+		_ = m.ProcessAndUpdateData("PalletErrorMetadataV14").(map[string]interface{})
 	}
 	// var errors []MetadataModuleError
 	// for _, v := range errorValue {
@@ -192,13 +196,10 @@ func (m *MetadataV14ModuleStorageEntry) Process() {
 			PlainTypeValue: &PlainTypeValue,
 		}
 	case "NMap":
-		var KeyVec []int
-		for _, v := range m.ProcessAndUpdateData("Vec<SiLookupTypeId>").([]interface{}) {
-			KeyVec = append(KeyVec, v.(int))
-		}
+		KeyVec := m.ProcessAndUpdateData("SiLookupTypeId").(int)
 		var hasherVec []string
 		for _, v := range m.ProcessAndUpdateData("Vec<StorageHasher>").([]interface{}) {
-			hasherVec = append(hasherVec, ConvertType(v.(string)))
+			hasherVec = append(hasherVec, v.(string))
 		}
 		m.Type = StorageType{
 			Origin: "NMapType",
@@ -225,6 +226,10 @@ func (m *MetadataV14ModuleStorageEntry) Process() {
 
 type PalletConstantMetadataV14 struct {
 	ScaleDecoder
+	Name           string   `json:"name"`
+	Type           string   `json:"type"`
+	ConstantsValue string   `json:"constants_value"`
+	Docs           []string `json:"docs"`
 }
 
 func (m *PalletConstantMetadataV14) Process() {
@@ -236,11 +241,10 @@ func (m *PalletConstantMetadataV14) Process() {
 	for _, v := range docsRaw {
 		docs = append(docs, v.(string))
 	}
-	m.Value = map[string]interface{}{
-		"name":  name,
-		"type":  ConstantType,
-		"doc":   docs,
-		"value": value,
+	m.Value = MetadataConstants{
+		Name:           name,
+		TypeValue:      ConstantType,
+		Docs:           docs,
+		ConstantsValue: value,
 	}
-
 }

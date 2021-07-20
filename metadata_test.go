@@ -76,5 +76,5 @@ func TestMetadataV14DecoderProcess(t *testing.T) {
 	if m.Version != "MetadataV14Decoder" {
 		t.Errorf("MetadataV13 version should equal 14")
 	}
-	utiles.Debug(m.Metadata.Metadata)
+	// utiles.Debug(m.Metadata)
 }
