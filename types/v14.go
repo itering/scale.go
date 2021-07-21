@@ -24,8 +24,10 @@ func (m *MetadataV14Decoder) Process() {
 	}
 
 	// custom type lookup
-	_ = InitPortableRaw(m.ProcessAndUpdateData("PortableRegistry").([]interface{}))
+	portable := initPortableRaw(m.ProcessAndUpdateData("PortableRegistry").([]interface{}))
 	// utiles.Debug(portable)
+	m.processSiType(portable)
+	utiles.Debug(registeredSiType)
 
 	MetadataV14ModuleCall := m.ProcessAndUpdateData("Vec<MetadataV14Module>").([]interface{})
 	bm, _ := json.Marshal(MetadataV14ModuleCall)
