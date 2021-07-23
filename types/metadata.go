@@ -1,16 +1,17 @@
 package types
 
 type MetadataModules struct {
-	Name        string                 `json:"name"`
-	Prefix      string                 `json:"prefix"`
-	Storage     []MetadataStorage      `json:"storage"`
-	Calls       []MetadataCalls        `json:"calls,omitempty"`
-	CallsValue  map[string]interface{} `json:"calls_value,omitempty"`
-	Events      []MetadataEvents       `json:"events,omitempty"`
-	EventsValue map[string]interface{} `json:"events_value,omitempty"`
-	Constants   []MetadataConstants    `json:"constants,omitempty"`
-	Errors      []MetadataModuleError  `json:"errors"`
-	Index       int                    `json:"index"`
+	Name        string                `json:"name"`
+	Prefix      string                `json:"prefix"`
+	Storage     []MetadataStorage     `json:"storage"`
+	Calls       []MetadataCalls       `json:"calls,omitempty"`
+	CallsValue  *PalletLookUp         `json:"calls_value,omitempty"`
+	Events      []MetadataEvents      `json:"events,omitempty"`
+	EventsValue *PalletLookUp         `json:"events_value,omitempty"`
+	Constants   []MetadataConstants   `json:"constants,omitempty"`
+	Errors      []MetadataModuleError `json:"errors"`
+	ErrorsValue *PalletLookUp         `json:"errors_value"`
+	Index       int                   `json:"index"`
 }
 
 type MetadataStorage struct {

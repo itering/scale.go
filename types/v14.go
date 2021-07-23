@@ -2,6 +2,7 @@ package types
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/huandu/xstrings"
 	"github.com/itering/scale.go/utiles"
 )
@@ -16,6 +17,10 @@ type MetadataV14Decoder struct {
 	ScaleDecoder
 }
 
+type PalletLookUp struct {
+	Type int `json:"type"`
+}
+
 func (m *MetadataV14Decoder) Process() {
 	result := MetadataStruct{
 		Metadata: MetadataTag{
@@ -27,7 +32,8 @@ func (m *MetadataV14Decoder) Process() {
 	portable := initPortableRaw(m.ProcessAndUpdateData("PortableRegistry").([]interface{}))
 	// utiles.Debug(portable)
 	m.processSiType(portable)
-	utiles.Debug(registeredSiType)
+	// utiles.Debug(registeredSiType)
+	// fmt.Println("registeredSiType", len(registeredSiType))
 
 	MetadataV14ModuleCall := m.ProcessAndUpdateData("Vec<MetadataV14Module>").([]interface{})
 	bm, _ := json.Marshal(MetadataV14ModuleCall)
@@ -40,18 +46,66 @@ func (m *MetadataV14Decoder) Process() {
 	var originCallers []OriginCaller
 	for k, module := range modulesType {
 		originCallers = append(originCallers, OriginCaller{Name: module.Name, Index: module.Index})
-		if module.Calls != nil {
-			for callIndex, call := range module.Calls {
-				modulesType[k].Calls[callIndex].Lookup = xstrings.RightJustify(utiles.IntToHex(module.Index), 2, "0") + xstrings.RightJustify(utiles.IntToHex(callIndex), 2, "0")
-				result.CallIndex[modulesType[k].Calls[callIndex].Lookup] = CallIndex{Module: module, Call: call}
+
+		// calls look up
+		if module.CallsValue != nil {
+			variants := portable[module.CallsValue.Type].Def.Variant
+			if variants == nil {
+				panic(fmt.Sprintf("%d call value not variant", module.CallsValue.Type))
+			}
+
+			for _, variant := range variants.Variants {
+				call := MetadataCalls{Name: variant.Name, Docs: variant.Docs}
+				for _, field := range variant.Fields {
+					call.Args = append(call.Args, MetadataModuleCallArgument{
+						Name: field.Name,
+						Type: registeredSiType[field.Type],
+					})
+				}
+				module.Calls = append(module.Calls, call)
 			}
 		}
+		modulesType[k].Calls = module.Calls
+		for callIndex, call := range module.Calls {
+			modulesType[k].Calls[callIndex].Lookup = xstrings.RightJustify(utiles.IntToHex(module.Index), 2, "0") + xstrings.RightJustify(utiles.IntToHex(callIndex), 2, "0")
+			result.CallIndex[modulesType[k].Calls[callIndex].Lookup] = CallIndex{Module: module, Call: call}
+		}
+
+		// Events
+		if module.EventsValue != nil {
+			variants := portable[module.EventsValue.Type].Def.Variant
+			if variants == nil {
+				panic(fmt.Sprintf("%d event value not variant", module.EventsValue.Type))
+			}
+
+			for _, variant := range variants.Variants {
+				event := MetadataEvents{Name: variant.Name, Docs: variant.Docs}
+				for _, field := range variant.Fields {
+					event.Args = append(event.Args, registeredSiType[field.Type])
+				}
+				module.Events = append(module.Events, event)
+			}
+		}
+		modulesType[k].Events = module.Events
 		if module.Events != nil {
 			for eventIndex, event := range module.Events {
 				modulesType[k].Events[eventIndex].Lookup = xstrings.RightJustify(utiles.IntToHex(module.Index), 2, "0") + xstrings.RightJustify(utiles.IntToHex(eventIndex), 2, "0")
 				result.EventIndex[modulesType[k].Events[eventIndex].Lookup] = EventIndex{Module: module, Call: event}
 			}
 		}
+
+		// Error
+		if module.ErrorsValue != nil {
+			variants := portable[module.ErrorsValue.Type].Def.Variant
+			if variants == nil {
+				panic(fmt.Sprintf("%d error value not variant", module.EventsValue.Type))
+			}
+
+			for _, variant := range variants.Variants {
+				module.Errors = append(module.Errors, MetadataModuleError{Name: variant.Name, Doc: variant.Docs})
+			}
+		}
+		modulesType[k].Errors = module.Errors
 	}
 	result.Metadata.Modules = modulesType
 	extrinsicMetadata := m.ProcessAndUpdateData("ExtrinsicMetadataV14").(map[string]interface{})
@@ -80,6 +134,7 @@ type MetadataV14Module struct {
 	EventsValue map[string]interface{} `json:"events_value"`
 	Constants   []MetadataConstants    `json:"constants"`
 	Errors      []MetadataModuleError  `json:"errors"`
+	ErrorsValue map[string]interface{} `json:"errors_value"`
 	Index       int                    `json:"index"`
 }
 
@@ -120,13 +175,8 @@ func (m *MetadataV14Module) Process() {
 	hasError := m.ProcessAndUpdateData("bool").(bool)
 	if hasError {
 		// todo Errors
-		_ = m.ProcessAndUpdateData("PalletErrorMetadataV14").(map[string]interface{})
+		cm.ErrorsValue = m.ProcessAndUpdateData("PalletErrorMetadataV14").(map[string]interface{})
 	}
-	// var errors []MetadataModuleError
-	// for _, v := range errorValue {
-	// 	errors = append(errors, v.(MetadataModuleError))
-	// }
-	// cm.Errors = errors
 	cm.Index = m.ProcessAndUpdateData("U8").(int)
 	m.Value = cm
 }
@@ -250,3 +300,7 @@ func (m *PalletConstantMetadataV14) Process() {
 		ConstantsValue: value,
 	}
 }
+
+//     "errors_value": {
+//        "type": 120
+//      },

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/itering/scale.go/source"
+	"github.com/itering/scale.go/utiles"
 	"strings"
 )
 
@@ -42,7 +43,7 @@ type SiTypeDefComposite struct {
 }
 
 type SiField struct {
-	Name     string   `json:"name"`
+	Name     string   `json:"name,omitempty"`
 	Type     int      `json:"type"`
 	TypeName string   `json:"typeName"`
 	Docs     []string `json:"docs"`
@@ -122,7 +123,7 @@ func (s *ScaleDecoder) dealPrimitiveSiType(id int, SiTyp SiType) {
 	registeredSiType[id] = string(*SiTyp.Def.Primitive)
 }
 
-func (s *ScaleDecoder) dealOneSiType(id int, SiTyp SiType, id2Portable map[int]SiType, notVariant ...bool) string {
+func (s *ScaleDecoder) dealOneSiType(id int, SiTyp SiType, id2Portable map[int]SiType) string {
 	if SiTyp.Def.Composite != nil {
 		if len(SiTyp.Def.Composite.Fields) == 1 { // single
 			subTypeValue := SiTyp.Def.Composite.Fields[0].Type
@@ -209,7 +210,7 @@ func (s *ScaleDecoder) dealOneSiType(id int, SiTyp SiType, id2Portable map[int]S
 			}
 			registeredSiType[id] = fmt.Sprintf("option<%s>", subType)
 			return registeredSiType[id]
-		} else if strings.EqualFold(specialVariant, "result") {
+		} else if strings.EqualFold(specialVariant, "Result") {
 			// Results<u8, bool>
 			resultOk := SiTyp.Params[0].Type
 			resultErr := SiTyp.Params[1].Type
@@ -227,20 +228,23 @@ func (s *ScaleDecoder) dealOneSiType(id int, SiTyp SiType, id2Portable map[int]S
 			}
 			registeredSiType[id] = fmt.Sprintf("Results<%s,%s>", okType, errType)
 			return registeredSiType[id]
-		} else {
+		} else if len(SiTyp.Path) == 2 && SiTyp.Path[0] == "node_runtime" && SiTyp.Path[1] == "Call" { // Call Extrinsic
+			registeredSiType[id] = "Call"
+			return "Call"
+		} else if utiles.SliceIndex(SiTyp.Path[len(SiTyp.Path)-1], []string{"Call", "Event", "Error"}) != -1 {
+			registeredSiType[id] = "CallEventError" // tag
+			return "CallEventError"
+		} else { // enum
 			var types [][]string
 			for _, variant := range SiTyp.Def.Variant.Variants {
 				typeName := "NULL"
-				// if len(variant.Fields) > 0 {
-				// 	if instant, ok := registeredSiType[variant.Fields[0].Type]; ok {
-				// 		typeName = instant
-				// 	} else {
-				// 		fmt.Println("get unknown type", variant.Fields[0].TypeName, variant.Fields[0].Type)
-				// 		// utiles.Debug(variant.Fields[0])
-				// 		// typeName = "NULL"
-				// 		typeName = s.dealOneSiType(variant.Fields[0].Type, id2Portable[variant.Fields[0].Type], id2Portable)
-				// 	}
-				// }
+				if len(variant.Fields) > 0 {
+					if instant, ok := registeredSiType[variant.Fields[0].Type]; ok {
+						typeName = instant
+					} else {
+						typeName = s.dealOneSiType(variant.Fields[0].Type, id2Portable[variant.Fields[0].Type], id2Portable)
+					}
+				}
 				types = append(types, []string{variant.Name, typeName})
 			}
 			typeString := SiTyp.Path[len(SiTyp.Path)-1]
@@ -248,7 +252,9 @@ func (s *ScaleDecoder) dealOneSiType(id int, SiTyp SiType, id2Portable map[int]S
 			registeredSiType[id] = typeString
 			return typeString
 		}
-
+	} else {
+		registeredSiType[id] = "NULL"
+		return "NULL"
 	}
 	return ""
 }
