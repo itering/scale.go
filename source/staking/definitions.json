@@ -147,5 +147,28 @@
         "Null"
       ]
     ]
+  },
+  "SubmissionIndicesOf": "BTreeMap<ElectionScore, u32>",
+  "SignedSubmissionOf": "SignedSubmission",
+  "SignedSubmission": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "who",
+        "AccountId"
+      ],
+      [
+        "deposit",
+        "Balance"
+      ],
+      [
+        "solution",
+        "RawSolution"
+      ],
+      [
+        "reward",
+        "Balance"
+      ]
+    ]
   }
 }
