@@ -42,5 +42,7 @@
       ]
     ]
   },
-  "AssetId": "u32"
+  "AssetId": "u32",
+  "BlockNumberFor": "BlockNumber",
+  "BlockNumberOf": "BlockNumber"
 }
