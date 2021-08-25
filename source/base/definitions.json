@@ -123,6 +123,7 @@
   "U256": "[u8; 32]",
   "H1024": "[u8; 128]",
   "H2048": "[u8; 256]",
+  "AccountId32": "[u8; 32]",
   "Linkage": {
     "type": "struct",
     "type_mapping": [
