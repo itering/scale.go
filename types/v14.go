@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"github.com/huandu/xstrings"
 	"github.com/itering/scale.go/utiles"
+	"regexp"
+	"strings"
 )
 
 // {
@@ -106,6 +108,31 @@ func (m *MetadataV14Decoder) Process() {
 			}
 		}
 		modulesType[k].Errors = module.Errors
+
+		// Constant
+		for index, constant := range module.Constants {
+			variant := registeredSiType[constant.TypeValue]
+			if variant == "" {
+				panic(fmt.Sprintf("%d constant value not variant", constant.TypeValue))
+			}
+			module.Constants[index].Type = variant
+		}
+
+		// Storage
+		for index, storage := range module.Storage {
+			if storage.Type.Origin == "PlainType" {
+				variant := registeredSiType[*storage.Type.PlainTypeValue]
+				module.Storage[index].Type.PlainType = &variant
+			} else {
+				if maps := storage.Type.NMapType; maps != nil {
+					module.Storage[index].Type.NMapType = &NMapType{
+						Hashers: maps.Hashers,
+						Value:   registeredSiType[maps.ValueId],
+						KeyVec:  TupleDisassemble(registeredSiType[maps.KeysId]),
+					}
+				}
+			}
+		}
 	}
 	result.Metadata.Modules = modulesType
 	extrinsicMetadata := m.ProcessAndUpdateData("ExtrinsicMetadataV14").(map[string]interface{})
@@ -212,53 +239,26 @@ type MetadataV14ModuleStorageEntry struct {
 func (m *MetadataV14ModuleStorageEntry) Process() {
 	m.Name = m.ProcessAndUpdateData("String").(string)
 	m.Modifier = m.ProcessAndUpdateData("StorageModify").(string)
-	storageFunctionType := m.ProcessAndUpdateData("StorageFunctionType").(string)
+	storageFunctionType := m.ProcessAndUpdateData("StorageFunctionTypeV14").(string)
 
 	switch storageFunctionType {
-	case "MapType":
-		m.Hasher = m.ProcessAndUpdateData("StorageHasher").(string)
-		m.Type = StorageType{
-			Origin: "MapType",
-			MapTypeValue: &MapTypeValue{
-				Hasher: m.Hasher,
-				Key:    m.ProcessAndUpdateData("SiLookupTypeId").(int),
-				Value:  m.ProcessAndUpdateData("SiLookupTypeId").(int),
-			},
-		}
-	case "DoubleMapType":
-		m.Hasher = m.ProcessAndUpdateData("StorageHasher").(string)
-		key1 := m.ProcessAndUpdateData("SiLookupTypeId").(int)
-		key2 := m.ProcessAndUpdateData("SiLookupTypeId").(int)
-		value := m.ProcessAndUpdateData("SiLookupTypeId").(int)
-		key2Hasher := m.ProcessAndUpdateData("StorageHasher").(string)
-		m.Type = StorageType{
-			Origin: "DoubleMapType",
-			DoubleMapTypeValue: &MapTypeValue{
-				Hasher:     m.Hasher,
-				Key:        key1,
-				Key2:       key2,
-				Value:      value,
-				Key2Hasher: key2Hasher,
-			},
-		}
 	case "PlainType":
 		PlainTypeValue := m.ProcessAndUpdateData("SiLookupTypeId").(int)
 		m.Type = StorageType{
 			Origin:         "PlainType",
 			PlainTypeValue: &PlainTypeValue,
 		}
-	case "NMap":
-		KeyVec := m.ProcessAndUpdateData("SiLookupTypeId").(int)
+	case "Map":
 		var hasherVec []string
 		for _, v := range m.ProcessAndUpdateData("Vec<StorageHasher>").([]interface{}) {
 			hasherVec = append(hasherVec, v.(string))
 		}
 		m.Type = StorageType{
-			Origin: "NMapType",
-			NMapTypeValue: &NMapTypeValue{
+			Origin: "Map",
+			NMapType: &NMapType{
 				Hashers: hasherVec,
-				KeyVec:  KeyVec,
-				Value:   m.ProcessAndUpdateData("SiLookupTypeId").(int),
+				KeysId:  m.ProcessAndUpdateData("SiLookupTypeId").(int),
+				ValueId: m.ProcessAndUpdateData("SiLookupTypeId").(int),
 			}}
 	}
 
@@ -301,6 +301,20 @@ func (m *PalletConstantMetadataV14) Process() {
 	}
 }
 
-//     "errors_value": {
-//        "type": 120
-//      },
+func TupleDisassemble(typeString string) []string {
+	if typeString != "" && string(typeString[0]) == "(" && typeString[len(typeString)-1:] == ")" {
+		var types []string
+		reg := regexp.MustCompile(`[\<\(](.*?)[\>\)]`)
+		typeString := typeString[1 : len(typeString)-1]
+		typeParts := reg.FindAllString(typeString, -1)
+		for _, part := range typeParts {
+			typeString = strings.ReplaceAll(typeString, part, strings.ReplaceAll(part, ",", "#"))
+		}
+		for _, v := range strings.Split(typeString, ",") {
+			types = append(types, strings.ReplaceAll(strings.TrimSpace(v), "#", ","))
+		}
+		return types
+
+	}
+	return []string{typeString}
+}

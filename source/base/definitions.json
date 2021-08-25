@@ -44,6 +44,13 @@
       "NMap"
     ]
   },
+  "StorageFunctionTypeV14": {
+    "type": "enum",
+    "value_list": [
+      "PlainType",
+      "Map"
+    ]
+  },
   "Conviction": {
     "type": "enum",
     "value_list": [

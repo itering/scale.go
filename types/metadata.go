@@ -24,15 +24,12 @@ type MetadataStorage struct {
 }
 
 type StorageType struct {
-	Origin             string         `json:"origin"`
-	PlainType          *string        `json:"plain_type,omitempty"`
-	PlainTypeValue     *int           `json:"PlainTypeValue,omitempty"`
-	MapType            *MapType       `json:"map_type,omitempty"`
-	MapTypeValue       *MapTypeValue  `json:"map_type_value,omitempty"`
-	DoubleMapType      *MapType       `json:"double_map_type,omitempty"`
-	DoubleMapTypeValue *MapTypeValue  `json:"double_map_type_value,omitempty"`
-	NMapType           *NMapType      `json:"n_map_type,omitempty"`
-	NMapTypeValue      *NMapTypeValue `json:"n_map_type_value,omitempty"`
+	Origin         string    `json:"origin"`
+	PlainType      *string   `json:"plain_type,omitempty"`
+	PlainTypeValue *int      `json:"PlainTypeValue,omitempty"`
+	MapType        *MapType  `json:"map_type,omitempty"`
+	DoubleMapType  *MapType  `json:"double_map_type,omitempty"`
+	NMapType       *NMapType `json:"n_map_type,omitempty"`
 }
 
 type MapType struct {
@@ -56,12 +53,8 @@ type NMapType struct {
 	Hashers []string `json:"hashers"`
 	KeyVec  []string `json:"key_vec"`
 	Value   string   `json:"value"`
-}
-
-type NMapTypeValue struct {
-	Hashers []string `json:"hashers"`
-	KeyVec  int      `json:"key_vec"`
-	Value   int      `json:"value"`
+	KeysId  int      `json:"keys_id"`
+	ValueId int      `json:"value_id"`
 }
 
 type MetadataCalls struct {

@@ -276,3 +276,10 @@ func TestCompactU32_Encode(t *testing.T) {
 	compactU32.Encode(100)
 	assert.Equal(t, "0x9101", compactU32.Data.String())
 }
+
+func TestTupleDisassemble(t *testing.T) {
+	assert.Equal(t, []string{"U32"}, types.TupleDisassemble("U32"))
+	assert.Equal(t, []string{"U32", "U32"}, types.TupleDisassemble("(U32,U32)"))
+	assert.Equal(t, []string{"U32", "(U32,U64)"}, types.TupleDisassemble("(U32,(U32,U64))"))
+	assert.Equal(t, []string{"(U32,U16)", "(U32,U64)"}, types.TupleDisassemble("((U32,U16),(U32,U64))"))
+}
