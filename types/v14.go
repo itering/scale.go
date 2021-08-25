@@ -35,7 +35,7 @@ func (m *MetadataV14Decoder) Process() {
 	// utiles.Debug(portable)
 	m.processSiType(portable)
 	// utiles.Debug(registeredSiType)
-	// fmt.Println("registeredSiType", len(registeredSiType))
+	// fmt.Println("registeredSiType", len(registeredSiType), "portable", len(portable))
 
 	MetadataV14ModuleCall := m.ProcessAndUpdateData("Vec<MetadataV14Module>").([]interface{})
 	bm, _ := json.Marshal(MetadataV14ModuleCall)
@@ -302,7 +302,10 @@ func (m *PalletConstantMetadataV14) Process() {
 }
 
 func TupleDisassemble(typeString string) []string {
-	if typeString != "" && string(typeString[0]) == "(" && typeString[len(typeString)-1:] == ")" {
+	if typeString == "" {
+		panic("nil typeString")
+	}
+	if string(typeString[0]) == "(" && typeString[len(typeString)-1:] == ")" {
 		var types []string
 		reg := regexp.MustCompile(`[\<\(](.*?)[\>\)]`)
 		typeString := typeString[1 : len(typeString)-1]

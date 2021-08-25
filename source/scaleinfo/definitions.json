@@ -190,11 +190,32 @@
         "SiTypeDefBitSequence"
       ],
       [
+        "Range",
+        "SiTypeDefRange"
+      ],
+      [
         "HistoricMetaCompat",
         "String"
       ]
     ],
     "type": "enum"
+  },
+  "SiTypeDefRange": {
+    "type_mapping": [
+      [
+        "start",
+        "SiLookupTypeId"
+      ],
+      [
+        "end",
+        "SiLookupTypeId"
+      ],
+      [
+        "inclusive",
+        "bool"
+      ]
+    ],
+    "type": "struct"
   },
   "SiTypeDefPrimitive": {
     "value_list": [

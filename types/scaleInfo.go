@@ -26,14 +26,15 @@ type SiTypeParameter struct {
 }
 
 type SiTypeDef struct {
-	Composite   *SiTypeDefComposite   `json:"Composite,omitempty"`
-	Variant     *SiTypeDefVariant     `json:"Variant,omitempty"`
-	Sequence    *SiTypeDefSequence    `json:"Sequence,omitempty"`
-	Array       *SiTypeDefArray       `json:"Array,omitempty"`
-	Tuple       *SiTypeDefTuple       `json:"Tuple,omitempty"`
-	Primitive   *SiTypeDefPrimitive   `json:"Primitive,omitempty"`
-	Compact     *SiTypeDefCompact     `json:"Compact,omitempty"`
-	BitSequence *SiTypeDefBitSequence `json:"BitSequence,omitempty"`
+	Composite      *SiTypeDefComposite   `json:"Composite,omitempty"`
+	Variant        *SiTypeDefVariant     `json:"Variant,omitempty"`
+	Sequence       *SiTypeDefSequence    `json:"Sequence,omitempty"`
+	Array          *SiTypeDefArray       `json:"Array,omitempty"`
+	Tuple          *SiTypeDefTuple       `json:"Tuple,omitempty"`
+	Primitive      *SiTypeDefPrimitive   `json:"Primitive,omitempty"`
+	Compact        *SiTypeDefCompact     `json:"Compact,omitempty"`
+	BitSequence    *SiTypeDefBitSequence `json:"BitSequence,omitempty"`
+	SiTypeDefRange *SiTypeDefRange       `json:"Range,omitempty"`
 	// HistoricMetaCompat compatibility
 	HistoricMetaCompat string `json:"HistoricMetaCompat,omitempty"`
 }
@@ -47,6 +48,12 @@ type SiField struct {
 	Type     int      `json:"type"`
 	TypeName string   `json:"typeName"`
 	Docs     []string `json:"docs"`
+}
+
+type SiTypeDefRange struct {
+	Start     int  `json:"start"`
+	End       int  `json:"end"`
+	Inclusive bool `json:"inclusive"`
 }
 
 type SiTypeDefVariant struct {
@@ -195,8 +202,13 @@ func (s *ScaleDecoder) dealOneSiType(id int, SiTyp SiType, id2Portable map[int]S
 		}
 		registeredSiType[id] = fmt.Sprintf("compact<%s>", compactType)
 		return registeredSiType[id]
-	} else if SiTyp.Def.BitSequence != nil { // Todo
-
+	} else if SiTyp.Def.BitSequence != nil { //
+		// https://github.com/polkadot-js/api/blob/662aef203356b8f391415e548e1eb5339f68f828/packages/types/src/generic/PortableRegistry.ts#L293
+		// typeString := SiTyp.Path[len(SiTyp.Path)-1]
+		registeredSiType[id] = fmt.Sprintf("BitVec")
+		// RegCustomTypes(map[string]source.TypeStruct{typeString: {Type: "set", BitLength: 0, ValueList: nil}})
+	} else if SiTyp.Def.SiTypeDefRange != nil {
+		// todo
 	} else if SiTyp.Def.Variant != nil {
 		specialVariant := SiTyp.Path[0]
 
