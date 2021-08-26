@@ -145,6 +145,17 @@ func (b *Bool) Process() {
 	b.Value = b.getNextBool()
 }
 
+type CompactMoment struct {
+	CompactU32
+}
+
+func (m *CompactMoment) Process() {
+	m.CompactU32.Process()
+	if m.Value.(int) > 10000000000 {
+		m.Value = m.Value.(int) / 1000
+	}
+}
+
 type Moment struct {
 	U64
 }
