@@ -146,18 +146,13 @@ func (b *Bool) Process() {
 }
 
 type Moment struct {
-	CompactU32
-}
-
-func (m *Moment) Init(data ScaleBytes, option *ScaleDecoderOption) {
-	m.TypeString = "Compact<Moment>"
-	m.ScaleDecoder.Init(data, option)
+	U64
 }
 
 func (m *Moment) Process() {
-	m.CompactU32.Process()
-	if m.Value.(int) > 10000000000 {
-		m.Value = m.Value.(int) / 1000
+	m.U64.Process()
+	if m.Value.(uint64) > 10000000000 {
+		m.Value = m.Value.(uint64) / 1000
 	}
 }
 
