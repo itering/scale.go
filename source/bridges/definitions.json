@@ -12,8 +12,187 @@
       ]
     ]
   },
+  "MessageKey": {
+    "type_mapping": [
+      [
+        "laneId",
+        "LaneId"
+      ],
+      [
+        "nonce",
+        "MessageNonce"
+      ]
+    ],
+    "type": "struct"
+  },
+  "ChainId": "[u8; 4]",
+  "MessagesProofOf": {
+    "type_mapping": [
+      [
+        "bridgedHeaderHash",
+        "BridgedBlockHash"
+      ],
+      [
+        "storageProof",
+        "Vec<Bytes>"
+      ],
+      [
+        "lane",
+        "LaneId"
+      ],
+      [
+        "noncesStart",
+        "MessageNonce"
+      ],
+      [
+        "noncesEnd",
+        "MessageNonce"
+      ]
+    ],
+    "type": "struct"
+  },
+  "RelayerId": "AccountId",
+  "DeliveredMessages": {
+    "type_mapping": [
+      [
+        "begin",
+        "MessageNonce"
+      ],
+      [
+        "end",
+        "MessageNonce"
+      ],
+      [
+        "dispatchResults",
+        "BitVec"
+      ]
+    ],
+    "type": "struct"
+  },
+  "OutboundLaneData": {
+    "type_mapping": [
+      [
+        "latestGeneratedNonce",
+        "MessageNonce"
+      ],
+      [
+        "latestReceivedNonce",
+        "MessageNonce"
+      ],
+      [
+        "oldestUnprunedNonce",
+        "MessageNonce"
+      ]
+    ],
+    "type": "struct"
+  },
+  "Parameter": "Null",
+  "OperatingMode": {
+    "value_list": [
+      "Normal",
+      "RejectingOutboundMessages",
+      "Halted"
+    ],
+    "type": "enum"
+  },
+  "DispatchFeePayment": {
+    "value_list": [
+      "AtSourceChain",
+      "AtTargetChain"
+    ],
+    "type": "enum"
+  },
+  "MessageNonce": "u64",
+  "OutboundPayload": {
+    "type_mapping": [
+      [
+        "specVersion",
+        "u32"
+      ],
+      [
+        "weight",
+        "Weight"
+      ],
+      [
+        "origin",
+        "CallOrigin"
+      ],
+      [
+        "dispatchFeePayment",
+        "DispatchFeePayment"
+      ],
+      [
+        "call",
+        "Bytes"
+      ]
+    ],
+    "type": "struct"
+  },
+  "BridgedBlockNumber": "BlockNumber",
+  "MessagesDeliveryProofOf": {
+    "type_mapping": [
+      [
+        "bridgedHeaderHash",
+        "BlockHash"
+      ],
+      [
+        "storageProof",
+        "Vec<Bytes>"
+      ],
+      [
+        "lane",
+        "LaneId"
+      ]
+    ],
+    "type": "struct"
+  },
+  "BridgedBlockHash": "H256",
+  "InboundLaneData": {
+    "type_mapping": [
+      [
+        "relayers",
+        "Vec<UnrewardedRelayer>"
+      ],
+      [
+        "lastConfirmedNonce",
+        "MessageNonce"
+      ]
+    ],
+    "type": "struct"
+  },
+  "MessageData": {
+    "type_mapping": [
+      [
+        "payload",
+        "Bytes"
+      ],
+      [
+        "fee",
+        "Balance"
+      ]
+    ],
+    "type": "struct"
+  },
+  "OutboundMessageFee": "Balance",
+  "UnrewardedRelayersState": {
+    "type_mapping": [
+      [
+        "unrewardedRelayer_Entries",
+        "MessageNonce"
+      ],
+      [
+        "messagesInOldestEntry",
+        "MessageNonce"
+      ],
+      [
+        "totalMessages",
+        "MessageNonce"
+      ]
+    ],
+    "type": "struct"
+  },
+  "BridgedHeader": "Header",
   "InitializationData": {
-    "type": "struct",
     "type_mapping": [
       [
         "header",
@@ -31,28 +210,40 @@
         "isHalted",
         "bool"
       ]
-    ]
+    ],
+    "type": "struct"
   },
   "super::initializationdata<bridgedheader<t, i>>": "InitializationData",
-  "Commit": {
-    "type": "struct",
+  "CallOrigin": {
     "type_mapping": [
       [
-        "target_hash",
-        "BridgedBlockHash"
+        "SourceRoot",
+        "Null"
       ],
       [
-        "target_number",
-        "BridgedBlockNumber"
+        "TargetAccount",
+        "(AccountId, MultiSigner, MultiSignature)"
       ],
       [
-        "precommits",
-        "Vec<SignedPrecommit>"
+        "SourceAccount",
+        "AccountId"
       ]
-    ]
+    ],
+    "type": "enum"
   },
-  "BlockHash": "H256",
-  "BridgedBlockHash": "H256",
-  "BridgedBlockNumber": "BlockNumber",
-  "BridgedHeader": "Header"
+  "InboundRelayer": "AccountId",
+  "UnrewardedRelayer": {
+    "type_mapping": [
+      [
+        "relayer",
+        "RelayerId"
+      ],
+      [
+        "messages",
+        "DeliveredMessages"
+      ]
+    ],
+    "type": "struct"
+  },
+  "LaneId": "[u8; 4]"
 }
