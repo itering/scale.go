@@ -3,6 +3,7 @@ package types
 import (
 	"bytes"
 	"encoding/binary"
+	"encoding/json"
 	"fmt"
 	"github.com/huandu/xstrings"
 	"github.com/itering/scale.go/utiles"
@@ -307,8 +308,8 @@ func (e *Enum) Process() {
 				break
 			}
 		}
-		rustEnum := make(map[int]string)
 		if isCLikeEnum {
+			rustEnum := make(map[int]string)
 			for index, v := range e.TypeMapping.Names {
 				rustEnum[utiles.StringToInt(e.TypeMapping.Types[index])] = v
 			}
@@ -316,6 +317,16 @@ func (e *Enum) Process() {
 			return
 		}
 		if subType := e.TypeMapping.Types[e.Index]; subType != "" {
+			// struct subType
+			var typeMap [][]string
+			if len(subType) > 4 && subType[0:2] == "[[" && json.Unmarshal([]byte(subType), &typeMap) == nil && len(typeMap) > 0 && len(typeMap[0]) == 2 {
+				result := make(map[string]interface{})
+				for _, v := range typeMap {
+					result[v[0]] = e.ProcessAndUpdateData(v[1])
+				}
+				e.Value = map[string]interface{}{e.TypeMapping.Names[e.Index]: result}
+				return
+			}
 			e.Value = map[string]interface{}{e.TypeMapping.Names[e.Index]: e.ProcessAndUpdateData(subType)}
 			return
 		}

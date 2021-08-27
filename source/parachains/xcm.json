@@ -1,433 +1,4 @@
 {
-  "XcmTransferReserveAsset": {
-    "type_mapping": [
-      [
-        "assets",
-        "Vec<MultiAsset>"
-      ],
-      [
-        "dest",
-        "MultiLocation"
-      ],
-      [
-        "effects",
-        "Vec<XcmOrder>"
-      ]
-    ],
-    "type": "struct"
-  },
-  "XcmTeleportAsset": "XcmAssetEffects",
-  "XcmOrderBuyExecution": {
-    "type_mapping": [
-      [
-        "fees",
-        "MultiAsset"
-      ],
-      [
-        "weight",
-        "u64"
-      ],
-      [
-        "debt",
-        "u64"
-      ],
-      [
-        "haltOnError",
-        "bool"
-      ],
-      [
-        "xcm",
-        "Vec<Xcm>"
-      ]
-    ],
-    "type": "struct"
-  },
-  "XcmOrderQueryHolding": {
-    "type_mapping": [
-      [
-        "queryId",
-        "Compact<u64>"
-      ],
-      [
-        "dest",
-        "MultiLocation"
-      ],
-      [
-        "assets",
-        "Vec<MultiAsset>"
-      ]
-    ],
-    "type": "struct"
-  },
-  "MultiAssetAbstractNonFungible": {
-    "type_mapping": [
-      [
-        "class",
-        "Vec<u8>"
-      ],
-      [
-        "instance",
-        "AssetInstance"
-      ]
-    ],
-    "type": "struct"
-  },
-  "MultiAsset": {
-    "type_mapping": [
-      [
-        "None",
-        "Null"
-      ],
-      [
-        "All",
-        "Null"
-      ],
-      [
-        "AllFungible",
-        "Null"
-      ],
-      [
-        "AllNonFungible",
-        "Null"
-      ],
-      [
-        "AllAbstractFungible",
-        "Vec<u8>"
-      ],
-      [
-        "AllAbstractNonFungible",
-        "Vec<u8>"
-      ],
-      [
-        "AllConcreteFungible",
-        "MultiLocation"
-      ],
-      [
-        "AllConcreteNonFungible",
-        "MultiLocation"
-      ],
-      [
-        "AbstractFungible",
-        "MultiAssetAbstractFungible"
-      ],
-      [
-        "AbstractNonFungible",
-        "MultiAssetAbstractNonFungible"
-      ],
-      [
-        "ConcreteFungible",
-        "MultiAssetConcreteFungible"
-      ],
-      [
-        "ConcreteNonFungible",
-        "MultiAssetConcreteNonFungible"
-      ]
-    ],
-    "type": "enum"
-  },
-  "VersionedMultiAsset": {
-    "type_mapping": [
-      [
-        "V0",
-        "MultiAsset"
-      ]
-    ],
-    "type": "enum"
-  },
-  "MultiAssetConcreteFungible": {
-    "type_mapping": [
-      [
-        "id",
-        "MultiLocation"
-      ],
-      [
-        "amount",
-        "Compact<u128>"
-      ]
-    ],
-    "type": "struct"
-  },
-  "MultiAssetConcreteNonFungible": {
-    "type_mapping": [
-      [
-        "class",
-        "MultiLocation"
-      ],
-      [
-        "instance",
-        "AssetInstance"
-      ]
-    ],
-    "type": "struct"
-  },
-  "AccountIndex64Junction": {
-    "type_mapping": [
-      [
-        "network",
-        "NetworkId"
-      ],
-      [
-        "index",
-        "Compact<u64>"
-      ]
-    ],
-    "type": "struct"
-  },
-  "XcmOrderDepositAsset": {
-    "type_mapping": [
-      [
-        "assets",
-        "Vec<MultiAsset>"
-      ],
-      [
-        "dest",
-        "MultiLocation"
-      ]
-    ],
-    "type": "struct"
-  },
-  "Junction": {
-    "type_mapping": [
-      [
-        "Parent",
-        "Null"
-      ],
-      [
-        "Parachain",
-        "Compact<u32>"
-      ],
-      [
-        "AccountId32",
-        "AccountId32Junction"
-      ],
-      [
-        "AccountIndex64",
-        "AccountIndex64Junction"
-      ],
-      [
-        "AccountKey20",
-        "AccountKey20Junction"
-      ],
-      [
-        "PalletInstance",
-        "u8"
-      ],
-      [
-        "GeneralIndex",
-        "Compact<u128>"
-      ],
-      [
-        "GeneralKey",
-        "Vec<u8>"
-      ],
-      [
-        "OnlyChild",
-        "Null"
-      ],
-      [
-        "Plurality",
-        "PluralityJunction"
-      ]
-    ],
-    "type": "enum"
-  },
-  "PluralityJunction": {
-    "type_mapping": [
-      [
-        "id",
-        "BodyId"
-      ],
-      [
-        "part",
-        "BodyPart"
-      ]
-    ],
-    "type": "struct"
-  },
-  "XcmOrder": {
-    "type_mapping": [
-      [
-        "Null",
-        "Null"
-      ],
-      [
-        "DepositAsset",
-        "XcmOrderDepositAsset"
-      ],
-      [
-        "DepositReserveAsset",
-        "XcmOrderDepositReserveAsset"
-      ],
-      [
-        "ExchangeAsset",
-        "XcmOrderExchangeAsset"
-      ],
-      [
-        "InitiateReserveWithdraw",
-        "XcmOrderInitiateReserveWithdraw"
-      ],
-      [
-        "InitiateTeleport",
-        "XcmOrderInitiateTeleport"
-      ],
-      [
-        "QueryHolding",
-        "XcmOrderQueryHolding"
-      ],
-      [
-        "BuyExecution",
-        "XcmOrderBuyExecution"
-      ]
-    ],
-    "type": "enum"
-  },
-  "XcmHrmpNewChannelOpenRequest": {
-    "type_mapping": [
-      [
-        "sender",
-        "Compact<u32>"
-      ],
-      [
-        "maxMessageSize",
-        "Compact<u32>"
-      ],
-      [
-        "maxCapacity",
-        "Compact<u32>"
-      ]
-    ],
-    "type": "struct"
-  },
-  "XcmRelayedFrom": {
-    "type_mapping": [
-      [
-        "who",
-        "MultiLocation"
-      ],
-      [
-        "message",
-        "Xcm"
-      ]
-    ],
-    "type": "struct"
-  },
-  "XcmOrigin": {
-    "type_mapping": [
-      [
-        "Xcm",
-        "MultiLocation"
-      ]
-    ],
-    "type": "enum"
-  },
-  "MultiAssetAbstractFungible": {
-    "type_mapping": [
-      [
-        "id",
-        "Vec<u8>"
-      ],
-      [
-        "instance",
-        "Compact<u128>"
-      ]
-    ],
-    "type": "struct"
-  },
-  "AccountKey20Junction": {
-    "type_mapping": [
-      [
-        "network",
-        "NetworkId"
-      ],
-      [
-        "index",
-        "[u8; 20]"
-      ]
-    ],
-    "type": "struct"
-  },
-  "VersionedXcm": {
-    "type_mapping": [
-      [
-        "V0",
-        "Xcm"
-      ]
-    ],
-    "type": "enum"
-  },
-  "Xcm<Call>": "Xcm",
-  "BodyPart": {
-    "type_mapping": [
-      [
-        "Voice",
-        "NULL"
-      ],
-      [
-        "Members",
-        "Compact<u32>"
-      ],
-      [
-        "Fraction",
-        "BodyPartFraction"
-      ],
-      [
-        "AtLeastProportion",
-        "BodyPartAtLeastProportion"
-      ],
-      [
-        "Voice",
-        "NULL"
-      ]
-    ],
-    "type": "enum"
-  },
-  "Outcome": {
-    "type_mapping": [
-      [
-        "Complete",
-        "Weight"
-      ],
-      [
-        "Incomplete",
-        "(Weight, XcmError)"
-      ],
-      [
-        "Error",
-        "XcmError"
-      ]
-    ],
-    "type": "enum"
-  },
-  "XcmOrderInitiateReserveWithdraw": {
-    "type_mapping": [
-      [
-        "assets",
-        "Vec<MultiAsset>"
-      ],
-      [
-        "reserve",
-        "MultiLocation"
-      ],
-      [
-        "effects",
-        "Vec<XcmOrder>"
-      ]
-    ],
-    "type": "struct"
-  },
-  "XcmQueryResponse": {
-    "type_mapping": [
-      [
-        "queryId",
-        "Compact<u64>"
-      ],
-      [
-        "response",
-        "XcmResponse"
-      ]
-    ],
-    "type": "struct"
-  },
   "NetworkId": {
     "type_mapping": [
       [
@@ -449,35 +20,269 @@
     ],
     "type": "enum"
   },
-  "XcmOrderExchangeAsset": {
+  "XcmV1": {
     "type_mapping": [
       [
-        "give",
-        "Vec<MultiAsset>"
+        "WithdrawAsset",
+        "[[\"Vassets\", \"MultiAssetsV1\"], [\"effects\", \"Vec<XcmOrderV1>\"]]"
       ],
       [
-        "receive",
-        "Vec<MultiAsset>"
+        "ReserveAssetDeposit",
+        "[[\"Vassets\", \"MultiAssetsV1\"], [\"effects\", \"Vec<XcmOrderV1>\"]]"
+      ],
+      [
+        "ReceiveTeleportedAsset",
+        "[[\"Vassets\", \"MultiAssetsV1\"], [\"effects\", \"Vec<XcmOrderV1>\"]]"
+      ],
+      [
+        "QueryResponse",
+        "[[\"queryId\", \"Compact<u64>\"], [\"response\", \"XcmResponse\"]]"
+      ],
+      [
+        "TransferAsset",
+        "[[\"Vassets\", \"MultiAssetsV1\"], [\"dest\", \"MultiLocationV1\"]]"
+      ],
+      [
+        "TransferReserveAsset",
+        "[[\"Vassets\", \"MultiAssetsV1\"], [\"dest\", \"MultiLocationV1\"], [\"effects\", \"Vec<XcmOrderV1>\"]]"
+      ],
+      [
+        "Transact",
+        "[[\"originType\", \"XcmOriginKind\"], [\"requireWeightAtMost\", \"u64\"], [\"call\", \"DoubleEncodedCall\"]]"
+      ],
+      [
+        "HrmpNewChannelOpenRequest",
+        "[[\"sender\", \"Compact<u32>\"], [\"maxMessageSize\", \"Compact<u32>\"], [\"maxCapacity\", \"Compact<u32>\"]]"
+      ],
+      [
+        "HrmpChannelAccepted",
+        "[[\"recipient\", \"Compact<u32>\"]]"
+      ],
+      [
+        "HrmpChannelClosing",
+        "[[\"initiator\", \"Compact<u32>\"], [\"sender\", \"Compact<u32>\"], [\"recipient\", \"Compact<u32>\"]]"
+      ],
+      [
+        "RelayedFrom",
+        "[[\"who\", \"MultiLocationV1\"], [\"message\", \"XcmV1\"]]"
       ]
     ],
-    "type": "struct"
+    "type": "enum"
   },
-  "XcmOrderDepositReserveAsset": {
+  "MultiAsset": "MultiAssetV1",
+  "XcmResponse": {
     "type_mapping": [
       [
-        "assets",
+        "Assets",
         "Vec<MultiAsset>"
-      ],
-      [
-        "dest",
-        "MultiLocation"
-      ],
-      [
-        "effects",
-        "Vec<XcmOrder>"
       ]
     ],
-    "type": "struct"
+    "type": "enum"
+  },
+  "MultiAssetFilterV1": {
+    "type_mapping": [
+      [
+        "Definite",
+        "MultiAssetsV1"
+      ],
+      [
+        "Wild",
+        "WildMultiAssetV1"
+      ]
+    ],
+    "type": "enum"
+  },
+  "Fungibility": {
+    "type_mapping": [
+      [
+        "Fungible",
+        "u128"
+      ],
+      [
+        "NonFungible",
+        "AssetInstance"
+      ]
+    ],
+    "type": "enum"
+  },
+  "MultiLocationV1": "MultiLocation",
+  "MultiLocationV0": "MultiLocation",
+  "MultiLocation": {
+    "type_mapping": [
+      [
+        "Here",
+        "Null"
+      ],
+      [
+        "X1",
+        "Junction"
+      ],
+      [
+        "X2",
+        "(Junction, Junction)"
+      ],
+      [
+        "X3",
+        "(Junction, Junction, Junction)"
+      ],
+      [
+        "X4",
+        "(Junction, Junction, Junction, Junction)"
+      ],
+      [
+        "X5",
+        "(Junction, Junction, Junction, Junction, Junction)"
+      ],
+      [
+        "X6",
+        "(Junction, Junction, Junction, Junction, Junction, Junction)"
+      ],
+      [
+        "X7",
+        "(Junction, Junction, Junction, Junction, Junction, Junction, Junction)"
+      ],
+      [
+        "X8",
+        "(Junction, Junction, Junction, Junction, Junction, Junction, Junction, Junction)"
+      ]
+    ],
+    "type": "enum"
+  },
+  "XcmV0": {
+    "type_mapping": [
+      [
+        "WithdrawAsset",
+        "[[\"assets\", \"Vec<MultiAssetV0>\"], [\"effects\", \"Vec<XcmOrderV0>\"]]"
+      ],
+      [
+        "ReserveAssetDeposit",
+        "[[\"assets\", \"Vec<MultiAssetV0>\"], [\"effects\", \"Vec<XcmOrderV0>\"]]"
+      ],
+      [
+        "ReceiveTeleportedAsset",
+        "[[\"assets\", \"Vec<MultiAssetV0>\"], [\"effects\", \"Vec<XcmOrderV0>\"]]"
+      ],
+      [
+        "QueryResponse",
+        "[[\"queryId\", \"Compact<u64>\"], [\"response\", \"XcmResponse\"]]"
+      ],
+      [
+        "TransferAsset",
+        "[[\"assets\", \"Vec<MultiAssetV0>\"], [\"dest\", \"MultiLocationV0\"]]"
+      ],
+      [
+        "TransferReserveAsset",
+        "[[\"assets\", \"Vec<MultiAssetV0>\"], [\"dest\", \"MultiLocationV0\"], [\"effects\", \"Vec<XcmOrderV0>\"]]"
+      ],
+      [
+        "Transact",
+        "[[\"originType\", \"XcmOriginKind\"], [\"requireWeightAtMost\", \"u64\"], [\"call\", \"DoubleEncodedCall\"]]"
+      ],
+      [
+        "HrmpNewChannelOpenRequest",
+        "[[\"sender\", \"Compact<u32>\"], [\"maxMessageSize\", \"Compact<u32>\"], [\"maxCapacity\", \"Compact<u32>\"]]"
+      ],
+      [
+        "HrmpChannelAccepted",
+        "[[\"recipient\", \"Compact<u32>\"]]"
+      ],
+      [
+        "HrmpChannelClosing",
+        "[[\"initiator\", \"Compact<u32>\"], [\"sender\", \"Compact<u32>\"], [\"recipient\", \"Compact<u32>\"]]"
+      ],
+      [
+        "RelayedFrom",
+        "[[\"who\", \"MultiLocationV0\"], [\"message\", \"XcmV0\"]]"
+      ]
+    ],
+    "type": "enum"
+  },
+  "XcmOrderV0": {
+    "type_mapping": [
+      [
+        "Null",
+        "Null"
+      ],
+      [
+        "DepositAsset",
+        "[[\"assets\", \"Vec<MultiAssetV0>\"], [\"dest\", \"MultiLocationV0\"]]"
+      ],
+      [
+        "DepositReserveAsset",
+        "[[\"assets\", \"Vec<MultiAssetV0>\"], [\"dest\", \"MultiLocationV0\"], [\"effects\", \"Vec<XcmOrderV0>\"]]"
+      ],
+      [
+        "ExchangeAsset",
+        "[[\"give\", \"Vec<MultiAssetV0>\"], [\"receive\", \"Vec<MultiAssetV0>\"]]"
+      ],
+      [
+        "InitiateReserveWithdraw",
+        "[[\"assets\", \"Vec<MultiAssetV0>\"], [\"reserve\", \"MultiLocationV0\"], [\"effects\", \"Vec<XcmOrderV0>\"]]"
+      ],
+      [
+        "InitiateTeleport",
+        "[[\"assets\", \"Vec<MultiAsset>\"], [\"dest\", \"MultiLocationV0\"], [\"effects\", \"Vec<XcmOrderV0>\"]]"
+      ],
+      [
+        "QueryHolding",
+        "[[\"queryId\", \"Compact<u64>\"], [\"dest\", \"MultiLocationV0\"], [\"assets\", \"Vec<MultiAssetV0>\"]]"
+      ],
+      [
+        "BuyExecution",
+        "[[\"fees\", \"MultiAsset\"], [\"weight\", \"u64\"], [\"debt\", \"u64\"], [\"haltOnError\", \"bool\"], [\"xcm\", \"Vec<XcmV0>\"]]"
+      ]
+    ],
+    "type": "enum"
+  },
+  "XcmOrderV1": {
+    "type_mapping": [
+      [
+        "Noop",
+        "Null"
+      ],
+      [
+        "DepositAsset",
+        "[[\"assets\", \"MultiAssetFilterV1\"], [\"maxAssets\", \"u32\"], [\"beneficiary\", \"MultiLocationV1\"]]"
+      ],
+      [
+        "DepositReserveAsset",
+        "[[\"assets\", \"MultiAssetFilterV1\"], [\"maxAssets\", \"u32\"], [\"dest\", \"MultiLocationV1\"], [\"effects\", \"Vec<XcmOrderV1>\"]]"
+      ],
+      [
+        "ExchangeAsset",
+        "[[\"give\", \"MultiAssetFilterV1\"], [\"receive\", \"MultiAssetsV1\"]]"
+      ],
+      [
+        "InitiateReserveWithdraw",
+        "[[\"assets\", \"MultiAssetFilterV1\"], [\"reserve\", \"MultiLocationV1\"], [\"effects\", \"Vec<XcmOrderV1>\"]]"
+      ],
+      [
+        "InitiateTeleport",
+        "[[\"assets\", \"MultiAssetFilterV1\"], [\"dest\", \"MultiLocationV1\"], [\"effects\", \"Vec<XcmOrderV1>\"]]"
+      ],
+      [
+        "QueryHolding",
+        "[[\"queryId\", \"Compact<u64>\"], [\"dest\", \"MultiLocationV1\"], [\"assets\", \"MultiAssetFilterV1\"]]"
+      ],
+      [
+        "BuyExecution",
+        "[[\"fees\", \"MultiAsset\"], [\"weight\", \"u64\"], [\"debt\", \"u64\"], [\"haltOnError\", \"bool\"], [\"orders\", \"Vec<XcmOrderV1>\"], [\"instructions\", \"Vec<XcmV1>\"]]"
+      ]
+    ],
+    "type": "enum"
+  },
+  "VersionedMultiAsset": {
+    "type_mapping": [
+      [
+        "V0",
+        "MultiAssetV0"
+      ],
+      [
+        "V1",
+        "MultiAssetV1"
+      ]
+    ],
+    "type": "enum"
   },
   "XcmError": {
     "type_mapping": [
@@ -588,20 +393,94 @@
     ],
     "type": "enum"
   },
-  "XcmOriginKind": {
-    "value_list": [
-      "Native",
-      "SovereignAccount",
-      "Superuser",
-      "Xcm"
+  "MultiAssets": "Vec<MultiAsset>",
+  "Junction": {
+    "type_mapping": [
+      [
+        "Parent",
+        "Null"
+      ],
+      [
+        "Parachain",
+        "Compact<u32>"
+      ],
+      [
+        "AccountId32",
+        "[[\"network\", \"NetworkId\"], [\"id\", \"AccountId\"]]"
+      ],
+      [
+        "AccountIndex64",
+        "[[\"network\", \"NetworkId\"], [\"index\", \"Compact<u64>\"]]"
+      ],
+      [
+        "AccountKey20",
+        "[[\"network\", \"NetworkId\"], [\"key\", \"[u8; 20]\"]]"
+      ],
+      [
+        "PalletInstance",
+        "u8"
+      ],
+      [
+        "GeneralIndex",
+        "Compact<u128>"
+      ],
+      [
+        "GeneralKey",
+        "Vec<u8>"
+      ],
+      [
+        "OnlyChild",
+        "Null"
+      ],
+      [
+        "Plurality",
+        "[[\"id\", \"BodyId\"], [\"part\", \"BodyPart\"]]"
+      ]
     ],
     "type": "enum"
   },
-  "XcmpMessageFormat": {
-    "value_list": [
-      "ConcatenatedVersionedXcm",
-      "ConcatenatedEncodedBlob",
-      "Signals"
+  "Outcome": {
+    "type_mapping": [
+      [
+        "Complete",
+        "Weight"
+      ],
+      [
+        "Incomplete",
+        "(Weight, XcmError)"
+      ],
+      [
+        "Error",
+        "XcmError"
+      ]
+    ],
+    "type": "enum"
+  },
+  "XcmOrder": "XcmOrderV1",
+  "VersionedXcm": {
+    "type_mapping": [
+      [
+        "V0",
+        "XcmV0"
+      ],
+      [
+        "V1",
+        "XcmV1"
+      ]
+    ],
+    "type": "enum"
+  },
+  "MultiAssetsV1": "Vec<MultiAssetV1>",
+  "VersionedMultiAssets": {
+    "type_mapping": [
+      [
+        "V0",
+        "Vec<MultiAssetV0>"
+      ],
+      [
+        "V1",
+        "MultiAssetsV1"
+      ]
     ],
     "type": "enum"
   },
@@ -612,18 +491,57 @@
     ],
     "type": "enum"
   },
-  "OutboundStatus": {
-    "value_list": [
-      "Ok",
-      "Suspended"
+  "XcmAssetId": {
+    "type_mapping": [
+      [
+        "Concrete",
+        "MultiLocation"
+      ],
+      [
+        "Abstract",
+        "Bytes"
+      ]
     ],
     "type": "enum"
+  },
+  "WildFungibility": {
+    "value_list": [
+      "Fungible",
+      "NonFungible"
+    ],
+    "type": "enum"
+  },
+  "WildMultiAsset": "WildMultiAssetV1",
+  "QueueConfigData": {
+    "type_mapping": [
+      [
+        "suspendThreshold",
+        "u32"
+      ],
+      [
+        "dropThreshold",
+        "u32"
+      ],
+      [
+        "resumeThreshold",
+        "u32"
+      ],
+      [
+        "thresholdWeight",
+        "Weight"
+      ],
+      [
+        "weightRestrictDecay",
+        "Weight"
+      ]
+    ],
+    "type": "struct"
   },
   "BodyId": {
     "type_mapping": [
       [
         "Unit",
-        "NULL"
+        "Null"
       ],
       [
         "Named",
@@ -635,20 +553,29 @@
       ],
       [
         "Executive",
-        "NULL"
+        "Null"
       ],
       [
         "Technical",
-        "NULL"
+        "Null"
       ],
       [
         "Legislative",
-        "NULL"
+        "Null"
       ],
       [
         "Judicial",
-        "NULL"
+        "Null"
       ]
+    ],
+    "type": "enum"
+  },
+  "XcmOriginKind": {
+    "value_list": [
+      "Native",
+      "SovereignAccount",
+      "Superuser",
+      "Xcm"
     ],
     "type": "enum"
   },
@@ -661,78 +588,143 @@
     ],
     "type": "struct"
   },
-  "XcmAssetEffects": {
+  "OutboundStatus": {
+    "value_list": [
+      "Ok",
+      "Suspended"
+    ],
+    "type": "enum"
+  },
+  "MultiAssetV1": {
     "type_mapping": [
       [
-        "assets",
-        "Vec<MultiAsset>"
+        "id",
+        "XcmAssetId"
       ],
       [
-        "effects",
-        "Vec<XcmOrder>"
+        "fungibility",
+        "Fungibility"
       ]
     ],
     "type": "struct"
   },
-  "MultiLocation": {
+  "MultiAssetV0": {
     "type_mapping": [
       [
-        "Null",
+        "None",
         "Null"
       ],
       [
-        "X1",
-        "Junction"
+        "All",
+        "Null"
       ],
       [
-        "X2",
-        "(Junction, Junction)"
+        "AllFungible",
+        "Null"
       ],
       [
-        "X3",
-        "(Junction, Junction, Junction)"
+        "AllNonFungible",
+        "Null"
       ],
       [
-        "X4",
-        "(Junction, Junction, Junction, Junction)"
+        "AllAbstractFungible",
+        "Vec<u8>"
       ],
       [
-        "X5",
-        "(Junction, Junction, Junction, Junction, Junction)"
+        "AllAbstractNonFungible",
+        "Vec<u8>"
       ],
       [
-        "X6",
-        "(Junction, Junction, Junction, Junction, Junction, Junction)"
+        "AllConcreteFungible",
+        "MultiLocation"
       ],
       [
-        "X7",
-        "(Junction, Junction, Junction, Junction, Junction, Junction, Junction)"
+        "AllConcreteNonFungible",
+        "MultiLocation"
       ],
       [
-        "X8",
-        "(Junction, Junction, Junction, Junction, Junction, Junction, Junction, Junction)"
+        "AbstractFungible",
+        "[[\"id\", \"Vec<u8>\"], [\"instance\", \"Compact<u128>\"]]"
+      ],
+      [
+        "AbstractNonFungible",
+        "[[\"class\", \"Vec<u8>\"], [\"instance\", \"AssetInstance\"]]"
+      ],
+      [
+        "ConcreteFungible",
+        "[[\"id\", \"MultiLocation\"], [\"amount\", \"Compact<u128>\"]]"
+      ],
+      [
+        "ConcreteNonFungible",
+        "[[\"class\", \"MultiLocation\"], [\"instance\", \"AssetInstance\"]]"
       ]
     ],
     "type": "enum"
   },
-  "XcmTransact": {
+  "XcmOrigin": {
     "type_mapping": [
       [
-        "originType",
-        "XcmOriginKind"
-      ],
-      [
-        "requireWeightAtMost",
-        "u64"
-      ],
-      [
-        "call",
-        "DoubleEncodedCall"
+        "Xcm",
+        "MultiLocation"
       ]
     ],
-    "type": "struct"
+    "type": "enum"
   },
-  "AssetInstance": {
+  "AssetInstance": "AssetInstanceV1",
+  "BodyPart": {
+    "type_mapping": [
+      [
+        "Voice",
+        "Null"
+      ],
+      [
+        "Members",
+        "Compact<u32>"
+      ],
+      [
+        "Fraction",
+        "[[\"nom\", \"Compact<u32>\"], [\"denom\", \"Compact<u32>\"]]"
+      ],
+      [
+        "AtLeastProportion",
+        "[[\"nom\", \"Compact<u32>\"], [\"denom\", \"Compact<u32>\"]]"
+      ],
+      [
+        "MoreThanProportion",
+        "[[\"nom\", \"Compact<u32>\"], [\"denom\", \"Compact<u32>\"]]"
+      ]
+    ],
+    "type": "enum"
+  },
+  "WildMultiAssetV1": {
+    "type_mapping": [
+      [
+        "All",
+        "Null"
+      ],
+      [
+        "AllOf",
+        "[[\"id\", \"XcmAssetId\"], [\"fungibility\", \"WildFungibility\"]]"
+      ]
+    ],
+    "type": "enum"
+  },
+  "Xcm": "XcmV1",
+  "VersionedMultiLocation": {
+    "type_mapping": [
+      [
+        "V0",
+        "MultiLocationV0"
+      ],
+      [
+        "V1",
+        "MultiLocationV1"
+      ]
+    ],
+    "type": "enum"
+  },
+  "MultiAssetFilter": "MultiAssetFilterV1",
+  "AssetInstanceV0": {
     "type_mapping": [
       [
         "Undefined",
@@ -781,206 +773,45 @@
     ],
     "type": "enum"
   },
-  "AccountId32Junction": {
+  "AssetInstanceV1": {
     "type_mapping": [
       [
-        "network",
-        "NetworkId"
+        "Undefined",
+        "Null"
       ],
       [
-        "id",
-        "AccountId"
-      ]
-    ],
-    "type": "struct"
-  },
-  "BodyPartFraction": {
-    "type_mapping": [
-      [
-        "nom",
-        "Compact<u32>"
+        "Index",
+        "Compact<u128>"
       ],
       [
-        "denom",
-        "Compact<u32>"
-      ]
-    ],
-    "type": "struct"
-  },
-  "BodyPartAtLeastProportion": {
-    "type_mapping": [
-      [
-        "nom",
-        "Compact<u32>"
+        "Array4",
+        "[u8; 4]"
       ],
       [
-        "denom",
-        "Compact<u32>"
-      ]
-    ],
-    "type": "struct"
-  },
-  "BodyPartMoreThanProportion": {
-    "type_mapping": [
-      [
-        "nom",
-        "Compact<u32>"
+        "Array8",
+        "[u8; 8]"
       ],
       [
-        "denom",
-        "Compact<u32>"
-      ]
-    ],
-    "type": "struct"
-  },
-  "XcmOrderInitiateTeleport": {
-    "type_mapping": [
-      [
-        "assets",
-        "Vec<MultiAsset>"
+        "Array16",
+        "[u8; 16]"
       ],
       [
-        "dest",
-        "MultiLocation"
+        "Array32",
+        "[u8; 32]"
       ],
       [
-        "effects",
-        "Vec<XcmOrder>"
-      ]
-    ],
-    "type": "struct"
-  },
-  "XcmResponse": {
-    "type_mapping": [
-      [
-        "Assets",
-        "Vec<MultiAsset>"
+        "Blob",
+        "Bytes"
       ]
     ],
     "type": "enum"
   },
-  "XcmTransferAsset": {
-    "type_mapping": [
-      [
-        "assets",
-        "Vec<MultiAsset>"
-      ],
-      [
-        "dest",
-        "MultiLocation"
-      ]
-    ],
-    "type": "struct"
-  },
-  "XcmWithdrawAsset": "XcmAssetEffects",
-  "Xcm": {
-    "type_mapping": [
-      [
-        "WithdrawAsset",
-        "XcmWithdrawAsset"
-      ],
-      [
-        "ReserveAssetDeposit",
-        "XcmReserveAssetDeposit"
-      ],
-      [
-        "TeleportAsset",
-        "XcmTeleportAsset"
-      ],
-      [
-        "QueryResponse",
-        "XcmQueryResponse"
-      ],
-      [
-        "TransferAsset",
-        "XcmTransferAsset"
-      ],
-      [
-        "TransferReserveAsset",
-        "XcmTransferReserveAsset"
-      ],
-      [
-        "Transact",
-        "XcmTransact"
-      ],
-      [
-        "HrmpNewChannelOpenRequest",
-        "XcmHrmpNewChannelOpenRequest"
-      ],
-      [
-        "HrmpChannelAccepted",
-        "XcmHrmpChannelAccepted"
-      ],
-      [
-        "HrmpChannelClosing",
-        "XcmHrmpChannelClosing"
-      ],
-      [
-        "RelayedFrom",
-        "XcmRelayedFrom"
-      ]
+  "XcmpMessageFormat": {
+    "value_list": [
+      "ConcatenatedVersionedXcm",
+      "ConcatenatedEncodedBlob",
+      "Signals"
     ],
     "type": "enum"
-  },
-  "XcmReserveAssetDeposit": "XcmAssetEffects",
-  "XcmHrmpChannelClosing": {
-    "type_mapping": [
-      [
-        "initiator",
-        "Compact<u32>"
-      ],
-      [
-        "sender",
-        "Compact<u32>"
-      ],
-      [
-        "recipient",
-        "Compact<u32>"
-      ]
-    ],
-    "type": "struct"
-  },
-  "VersionedMultiLocation": {
-    "type_mapping": [
-      [
-        "V0",
-        "MultiLocation"
-      ]
-    ],
-    "type": "enum"
-  },
-  "XcmHrmpChannelAccepted": {
-    "type_mapping": [
-      [
-        "recipient",
-        "Compact<u32>"
-      ]
-    ],
-    "type": "struct"
-  },
-  "QueueConfigData": {
-    "type_mapping": [
-      [
-        "suspendThreshold",
-        "u32"
-      ],
-      [
-        "dropThreshold",
-        "u32"
-      ],
-      [
-        "resumeThreshold",
-        "u32"
-      ],
-      [
-        "thresholdWeight",
-        "Weight"
-      ],
-      [
-        "weightRestrictDecay",
-        "Weight"
-      ]
-    ],
-    "type": "struct"
   }
 }

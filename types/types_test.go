@@ -270,3 +270,15 @@ func TestNestFixedArray(t *testing.T) {
 		m.ProcessAndUpdateData("[[u8; 3]; 3]"),
 	)
 }
+
+func TestTypeIsStruct(t *testing.T) {
+	c := "[[\"assets\", \"MultiAssetFilterV1\"], [\"maxAssets\", \"u32\"], [\"beneficiary\", \"MultiLocationV1\"]]"
+	var typeMap [][]string
+	if c[0:2] == "[[" && json.Unmarshal([]byte(c), &typeMap) == nil && len(typeMap) > 0 && len(typeMap[0]) == 2 {
+		result := make(map[string]interface{})
+		for _, v := range typeMap {
+			result[v[0]] = v[1]
+		}
+		assert.Equal(t, result, map[string]interface{}{"assets": "MultiAssetFilterV1", "beneficiary": "MultiLocationV1", "maxAssets": "u32"})
+	}
+}
