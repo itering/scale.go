@@ -134,6 +134,7 @@ func (r RuntimeType) Reg() *RuntimeType {
 	registry["compact<u32>"] = &CompactU32{}
 	registry["compact<moment>"] = &CompactMoment{}
 	registry["hash"] = &H256{}
+	registry["blockhash"] = &H256{}
 	registry["i8"] = &IntFixed{FixedLength: 1}
 	registry["i16"] = &IntFixed{FixedLength: 2}
 	registry["i32"] = &IntFixed{FixedLength: 4}
