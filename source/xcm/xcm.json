@@ -1,0 +1,339 @@
+{
+  "NetworkId": {
+    "type_mapping": [
+      [
+        "Any",
+        "Null"
+      ],
+      [
+        "Named",
+        "Vec<u8>"
+      ],
+      [
+        "Polkadot",
+        "Null"
+      ],
+      [
+        "Kusama",
+        "Null"
+      ]
+    ],
+    "type": "enum"
+  },
+  "MultiAsset": "MultiAssetV1",
+  "InteriorMultiLocation": "Junctions",
+  "Fungibility": {
+    "type_mapping": [
+      [
+        "Fungible",
+        "u128"
+      ],
+      [
+        "NonFungible",
+        "AssetInstance"
+      ]
+    ],
+    "type": "enum"
+  },
+  "QueryId": "u64",
+  "VersionedMultiAsset": {
+    "type_mapping": [
+      [
+        "V0",
+        "MultiAssetV0"
+      ],
+      [
+        "V1",
+        "MultiAssetV1"
+      ],
+      [
+        "V2",
+        "MultiAssetV2"
+      ]
+    ],
+    "type": "enum"
+  },
+  "VersionMigrationStage": {
+    "type_mapping": [
+      [
+        "MigrateSupportedVersion",
+        "Null"
+      ],
+      [
+        "MigrateVersionNotifiers",
+        "Null"
+      ],
+      [
+        "NotifyCurrentTargets",
+        "Option<Bytes>"
+      ],
+      [
+        "MigrateAndNotifyOldTargets",
+        "Null"
+      ]
+    ],
+    "type": "enum"
+  },
+  "XcmError": "XcmErrorV1",
+  "MultiAssets": "Vec<MultiAsset>",
+  "Junction": "JunctionV1",
+  "Outcome": {
+    "type_mapping": [
+      [
+        "Complete",
+        "Weight"
+      ],
+      [
+        "Incomplete",
+        "(Weight, XcmErrorV0)"
+      ],
+      [
+        "Error",
+        "XcmErrorV0"
+      ]
+    ],
+    "type": "enum"
+  },
+  "XcmOrder": "XcmOrderV1",
+  "QueryStatus": {
+    "type_mapping": [
+      [
+        "Pending",
+        "[[\"responder\", \"VersionedMultiLocation\"], [\"maybeNotify\", \"Option<(u8, u8)>\"], [\"timeout\", \"BlockNumber\"]]"
+      ],
+      [
+        "Ready",
+        "[[\"response\", \"VersionedResponse\"], [\"at\", \"BlockNumber\"]]"
+      ]
+    ],
+    "type": "enum"
+  },
+  "XcmVersion": "u32",
+  "VersionedResponse": {
+    "type_mapping": [
+      [
+        "V0",
+        "ResponseV0"
+      ],
+      [
+        "V1",
+        "ResponseV1"
+      ],
+      [
+        "V2",
+        "ResponseV2"
+      ]
+    ],
+    "type": "struct"
+  },
+  "VersionedXcm": {
+    "type_mapping": [
+      [
+        "V0",
+        "XcmV0"
+      ],
+      [
+        "V1",
+        "XcmV1"
+      ],
+      [
+        "V2",
+        "XcmV2"
+      ]
+    ],
+    "type": "enum"
+  },
+  "VersionedMultiAssets": {
+    "type_mapping": [
+      [
+        "V0",
+        "Vec<MultiAssetV0>"
+      ],
+      [
+        "V1",
+        "MultiAssetsV1"
+      ],
+      [
+        "V2",
+        "MultiAssetsV2"
+      ]
+    ],
+    "type": "enum"
+  },
+  "Response": "ResponseV1",
+  "InboundStatus": {
+    "value_list": [
+      "Ok",
+      "Suspended"
+    ],
+    "type": "enum"
+  },
+  "XcmAssetId": {
+    "type_mapping": [
+      [
+        "Concrete",
+        "MultiLocation"
+      ],
+      [
+        "Abstract",
+        "Bytes"
+      ]
+    ],
+    "type": "enum"
+  },
+  "WildFungibility": {
+    "value_list": [
+      "Fungible",
+      "NonFungible"
+    ],
+    "type": "enum"
+  },
+  "WildMultiAsset": "WildMultiAssetV1",
+  "QueueConfigData": {
+    "type_mapping": [
+      [
+        "suspendThreshold",
+        "u32"
+      ],
+      [
+        "dropThreshold",
+        "u32"
+      ],
+      [
+        "resumeThreshold",
+        "u32"
+      ],
+      [
+        "thresholdWeight",
+        "Weight"
+      ],
+      [
+        "weightRestrictDecay",
+        "Weight"
+      ]
+    ],
+    "type": "struct"
+  },
+  "BodyId": {
+    "type_mapping": [
+      [
+        "Unit",
+        "Null"
+      ],
+      [
+        "Named",
+        "Vec<u8>"
+      ],
+      [
+        "Index",
+        "Compact<u32>"
+      ],
+      [
+        "Executive",
+        "Null"
+      ],
+      [
+        "Technical",
+        "Null"
+      ],
+      [
+        "Legislative",
+        "Null"
+      ],
+      [
+        "Judicial",
+        "Null"
+      ]
+    ],
+    "type": "enum"
+  },
+  "MultiLocation": "MultiLocationV1",
+  "DoubleEncodedCall": {
+    "type_mapping": [
+      [
+        "encoded",
+        "Vec<u8>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "OutboundStatus": {
+    "value_list": [
+      "Ok",
+      "Suspended"
+    ],
+    "type": "enum"
+  },
+  "XcmOriginKind": {
+    "value_list": [
+      "Native",
+      "SovereignAccount",
+      "Superuser",
+      "Xcm"
+    ],
+    "type": "enum"
+  },
+  "BodyPart": {
+    "type_mapping": [
+      [
+        "Voice",
+        "Null"
+      ],
+      [
+        "Members",
+        "Compact<u32>"
+      ],
+      [
+        "Fraction",
+        "[[\"nom\", \"Compact<u32>\"], [\"denom\", \"Compact<u32>\"]]"
+      ],
+      [
+        "AtLeastProportion",
+        "[[\"nom\", \"Compact<u32>\"], [\"denom\", \"Compact<u32>\"]]"
+      ],
+      [
+        "MoreThanProportion",
+        "[[\"nom\", \"Compact<u32>\"], [\"denom\", \"Compact<u32>\"]]"
+      ]
+    ],
+    "type": "enum"
+  },
+  "XcmOrigin": {
+    "type_mapping": [
+      [
+        "Xcm",
+        "MultiLocation"
+      ]
+    ],
+    "type": "enum"
+  },
+  "AssetInstance": "AssetInstanceV1",
+  "Xcm": "XcmV1",
+  "VersionedMultiLocation": {
+    "type_mapping": [
+      [
+        "V0",
+        "MultiLocationV0"
+      ],
+      [
+        "V1",
+        "MultiLocationV1"
+      ],
+      [
+        "V2",
+        "MultiLocationV2"
+      ]
+    ],
+    "type": "enum"
+  },
+  "MultiAssetFilter": "MultiAssetFilterV1",
+  "XcmpMessageFormat": {
+    "value_list": [
+      "ConcatenatedVersionedXcm",
+      "ConcatenatedEncodedBlob",
+      "Signals"
+    ],
+    "type": "enum"
+  },
+  "Junctions": "JunctionsV1"
+}
