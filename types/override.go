@@ -36,6 +36,13 @@ var typesModules = map[string]map[string]string{
 	"beefy": {
 		"authorityid": "BeefyId",
 	},
+	"ethereum": {
+		"block":             "EthBlock",
+		"header":            "EthHeader",
+		"receipt":           "EthReceipt",
+		"transaction":       "EthTransaction",
+		"transactionstatus": "EthTransactionStatus",
+	},
 }
 
 func (r *RuntimeType) overrideModuleType(t string) string {
