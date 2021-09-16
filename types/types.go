@@ -3,12 +3,8 @@ package types
 import (
 	"bytes"
 	"encoding/binary"
+	"encoding/json"
 	"fmt"
-	"github.com/huandu/xstrings"
-	"github.com/itering/scale.go/utiles"
-	"github.com/itering/scale.go/utiles/crypto/ethereum"
-	"github.com/itering/scale.go/utiles/uint128"
-	"github.com/shopspring/decimal"
 	"io"
 	"math"
 	"math/big"
@@ -16,6 +12,12 @@ import (
 	"strconv"
 	"strings"
 	"unicode/utf8"
+
+	"github.com/huandu/xstrings"
+	"github.com/itering/scale.go/utiles"
+	"github.com/itering/scale.go/utiles/crypto/ethereum"
+	"github.com/itering/scale.go/utiles/uint128"
+	"github.com/shopspring/decimal"
 )
 
 type HexBytes struct {
@@ -145,19 +147,25 @@ func (b *Bool) Process() {
 	b.Value = b.getNextBool()
 }
 
-type Moment struct {
+type CompactMoment struct {
 	CompactU32
 }
 
-func (m *Moment) Init(data ScaleBytes, option *ScaleDecoderOption) {
-	m.TypeString = "Compact<Moment>"
-	m.ScaleDecoder.Init(data, option)
-}
-
-func (m *Moment) Process() {
+func (m *CompactMoment) Process() {
 	m.CompactU32.Process()
 	if m.Value.(int) > 10000000000 {
 		m.Value = m.Value.(int) / 1000
+	}
+}
+
+type Moment struct {
+	U64
+}
+
+func (m *Moment) Process() {
+	m.U64.Process()
+	if m.Value.(uint64) > 10000000000 {
+		m.Value = m.Value.(uint64) / 1000
 	}
 }
 
@@ -301,8 +309,8 @@ func (e *Enum) Process() {
 				break
 			}
 		}
-		rustEnum := make(map[int]string)
 		if isCLikeEnum {
+			rustEnum := make(map[int]string)
 			for index, v := range e.TypeMapping.Names {
 				rustEnum[utiles.StringToInt(e.TypeMapping.Types[index])] = v
 			}
@@ -310,6 +318,16 @@ func (e *Enum) Process() {
 			return
 		}
 		if subType := e.TypeMapping.Types[e.Index]; subType != "" {
+			// struct subType
+			var typeMap [][]string
+			if len(subType) > 4 && subType[0:2] == "[[" && json.Unmarshal([]byte(subType), &typeMap) == nil && len(typeMap) > 0 && len(typeMap[0]) == 2 {
+				result := make(map[string]interface{})
+				for _, v := range typeMap {
+					result[v[0]] = e.ProcessAndUpdateData(v[1])
+				}
+				e.Value = map[string]interface{}{e.TypeMapping.Names[e.Index]: result}
+				return
+			}
 			e.Value = map[string]interface{}{e.TypeMapping.Names[e.Index]: e.ProcessAndUpdateData(subType)}
 			return
 		}

@@ -3,11 +3,12 @@ package types
 import (
 	"errors"
 	"fmt"
-	"github.com/itering/scale.go/source"
-	"github.com/itering/scale.go/utiles"
 	"reflect"
 	"regexp"
 	"strings"
+
+	"github.com/itering/scale.go/source"
+	"github.com/itering/scale.go/utiles"
 )
 
 type RuntimeType struct {
@@ -137,9 +138,10 @@ func (r RuntimeType) Reg() *RuntimeType {
 		}
 	}
 	registry["compact<u32>"] = &CompactU32{}
+	registry["compact<moment>"] = &CompactMoment{}
 	registry["str"] = &String{}
-	registry["compact<moment>"] = &Moment{}
 	registry["hash"] = &H256{}
+	registry["blockhash"] = &H256{}
 	registry["i8"] = &IntFixed{FixedLength: 1}
 	registry["i16"] = &IntFixed{FixedLength: 2}
 	registry["i32"] = &IntFixed{FixedLength: 4}
@@ -248,45 +250,4 @@ func (r *RuntimeType) specialVersionCodec(t string, spec int) (interface{}, erro
 		}
 	}
 	return rt, fmt.Errorf("not found")
-}
-
-var typesModules = map[string]map[string]string{
-	"parasInclusion": {
-		"validatorindex": "ParaValidatorIndex",
-	},
-	"inclusion": {
-		"validatorindex": "ParaValidatorIndex",
-	},
-	"parasScheduler": {
-		"validatorindex": "ParaValidatorIndex",
-	},
-	"parasShared": {
-		"validatorindex": "ParaValidatorIndex",
-	},
-	"scheduler": {
-		"validatorindex": "ParaValidatorIndex",
-	},
-	"shared": {
-		"validatorindex": "ParaValidatorIndex",
-	},
-	"assets": {
-		"approval":       "AssetApproval",
-		"approvalkey":    "AssetApprovalKey",
-		"balance":        "TAssetBalance",
-		"destroywitness": "AssetDestroyWitness",
-	},
-	"beefy": {
-		"authorityid": "BeefyId",
-	},
-}
-
-func (r *RuntimeType) overrideModuleType(t string) string {
-	moduleTypes, ok := typesModules[strings.ToLower(r.Module)]
-	if !ok {
-		return t
-	}
-	if overrideType, ok := moduleTypes[t]; ok {
-		return overrideType
-	}
-	return t
 }

@@ -1,0 +1,112 @@
+{
+  "DisputeStatementSet": {
+    "type_mapping": [
+      [
+        "candidateHash",
+        "CandidateHash"
+      ],
+      [
+        "session",
+        "SessionIndex"
+      ],
+      [
+        "statements",
+        "Vec<(DisputeStatement, ParaValidatorIndex, ValidatorSignature)>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "DisputeLocation": {
+    "value_list": [
+      "Local",
+      "Remote"
+    ],
+    "type": "enum"
+  },
+  "ValidDisputeStatementKind": {
+    "type_mapping": [
+      [
+        "Explicit",
+        "Null"
+      ],
+      [
+        "BackingSeconded",
+        "Hash"
+      ],
+      [
+        "BackingValid",
+        "Hash"
+      ],
+      [
+        "ApprovalChecking",
+        "Null"
+      ]
+    ],
+    "type": "enum"
+  },
+  "DisputeState": {
+    "type_mapping": [
+      [
+        "validatorsFor",
+        "BitVec"
+      ],
+      [
+        "validatorsAgainst",
+        "BitVec"
+      ],
+      [
+        "start",
+        "BlockNumber"
+      ],
+      [
+        "concludedAt",
+        "Option<BlockNumber>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "DisputeResult": {
+    "value_list": [
+      "Valid",
+      "Invalid"
+    ],
+    "type": "enum"
+  },
+  "DisputeStatement": {
+    "type_mapping": [
+      [
+        "Valid",
+        "ValidDisputeStatementKind"
+      ],
+      [
+        "Invalid",
+        "InvalidDisputeStatementKind"
+      ]
+    ],
+    "type": "enum"
+  },
+  "MultiDisputeStatementSet": "Vec<DisputeStatementSet>",
+  "ExplicitDisputeStatement": {
+    "type_mapping": [
+      [
+        "valid",
+        "bool"
+      ],
+      [
+        "candidateHash",
+        "CandidateHash"
+      ],
+      [
+        "session",
+        "SessionIndex"
+      ]
+    ],
+    "type": "struct"
+  },
+  "InvalidDisputeStatementKind": {
+    "value_list": [
+      "Explicit"
+    ],
+    "type": "enum"
+  }
+}

@@ -1,6 +1,6 @@
-# Scale codec golang
+# Scale Codec in Golang
 
-Scale Codec written by golang, reference from https://github.com/polkascan/py-scale-codec
+Scale Codec written by golang, reference from [polkascan/py-scale-codec](https://github.com/polkascan/py-scale-codec).
 
 ## Features
 
@@ -13,13 +13,11 @@ Scale Codec written by golang, reference from https://github.com/polkascan/py-sc
 - [x] reg special version type
 - [ ] low level codec encode
 
-
 ## Installation 
 
 ```bash
 go get -u github.com/itering/scale.go
 ```
-
 
 ## Test
 
@@ -27,12 +25,11 @@ go get -u github.com/itering/scale.go
 go test ./... --cover -v
 ```
 
-
 ## Resources
 
-- [polkascan](https://github.com/polkascan)
-- [polkadot.js](http://polkadot.js.org/)
-
+- [Subscan](https://www.subscan.io)
+- [Subscan Open-source](https://github.com/itering/subscan-essentials)
+- [Polkadot.js](http://polkadot.js.org/)
 
 ## Contributing
 

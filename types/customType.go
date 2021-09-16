@@ -22,7 +22,7 @@ func RegCustomTypes(registry map[string]source.TypeStruct) {
 		key = strings.ToLower(key)
 		switch typeStruct.Type {
 		case "string":
-			typeString := typeStruct.TypeString
+			typeString := ConvertType(typeStruct.TypeString)
 			instant := TypeRegistry[strings.ToLower(typeString)]
 			if instant != nil {
 				regCustomKey(key, instant)

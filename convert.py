@@ -32,7 +32,6 @@ def convert_type_registry(name):
                     "bit_length": type_struct["_set"]["_bitLength"],
                     "type_mapping": set_element,
                 }
-                print
             else:
                 convert_dict[type_string] = {
                     "type": "struct",
@@ -50,6 +49,12 @@ def try_struct_convert(struct):
     for type_string, type_struct in struct.items():
         if type_struct is None:
             type_struct = "null"
+        if type(type_struct) == OrderedDict:
+            ln = []
+            for k, v in type_struct.items():
+                ln.append([k, v])
+            type_struct = json.dumps(ln)
+
         n.append([type_string, type_struct])
     return n
 
