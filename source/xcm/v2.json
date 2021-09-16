@@ -151,6 +151,10 @@
       [
         "UnknownClaim",
         "Null"
+      ],
+      [
+        "InvalidLocation",
+        "Null"
       ]
     ],
     "type": "enum"

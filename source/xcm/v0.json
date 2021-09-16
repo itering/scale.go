@@ -162,6 +162,14 @@
       [
         "TooExpensive",
         "Null"
+      ],
+      [
+        "AssetNotFound",
+        "Null"
+      ],
+      [
+        "RecursionLimitReached",
+        "Null"
       ]
     ],
     "type": "enum"
