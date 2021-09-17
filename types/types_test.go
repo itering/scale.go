@@ -4,14 +4,15 @@ import (
 	"encoding/binary"
 	"encoding/json"
 	"fmt"
-	"github.com/itering/scale.go/source"
-	"github.com/itering/scale.go/types"
-	"github.com/itering/scale.go/utiles"
-	"github.com/stretchr/testify/assert"
 	"math/big"
 	"reflect"
 	"strings"
 	"testing"
+
+	"github.com/itering/scale.go/source"
+	"github.com/itering/scale.go/types"
+	"github.com/itering/scale.go/utiles"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestString(t *testing.T) {
@@ -125,8 +126,9 @@ func TestBoolArray(t *testing.T) {
 	raw := "0x00000100"
 	m := types.ScaleDecoder{}
 	m.Init(types.ScaleBytes{Data: utiles.HexToBytes(raw)}, nil)
-	r := m.ProcessAndUpdateData("Approvals")
+	r := m.ProcessAndUpdateData("[bool; 4]")
 	c := []interface{}{false, false, true, false}
+	fmt.Println(r)
 	if !reflect.DeepEqual(c, r.([]interface{})) {
 		t.Errorf("Test TestBoolArray Process fail, decode return %v", r)
 	}
@@ -266,7 +268,7 @@ func TestNestFixedArray(t *testing.T) {
 	m.Init(types.ScaleBytes{Data: utiles.HexToBytes(raw)}, nil)
 	assert.Equal(
 		t,
-		[]interface{}{[]interface{}{1, 1, 1}, []interface{}{1, 1, 1}, []interface{}{1, 1, 1}},
+		[]interface{}{"010101", "010101", "010101"},
 		m.ProcessAndUpdateData("[[u8; 3]; 3]"),
 	)
 }

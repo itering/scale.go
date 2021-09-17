@@ -625,8 +625,9 @@ func (f *FixedLengthArray) Process() {
 			return
 		}
 		for i := 0; i < f.FixedLength; i++ {
-			f.Value = append(result, f.ProcessAndUpdateData(f.SubType))
+			result = append(result, f.ProcessAndUpdateData(f.SubType))
 		}
+		f.Value = result
 	} else {
 		f.GetNextU8()
 	}
