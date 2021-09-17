@@ -189,6 +189,9 @@ func (r *RuntimeType) getCodecInstant(t string, spec int) (reflect.Type, reflect
 	if value.Kind() == reflect.Ptr {
 		value = reflect.Indirect(value)
 	}
+	if f := value.FieldByName("TypeString"); f.String() == "" && f.IsValid() && f.CanSet() {
+		f.SetString(t)
+	}
 	p := reflect.New(value.Type())
 	p.Elem().Set(value)
 	return p.Type(), p, nil

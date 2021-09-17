@@ -2,6 +2,7 @@ package scalecodec
 
 import (
 	"fmt"
+
 	scaleType "github.com/itering/scale.go/types"
 	"github.com/itering/scale.go/utiles"
 	"golang.org/x/crypto/blake2b"
@@ -124,10 +125,12 @@ func (e *ExtrinsicDecoder) Process() {
 	e.Module = e.CallModule.Name
 
 	for _, arg := range call.Call.Args {
+		value := e.ProcessAndUpdateData(arg.Type)
 		e.Params = append(e.Params, ExtrinsicParam{
 			Name:  arg.Name,
 			Type:  arg.Type,
-			Value: e.ProcessAndUpdateData(arg.Type)})
+			Value: value,
+		})
 	}
 
 	if e.ContainsTransaction {

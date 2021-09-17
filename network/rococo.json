@@ -123,5 +123,10 @@
     ]
   },
   "ValidatorIndex": "u32",
-  "CompactAssignments#9010-?": "CompactAssignmentsWith24"
+  "CompactAssignments#9010-?": "CompactAssignmentsWith24",
+  "AssetInstance": "AssetInstanceV0",
+  "MultiAsset": "MultiAssetV0",
+  "Xcm": "XcmV0",
+  "XcmOrder": "XcmOrderV0",
+  "MultiLocation": "MultiLocationV0"
 }

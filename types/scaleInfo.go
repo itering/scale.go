@@ -3,9 +3,11 @@ package types
 import (
 	"encoding/json"
 	"fmt"
+	"sort"
+	"strings"
+
 	"github.com/itering/scale.go/source"
 	"github.com/itering/scale.go/utiles"
-	"strings"
 )
 
 type PortableType struct {
@@ -206,7 +208,7 @@ func (s *ScaleDecoder) dealOneSiType(id int, SiTyp SiType, id2Portable map[int]S
 		// https://github.com/polkadot-js/api/blob/662aef203356b8f391415e548e1eb5339f68f828/packages/types/src/generic/PortableRegistry.ts#L293
 		// typeString := SiTyp.Path[len(SiTyp.Path)-1]
 		registeredSiType[id] = fmt.Sprintf("BitVec")
-		// RegCustomTypes(map[string]source.TypeStruct{typeString: {Type: "set", BitLength: 0, ValueList: nil}})
+		return registeredSiType[id]
 	} else if SiTyp.Def.SiTypeDefRange != nil {
 		// todo
 	} else if SiTyp.Def.Variant != nil {
@@ -240,7 +242,7 @@ func (s *ScaleDecoder) dealOneSiType(id int, SiTyp SiType, id2Portable map[int]S
 			}
 			registeredSiType[id] = fmt.Sprintf("Results<%s,%s>", okType, errType)
 			return registeredSiType[id]
-		} else if len(SiTyp.Path) == 2 && SiTyp.Path[0] == "node_runtime" && SiTyp.Path[1] == "Call" { // Call Extrinsic
+		} else if len(SiTyp.Path) >= 2 && ((SiTyp.Path[len(SiTyp.Path)-2] == "pallet" && SiTyp.Path[len(SiTyp.Path)-1] == "Call") || SiTyp.Path[len(SiTyp.Path)-1] == "Instruction") { // Call Extrinsic
 			registeredSiType[id] = "Call"
 			return "Call"
 		} else if utiles.SliceIndex(SiTyp.Path[len(SiTyp.Path)-1], []string{"Call", "Event", "Error"}) != -1 {
@@ -248,13 +250,47 @@ func (s *ScaleDecoder) dealOneSiType(id int, SiTyp SiType, id2Portable map[int]S
 			return "CallEventError"
 		} else { // enum
 			var types [][]string
-			for _, variant := range SiTyp.Def.Variant.Variants {
+			sort.Slice(SiTyp.Def.Variant.Variants[:], func(i, j int) bool {
+				return SiTyp.Def.Variant.Variants[i].Index < SiTyp.Def.Variant.Variants[j].Index
+			})
+
+			for index, variant := range SiTyp.Def.Variant.Variants {
 				typeName := "NULL"
-				if len(variant.Fields) > 0 {
+				var StructTypes [][]string
+				if len(variant.Fields) == 1 {
 					if instant, ok := registeredSiType[variant.Fields[0].Type]; ok {
 						typeName = instant
 					} else {
 						typeName = s.dealOneSiType(variant.Fields[0].Type, id2Portable[variant.Fields[0].Type], id2Portable)
+					}
+				} else if len(variant.Fields) > 1 {
+					for i, v := range variant.Fields {
+						VName := "NULL"
+						if instant, ok := registeredSiType[v.Type]; ok {
+							VName = instant
+						} else {
+							// todo need reg new
+							VName = v.TypeName
+						}
+						if v.Name == "" {
+							v.Name = fmt.Sprintf("col%d", i)
+						}
+						StructTypes = append(StructTypes, []string{v.Name, ConvertType(VName)})
+					}
+					if len(StructTypes) > 0 {
+						typeName = utiles.ToString(StructTypes)
+					}
+				}
+				// fill enum element
+				if index > 0 {
+					interval := variant.Index - SiTyp.Def.Variant.Variants[index-1].Index - 1
+					for {
+						if interval > 0 {
+							types = append(types, []string{"empty", "NULL"})
+							interval = interval - 1
+						} else {
+							break
+						}
 					}
 				}
 				types = append(types, []string{variant.Name, typeName})

@@ -3,10 +3,11 @@ package types
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/huandu/xstrings"
-	"github.com/itering/scale.go/utiles"
 	"regexp"
 	"strings"
+
+	"github.com/huandu/xstrings"
+	"github.com/itering/scale.go/utiles"
 )
 
 // {
@@ -180,14 +181,12 @@ func (m *MetadataV14Module) Process() {
 	// call
 	cm.HasCalls = m.ProcessAndUpdateData("bool").(bool)
 	if cm.HasCalls {
-		// todo calls
 		cm.CallsValue = m.ProcessAndUpdateData("PalletCallMetadataV14").(map[string]interface{})
 	}
 
 	// event
 	cm.HasEvents = m.ProcessAndUpdateData("bool").(bool)
 	if cm.HasEvents {
-		// todo Events
 		cm.EventsValue = m.ProcessAndUpdateData("PalletEventMetadataV14").(map[string]interface{})
 	}
 
@@ -201,7 +200,6 @@ func (m *MetadataV14Module) Process() {
 
 	hasError := m.ProcessAndUpdateData("bool").(bool)
 	if hasError {
-		// todo Errors
 		cm.ErrorsValue = m.ProcessAndUpdateData("PalletErrorMetadataV14").(map[string]interface{})
 	}
 	cm.Index = m.ProcessAndUpdateData("U8").(int)

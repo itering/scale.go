@@ -202,7 +202,7 @@ func (v *Vec) Process() {
 	elementCount := v.ProcessAndUpdateData("Compact<u32>").(int)
 	var result []interface{}
 	if elementCount > 50000 {
-		panic(fmt.Sprintf("Vec length %d exceeds %d", elementCount, 50000))
+		panic(fmt.Sprintf("Vec length %d exceeds %d with subType %s", elementCount, 50000, v.SubType))
 	}
 	for i := 0; i < elementCount; i++ {
 		element := v.ProcessAndUpdateData(v.SubType)
@@ -620,13 +620,16 @@ func (f *FixedLengthArray) Init(data ScaleBytes, option *ScaleDecoderOption) {
 func (f *FixedLengthArray) Process() {
 	var result []interface{}
 	if f.FixedLength > 0 {
+		if strings.EqualFold(f.SubType, "u8") {
+			f.Value = utiles.BytesToHex(f.NextBytes(f.FixedLength))
+			return
+		}
 		for i := 0; i < f.FixedLength; i++ {
-			result = append(result, f.ProcessAndUpdateData(f.SubType))
+			f.Value = append(result, f.ProcessAndUpdateData(f.SubType))
 		}
 	} else {
 		f.GetNextU8()
 	}
-	f.Value = result
 }
 
 type AuthorityId struct{ H256 }
