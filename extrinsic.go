@@ -2,6 +2,7 @@ package scalecodec
 
 import (
 	"fmt"
+
 	scaleType "github.com/itering/scale.go/types"
 	"github.com/itering/scale.go/utiles"
 	"golang.org/x/crypto/blake2b"
@@ -100,7 +101,7 @@ func (e *ExtrinsicDecoder) Process() {
 			e.Era = e.ProcessAndUpdateData("EraExtrinsic").(string)
 			e.Nonce = int(e.ProcessAndUpdateData("Compact<U64>").(uint64))
 			if e.Metadata.Extrinsic != nil {
-				if utiles.SliceIndex("ChargeTransactionPayment", e.Metadata.Extrinsic.SignedExtensions) != -1 {
+				if utiles.SliceIndex("ChargeTransactionPayment", e.Metadata.Extrinsic.SignedIdentifier) != -1 {
 					e.Tip = e.ProcessAndUpdateData("Compact<Balance>")
 				}
 			} else {
@@ -124,10 +125,12 @@ func (e *ExtrinsicDecoder) Process() {
 	e.Module = e.CallModule.Name
 
 	for _, arg := range call.Call.Args {
+		value := e.ProcessAndUpdateData(arg.Type)
 		e.Params = append(e.Params, ExtrinsicParam{
 			Name:  arg.Name,
 			Type:  arg.Type,
-			Value: e.ProcessAndUpdateData(arg.Type)})
+			Value: value,
+		})
 	}
 
 	if e.ContainsTransaction {

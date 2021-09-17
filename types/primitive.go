@@ -3,10 +3,11 @@ package types
 import (
 	"bytes"
 	"encoding/binary"
-	"github.com/itering/scale.go/utiles"
-	"github.com/shopspring/decimal"
 	"io"
 	"math"
+
+	"github.com/itering/scale.go/utiles"
+	"github.com/shopspring/decimal"
 )
 
 type Compact struct {
@@ -154,5 +155,5 @@ type BitVec struct {
 
 func (b *BitVec) Process() {
 	length := b.ProcessAndUpdateData("Compact<u32>").(int)
-	b.Value = b.NextBytes(int(math.Ceil(float64(length) / 8)))
+	b.Value = utiles.BytesToHex(b.NextBytes(int(math.Ceil(float64(length) / 8))))
 }

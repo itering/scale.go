@@ -4,14 +4,15 @@ import (
 	"encoding/binary"
 	"encoding/json"
 	"fmt"
-	"github.com/itering/scale.go/source"
-	"github.com/itering/scale.go/types"
-	"github.com/itering/scale.go/utiles"
-	"github.com/stretchr/testify/assert"
 	"math/big"
 	"reflect"
 	"strings"
 	"testing"
+
+	"github.com/itering/scale.go/source"
+	"github.com/itering/scale.go/types"
+	"github.com/itering/scale.go/utiles"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestString(t *testing.T) {
@@ -125,8 +126,9 @@ func TestBoolArray(t *testing.T) {
 	raw := "0x00000100"
 	m := types.ScaleDecoder{}
 	m.Init(types.ScaleBytes{Data: utiles.HexToBytes(raw)}, nil)
-	r := m.ProcessAndUpdateData("Approvals")
+	r := m.ProcessAndUpdateData("[bool; 4]")
 	c := []interface{}{false, false, true, false}
+	fmt.Println(r)
 	if !reflect.DeepEqual(c, r.([]interface{})) {
 		t.Errorf("Test TestBoolArray Process fail, decode return %v", r)
 	}
@@ -266,7 +268,7 @@ func TestNestFixedArray(t *testing.T) {
 	m.Init(types.ScaleBytes{Data: utiles.HexToBytes(raw)}, nil)
 	assert.Equal(
 		t,
-		[]interface{}{[]interface{}{1, 1, 1}, []interface{}{1, 1, 1}, []interface{}{1, 1, 1}},
+		[]interface{}{"010101", "010101", "010101"},
 		m.ProcessAndUpdateData("[[u8; 3]; 3]"),
 	)
 }
@@ -281,4 +283,17 @@ func TestTypeIsStruct(t *testing.T) {
 		}
 		assert.Equal(t, result, map[string]interface{}{"assets": "MultiAssetFilterV1", "beneficiary": "MultiLocationV1", "maxAssets": "u32"})
 	}
+}
+
+func TestCompactU32_Encode(t *testing.T) {
+	compactU32 := types.CompactU32{}
+	compactU32.Encode(100)
+	assert.Equal(t, "0x9101", compactU32.Data.String())
+}
+
+func TestTupleDisassemble(t *testing.T) {
+	assert.Equal(t, []string{"U32"}, types.TupleDisassemble("U32"))
+	assert.Equal(t, []string{"U32", "U32"}, types.TupleDisassemble("(U32,U32)"))
+	assert.Equal(t, []string{"U32", "(U32,U64)"}, types.TupleDisassemble("(U32,(U32,U64))"))
+	assert.Equal(t, []string{"(U32,U16)", "(U32,U64)"}, types.TupleDisassemble("((U32,U16),(U32,U64))"))
 }

@@ -3,11 +3,12 @@ package types
 import (
 	"errors"
 	"fmt"
-	"github.com/itering/scale.go/source"
-	"github.com/itering/scale.go/utiles"
 	"reflect"
 	"regexp"
 	"strings"
+
+	"github.com/itering/scale.go/source"
+	"github.com/itering/scale.go/utiles"
 )
 
 type RuntimeType struct {
@@ -115,8 +116,13 @@ func (r RuntimeType) Reg() *RuntimeType {
 		&MetadataV11Decoder{},
 		&MetadataV12Decoder{},
 		&MetadataV13Decoder{},
+		&MetadataV14Decoder{},
 		&MetadataV12Module{},
 		&MetadataV13Module{},
+		&MetadataV14Module{},
+		&MetadataV14ModuleStorage{},
+		&MetadataV14ModuleStorageEntry{},
+		&PalletConstantMetadataV14{},
 		&MetadataModuleError{},
 		&GenericLookupSource{},
 		&BTreeMap{},
@@ -133,6 +139,7 @@ func (r RuntimeType) Reg() *RuntimeType {
 	}
 	registry["compact<u32>"] = &CompactU32{}
 	registry["compact<moment>"] = &CompactMoment{}
+	registry["str"] = &String{}
 	registry["hash"] = &H256{}
 	registry["blockhash"] = &H256{}
 	registry["i8"] = &IntFixed{FixedLength: 1}
@@ -181,6 +188,9 @@ func (r *RuntimeType) getCodecInstant(t string, spec int) (reflect.Type, reflect
 	value := reflect.ValueOf(rt)
 	if value.Kind() == reflect.Ptr {
 		value = reflect.Indirect(value)
+	}
+	if f := value.FieldByName("TypeString"); f.String() == "" && f.IsValid() && f.CanSet() {
+		f.SetString(t)
 	}
 	p := reflect.New(value.Type())
 	p.Elem().Set(value)

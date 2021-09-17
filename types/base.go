@@ -2,10 +2,11 @@ package types
 
 import (
 	"fmt"
-	"github.com/itering/scale.go/utiles"
 	"reflect"
 	"regexp"
 	"strings"
+
+	"github.com/itering/scale.go/utiles"
 )
 
 var RuntimeCodecType []string

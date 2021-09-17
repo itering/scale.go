@@ -15,7 +15,8 @@
       "MetadataV10Decoder",
       "MetadataV11Decoder",
       "MetadataV12Decoder",
-      "MetadataV13Decoder"
+      "MetadataV13Decoder",
+      "MetadataV14Decoder"
     ]
   },
   "StorageModify": {
@@ -41,6 +42,13 @@
       "MapType",
       "DoubleMapType",
       "NMap"
+    ]
+  },
+  "StorageFunctionTypeV14": {
+    "type": "enum",
+    "value_list": [
+      "PlainType",
+      "Map"
     ]
   },
   "Conviction": {
