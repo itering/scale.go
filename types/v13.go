@@ -70,6 +70,10 @@ func (m *MetadataV13Decoder) Process() {
 	bm, _ = json.Marshal(extrinsicMetadata)
 	_ = json.Unmarshal(bm, &result.Extrinsic)
 	registerOriginCaller(originCallers)
+	var extrinsic ExtrinsicMetadataV12
+	bm, _ = json.Marshal(extrinsicMetadata)
+	_ = json.Unmarshal(bm, &extrinsic)
+	result.Extrinsic = &ExtrinsicMetadata{SignedIdentifier: extrinsic.SignedExtensions}
 	m.Value = result
 }
 

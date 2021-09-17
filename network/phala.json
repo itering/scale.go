@@ -1,106 +1,165 @@
 {
-  "Weight": "u64",
-  "RefCount": "u32",
-  "DispatchResult": {
-    "type": "enum",
+  "ContractPublicKey": "Sr25519PublicKey",
+  "MachineId": "[u8; 16]",
+  "TokenomicParams": "TokenomicParameters",
+  "MinerInfo": {
     "type_mapping": [
       [
-        "Ok",
-        "Null"
+        "state",
+        "MinerState"
       ],
       [
-        "Error",
-        "DispatchError"
-      ]
-    ]
-  },
-  "RoundStats": {
-    "type_mapping": [
-      [
-        "round",
-        "u32"
+        "ve",
+        "u128"
       ],
       [
-        "onlineWorkers",
-        "u32"
+        "v",
+        "u128"
       ],
       [
-        "computeWorkers",
-        "u32"
+        "vUpdatedAt",
+        "u64"
       ],
       [
-        "fracTargetOnlineReward",
-        "u32"
+        "benchmark",
+        "Benchmark"
       ],
       [
-        "totalPower",
-        "u32"
+        "coolDownStart",
+        "u64"
+      ],
+      [
+        "stats",
+        "MinerStats"
       ]
     ],
     "type": "struct"
   },
-  "EthereumTxHash": "H256",
-  "EcdsaSignature": "[u8; 65]",
-  "EthereumAddress": "H160",
-  "WorkerInfo": {
+  "BridgeChainId": "u8",
+  "Benchmark": {
     "type_mapping": [
       [
+        "pInstant",
+        "u32"
+      ],
+      [
+        "pInit",
+        "u32"
+      ],
+      [
+        "iterations",
+        "u64"
+      ],
+      [
+        "miningStartTime",
+        "u64"
+      ],
+      [
+        "updatedAt",
+        "u64"
+      ]
+    ],
+    "type": "struct"
+  },
+  "DepositNonce": "u64",
+  "UserStakeInfo": {
+    "type_mapping": [
+      [
+        "user",
+        "AccountId"
+      ],
+      [
+        "locked",
+        "Balance"
+      ],
+      [
+        "shares",
+        "Balance"
+      ],
+      [
+        "availableRewards",
+        "Balance"
+      ],
+      [
+        "rewardDebt",
+        "Balance"
+      ]
+    ],
+    "type": "struct"
+  },
+  "MinerStats": {
+    "type_mapping": [
+      [
+        "totalReward",
+        "Balance"
+      ]
+    ],
+    "type": "struct"
+  },
+  "ResourceId": "[u8; 32]",
+  "WorkerRegistrationInfo": {
+    "type_mapping": [
+      [
+        "version",
+        "u32"
+      ],
+      [
         "machineId",
-        "Vec<u8>"
+        "MachineId"
       ],
       [
         "pubkey",
-        "Vec<u8>"
+        "WorkerPublicKey"
+      ],
+      [
+        "ecdhPubkey",
+        "EcdhPublicKey"
+      ],
+      [
+        "genesisBlockHash",
+        "H256"
+      ],
+      [
+        "features",
+        "Vec<u32>"
+      ],
+      [
+        "operator",
+        "Option<AccountId>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "SenderId": "MessageOrigin",
+  "WorkerInfo": {
+    "type_mapping": [
+      [
+        "pubkey",
+        "WorkerPublicKey"
+      ],
+      [
+        "ecdhPubkey",
+        "EcdhPublicKey"
+      ],
+      [
+        "runtimeVersion",
+        "u32"
       ],
       [
         "lastUpdated",
         "u64"
       ],
       [
-        "state",
-        "WorkerStateEnum"
+        "operator",
+        "Option<AccountId>"
       ],
       [
-        "score",
-        "Option<Score>"
-      ]
-    ],
-    "type": "struct"
-  },
-  "WorkerStateEnum": {
-    "type_mapping": [
-      [
-        "Empty",
-        "null"
+        "confidenceLevel",
+        "u8"
       ],
       [
-        "Free",
-        "null"
-      ],
-      [
-        "Gatekeeper",
-        "null"
-      ],
-      [
-        "MiningPending",
-        "null"
-      ],
-      [
-        "Mining",
-        "BlockNumber"
-      ],
-      [
-        "MiningStopping",
-        "null"
-      ]
-    ],
-    "type": "enum"
-  },
-  "Score": {
-    "type_mapping": [
-      [
-        "overallScore",
-        "u32"
+        "initialScore",
+        "Option<u32>"
       ],
       [
         "features",
@@ -109,7 +168,256 @@
     ],
     "type": "struct"
   },
-  "BlockRewardInfo": {
+  "AttestationSgxIas": {
+    "type_mapping": [
+      [
+        "raReport",
+        "Vec<u8>"
+      ],
+      [
+        "signature",
+        "Vec<u8>"
+      ],
+      [
+        "rawSigningCert",
+        "Vec<u8>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "Address": "MultiAddress",
+  "Path": "Vec<u8>",
+  "TokenomicParameters": {
+    "type_mapping": [
+      [
+        "phaRate",
+        "U64F64Bits"
+      ],
+      [
+        "rho",
+        "U64F64Bits"
+      ],
+      [
+        "budgetPerBlock",
+        "U64F64Bits"
+      ],
+      [
+        "vMax",
+        "U64F64Bits"
+      ],
+      [
+        "costK",
+        "U64F64Bits"
+      ],
+      [
+        "costB",
+        "U64F64Bits"
+      ],
+      [
+        "slashRate",
+        "U64F64Bits"
+      ],
+      [
+        "treasuryRatio",
+        "U64F64Bits"
+      ],
+      [
+        "heartbeatWindow",
+        "u32"
+      ],
+      [
+        "rigK",
+        "U64F64Bits"
+      ],
+      [
+        "rigB",
+        "U64F64Bits"
+      ],
+      [
+        "re",
+        "U64F64Bits"
+      ],
+      [
+        "k",
+        "U64F64Bits"
+      ],
+      [
+        "kappa",
+        "U64F64Bits"
+      ]
+    ],
+    "type": "struct"
+  },
+  "MasterPublicKey": "Sr25519PublicKey",
+  "MinerState": {
+    "type_mapping": [
+      [
+        "Ready",
+        "null"
+      ],
+      [
+        "MiningIdle",
+        "null"
+      ],
+      [
+        "MiningActive",
+        "null"
+      ],
+      [
+        "MiningUnresponsive",
+        "null"
+      ],
+      [
+        "MiningCoolingDown",
+        "null"
+      ]
+    ],
+    "type": "enum"
+  },
+  "PoolInfo": {
+    "type_mapping": [
+      [
+        "pid",
+        "u64"
+      ],
+      [
+        "owner",
+        "AccountId"
+      ],
+      [
+        "payoutCommission",
+        "Option<Permill>"
+      ],
+      [
+        "ownerReward",
+        "Balance"
+      ],
+      [
+        "cap",
+        "Option<Balance>"
+      ],
+      [
+        "rewardAcc",
+        "u128"
+      ],
+      [
+        "totalShares",
+        "Balance"
+      ],
+      [
+        "totalStake",
+        "Balance"
+      ],
+      [
+        "freeStake",
+        "Balance"
+      ],
+      [
+        "releasingStake",
+        "Balance"
+      ],
+      [
+        "workers",
+        "Vec<WorkerPublicKey>"
+      ],
+      [
+        "withdrawQueue",
+        "Vec<WithdrawInfo>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "LookupSource": "MultiAddress",
+  "TokenId": "u256",
+  "SignedMessage": {
+    "type_mapping": [
+      [
+        "message",
+        "Message"
+      ],
+      [
+        "sequence",
+        "u64"
+      ],
+      [
+        "signature",
+        "Vec<u8>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "NewGatekeeperEvent": {
+    "type_mapping": [
+      [
+        "pubkey",
+        "WorkerPublicKey"
+      ],
+      [
+        "ecdhPubkey",
+        "EcdhPublicKey"
+      ],
+      [
+        "gatekeeperCount",
+        "u32"
+      ]
+    ],
+    "type": "struct"
+  },
+  "WithdrawInfo": {
+    "type_mapping": [
+      [
+        "user",
+        "AccountId"
+      ],
+      [
+        "shares",
+        "Balance"
+      ],
+      [
+        "startTime",
+        "u64"
+      ]
+    ],
+    "type": "struct"
+  },
+  "Attestation": {
+    "type_mapping": [
+      [
+        "SgxIas",
+        "AttestationSgxIas"
+      ]
+    ],
+    "type": "enum"
+  },
+  "WorkerPublicKey": "Sr25519PublicKey",
+  "GatekeeperEvent": {
+    "type_mapping": [
+      [
+        "Registered",
+        "NewGatekeeperEvent"
+      ],
+      [
+        "DispatchMasterKey",
+        "DispatchMasterKeyEvent"
+      ],
+      [
+        "MasterPubkeyAvailable",
+        "null"
+      ],
+      [
+        "NewRandomNumber",
+        "RandomNumberEvent"
+      ],
+      [
+        "TokenomicParametersChanged",
+        "TokenomicParameters"
+      ]
+    ],
+    "type": "enum"
+  },
+  "U64F64Bits": "u128",
+  "EcdhPublicKey": "[u8; 32]",
+  "HeartbeatChallenge": {
     "type_mapping": [
       [
         "seed",
@@ -118,50 +426,101 @@
       [
         "onlineTarget",
         "U256"
-      ],
-      [
-        "computeTarget",
-        "U256"
       ]
     ],
     "type": "struct"
   },
-  "Address": "GenericAddress",
-  "RoundInfo": {
+  "RandomNumberEvent": {
     "type_mapping": [
       [
-        "round",
+        "blockNumber",
         "u32"
       ],
       [
-        "startBlock",
+        "randomNumber",
+        "[u8; 32]"
+      ],
+      [
+        "lastRandomNumber",
+        "[u8; 32]"
+      ]
+    ],
+    "type": "struct"
+  },
+  "Sr25519PublicKey": "[u8; 32]",
+  "Topic": "Path",
+  "ProposalVotes": {
+    "type_mapping": [
+      [
+        "votes_for",
+        "Vec<AccountId>"
+      ],
+      [
+        "votes_against",
+        "Vec<AccountId>"
+      ],
+      [
+        "status",
+        "ProposalStatus"
+      ],
+      [
+        "expiry",
         "BlockNumber"
       ]
     ],
     "type": "struct"
   },
-  "PayoutPrefs": {
+  "ProposalStatus": {
     "type_mapping": [
       [
-        "commission",
-        "u32"
+        "Initiated",
+        "null"
       ],
       [
-        "target",
-        "AccountId"
+        "Approved",
+        "null"
+      ],
+      [
+        "Rejected",
+        "null"
+      ]
+    ],
+    "type": "enum"
+  },
+  "DispatchMasterKeyEvent": {
+    "type_mapping": [
+      [
+        "dest",
+        "WorkerPublicKey"
+      ],
+      [
+        "ecdhPubkey",
+        "EcdhPublicKey"
+      ],
+      [
+        "encryptedMasterKey",
+        "Vec<u8>"
+      ],
+      [
+        "iv",
+        "[u8; 12]"
       ]
     ],
     "type": "struct"
   },
-  "StashInfo": {
+  "Message": {
     "type_mapping": [
       [
-        "controller",
-        "AccountId"
+        "sender",
+        "SenderId"
       ],
       [
-        "payoutPrefs",
-        "PayoutPrefs"
+        "destination",
+        "Topic"
+      ],
+      [
+        "payload",
+        "Vec<u8>"
       ]
     ],
     "type": "struct"
