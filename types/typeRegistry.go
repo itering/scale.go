@@ -128,6 +128,7 @@ func (r RuntimeType) Reg() *RuntimeType {
 		&BTreeMap{},
 		&BTreeSet{},
 		&Box{},
+		&Results{},
 	}
 	for _, class := range scales {
 		valueOf := reflect.ValueOf(class)
