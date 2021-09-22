@@ -186,7 +186,7 @@
       ],
       [
         "AccountId32",
-        "[[\"network\", \"NetworkId\"], [\"id\", \"AccountId\"]]"
+        "[[\"network\", \"NetworkId\"], [\"id\", \"AccountId32\"]]"
       ],
       [
         "AccountIndex64",
