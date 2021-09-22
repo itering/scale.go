@@ -246,8 +246,8 @@ func (s *ScaleDecoder) dealOneSiType(id int, SiTyp SiType, id2Portable map[int]S
 			registeredSiType[id] = "Call"
 			return "Call"
 		} else if utiles.SliceIndex(SiTyp.Path[len(SiTyp.Path)-1], []string{"Call", "Event", "Error"}) != -1 {
-			registeredSiType[id] = "CallEventError" // tag
-			return "CallEventError"
+			registeredSiType[id] = "Call" // tag
+			return "Call"
 		} else { // enum
 			var types [][]string
 			sort.Slice(SiTyp.Def.Variant.Variants[:], func(i, j int) bool {
