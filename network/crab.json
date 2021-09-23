@@ -322,19 +322,6 @@
       ]
     ]
   },
-  "Unbonding": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "amount",
-        "Balance"
-      ],
-      [
-        "moment",
-        "BlockNumber"
-      ]
-    ]
-  },
   "AccountData": {
     "type": "struct",
     "type_mapping": [
@@ -623,15 +610,6 @@
       [
         "data",
         "Hash"
-      ]
-    ]
-  },
-  "ValidatorPrefs": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "commission",
-        "Compact<Balance>"
       ]
     ]
   },
@@ -924,7 +902,7 @@
       ]
     ]
   },
-  "Unbonding#5-?": {
+  "Unbonding": {
     "type": "struct",
     "type_mapping": [
       [
@@ -932,7 +910,7 @@
         "Balance"
       ],
       [
-        "until",
+        "moment",
         "BlockNumber"
       ]
     ]
@@ -992,7 +970,6 @@
       ]
     ]
   },
-  "RewardDestination": "RewardDestinationLatest",
   "RefCount#21-?": "u32",
   "EthereumRelayHeaderParcel": {
     "type": "struct",
@@ -1065,23 +1042,6 @@
       ]
     ]
   },
-  "RewardDestination#0-16": {
-    "type": "enum",
-    "type_mapping": [
-      [
-        "Staked",
-        "Staked"
-      ],
-      [
-        "Stash",
-        "null"
-      ],
-      [
-        "Controller",
-        "null"
-      ]
-    ]
-  },
   "Signer": "EthereumAddress",
   "RelayAuthorityT": {
     "type_mapping": [
@@ -1126,5 +1086,293 @@
       ]
     ],
     "type": "struct"
-  }
+  },
+  "ScheduledAuthoritiesChangeT": "ScheduledAuthoritiesChange",
+  "AccountInfo#42-42": "AccountInfoWithProviders",
+  "Address#42-?": "MultiAddress",
+  "LookupSource#42-?": "MultiAddress",
+  "ValidatorPrefs#42-?": "ValidatorPrefsWithBlocked",
+  "AccountInfo#43-?": "AccountInfoWithTripleRefCount",
+  "ExitReason": {
+    "type": "enum",
+    "type_mapping": [
+      [
+        "Succeed",
+        "ExitSucceed"
+      ],
+      [
+        "Error",
+        "ExitError"
+      ],
+      [
+        "Revert",
+        "ExitRevert"
+      ],
+      [
+        "Fatal",
+        "ExitFatal"
+      ]
+    ]
+  },
+  "ExitSucceed": {
+    "type": "enum",
+    "value_list": [
+      "Stopped",
+      "Returned",
+      "Suicided"
+    ]
+  },
+  "ExitError": {
+    "type": "enum",
+    "type_mapping": [
+      [
+        "StackUnderflow",
+        "NULL"
+      ],
+      [
+        "StackOverflow",
+        "NULL"
+      ],
+      [
+        "InvalidJump",
+        "NULL"
+      ],
+      [
+        "InvalidRange",
+        "NULL"
+      ],
+      [
+        "DesignatedInvalid",
+        "NULL"
+      ],
+      [
+        "CallTooDeep",
+        "NULL"
+      ],
+      [
+        "CreateCollision",
+        "NULL"
+      ],
+      [
+        "CreateContractLimit",
+        "NULL"
+      ],
+      [
+        "OutOfOffset",
+        "NULL"
+      ],
+      [
+        "OutOfGas",
+        "NULL"
+      ],
+      [
+        "OutOfFund",
+        "NULL"
+      ],
+      [
+        "PCUnderflow",
+        "NULL"
+      ],
+      [
+        "CreateEmpty",
+        "NULL"
+      ],
+      [
+        "Other",
+        "string"
+      ]
+    ]
+  },
+  "ExitFatal": {
+    "type": "enum",
+    "type_mapping": [
+      [
+        "NotSupported",
+        "NULL"
+      ],
+      [
+        "UnhandledInterrupt",
+        "NULL"
+      ],
+      [
+        "CallErrorAsFatal",
+        "NULL"
+      ],
+      [
+        "Other",
+        "string"
+      ]
+    ]
+  },
+  "BlockTransactions": {
+    "type": "enum",
+    "type_mapping": [
+      [
+        "Hashes",
+        "Vec<H256>"
+      ],
+      [
+        "Full",
+        "Vec<ethereum::Transaction>"
+      ]
+    ]
+  },
+  "ExitRevert": {
+    "type": "enum",
+    "value_list": [
+      "Reverted"
+    ]
+  },
+  "ethereum::Block": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "hash",
+        "Option<H256>"
+      ],
+      [
+        "parent_hash",
+        "H256"
+      ],
+      [
+        "uncles_hash",
+        "H256"
+      ],
+      [
+        "author",
+        "H160"
+      ],
+      [
+        "miner",
+        "H160"
+      ],
+      [
+        "state_root",
+        "H256"
+      ],
+      [
+        "transactions_root",
+        "H256"
+      ],
+      [
+        "receipts_root",
+        "H256"
+      ],
+      [
+        "number",
+        "Option<U256>"
+      ],
+      [
+        "gas_used",
+        "U256"
+      ],
+      [
+        "gas_limit",
+        "U256"
+      ],
+      [
+        "extra_data",
+        "Bytes"
+      ],
+      [
+        "logs_bloom",
+        "Option<H2048>"
+      ],
+      [
+        "timestamp",
+        "U256"
+      ],
+      [
+        "difficulty",
+        "U256"
+      ],
+      [
+        "total_difficulty",
+        "Option<U256>"
+      ],
+      [
+        "seal_fields",
+        "Vec<Bytes>"
+      ],
+      [
+        "uncles",
+        "Vec<H256>"
+      ],
+      [
+        "transactions",
+        "BlockTransactions"
+      ],
+      [
+        "size",
+        "Option<U256>"
+      ]
+    ]
+  },
+  "TransactionAction": {
+    "type": "enum",
+    "type_mapping": [
+      [
+        "Call",
+        "H160"
+      ],
+      [
+        "Create",
+        "NULL"
+      ]
+    ]
+  },
+  "Log": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "address",
+        "H160"
+      ],
+      [
+        "topics",
+        "Vec<H256>"
+      ],
+      [
+        "data",
+        "Vec<u8>"
+      ]
+    ]
+  },
+  "TransactionSignature": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "v",
+        "TransactionRecoveryId"
+      ],
+      [
+        "r",
+        "H256"
+      ],
+      [
+        "s",
+        "H256"
+      ]
+    ]
+  },
+  "TransactionRecoveryId": "U64",
+  "NodeIndex": "u64",
+  "MmrNodesPruningConfiguration": {
+    "type_mapping": [
+      [
+        "step",
+        "NodeIndex"
+      ],
+      [
+        "progress",
+        "NodeIndex"
+      ],
+      [
+        "last_position",
+        "NodeIndex"
+      ]
+    ],
+    "type": "struct"
+  },
+  "BlockNumberFor": "BlockNumber"
 }

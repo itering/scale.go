@@ -1,0 +1,461 @@
+{
+  "ReportSlot": "u64",
+  "Group": {
+    "type_mapping": [
+      [
+        "members",
+        "BTreeSet<AccountId>"
+      ],
+      [
+        "allowlist",
+        "BTreeSet<AccountId>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "MerchantLedger": {
+    "type_mapping": [
+      [
+        "reward",
+        "Balance"
+      ],
+      [
+        "collateral",
+        "Balance"
+      ]
+    ],
+    "type": "struct"
+  },
+  "IASSig": "HexBytes",
+  "SworkBenefit": {
+    "type_mapping": [
+      [
+        "total_funds",
+        "Compact<Balance>"
+      ],
+      [
+        "active_funds",
+        "Compact<Balance>"
+      ],
+      [
+        "total_fee_reduction_count",
+        "u32"
+      ],
+      [
+        "used_fee_reduction_count",
+        "u32"
+      ],
+      [
+        "refreshed_at",
+        "Compact<EraIndex>"
+      ],
+      [
+        "unlocking_funds",
+        "Vec<FundsUnlockChunk<Balance>>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "AccountInfo": "AccountInfoWithProviders",
+  "EraBenefits": {
+    "type_mapping": [
+      [
+        "total_fee_reduction_quota",
+        "Compact<Balance>"
+      ],
+      [
+        "total_market_active_funds",
+        "Compact<Balance>"
+      ],
+      [
+        "used_fee_reduction_quota",
+        "Compact<Balance>"
+      ],
+      [
+        "active_era",
+        "Compact<EraIndex>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "SworkerSignature": "HexBytes",
+  "UsedInfo": {
+    "type_mapping": [
+      [
+        "used_size",
+        "u64"
+      ],
+      [
+        "reported_group_count",
+        "u32"
+      ],
+      [
+        "groups",
+        "BTreeMap<SworkerAnchor, bool>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "Status": {
+    "value_list": [
+      "Free",
+      "Reserved"
+    ],
+    "type": "enum"
+  },
+  "CSMLedger": {
+    "type_mapping": [
+      [
+        "total",
+        "Compact<Balance>"
+      ],
+      [
+        "active",
+        "Compact<Balance>"
+      ],
+      [
+        "unlocking",
+        "Vec<CSMUnlockChunk<Balance>>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "EthereumTxHash": "H256",
+  "Releases": {
+    "value_list": [
+      "V1_0_0",
+      "V2_0_0"
+    ],
+    "type": "enum"
+  },
+  "CsmBalanceOf": "Balance",
+  "FundsType": {
+    "value_list": [
+      "SWORK",
+      "MARKET"
+    ],
+    "type": "enum"
+  },
+  "ValidatorPrefs": {
+    "type_mapping": [
+      [
+        "guarantee_fee",
+        "Compact<Perbill>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "SworkerAnchor": "HexBytes",
+  "Address": "AccountId",
+  "Identity": {
+    "type_mapping": [
+      [
+        "anchor",
+        "SworkerAnchor"
+      ],
+      [
+        "punishment_deadline",
+        "u64"
+      ],
+      [
+        "group",
+        "Option<AccountId>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "SworkerCode": "HexBytes",
+  "MerkleRoot": "HexBytes",
+  "WorkReport": {
+    "type_mapping": [
+      [
+        "report_slot",
+        "u64"
+      ],
+      [
+        "spower",
+        "u64"
+      ],
+      [
+        "free",
+        "u64"
+      ],
+      [
+        "reported_files_size",
+        "u64"
+      ],
+      [
+        "reported_srd_root",
+        "MerkleRoot"
+      ],
+      [
+        "reported_files_root",
+        "MerkleRoot"
+      ]
+    ],
+    "type": "struct"
+  },
+  "CSMUnlockChunk": {
+    "type_mapping": [
+      [
+        "value",
+        "Compact<Balance>"
+      ],
+      [
+        "bn",
+        "Compact<BlockNumber>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "LookupSource": "AccountId",
+  "SworkerCert": "HexBytes",
+  "ETHAddress": "HexBytes",
+  "Guarantee": {
+    "type_mapping": [
+      [
+        "targets",
+        "Vec<IndividualExposure<AccountId, Balance>>"
+      ],
+      [
+        "total",
+        "Compact<Balance>"
+      ],
+      [
+        "submitted_in",
+        "EraIndex"
+      ],
+      [
+        "suppressed",
+        "bool"
+      ]
+    ],
+    "type": "struct"
+  },
+  "CsmBalance": "Balance",
+  "MarketBenefit": {
+    "type_mapping": [
+      [
+        "total_funds",
+        "Compact<Balance>"
+      ],
+      [
+        "active_funds",
+        "Compact<Balance>"
+      ],
+      [
+        "used_fee_reduction_quota",
+        "Compact<Balance>"
+      ],
+      [
+        "file_reward",
+        "Compact<Balance>"
+      ],
+      [
+        "refreshed_at",
+        "Compact<EraIndex>"
+      ],
+      [
+        "unlocking_funds",
+        "Vec<FundsUnlockChunk<Balance>>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "FeeReductionBenefit": {
+    "type_mapping": [
+      [
+        "funds",
+        "Balance"
+      ],
+      [
+        "total_fee_reduction_count",
+        "u32"
+      ],
+      [
+        "used_fee_reduction_quota",
+        "Balance"
+      ],
+      [
+        "used_fee_reduction_count",
+        "u32"
+      ],
+      [
+        "refreshed_at",
+        "EraIndex"
+      ]
+    ],
+    "type": "struct"
+  },
+  "FileInfo": {
+    "type_mapping": [
+      [
+        "file_size",
+        "u64"
+      ],
+      [
+        "spower",
+        "u64"
+      ],
+      [
+        "expired_on",
+        "BlockNumber"
+      ],
+      [
+        "calculated_at",
+        "BlockNumber"
+      ],
+      [
+        "amount",
+        "Compact<Balance>"
+      ],
+      [
+        "prepaid",
+        "Compact<Balance>"
+      ],
+      [
+        "reported_replica_count",
+        "u32"
+      ],
+      [
+        "replicas",
+        "Vec<Replica<AccountId>>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "ISVBody": "HexBytes",
+  "SworkerPubKey": "HexBytes",
+  "Lock": {
+    "type_mapping": [
+      [
+        "total",
+        "Compact<Balance>"
+      ],
+      [
+        "last_unlock_at",
+        "BlockNumber"
+      ],
+      [
+        "lock_type",
+        "LockType"
+      ]
+    ],
+    "type": "struct"
+  },
+  "Replica": {
+    "type_mapping": [
+      [
+        "who",
+        "AccountId"
+      ],
+      [
+        "valid_at",
+        "BlockNumber"
+      ],
+      [
+        "anchor",
+        "SworkerAnchor"
+      ],
+      [
+        "is_reported",
+        "bool"
+      ],
+      [
+        "created_at",
+        "Option<BlockNumber>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "PKInfo": {
+    "type_mapping": [
+      [
+        "code",
+        "SworkerCode"
+      ],
+      [
+        "anchor",
+        "Option<SworkerAnchor>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "AddressInfo": "HexBytes",
+  "LockType": {
+    "type_mapping": [
+      [
+        "delay",
+        "BlockNumber"
+      ],
+      [
+        "lock_period",
+        "u32"
+      ]
+    ],
+    "type": "struct"
+  },
+  "FundsUnlockChunk": {
+    "type_mapping": [
+      [
+        "value",
+        "Compact<Balance>"
+      ],
+      [
+        "era",
+        "Compact<EraIndex>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "Weight": "u64",
+  "CompactAssignments": "CompactAssignmentsLatest",
+  "RefCount": "u32",
+  "ChainId": "u8",
+  "TokenId": "U256",
+  "ResourceId": "H256",
+  "Erc721Token": {
+    "type_mapping": [
+      [
+        "id",
+        "TokenId"
+      ],
+      [
+        "metadata",
+        "Vec<u8>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "BridgeChainId": "u8",
+  "ProposalStatus": {
+    "value_list": [
+      "Initiated",
+      "Approved",
+      "Rejected"
+    ],
+    "type": "enum"
+  },
+  "ProposalVotes": {
+    "type_mapping": [
+      [
+        "votes_for",
+        "Vec<AccountId>"
+      ],
+      [
+        "votes_against",
+        "Vec<AccountId>"
+      ],
+      [
+        "status",
+        "ProposalStatus"
+      ],
+      [
+        "expiry",
+        "BlockNumber"
+      ]
+    ],
+    "type": "struct"
+  },
+  "DepositNonce": "u64"
+}

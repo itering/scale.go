@@ -1,0 +1,39 @@
+{
+  "Weight": "u64",
+  "CompactAssignments": "CompactAssignmentsLatest",
+  "RefCount": "u32",
+  "Address": "MultiAddress",
+  "LookupSource": "MultiAddress",
+  "AccountInfo": "AccountInfoWithTripleRefCount",
+  "CID": "Vec<u8>",
+  "ClassIdOf": "ClassId",
+  "Properties": {
+    "bit_length": 8,
+    "type_mapping": [
+      "Transferable",
+      "Burnable"
+    ],
+    "type": "set"
+  },
+  "ClassType": {
+    "type": "enum",
+    "type_mapping": [
+      [
+        "Simple",
+        "u32"
+      ],
+      [
+        "Claim",
+        "HashByte32"
+      ],
+      [
+        "Merge",
+        "(ID, ID, bool)"
+      ]
+    ]
+  },
+  "ID": "ClassIdOf",
+  "HashByte32": "[u8; 32]",
+  "TokenId": "u64",
+  "TokenIdOf": "TokenId"
+}

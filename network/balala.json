@@ -1,0 +1,166 @@
+{
+  "Weight": "u64",
+  "CompactAssignments": "CompactAssignmentsLatest",
+  "RefCount": "u32",
+  "DispatchResult": {
+    "type": "enum",
+    "type_mapping": [
+      [
+        "Ok",
+        "Null"
+      ],
+      [
+        "Error",
+        "DispatchError"
+      ]
+    ]
+  },
+  "Address": "MultiAddress",
+  "LookupSource": "MultiAddress",
+  "Box<<T as Config>::Call>": "Call",
+  "Keys#0-12": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "grandpa",
+        "AccountId"
+      ],
+      [
+        "babe",
+        "AccountId"
+      ],
+      [
+        "im_online",
+        "AccountId"
+      ],
+      [
+        "authority_discovery",
+        "AccountId"
+      ],
+      [
+        "parachains",
+        "AccountId"
+      ]
+    ]
+  },
+  "Keys": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "grandpa",
+        "AccountId"
+      ],
+      [
+        "babe",
+        "AccountId"
+      ],
+      [
+        "im_online",
+        "AccountId"
+      ],
+      [
+        "para_validator",
+        "AccountId"
+      ],
+      [
+        "para_assignment",
+        "AccountId"
+      ],
+      [
+        "authority_discovery",
+        "AccountId"
+      ]
+    ]
+  },
+  "Proposal<AccountId, ValidatorId, BalanceOf>": "ParachainProposal",
+  "FullIdentification": "NULL",
+  "AccountInfo": "AccountInfoWithTripleRefCount",
+  "AuctionIndex": "u32",
+  "slots::AuctionIndex": "u32",
+  "auctions::AuctionIndex": "u32",
+  "FundIndex": "u32",
+  "LastContribution<BlockNumber>": {
+    "type": "enum",
+    "type_mapping": [
+      [
+        "Never",
+        "Null"
+      ],
+      [
+        "PreEnding",
+        "slots::AuctionIndex"
+      ],
+      [
+        "Ending",
+        "BlockNumber"
+      ]
+    ]
+  },
+  "TrieIndex": "u32",
+  "(LeasePeriodOf, BlockNumber)": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "lease_index",
+        "LeasePeriodOf"
+      ],
+      [
+        "ending_block",
+        "BlockNumber"
+      ]
+    ]
+  },
+  "ParaLifecycle": {
+    "value_list": [
+      "Onboarding",
+      "Parathread",
+      "Parachain",
+      "UpgradingParathread",
+      "DowngradingParachain",
+      "OffboardingParathread",
+      "OffboardingParachain"
+    ],
+    "type": "enum"
+  },
+  "HeadData": "Bytes",
+  "ValidationCode": "Bytes",
+  "ParaGenesisArgs": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "genesis_head",
+        "HeadData"
+      ],
+      [
+        "validation_code",
+        "ValidationCode"
+      ],
+      [
+        "parachain",
+        "bool"
+      ]
+    ]
+  },
+  "ParaInfo<AccountId, BalanceOf>": "ParaInfo",
+  "(AccountId, BalanceOf)": "ParaInfo",
+  "Vec<Option<(AccountId, BalanceOf)>>": "Vec<Option<ParaInfo>>",
+  "WinningData": "[Option<WinnerData>; 36]",
+  "WinnerData": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "accountId",
+        "AccountId"
+      ],
+      [
+        "paraId",
+        "ParaId"
+      ],
+      [
+        "amount",
+        "Balance"
+      ]
+    ]
+  },
+  "ValidatorIndex": "u32"
+}

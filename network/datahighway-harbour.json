@@ -11,6 +11,8 @@
   "DecimalsAfterPoint": "u32",
   "RoamingPacketBundleReceivedPacketsCount": "u64",
   "RoamingDeviceProfileDevEUI": "Text",
+  "Address": "MultiAddress",
+  "LookupSource": "MultiAddress",
   "MiningConfigTokenConfig": {
     "type_mapping": [
       [
@@ -650,7 +652,6 @@
   },
   "MiningSpeedBoostSamplingHardwareMining": "[u8; 16]",
   "MiningSpeedBoostLodgementsTokenMiningLodgementDateRedeemed": "u64",
-  "Address": "MultiAddress",
   "RoamingAgreementPolicyExpiry": "Moment",
   "MiningSpeedBoostSamplingTokenMiningSampleTokensLocked": "u64",
   "MiningSpeedBoostEligibilityTokenMiningAuditorAccountID": "u64",
@@ -679,7 +680,6 @@
     ],
     "type": "struct"
   },
-  "LookupSource": "AccountId",
   "MiningSpeedBoostEligibilityTokenMiningEligibilityResult": {
     "type_mapping": [
       [

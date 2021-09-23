@@ -1,0 +1,736 @@
+{
+  "Weight": "u64",
+  "CompactAssignments": "CompactAssignmentsLatest",
+  "RefCount": "u32",
+  "DispatchResult": {
+    "type": "enum",
+    "type_mapping": [
+      [
+        "Ok",
+        "Null"
+      ],
+      [
+        "Error",
+        "DispatchError"
+      ]
+    ]
+  },
+  "RoamingChargingPolicyIndex": "u64",
+  "MiningRatesHardwareCategory3MaxTokenBonusPerGateway": "u32",
+  "RoamingOrganizationIndex": "u64",
+  "MiningEligibilityHardwareAuditorAccountID": "u64",
+  "RoamingOrganization": "[u8; 16]",
+  "DOTRate": "u64",
+  "RoamingRoutingProfile": "[u8; 16]",
+  "RoamingAccountingPolicyIndex": "u64",
+  "RoamingAgreementPolicySetting": {
+    "type_mapping": [
+      [
+        "policy_activation_type",
+        "Text"
+      ],
+      [
+        "policy_expiry_block",
+        "Moment"
+      ]
+    ],
+    "type": "struct"
+  },
+  "DecimalsAfterPoint": "u32",
+  "RoamingPacketBundleReceivedPacketsCount": "u64",
+  "RequestorData": {
+    "type_mapping": [
+      [
+        "mining_eligibility_proxy_id",
+        "MiningEligibilityProxyIndex"
+      ],
+      [
+        "total_amt",
+        "Balance"
+      ],
+      [
+        "rewardee_count",
+        "u64"
+      ],
+      [
+        "member_kind",
+        "u32"
+      ],
+      [
+        "requested_date",
+        "Moment"
+      ]
+    ],
+    "type": "struct"
+  },
+  "RoamingDeviceProfileDevEUI": "Text",
+  "MiningSettingHardware": "[u8; 16]",
+  "RoamingAgreementPolicyIndex": "u64",
+  "MiningExecutionToken": "[u8; 16]",
+  "RoamingDeviceProfileDevAddr": "Text",
+  "MiningEligibilityTokenLockedPercentage": "u32",
+  "RoamingPacketBundleIndex": "u64",
+  "MiningEligibilityTokenAuditorAccountID": "u64",
+  "MiningRatesTokenIndex": "u64",
+  "RoamingBillingPolicySetting": {
+    "type_mapping": [
+      [
+        "policy_next_billing_at_block",
+        "Moment"
+      ],
+      [
+        "policy_frequency_in_blocks",
+        "Moment"
+      ]
+    ],
+    "type": "struct"
+  },
+  "MiningRatesToken": "[u8; 16]",
+  "RoamingOperatorIndex": "u64",
+  "MiningSettingTokenLockAmount": "u64",
+  "RoamingSessionJoinAccept": {
+    "type_mapping": [
+      [
+        "session_join_request_accept_expiry",
+        "Moment"
+      ],
+      [
+        "session_join_request_accept_accepted_at_block",
+        "Moment"
+      ]
+    ],
+    "type": "struct"
+  },
+  "DailyData": {
+    "type_mapping": [
+      [
+        "mining_eligibility_proxy_id",
+        "MiningEligibilityProxyIndex"
+      ],
+      [
+        "total_amt",
+        "Balance"
+      ],
+      [
+        "proxy_claim_requestor_account_id",
+        "AccountId"
+      ],
+      [
+        "member_kind",
+        "u32"
+      ],
+      [
+        "rewarded_date",
+        "Date"
+      ]
+    ],
+    "type": "struct"
+  },
+  "RoamingServiceProfile": "[u8; 16]",
+  "MiningClaimsTokenIndex": "u64",
+  "MiningEligibilityTokenCalculatedEligibility": "u64",
+  "RoamingDeviceIndex": "u64",
+  "MiningEligibilityProxyClaimRewardeeData": {
+    "type_mapping": [
+      [
+        "proxy_claim_rewardee_account_id",
+        "AccountId"
+      ],
+      [
+        "proxy_claim_reward_amount",
+        "Balance"
+      ],
+      [
+        "proxy_claim_start_date",
+        "Date"
+      ],
+      [
+        "proxy_claim_end_date",
+        "Date"
+      ]
+    ],
+    "type": "struct"
+  },
+  "MiningEligibilityHardware": "[u8; 16]",
+  "MiningRatesHardwareMaxHardware": "u32",
+  "RoamingPacketBundle": "[u8; 16]",
+  "MiningClaimsHardware": "[u8; 16]",
+  "RoamingChargingPolicySetting": {
+    "type_mapping": [
+      [
+        "policy_next_charging_at_block",
+        "Moment"
+      ],
+      [
+        "policy_delay_after_billing_in_blocks",
+        "u64"
+      ]
+    ],
+    "type": "struct"
+  },
+  "MiningEligibilityHardwareResult": {
+    "type_mapping": [
+      [
+        "hardware_calculated_eligibility",
+        "u64"
+      ],
+      [
+        "hardware_uptime_percentage",
+        "u32"
+      ],
+      [
+        "hardware_block_audited",
+        "Moment"
+      ],
+      [
+        "hardware_auditor_account_id",
+        "u64"
+      ]
+    ],
+    "type": "struct"
+  },
+  "MiningRatesHardwareCategory1MaxTokenBonusPerGateway": "u32",
+  "MiningEligibilityHardwareIndex": "u64",
+  "RoamingPacketBundleReceivedAtHome": "bool",
+  "RoamingDeviceProfileJoinEUI": "Text",
+  "ExchangeRateSetting": {
+    "type_mapping": [
+      [
+        "hbtc",
+        "u64"
+      ],
+      [
+        "dot",
+        "u64"
+      ],
+      [
+        "iota",
+        "u64"
+      ],
+      [
+        "fil",
+        "u64"
+      ],
+      [
+        "decimals_after_point",
+        "u32"
+      ]
+    ],
+    "type": "struct"
+  },
+  "MiningClaimsHardwareClaimAmount": "u64",
+  "RoamingRoutingProfileAppServer": "Text",
+  "MiningRatesTokenTokenMXC": "u32",
+  "MiningClaimsToken": "[u8; 16]",
+  "RoamingSessionIndex": "u64",
+  "RoamingServiceProfileIndex": "u64",
+  "MiningEligibilityTokenIndex": "u64",
+  "RoamingSession": "[u8; 16]",
+  "RoamingDeviceProfile": "[u8; 16]",
+  "RewardTransferData": {
+    "type_mapping": [
+      [
+        "mining_eligibility_proxy_id",
+        "MiningEligibilityProxyIndex"
+      ],
+      [
+        "is_sent",
+        "bool"
+      ],
+      [
+        "total_amt",
+        "Balance"
+      ],
+      [
+        "rewardee_count",
+        "u64"
+      ],
+      [
+        "member_kind",
+        "u32"
+      ],
+      [
+        "requested_date",
+        "Moment"
+      ]
+    ],
+    "type": "struct"
+  },
+  "RoamingDeviceProfileVendorID": "Text",
+  "TransferData": {
+    "type_mapping": [
+      [
+        "mining_eligibility_proxy_id",
+        "MiningEligibilityProxyIndex"
+      ],
+      [
+        "is_sent",
+        "bool"
+      ],
+      [
+        "total_amt",
+        "Balance"
+      ],
+      [
+        "rewardee_count",
+        "u64"
+      ],
+      [
+        "member_kind",
+        "u32"
+      ],
+      [
+        "requested_date",
+        "Moment"
+      ]
+    ],
+    "type": "struct"
+  },
+  "RoamingServiceProfileUplinkRate": "u32",
+  "RoamingChargingPolicy": "[u8; 16]",
+  "RoamingDeviceProfileSetting": {
+    "type_mapping": [
+      [
+        "device_profile_devaddr",
+        "Text"
+      ],
+      [
+        "device_profile_deveui",
+        "Text"
+      ],
+      [
+        "device_profile_joineui",
+        "Text"
+      ],
+      [
+        "device_profile_vendorid",
+        "Text"
+      ]
+    ],
+    "type": "struct"
+  },
+  "RoamingDevice": "[u8; 16]",
+  "RoamingAccountingPolicyDownlinkFeeFactor": "u32",
+  "MiningSettingHardwareID": "u64",
+  "MiningSamplingHardware": "[u8; 16]",
+  "MiningSamplingHardwareSetting": {
+    "type_mapping": [
+      [
+        "hardware_sample_block",
+        "Moment"
+      ],
+      [
+        "hardware_sample_hardware_online",
+        "bool"
+      ]
+    ],
+    "type": "struct"
+  },
+  "RoamingNetworkProfileIndex": "u64",
+  "RewardeeData": {
+    "type_mapping": [
+      [
+        "proxy_claim_rewardee_account_id",
+        "AccountId"
+      ],
+      [
+        "proxy_claim_reward_amount",
+        "Balance"
+      ],
+      [
+        "proxy_claim_start_date",
+        "Date"
+      ],
+      [
+        "proxy_claim_end_date",
+        "Date"
+      ]
+    ],
+    "type": "struct"
+  },
+  "MiningSettingTokenRequirementsSetting": {
+    "type_mapping": [
+      [
+        "token_type",
+        "Text"
+      ],
+      [
+        "token_lock_min_amount",
+        "u64"
+      ],
+      [
+        "token_lock_min_blocks",
+        "u32"
+      ]
+    ],
+    "type": "struct"
+  },
+  "RoamingOperator": "[u8; 16]",
+  "MiningRatesHardwareSetting": {
+    "type_mapping": [
+      [
+        "hardware_hardware_secure",
+        "u32"
+      ],
+      [
+        "hardware_hardware_insecure",
+        "u32"
+      ],
+      [
+        "hardware_max_hardware",
+        "u32"
+      ],
+      [
+        "hardware_category_1_max_token_bonus_per_gateway",
+        "u32"
+      ],
+      [
+        "hardware_category_2_max_token_bonus_per_gateway",
+        "u32"
+      ],
+      [
+        "hardware_category_3_max_token_bonus_per_gateway",
+        "u32"
+      ]
+    ],
+    "type": "struct"
+  },
+  "MiningRatesTokenMaxToken": "u32",
+  "RoamingSessionJoinRequest": {
+    "type_mapping": [
+      [
+        "session_network_server_id",
+        "Moment"
+      ],
+      [
+        "session_join_requested_at_block",
+        "Moment"
+      ]
+    ],
+    "type": "struct"
+  },
+  "HBTCRate": "u64",
+  "RoamingPacketBundleReceivedPacketsOkCount": "u64",
+  "RoamingAccountingPolicySetting": {
+    "type_mapping": [
+      [
+        "policy_type",
+        "Text"
+      ],
+      [
+        "subscription_fee",
+        "Balance"
+      ],
+      [
+        "uplink_fee_factor",
+        "u32"
+      ],
+      [
+        "downlink_fee_factor",
+        "u32"
+      ]
+    ],
+    "type": "struct"
+  },
+  "MiningClaimsHardwareIndex": "u64",
+  "MiningSamplingToken": "[u8; 16]",
+  "MiningClaimsTokenClaimResult": {
+    "type_mapping": [
+      [
+        "token_claim_amount",
+        "u64"
+      ],
+      [
+        "token_claim_block_redeemed",
+        "u64"
+      ]
+    ],
+    "type": "struct"
+  },
+  "RoamingAccountingPolicy": "[u8; 16]",
+  "RoamingRoutingProfileIndex": "u64",
+  "RoamingAgreementPolicy": "[u8; 16]",
+  "MiningEligibilityToken": "[u8; 16]",
+  "MiningClaimsTokenClaimAmount": "u64",
+  "MiningEligibilityProxyIndex": "u64",
+  "Keys": "SessionKeys2",
+  "MiningRatesTokenTokenDOT": "u32",
+  "RoamingDeviceProfileIndex": "u64",
+  "Date": "i64",
+  "MiningSamplingHardwareIndex": "u64",
+  "RoamingNetwork": "[u8; 16]",
+  "MiningSettingTokenType": "Text",
+  "MiningEligibilityHardwareCalculatedEligibility": "u64",
+  "MiningSettingTokenSetting": {
+    "type_mapping": [
+      [
+        "token_type",
+        "Text"
+      ],
+      [
+        "token_lock_amount",
+        "u64"
+      ],
+      [
+        "token_lock_start_block",
+        "Moment"
+      ],
+      [
+        "token_lock_interval_blocks",
+        "Moment"
+      ]
+    ],
+    "type": "struct"
+  },
+  "IOTARate": "u64",
+  "RoamingBillingPolicy": "[u8; 16]",
+  "RoamingAccountingPolicyUplinkFeeFactor": "u32",
+  "MiningSettingHardwareSecure": "bool",
+  "RoamingBillingPolicyIndex": "u64",
+  "MiningRatesHardwareSecure": "u32",
+  "RewardRequestorData": {
+    "type_mapping": [
+      [
+        "mining_eligibility_proxy_id",
+        "MiningEligibilityProxyIndex"
+      ],
+      [
+        "total_amt",
+        "Balance"
+      ],
+      [
+        "rewardee_count",
+        "u64"
+      ],
+      [
+        "member_kind",
+        "u32"
+      ],
+      [
+        "requested_date",
+        "Moment"
+      ]
+    ],
+    "type": "struct"
+  },
+  "RoamingNetworkProfile": "[u8; 16]",
+  "RoamingAgreementPolicyActivationType": "Text",
+  "RoamingServiceProfileDownlinkRate": "u32",
+  "MiningSettingHardwareSetting": {
+    "type_mapping": [
+      [
+        "hardware_secure",
+        "bool"
+      ],
+      [
+        "hardware_type",
+        "Text"
+      ],
+      [
+        "hardware_id",
+        "u64"
+      ],
+      [
+        "hardware_dev_eui",
+        "u64"
+      ],
+      [
+        "hardware_lock_start_block",
+        "Moment"
+      ],
+      [
+        "hardware_lock_interval_blocks",
+        "Moment"
+      ]
+    ],
+    "type": "struct"
+  },
+  "MiningRatesTokenTokenIOTA": "u32",
+  "RoamingAccountingPolicyType": "Text",
+  "MiningSettingTokenIndex": "u64",
+  "MiningRatesHardwareCategory2MaxTokenBonusPerGateway": "u32",
+  "MiningExecutionTokenExecutorAccountID": "u64",
+  "MiningRatesHardwareInsecure": "u32",
+  "MiningEligibilityHardwareUptimePercentage": "u32",
+  "FILRate": "u64",
+  "RoamingNetworkServerIndex": "u64",
+  "AccountInfo": "AccountInfoWithProviders",
+  "MiningSamplingTokenSetting": {
+    "type_mapping": [
+      [
+        "token_sample_block",
+        "Moment"
+      ],
+      [
+        "token_sample_locked_amount",
+        "u64"
+      ]
+    ],
+    "type": "struct"
+  },
+  "Address": "MultiAddress",
+  "MiningRatesTokenMaxLoyalty": "u32",
+  "MiningEligibilityProxyRewardRequest": {
+    "type_mapping": [
+      [
+        "proxy_claim_requestor_account_id",
+        "AccountId"
+      ],
+      [
+        "proxy_claim_total_reward_amount",
+        "Balance"
+      ],
+      [
+        "proxy_claim_timestamp_redeemed",
+        "Moment"
+      ]
+    ],
+    "type": "struct"
+  },
+  "LookupSource": "MultiAddress",
+  "MiningSamplingTokenIndex": "u64",
+  "MiningExecutionTokenExecutionResult": {
+    "type_mapping": [
+      [
+        "token_execution_exector_account_id",
+        "u64"
+      ],
+      [
+        "token_execution_started_block",
+        "Moment"
+      ],
+      [
+        "token_execution_ended_block",
+        "Moment"
+      ]
+    ],
+    "type": "struct"
+  },
+  "RoamingPacketBundleExternalDataStorageHash": "Hash",
+  "MiningExecutionTokenIndex": "u64",
+  "MiningEligibilityTokenResult": {
+    "type_mapping": [
+      [
+        "token_calculated_eligibility",
+        "u64"
+      ],
+      [
+        "token_token_locked_percentage",
+        "u32"
+      ],
+      [
+        "token_date_audited",
+        "Moment"
+      ],
+      [
+        "token_auditor_account_id",
+        "u64"
+      ]
+    ],
+    "type": "struct"
+  },
+  "MiningRatesHardwareIndex": "u64",
+  "MiningRatesHardware": "[u8; 16]",
+  "MiningEligibilityProxy": "[u8; 16]",
+  "MiningSettingHardwareType": "Text",
+  "RewardDailyData": {
+    "type_mapping": [
+      [
+        "mining_eligibility_proxy_id",
+        "MiningEligibilityProxyIndex"
+      ],
+      [
+        "total_amt",
+        "Balance"
+      ],
+      [
+        "proxy_claim_requestor_account_id",
+        "AccountId"
+      ],
+      [
+        "member_kind",
+        "u32"
+      ],
+      [
+        "rewarded_date",
+        "Date"
+      ]
+    ],
+    "type": "struct"
+  },
+  "RoamingNetworkIndex": "u64",
+  "MiningSettingHardwareDevEUI": "u64",
+  "MiningClaimsHardwareClaimResult": {
+    "type_mapping": [
+      [
+        "hardware_claim_amount",
+        "u64"
+      ],
+      [
+        "hardware_claim_block_redeemed",
+        "u64"
+      ]
+    ],
+    "type": "struct"
+  },
+  "MiningSamplingHardwareSampleHardwareOnline": "u64",
+  "ExchangeRateIndex": "u64",
+  "MiningSamplingTokenSampleLockedAmount": "u64",
+  "RoamingNetworkServer": "[u8; 16]",
+  "RoamingPacketBundleReceiver": {
+    "type_mapping": [
+      [
+        "packet_bundle_received_at_home",
+        "bool"
+      ],
+      [
+        "packet_bundle_received_packets_count",
+        "u64"
+      ],
+      [
+        "packet_bundle_received_packets_ok_count",
+        "u64"
+      ],
+      [
+        "packet_bundle_received_started_at_block",
+        "Moment"
+      ],
+      [
+        "packet_bundle_received_ended_at_block",
+        "Moment"
+      ],
+      [
+        "packet_bundle_external_data_storage_hash",
+        "Hash"
+      ]
+    ],
+    "type": "struct"
+  },
+  "MiningSettingToken": "[u8; 16]",
+  "MiningSettingHardwareIndex": "u64",
+  "MiningRatesTokenSetting": {
+    "type_mapping": [
+      [
+        "token_token_mxc",
+        "u32"
+      ],
+      [
+        "token_token_iota",
+        "u32"
+      ],
+      [
+        "token_token_dot",
+        "u32"
+      ],
+      [
+        "token_max_token",
+        "u32"
+      ],
+      [
+        "token_max_loyalty",
+        "u32"
+      ]
+    ],
+    "type": "struct"
+  }
+}

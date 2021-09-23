@@ -1,15 +1,25 @@
 {
-  "RatesError": {
-    "value_list": [
-      "ModelRateOutOfBounds",
-      "ZeroAboveKink",
-      "KinkAboveFull",
-      "KinkUtilizationTooHigh",
-      "Overflowed"
+  "AccountData": "NULL",
+  "ChainAccountSignature": {
+    "type_mapping": [
+      [
+        "Gate",
+        "Gateway__Chain__Address"
+      ],
+      [
+        "Eth",
+        "ChainAccountSignatureEth"
+      ],
+      [
+        "Dot",
+        "ChainAccountSignatureDot"
+      ]
     ],
     "type": "enum"
   },
-  "ApiRates": "(u64, u64)",
+  "ChainAccountSignatureGate": "(Gateway__Chain__Address,Gateway__Chain__Signature)",
+  "ApiRates": "(ApiAPR,ApiAPR)",
+  "Solana__Chain__Signature": "[u8; 65]",
   "CashExtractionNotice": {
     "type_mapping": [
       [
@@ -19,41 +29,133 @@
     ],
     "type": "enum"
   },
-  "CashIndex": "(Uint)",
-  "ChainAccountSignature": {
+  "CashIndex": "Uint",
+  "RatesError": {
     "type_mapping": [
       [
-        "Comp",
-        "([u8; 20], [u8; 65])"
+        "ModelRateOutOfBounds",
+        "NULL"
       ],
       [
-        "Eth",
-        "([u8; 20], [u8; 65])"
+        "ZeroAboveKink",
+        "NULL"
       ],
       [
-        "Dot",
-        "([u8; 20], [u8; 65])"
+        "KinkAboveFull",
+        "NULL"
       ],
       [
-        "Sol",
-        "([u8; 20], [u8; 65])"
+        "KinkUtilizationTooHigh",
+        "NULL"
       ],
       [
-        "Tez",
-        "([u8; 20], [u8; 65])"
+        "Overflowed",
+        "NULL"
       ]
     ],
     "type": "enum"
   },
+  "InterestRateModelFixed": {
+    "type_mapping": [
+      [
+        "rate",
+        "APR"
+      ]
+    ],
+    "type": "struct"
+  },
+  "BlockLength": {
+    "type_mapping": [
+      [
+        "max",
+        "PerDispatchClass_u32"
+      ]
+    ],
+    "type": "struct"
+  },
+  "ApiValidators": {
+    "type_mapping": [
+      [
+        "current_block",
+        "String"
+      ],
+      [
+        "current_validators",
+        "Vec<(String,String)>"
+      ],
+      [
+        "miner_payouts",
+        "Vec<(ChainAccount,String)>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "ApiAssetMeta": {
+    "type_mapping": [
+      [
+        "supplier_counts",
+        "BTreeMap<String,u32>"
+      ],
+      [
+        "borrower_counts",
+        "BTreeMap<String,u32>"
+      ],
+      [
+        "combined_supplier_count",
+        "u32"
+      ],
+      [
+        "combined_borrower_count",
+        "u32"
+      ]
+    ],
+    "type": "struct"
+  },
+  "ReasonIncorrectNonce": "(Nonce,Nonce)",
+  "Polkadot__Chain__PublicKey": "[u8; 64]",
   "ChainLogId": {
     "type_mapping": [
       [
         "Eth",
-        "(u64, u64)"
+        "ChainLogIdEth"
       ]
     ],
     "type": "enum"
   },
+  "EthereumClientError": {
+    "type_mapping": [
+      [
+        "DecodeError",
+        "NULL"
+      ],
+      [
+        "HttpIoError",
+        "NULL"
+      ],
+      [
+        "HttpTimeout",
+        "NULL"
+      ],
+      [
+        "HttpErrorCode",
+        "U16"
+      ],
+      [
+        "InvalidUTF8",
+        "NULL"
+      ],
+      [
+        "JsonParseError",
+        "NULL"
+      ],
+      [
+        "NoResult",
+        "NULL"
+      ]
+    ],
+    "type": "enum"
+  },
+  "CashPrincipalPerAsset": "AssetIndex",
   "ExtractionNotice": {
     "type_mapping": [
       [
@@ -89,302 +191,302 @@
     ],
     "type": "enum"
   },
-  "Source10": "AccountRS",
-  "Source11": "Oracle_ErrorRS",
-  "Solana": {
-    "type_mapping": [],
-    "type": "struct"
-  },
+  "Tezos__Chain__Rate": "u128",
+  "Polkadot__Chain__Amount": "u128",
+  "Tezos__Chain__PublicKey": "[u8; 64]",
+  "Polkadot__Chain__Block": "NULL",
   "Reason": {
     "type_mapping": [
       [
         "AssetExtractionNotSupported",
-        "NULL"
+        "null"
       ],
       [
         "AssetNotSupported",
-        "NULL"
+        "null"
       ],
       [
         "BadAccount",
-        "NULL"
+        "null"
       ],
       [
         "BadAddress",
-        "NULL"
+        "null"
       ],
       [
         "BadAsset",
-        "NULL"
+        "null"
       ],
       [
         "BadChainId",
-        "NULL"
+        "null"
       ],
       [
         "BadFactor",
-        "NULL"
+        "null"
+      ],
+      [
+        "BadHash",
+        "null"
       ],
       [
         "BadSymbol",
-        "NULL"
+        "null"
       ],
       [
         "BadTicker",
-        "NULL"
+        "null"
       ],
       [
         "BadUnits",
-        "NULL"
+        "null"
       ],
       [
         "ChainMismatch",
-        "NULL"
+        "null"
+      ],
+      [
+        "HashMismatch",
+        "null"
       ],
       [
         "CryptoError",
-        "(CryptoError)"
+        "CryptoError"
+      ],
+      [
+        "EventError",
+        "EventError"
       ],
       [
         "FailedToSubmitExtrinsic",
-        "NULL"
+        "null"
       ],
       [
-        "FetchError",
-        "NULL"
+        "CannotFormulateReorg",
+        "null"
+      ],
+      [
+        "WorkerFetchError",
+        "null"
+      ],
+      [
+        "WorkerBusy",
+        "null"
       ],
       [
         "IncorrectNonce",
-        "(Nonce, Nonce)"
+        "ReasonIncorrectNonce"
       ],
       [
         "InKindLiquidation",
-        "NULL"
+        "null"
       ],
       [
         "InsufficientChainCash",
-        "NULL"
+        "null"
       ],
       [
         "InsufficientLiquidity",
-        "NULL"
+        "null"
       ],
       [
         "InsufficientTotalFunds",
-        "NULL"
+        "null"
       ],
       [
         "InvalidAPR",
-        "NULL"
+        "null"
       ],
       [
         "InvalidCodeHash",
-        "NULL"
+        "null"
       ],
       [
         "InvalidLiquidation",
-        "NULL"
+        "null"
       ],
       [
         "InvalidUTF8",
-        "NULL"
+        "null"
       ],
       [
         "KeyNotFound",
-        "NULL"
+        "null"
       ],
       [
         "MathError",
-        "(MathError)"
+        "MathError"
       ],
       [
         "MaxForNonCashAsset",
-        "NULL"
+        "null"
       ],
       [
         "MinTxValueNotMet",
-        "NULL"
+        "null"
       ],
       [
         "None",
-        "NULL"
+        "null"
       ],
       [
         "NoPrice",
-        "NULL"
+        "null"
       ],
       [
         "NoSuchAsset",
-        "NULL"
-      ],
-      [
-        "DeprecatedNoticeAlreadySigned",
-        "NULL"
-      ],
-      [
-        "NoticeHashMismatch",
-        "NULL"
+        "null"
       ],
       [
         "NoticeMissing",
-        "(ChainId, NoticeId)"
+        "ReasonNoticeMissing"
       ],
       [
         "NotImplemented",
-        "NULL"
+        "null"
       ],
       [
         "OracleError",
-        "(OracleError)"
+        "OracleError"
       ],
       [
         "RatesError",
-        "(RatesError)"
+        "RatesError"
       ],
       [
         "RepayTooMuch",
-        "NULL"
+        "null"
       ],
       [
         "SelfTransfer",
-        "NULL"
+        "null"
       ],
       [
         "SerdeError",
-        "NULL"
+        "null"
       ],
       [
         "SetYieldNextError",
-        "(SetYieldNextError)"
+        "SetYieldNextError"
       ],
       [
         "SignatureAccountMismatch",
-        "NULL"
+        "null"
       ],
       [
         "SignatureMismatch",
-        "NULL"
+        "null"
+      ],
+      [
+        "TimestampMissing",
+        "null"
       ],
       [
         "TimeTravelNotAllowed",
-        "NULL"
+        "null"
       ],
       [
         "TrxRequestParseError",
-        "(TrxReqParseError)"
+        "TrxReqParseError"
       ],
       [
         "UnknownValidator",
-        "NULL"
+        "null"
       ],
       [
         "InvalidChain",
-        "NULL"
+        "null"
       ],
       [
-        "PendingEraNotice",
-        "NULL"
+        "PendingAuthNotice",
+        "null"
       ],
       [
         "ChangeValidatorsError",
-        "NULL"
+        "null"
+      ],
+      [
+        "InsufficientCashForMaxTransfer",
+        "null"
+      ],
+      [
+        "SufficientLiquidity",
+        "null"
+      ],
+      [
+        "AssetQuantityMismatch",
+        "null"
+      ],
+      [
+        "Unreachable",
+        "null"
+      ],
+      [
+        "TotalBorrowUnderflow",
+        "null"
+      ],
+      [
+        "InsufficientCollateral",
+        "null"
+      ],
+      [
+        "NegativeChainCash",
+        "null"
+      ],
+      [
+        "MissingLastBlock",
+        "null"
+      ],
+      [
+        "StarportMissing",
+        "null"
+      ],
+      [
+        "InvalidChainBlock",
+        "null"
       ]
     ],
     "type": "enum"
   },
-  "Uint": "u128",
-  "ApiAssetData": {
+  "SessionKeys": {
     "type_mapping": [
       [
-        "asset",
-        "String"
+        "aura",
+        "[u8;32]"
       ],
       [
-        "balance",
-        "i64"
-      ],
-      [
-        "total_borrow",
-        "u64"
-      ],
-      [
-        "total_supply",
-        "u64"
-      ],
-      [
-        "borrow_rate",
-        "u64"
-      ],
-      [
-        "supply_rate",
-        "u64"
-      ],
-      [
-        "liquidity_factor",
-        "String"
-      ],
-      [
-        "price",
-        "u64"
+        "grandpa",
+        "[u8;32]"
       ]
     ],
     "type": "struct"
   },
+  "Uint": "u128",
+  "Tezos__Chain__Event": "tez__Event",
   "ChainHash": {
     "type_mapping": [
       [
-        "Comp",
-        "[u8; 32]"
+        "Gate",
+        "Gateway__Chain__Hash"
       ],
       [
         "Eth",
-        "[u8; 32]"
+        "Ethereum__Chain__Hash"
       ],
       [
         "Dot",
-        "[u8; 32]"
-      ],
-      [
-        "Sol",
-        "[u8; 32]"
-      ],
-      [
-        "Tez",
-        "[u8; 32]"
+        "Polkadot__Chain__Hash"
       ]
     ],
     "type": "enum"
   },
   "AssetBalance": "Int",
-  "KinkModel": {
-    "type_mapping": [
-      [
-        "zero_rate",
-        "APR"
-      ],
-      [
-        "kink_rate",
-        "APR"
-      ],
-      [
-        "kink_utilization",
-        "Utilization"
-      ],
-      [
-        "full_rate",
-        "APR"
-      ]
-    ],
-    "type": "struct"
-  },
+  "Tezos__Chain__Amount": "u128",
   "AccountId32": "[u8; 32]",
-  "Address": "MultiAddress",
-  "Ethereum": {
-    "type_mapping": [],
-    "type": "struct"
-  },
+  "Solana__Chain__PublicKey": "[u8; 64]",
+  "Solana__Chain__Amount": "u128",
+  "ChainAccountSignatureTez": "(Tezos__Chain__Address,Tezos__Chain__Signature)",
   "USDQuantity": "Quantity",
-  "Source8": "EthereumClientRS",
   "SetSupplyCapNoticeEth": {
     "type_mapping": [
       [
@@ -393,20 +495,20 @@
       ],
       [
         "parent",
-        "[u8; 32]"
+        "Ethereum__Chain__Hash"
       ],
       [
         "asset",
-        "[u8; 20]"
+        "Ethereum__Chain__Address"
       ],
       [
-        "amount",
-        "u128"
+        "cap",
+        "Ethereum__Chain__Amount"
       ]
     ],
     "type": "struct"
   },
-  "APR": "(Uint)",
+  "APR": "Uint",
   "ValidatorKeys": {
     "type_mapping": [
       [
@@ -415,16 +517,87 @@
       ],
       [
         "eth_address",
-        "[u8; 20]"
+        "Ethereum__Chain__Address"
+      ]
+    ],
+    "type": "struct"
+  },
+  "ApiPortfolio": {
+    "type_mapping": [
+      [
+        "cash",
+        "String"
+      ],
+      [
+        "positions",
+        "Vec<(ChainAsset,String)>"
       ]
     ],
     "type": "struct"
   },
   "CashQuantity": "Quantity",
-  "ConfigSetString": "Vec<String>",
+  "Tezos__Chain__Timestamp": "u64",
+  "Oracle__Timestamp": "u64",
+  "EthereumEventExecuteProposal": {
+    "type_mapping": [
+      [
+        "title",
+        "String"
+      ],
+      [
+        "extrinsics",
+        "Vec<Vec<u8>>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "ApiInterestRateModelFixed": {
+    "type_mapping": [
+      [
+        "rate",
+        "String"
+      ]
+    ],
+    "type": "struct"
+  },
+  "sol__EventId": "(u64,u64)",
   "AssetPrice": "u128",
-  "Factor": "(Uint)",
-  "Units": "(Ticker, u8)",
+  "ApiInterestRateModelKink": {
+    "type_mapping": [
+      [
+        "zero_rate",
+        "String"
+      ],
+      [
+        "kink_rate",
+        "String"
+      ],
+      [
+        "kink_utilization",
+        "String"
+      ],
+      [
+        "full_rate",
+        "String"
+      ]
+    ],
+    "type": "struct"
+  },
+  "Factor": "Uint",
+  "Units": {
+    "type_mapping": [
+      [
+        "ticker",
+        "Ticker"
+      ],
+      [
+        "decimals",
+        "Decimals"
+      ]
+    ],
+    "type": "struct"
+  },
+  "ReasonNoticeMissing": "(ChainId,NoticeId)",
   "AssetInfo": {
     "type_mapping": [
       [
@@ -462,133 +635,168 @@
     ],
     "type": "struct"
   },
+  "Solana__Chain__Rate": "u128",
+  "ChainAccountSignatureSol": "(Solana__Chain__Address,Solana__Chain__Signature)",
   "LiquidityFactor": "Factor",
+  "Gateway__Chain__EventId": "comp__EventId",
+  "EventStateFailed": {
+    "type_mapping": [
+      [
+        "reason",
+        "Reason"
+      ]
+    ],
+    "type": "struct"
+  },
   "SubstrateId": "AccountId32",
-  "CashPrincipal": "(Int)",
+  "CashPrincipal": "AssetBalance",
   "MinerShares": "Factor",
   "ChainSignatureList": {
     "type_mapping": [
       [
-        "Comp",
-        "Vec<([u8; 20], [u8; 65])>"
+        "Gate",
+        "Reserved"
       ],
       [
         "Eth",
-        "Vec<([u8; 20], [u8; 65])>"
+        "Vec<(Ethereum__Chain__Address,Ethereum__Chain__Signature)>"
       ],
       [
         "Dot",
-        "Vec<([u8; 20], [u8; 65])>"
-      ],
-      [
-        "Sol",
-        "Vec<([u8; 20], [u8; 65])>"
-      ],
-      [
-        "Tez",
-        "Vec<([u8; 20], [u8; 65])>"
+        "Vec<(Polkadot__Chain__Address,Polkadot__Chain__Signature)>"
       ]
     ],
     "type": "enum"
   },
   "AssetAmount": "Uint",
-  "LockCashEvent": {
+  "Solana__Chain__Event": "sol__Event",
+  "Polkadot__Chain__Address": "[u8; 32]",
+  "Ethereum__Chain__Amount": "u128",
+  "Solana__Chain__Hash": "[u8; 32]",
+  "Ethereum__Chain__Rate": "u128",
+  "NoticeStatePending": {
     "type_mapping": [
       [
-        "sender",
-        "[u8; 20]"
-      ],
-      [
-        "recipient",
-        "[u8; 20]"
-      ],
-      [
-        "amount",
-        "u128"
-      ],
-      [
-        "principal",
-        "u128"
+        "signature_pairs",
+        "ChainSignatureList"
       ]
     ],
     "type": "struct"
   },
-  "SessionKeys": {
+  "PerDispatchClass_u32": {
     "type_mapping": [
       [
-        "aura",
-        "[u8;32]"
+        "normal",
+        "u32"
       ],
       [
-        "grandpa",
-        "[u8;32]"
+        "operational",
+        "u32"
+      ],
+      [
+        "mandatory",
+        "u32"
       ]
     ],
     "type": "struct"
   },
-  "Compound": {
-    "type_mapping": [],
-    "type": "struct"
-  },
-  "LockCashOldEvent": {
-    "type_mapping": [
-      [
-        "sender",
-        "[u8; 20]"
-      ],
-      [
-        "recipient",
-        "[u8; 20]"
-      ],
-      [
-        "amount",
-        "u128"
-      ],
-      [
-        "principal",
-        "u128"
-      ]
-    ],
-    "type": "struct"
-  },
-  "NoticeId": "(EraId, EraIndex)",
+  "NoticeId": "(EraId,EraIndex)",
   "ChainAsset": {
     "type_mapping": [
       [
-        "Comp",
-        "[u8; 20]"
+        "Gate",
+        "Reserved"
       ],
       [
         "Eth",
-        "[u8; 20]"
+        "Ethereum__Chain__Address"
       ],
       [
         "Dot",
-        "[u8; 20]"
-      ],
-      [
-        "Sol",
-        "[u8; 20]"
-      ],
-      [
-        "Tez",
-        "[u8; 20]"
+        "Polkadot__Chain__Address"
       ]
     ],
     "type": "enum"
   },
-  "ValidatorIdentity": "[u8; 20]",
+  "ApiAssetInfo": {
+    "type_mapping": [
+      [
+        "asset",
+        "ChainAsset"
+      ],
+      [
+        "decimals",
+        "u8"
+      ],
+      [
+        "liquidity_factor",
+        "String"
+      ],
+      [
+        "rate_model",
+        "ApiInterestRateModel"
+      ],
+      [
+        "miner_shares",
+        "String"
+      ],
+      [
+        "supply_cap",
+        "String"
+      ],
+      [
+        "symbol",
+        "Symbol"
+      ],
+      [
+        "ticker",
+        "String"
+      ]
+    ],
+    "type": "struct"
+  },
+  "CashPerCashPrincipal": "CashIndex",
+  "ChainAccountSignatureEth": "(Ethereum__Chain__Address,Ethereum__Chain__Signature)",
+  "Ethereum__Chain__PublicKey": "[u8; 64]",
+  "ValidatorIdentity": "SubstrateId",
   "TrxReqParseError": {
-    "value_list": [
-      "NotImplemented",
-      "LexError",
-      "InvalidAmount",
-      "InvalidAddress",
-      "InvalidArgs",
-      "UnknownFunction",
-      "InvalidExpression",
-      "InvalidChain",
-      "InvalidChainAccount"
+    "type_mapping": [
+      [
+        "NotImplemented",
+        "null"
+      ],
+      [
+        "LexError",
+        "null"
+      ],
+      [
+        "InvalidAmount",
+        "null"
+      ],
+      [
+        "InvalidAddress",
+        "null"
+      ],
+      [
+        "InvalidArgs",
+        "null"
+      ],
+      [
+        "UnknownFunction",
+        "null"
+      ],
+      [
+        "InvalidExpression",
+        "null"
+      ],
+      [
+        "InvalidChain",
+        "null"
+      ],
+      [
+        "InvalidChainAccount",
+        "null"
+      ]
     ],
     "type": "enum"
   },
@@ -605,7 +813,8 @@
     ],
     "type": "struct"
   },
-  "AssetIndex": "(Uint)",
+  "ChainAccountSignatureDot": "(Polkadot__Chain__Address,Polkadot__Chain__Signature)",
+  "AssetIndex": "Uint",
   "ExtractionNoticeEth": {
     "type_mapping": [
       [
@@ -614,19 +823,19 @@
       ],
       [
         "parent",
-        "[u8; 32]"
+        "Ethereum__Chain__Hash"
       ],
       [
         "asset",
-        "[u8; 20]"
+        "Ethereum__Chain__Address"
       ],
       [
         "account",
-        "[u8; 20]"
+        "Ethereum__Chain__Address"
       ],
       [
         "amount",
-        "u128"
+        "Ethereum__Chain__Amount"
       ]
     ],
     "type": "struct"
@@ -634,32 +843,24 @@
   "EthereumEvent": {
     "type_mapping": [
       [
-        "LockOld",
-        "LockOldEvent"
-      ],
-      [
-        "LockCashOld",
-        "LockCashOldEvent"
-      ],
-      [
         "Lock",
-        "LockEvent"
+        "EthereumEventLock"
       ],
       [
         "LockCash",
-        "LockCashEvent"
+        "EthereumEventLockCash"
       ],
       [
         "ExecTrxRequest",
-        "ExecTrxRequestEvent"
+        "EthereumEventExecTrxRequest"
       ],
       [
         "ExecuteProposal",
-        "ExecuteProposalEvent"
+        "EthereumEventExecuteProposal"
       ],
       [
         "NoticeInvoked",
-        "NoticeInvokedEvent"
+        "EthereumEventNoticeInvoked"
       ]
     ],
     "type": "enum"
@@ -672,25 +873,34 @@
       ],
       [
         "events",
-        "Vec<(ChainLogId, ChainLogEvent)>"
+        "Vec<(ChainLogId,ChainLogEvent)>"
       ]
     ],
     "type": "struct"
   },
   "SignersSet": "BTreeSet<ValidatorIdentity>",
-  "SetYieldNextError": {
+  "InterestRateModelKink": {
     "type_mapping": [
       [
-        "TimestampTooSoonToNow",
-        "NULL"
+        "zero_rate",
+        "APR"
       ],
       [
-        "TimestampTooSoonToNext",
-        "NULL"
+        "kink_rate",
+        "APR"
+      ],
+      [
+        "kink_utilization",
+        "Factor"
+      ],
+      [
+        "full_rate",
+        "APR"
       ]
     ],
-    "type": "enum"
+    "type": "struct"
   },
+  "CashAmount": "Uint",
   "FutureYieldNoticeEth": {
     "type_mapping": [
       [
@@ -699,19 +909,19 @@
       ],
       [
         "parent",
-        "[u8; 32]"
+        "Ethereum__Chain__Hash"
       ],
       [
         "next_cash_yield",
-        "u128"
-      ],
-      [
-        "next_cash_yield_start_at",
-        "u128"
+        "Ethereum__Chain__Rate"
       ],
       [
         "next_cash_index",
-        "u128"
+        "Ethereum__Chain__CashIndex"
+      ],
+      [
+        "next_cash_yield_start",
+        "Ethereum__Chain__Timestamp"
       ]
     ],
     "type": "struct"
@@ -728,7 +938,7 @@
       ],
       [
         "DispatchFailure",
-        "(DispatchError)"
+        "DispatchError"
       ]
     ],
     "type": "enum"
@@ -742,19 +952,9 @@
     ],
     "type": "enum"
   },
-  "ExecuteProposalEvent": {
-    "type_mapping": [
-      [
-        "title",
-        "String"
-      ],
-      [
-        "extrinsics",
-        "Vec<Vec<u8>>"
-      ]
-    ],
-    "type": "struct"
-  },
+  "Ethereum__Chain__Event": "EthereumEvent",
+  "dot__EventId": "(u64,u64)",
+  "tez__EventId": "(u128,u128)",
   "CashExtractionNoticeEth": {
     "type_mapping": [
       [
@@ -763,29 +963,80 @@
       ],
       [
         "parent",
-        "[u8; 32]"
+        "Ethereum__Chain__Hash"
       ],
       [
         "account",
-        "[u8; 20]"
+        "Ethereum__Chain__Address"
       ],
       [
         "principal",
-        "u128"
+        "Ethereum__Chain__Amount"
+      ]
+    ],
+    "type": "struct"
+  },
+  "ChainReorgEth": {
+    "type_mapping": [
+      [
+        "from_hash",
+        "Ethereum__Chain__Hash"
+      ],
+      [
+        "to_hash",
+        "Ethereum__Chain__Hash"
+      ],
+      [
+        "reverse_blocks",
+        "Vec<Ethereum__Chain__Block>"
+      ],
+      [
+        "forward_blocks",
+        "Vec<Ethereum__Chain__Block>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "ChainReorgTally": {
+    "type_mapping": [
+      [
+        "reorg",
+        "ChainReorg"
+      ],
+      [
+        "support",
+        "SignersSet"
       ]
     ],
     "type": "struct"
   },
   "ChainId": {
-    "value_list": [
-      "Comp",
-      "Eth",
-      "Dot",
-      "Sol",
-      "Tez"
+    "type_mapping": [
+      [
+        "Gate",
+        "NULL"
+      ],
+      [
+        "Eth",
+        "NULL"
+      ],
+      [
+        "Dot",
+        "NULL"
+      ]
     ],
     "type": "enum"
   },
+  "ChainReorg": {
+    "type_mapping": [
+      [
+        "Eth",
+        "ChainReorgEth"
+      ]
+    ],
+    "type": "enum"
+  },
+  "eth__LogIndex": "u64",
   "SetSupplyCapNotice": {
     "type_mapping": [
       [
@@ -795,9 +1046,9 @@
     ],
     "type": "enum"
   },
-  "Utilization": "(Uint)",
+  "Polkadot__Chain__Rate": "u128",
+  "eth__BlockNumber": "u64",
   "EraIndex": "u32",
-  "ReporterSet": "Vec<Reporter>",
   "ChangeAuthorityNoticeEth": {
     "type_mapping": [
       [
@@ -806,36 +1057,32 @@
       ],
       [
         "parent",
-        "[u8; 32]"
+        "Ethereum__Chain__Hash"
       ],
       [
         "new_authorities",
-        "Vec<[u8; 20]>"
+        "Vec<Ethereum__Chain__Address>"
       ]
     ],
     "type": "struct"
   },
+  "Ethereum__Chain__EventId": "eth__EventId",
+  "Polkadot__Chain__Hash": "[u8; 32]",
+  "Ethereum__Chain__CashIndex": "u128",
+  "comp__EventId": "(u64,u64)",
   "ChainSignature": {
     "type_mapping": [
       [
-        "Comp",
-        "[u8; 65]"
+        "Gate",
+        "Gateway__Chain__Signature"
       ],
       [
         "Eth",
-        "[u8; 65]"
+        "Ethereum__Chain__Signature"
       ],
       [
         "Dot",
-        "[u8; 65]"
-      ],
-      [
-        "Sol",
-        "[u8; 65]"
-      ],
-      [
-        "Tez",
-        "[u8; 65]"
+        "Polkadot__Chain__Signature"
       ]
     ],
     "type": "enum"
@@ -853,55 +1100,161 @@
   "Keys": "SessionKeys",
   "Timestamp": "u64",
   "Symbol": "[u8; 12]",
+  "CodeHash": "Ethereum__Chain__Hash",
+  "Tezos__Chain__Hash": "[u8; 32]",
   "CryptoError": {
-    "value_list": [
-      "Unknown",
-      "KeyNotFound",
-      "KeyringLock",
-      "InvalidKeyId",
-      "ParseError",
-      "RecoverError",
-      "HSMError",
-      "EnvironmentVariablePrivateKeyNotSet",
-      "HexDecodeFailed",
-      "EnvironmentVariableHexDecodeFailed",
-      "EnvironmentVariableInvalidSeed"
-    ],
-    "type": "enum"
-  },
-  "EraId": "u32",
-  "ValidatorSig": "[u8; 65]",
-  "Decimals": "u8",
-  "Quantity": [
-    "Symbol",
-    "AssetAmount"
-  ],
-  "ChainAccount": {
     "type_mapping": [
       [
-        "Comp",
-        "[u8; 20]"
+        "Unknown",
+        "NULL"
       ],
       [
-        "Eth",
-        "[u8; 20]"
+        "KeyNotFound",
+        "NULL"
       ],
       [
-        "Dot",
-        "[u8; 20]"
+        "KeyringLock",
+        "NULL"
       ],
       [
-        "Sol",
-        "[u8; 20]"
+        "InvalidKeyId",
+        "NULL"
       ],
       [
-        "Tez",
-        "[u8; 20]"
+        "ParseError",
+        "NULL"
+      ],
+      [
+        "RecoverError",
+        "NULL"
+      ],
+      [
+        "HSMError",
+        "NULL"
+      ],
+      [
+        "EnvironmentVariablePrivateKeyNotSet",
+        "NULL"
+      ],
+      [
+        "HexDecodeFailed",
+        "NULL"
+      ],
+      [
+        "EnvironmentVariableHexDecodeFailed",
+        "NULL"
+      ],
+      [
+        "EnvironmentVariableInvalidSeed",
+        "NULL"
       ]
     ],
     "type": "enum"
   },
+  "EraId": "u32",
+  "Ethereum__Chain__Hash": "[u8; 32]",
+  "ValidatorSig": "Ethereum__Chain__Signature",
+  "EthereumEventExecTrxRequest": {
+    "type_mapping": [
+      [
+        "account",
+        "[u8; 20]"
+      ],
+      [
+        "trx_request",
+        "String"
+      ]
+    ],
+    "type": "struct"
+  },
+  "Tezos__Chain__CashIndex": "u128",
+  "Balance": {
+    "type_mapping": [
+      [
+        "value",
+        "AssetBalance"
+      ],
+      [
+        "units",
+        "Units"
+      ]
+    ],
+    "type": "struct"
+  },
+  "Decimals": "u8",
+  "Quantity": {
+    "type_mapping": [
+      [
+        "value",
+        "AssetAmount"
+      ],
+      [
+        "units",
+        "Units"
+      ]
+    ],
+    "type": "struct"
+  },
+  "EthereumEventLockCash": {
+    "type_mapping": [
+      [
+        "sender",
+        "[u8; 20]"
+      ],
+      [
+        "chain",
+        "String"
+      ],
+      [
+        "recipient",
+        "[u8; 32]"
+      ],
+      [
+        "amount",
+        "u128"
+      ],
+      [
+        "principal",
+        "u128"
+      ]
+    ],
+    "type": "struct"
+  },
+  "Polkadot__Chain__Timestamp": "u64",
+  "ChainAccount": {
+    "type_mapping": [
+      [
+        "Gate",
+        "Gateway__Chain__Address"
+      ],
+      [
+        "Eth",
+        "Ethereum__Chain__Address"
+      ],
+      [
+        "Dot",
+        "Polkadot__Chain__Address"
+      ]
+    ],
+    "type": "enum"
+  },
+  "InterestRateModel": {
+    "type_mapping": [
+      [
+        "Kink",
+        "InterestRateModelKink"
+      ],
+      [
+        "Fixed",
+        "InterestRateModelFixed"
+      ]
+    ],
+    "type": "enum"
+  },
+  "eth__EventId": "(BlockNumber,LogIndex)",
   "Int": "i128",
+  "Ethereum__Chain__Timestamp": "u64",
+  "Solana__Chain__Address": "[u8; 20]",
   "EthereumLogEvent": {
     "type_mapping": [
       [
@@ -927,47 +1280,153 @@
     ],
     "type": "struct"
   },
-  "Bips": "u128",
-  "Tezos": {
-    "type_mapping": [],
-    "type": "struct"
-  },
   "EncodedNotice": "Vec<u8>",
-  "EventState": {
+  "Tezos__Chain__Address": "[u8; 20]",
+  "Bips": "u128",
+  "ReporterSet": "Vec<Reporter>",
+  "Price": {
     "type_mapping": [
       [
-        "Pending",
-        {
-          "signers": "SignersSet"
-        }
+        "ticker",
+        "Ticker"
       ],
       [
-        "Failed",
-        {
-          "reason": "Reason"
-        }
+        "value",
+        "AssetPrice"
+      ]
+    ],
+    "type": "struct"
+  },
+  "ApiInterestRateModel": {
+    "type_mapping": [
+      [
+        "Kink",
+        "ApiInterestRateModelKink"
       ],
       [
-        "Done",
-        {}
+        "Fixed",
+        "ApiInterestRateModelFixed"
       ]
     ],
     "type": "enum"
   },
-  "ExecTrxRequest": {
+  "EventState": {
     "type_mapping": [
       [
-        "account",
-        "[u8; 20]"
+        "Pending",
+        "EventStatePending"
       ],
       [
-        "trx_request",
+        "Failed",
+        "EventStateFailed"
+      ],
+      [
+        "Done",
+        "null"
+      ]
+    ],
+    "type": "enum"
+  },
+  "SetYieldNextError": {
+    "type_mapping": [
+      [
+        "NotEnoughTimeToSyncBeforeNext",
+        "null"
+      ],
+      [
+        "NotEnoughTimeToSyncBeforeCancel",
+        "null"
+      ]
+    ],
+    "type": "enum"
+  },
+  "EventError": {
+    "type_mapping": [
+      [
+        "NoRpcUrl",
+        "NULL"
+      ],
+      [
+        "NoStarportAddress",
+        "NULL"
+      ],
+      [
+        "EthereumClientError",
+        "EthereumClientError"
+      ],
+      [
+        "ErrorDecodingHex",
+        "NULL"
+      ],
+      [
+        "InvalidBlockchain",
+        "NULL"
+      ]
+    ],
+    "type": "enum"
+  },
+  "Polkadot__Chain__Event": "NULL",
+  "SignedPayload": "Vec<u8>",
+  "ApiAssetData": {
+    "type_mapping": [
+      [
+        "asset",
+        "String"
+      ],
+      [
+        "balance",
+        "String"
+      ],
+      [
+        "total_supply",
+        "String"
+      ],
+      [
+        "total_borrow",
+        "String"
+      ],
+      [
+        "supply_rate",
+        "String"
+      ],
+      [
+        "borrow_rate",
+        "String"
+      ],
+      [
+        "liquidity_factor",
+        "String"
+      ],
+      [
+        "price",
         "String"
       ]
     ],
     "type": "struct"
   },
-  "LockOldEvent": {
+  "Address": "MultiAddress",
+  "Authorities": "Vec<AccountId32>",
+  "Solana__Chain__Timestamp": "u64",
+  "CashPrincipalAmount": "AssetAmount",
+  "CashOrChainAsset": {
+    "type_mapping": [
+      [
+        "Cash",
+        "NULL"
+      ],
+      [
+        "ChainAsset",
+        "ChainAsset"
+      ]
+    ],
+    "type": "enum"
+  },
+  "Ticker": "[u8; 12]",
+  "AssetQuantity": "Quantity",
+  "Solana__Chain__EventId": "sol__EventId",
+  "LookupSource": "MultiAddress",
+  "Ethereum__Chain__Signature": "[u8; 65]",
+  "EthereumEventLock": {
     "type_mapping": [
       [
         "asset",
@@ -978,8 +1437,12 @@
         "[u8; 20]"
       ],
       [
+        "chain",
+        "String"
+      ],
+      [
         "recipient",
-        "[u8; 20]"
+        "[u8; 32]"
       ],
       [
         "amount",
@@ -988,48 +1451,169 @@
     ],
     "type": "struct"
   },
-  "NoticeStatePending": {
+  "OracleError": {
     "type_mapping": [
       [
-        "signature_pairs",
-        "ChainSignatureList"
-      ]
-    ],
-    "type": "struct"
-  },
-  "SignedPayload": "Vec<u8>",
-  "Source2": "ChainsRS",
-  "Source3": "NoticesRS",
-  "Source0": "TypesRS",
-  "Source1": "SymbolRS",
-  "Source6": "ReasonRS",
-  "Source7": "EventsRS",
-  "Source4": "CompoundCrypto",
-  "Source5": "RatesRS",
-  "Authorities": "Vec<AccountId32>",
-  "CashPrincipalAmount": "(Uint)",
-  "Source9": "SetYieldNextRS",
-  "Ticker": "[u8; 12]",
-  "AssetQuantity": "Quantity",
-  "LookupSource": "MultiAddress",
-  "CashAsset": {
-    "type_mapping": [
-      [
-        "Cash",
-        "NULL"
+        "BadTicker",
+        "null"
       ],
       [
-        "Asset",
-        "ChainAsset"
+        "CryptoError",
+        "null"
+      ],
+      [
+        "EthAbiParseError",
+        "null"
+      ],
+      [
+        "HexParseError",
+        "null"
+      ],
+      [
+        "HttpError",
+        "null"
+      ],
+      [
+        "InvalidApiEndpoint",
+        "null"
+      ],
+      [
+        "InvalidKind",
+        "null"
+      ],
+      [
+        "InvalidReporter",
+        "null"
+      ],
+      [
+        "InvalidSymbol",
+        "null"
+      ],
+      [
+        "InvalidTicker",
+        "null"
+      ],
+      [
+        "InvalidTimestamp",
+        "null"
+      ],
+      [
+        "JsonParseError",
+        "null"
+      ],
+      [
+        "NoPriceFeedURL",
+        "null"
+      ],
+      [
+        "StalePrice",
+        "null"
+      ],
+      [
+        "SubmitError",
+        "null"
+      ],
+      [
+        "NoPrice",
+        "null"
       ]
     ],
     "type": "enum"
   },
-  "Polkadot": {
-    "type_mapping": [],
+  "MathError": {
+    "type_mapping": [
+      [
+        "AbnormalFloatingPointResult",
+        "NULL"
+      ],
+      [
+        "DivisionByZero",
+        "NULL"
+      ],
+      [
+        "Overflow",
+        "NULL"
+      ],
+      [
+        "Underflow",
+        "NULL"
+      ],
+      [
+        "SignMismatch",
+        "NULL"
+      ],
+      [
+        "PriceNotUSD",
+        "NULL"
+      ],
+      [
+        "UnitsMismatch",
+        "NULL"
+      ]
+    ],
+    "type": "enum"
+  },
+  "SessionIndex": "u32",
+  "Portfolio": {
+    "type_mapping": [
+      [
+        "cash",
+        "Balance"
+      ],
+      [
+        "positions",
+        "Vec<(AssetInfo,Balance)>"
+      ]
+    ],
     "type": "struct"
   },
-  "NoticeInvokedEvent": {
+  "ApiCashData": {
+    "type_mapping": [
+      [
+        "balance",
+        "String"
+      ],
+      [
+        "cash_yield",
+        "String"
+      ],
+      [
+        "price",
+        "String"
+      ]
+    ],
+    "type": "struct"
+  },
+  "Ethereum__Chain__Address": "[u8; 20]",
+  "NoticeState": {
+    "type_mapping": [
+      [
+        "Missing",
+        "null"
+      ],
+      [
+        "Pending",
+        "NoticeStatePending"
+      ],
+      [
+        "Executed",
+        "null"
+      ]
+    ],
+    "type": "enum"
+  },
+  "ChainLogIdEth": "(eth__BlockNumber,eth__LogIndex)",
+  "Polkadot__Chain__Signature": "[u8; 65]",
+  "FutureYieldNotice": {
+    "type_mapping": [
+      [
+        "Eth",
+        "FutureYieldNoticeEth"
+      ]
+    ],
+    "type": "enum"
+  },
+  "EthereumEventNoticeInvoked": {
     "type_mapping": [
       [
         "era_id",
@@ -1050,117 +1634,23 @@
     ],
     "type": "struct"
   },
-  "OracleError": {
-    "value_list": [
-      "BadTicker",
-      "CryptoError",
-      "EthAbiParseError",
-      "HexParseError",
-      "HttpError",
-      "InvalidApiEndpoint",
-      "InvalidKind",
-      "InvalidReporter",
-      "InvalidSymbol",
-      "InvalidTicker",
-      "JsonParseError",
-      "NoPriceFeedURL",
-      "StalePrice",
-      "SubmitError"
-    ],
-    "type": "enum"
-  },
-  "MathError": {
-    "value_list": [
-      "Overflow",
-      "Underflow",
-      "SignMismatch",
-      "SymbolMismatch",
-      "PriceNotUSD",
-      "DivisionByZero"
-    ],
-    "type": "enum"
-  },
-  "SessionIndex": "u32",
-  "ApiCashData": {
+  "ApiAPR": "u64",
+  "Polkadot__Chain__CashIndex": "u128",
+  "Tezos__Chain__EventId": "tez__EventId",
+  "Polkadot__Chain__EventId": "dot__EventId",
+  "Solana__Chain__CashIndex": "u128",
+  "Tezos__Chain__Signature": "[u8; 65]",
+  "EventStatePending": {
     "type_mapping": [
       [
-        "balance",
-        "i64"
-      ],
-      [
-        "cash_yield",
-        "u64"
-      ],
-      [
-        "price",
-        "u64"
+        "signers",
+        "SignersSet"
       ]
     ],
     "type": "struct"
   },
-  "NoticeState": {
-    "type_mapping": [
-      [
-        "Missing",
-        "NULL"
-      ],
-      [
-        "Pending",
-        "NoticeStatePending"
-      ],
-      [
-        "Executed",
-        "NULL"
-      ]
-    ],
-    "type": "enum"
-  },
-  "InterestRateModel": {
-    "type_mapping": [
-      [
-        "Kink",
-        "KinkModel"
-      ]
-    ],
-    "type": "enum"
-  },
-  "FutureYieldNotice": {
-    "type_mapping": [
-      [
-        "Eth",
-        "FutureYieldNoticeEth"
-      ]
-    ],
-    "type": "enum"
-  },
-  "LockEvent": {
-    "type_mapping": [
-      [
-        "asset",
-        "[u8; 20]"
-      ],
-      [
-        "sender",
-        "[u8; 20]"
-      ],
-      [
-        "recipient",
-        "[u8; 20]"
-      ],
-      [
-        "amount",
-        "u128"
-      ]
-    ],
-    "type": "struct"
-  },
-  "Price": [
-    "Ticker",
-    "AssetPrice"
-  ],
   "Weight": "u64",
   "CompactAssignments": "CompactAssignmentsLatest",
-  "RefCount": "u32",
   "DispatchResult": {
     "type": "enum",
     "type_mapping": [
@@ -1174,5 +1664,131 @@
       ]
     ]
   },
-  "AccountInfo": "AccountInfoWithProviders"
+  "ChainBlock": {
+    "type_mapping": [
+      [
+        "Eth",
+        "EthereumBlock"
+      ]
+    ],
+    "type": "enum"
+  },
+  "ChainBlockEvent": {
+    "type_mapping": [
+      [
+        "Reserved",
+        "NULL"
+      ],
+      [
+        "Eth",
+        "ChainBlockEventEth"
+      ]
+    ],
+    "type": "enum"
+  },
+  "ChainBlockEvents": {
+    "type_mapping": [
+      [
+        "Reserved",
+        "NULL"
+      ],
+      [
+        "Eth",
+        "Vec<(ChainBlockNumber,Ethereum__Chain__Event)>"
+      ]
+    ],
+    "type": "enum"
+  },
+  "ChainBlocks": {
+    "type_mapping": [
+      [
+        "Eth",
+        "Vec<Ethereum__Chain__Block>"
+      ]
+    ],
+    "type": "enum"
+  },
+  "ChainBlockEventEth": "(ChainBlockNumber, Ethereum__Chain__Event)",
+  "ChainBlockNumber": "u64",
+  "Ethereum__Chain__Block": "EthereumBlock",
+  "EthereumBlock": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "hash",
+        "EthereumHash"
+      ],
+      [
+        "parent_hash",
+        "EthereumHash"
+      ],
+      [
+        "number",
+        "EthereumBlockNumber"
+      ],
+      [
+        "events",
+        "Vec<EthereumEvent>"
+      ]
+    ]
+  },
+  "ChainBlockTally": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "block",
+        "ChainBlock"
+      ],
+      [
+        "support",
+        "SignersSet"
+      ],
+      [
+        "dissent",
+        "SignersSet"
+      ]
+    ]
+  },
+  "EthereumBlockNumber": "U64",
+  "EthereumHash": "[u8; 32]",
+  "ApiCashData#10-?": {
+    "type_mapping": [
+      [
+        "balance",
+        "String"
+      ],
+      [
+        "cash_yield",
+        "String"
+      ],
+      [
+        "price",
+        "String"
+      ],
+      [
+        "cash_principal",
+        "String"
+      ],
+      [
+        "cash_index",
+        "String"
+      ],
+      [
+        "total_cash",
+        "String"
+      ]
+    ],
+    "type": "struct"
+  },
+  "Reserved": "NULL",
+  "Gateway__Chain__Address": "[u8; 32]",
+  "Gateway__Chain__Amount": "u128",
+  "Gateway__Chain__Block": "()",
+  "Gateway__Chain__CashIndex": "u128",
+  "Gateway__Chain__Event": "()",
+  "Gateway__Chain__Hash": "[u8; 32]",
+  "Gateway__Chain__PublicKey": "[u8; 64]",
+  "Gateway__Chain__Rate": "u128",
+  "Gateway__Chain__Signature": "[u8; 65]",
+  "Gateway__Chain__Timestamp": "u64"
 }

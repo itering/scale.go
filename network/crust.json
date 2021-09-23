@@ -15,233 +15,178 @@
       ]
     ]
   },
-  "Sworker": "Vec<u8>",
-  "SworkerCert": "Vec<u8>",
-  "IASSig": "Vec<u8>",
-  "ISVBody": "Vec<u8>",
-  "SworkerPubKey": "Vec<u8>",
-  "SworkerSignature": "Vec<u8>",
-  "SworkerCode": "Vec<u8>",
+  "ETHAddress": "HexBytes",
+  "RefCount": "u32",
   "ReportSlot": "u64",
-  "AddressInfo": "Vec<u8>",
-  "MerkleRoot": "Vec<u8>",
-  "Identity": {
-    "type": "struct",
+  "MerchantLedger": {
     "type_mapping": [
       [
-        "pub_key",
-        "Vec<u8>"
+        "reward",
+        "Balance"
       ],
       [
-        "code",
-        "Vec<u8>"
+        "collateral",
+        "Balance"
       ]
-    ]
+    ],
+    "type": "struct"
   },
-  "StakingLedger": {
-    "type": "struct",
+  "IASSig": "HexBytes",
+  "SworkerSignature": "HexBytes",
+  "UsedInfo": {
     "type_mapping": [
       [
-        "stash",
-        "AccountId"
-      ],
-      [
-        "total",
-        "Compact<Balance>"
-      ],
-      [
-        "active",
-        "Compact<Balance>"
-      ],
-      [
-        "valid",
-        "Compact<Balance>"
-      ],
-      [
-        "unlocking",
-        "Vec<UnlockChunk>"
-      ]
-    ]
-  },
-  "Validations": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "total",
-        "Compact<Balance>"
-      ],
-      [
-        "guarantee_fee",
-        "Compact<Perbill>"
-      ],
-      [
-        "guarantors",
-        "Vec<AccountId>"
-      ]
-    ]
-  },
-  "Nominations": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "targets",
-        "Vec<AccountId>"
-      ],
-      [
-        "total",
-        "Compact<Balance>"
-      ],
-      [
-        "submitted_in",
-        "u32"
-      ],
-      [
-        "suppressed",
-        "bool"
-      ]
-    ]
-  },
-  "StorageOrder": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "file_identifier",
-        "Vec<u8>"
-      ],
-      [
-        "file_size",
+        "used_size",
         "u64"
       ],
       [
-        "created_on",
-        "BlockNumber"
+        "reported_group_count",
+        "u32"
       ],
       [
-        "completed_on",
-        "BlockNumber"
+        "groups",
+        "BTreeMap<SworkerAnchor, bool>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "Status": {
+    "value_list": [
+      "Free",
+      "Reserved"
+    ],
+    "type": "enum"
+  },
+  "EthereumTxHash": "H256",
+  "Releases": {
+    "value_list": [
+      "V1_0_0",
+      "V2_0_0"
+    ],
+    "type": "enum"
+  },
+  "Identity": {
+    "type_mapping": [
+      [
+        "anchor",
+        "SworkerAnchor"
+      ],
+      [
+        "punishment_deadline",
+        "u64"
+      ],
+      [
+        "group",
+        "Option<AccountId>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "SworkerCode": "HexBytes",
+  "MerkleRoot": "HexBytes",
+  "SworkerCert": "HexBytes",
+  "WorkReport": {
+    "type_mapping": [
+      [
+        "report_slot",
+        "u64"
+      ],
+      [
+        "used",
+        "u64"
+      ],
+      [
+        "free",
+        "u64"
+      ],
+      [
+        "reported_files_size",
+        "u64"
+      ],
+      [
+        "reported_srd_root",
+        "MerkleRoot"
+      ],
+      [
+        "reported_files_root",
+        "MerkleRoot"
+      ]
+    ],
+    "type": "struct"
+  },
+  "SworkerAnchor": "HexBytes",
+  "FileInfo": {
+    "type_mapping": [
+      [
+        "file_size",
+        "u64"
       ],
       [
         "expired_on",
         "BlockNumber"
       ],
       [
-        "provider",
-        "AccountId"
-      ],
-      [
-        "client",
-        "AccountId"
+        "calculated_at",
+        "BlockNumber"
       ],
       [
         "amount",
         "Balance"
       ],
       [
-        "order_status",
-        "OrderStatus"
+        "prepaid",
+        "Balance"
+      ],
+      [
+        "reported_replica_count",
+        "u32"
+      ],
+      [
+        "replicas",
+        "Vec<Replica<AccountId>>"
       ]
-    ]
+    ],
+    "type": "struct"
   },
-  "Pledge": {
-    "type": "struct",
+  "ISVBody": "HexBytes",
+  "SworkerPubKey": "HexBytes",
+  "AddressInfo": "HexBytes",
+  "Replica": {
     "type_mapping": [
       [
-        "total",
-        "Balance"
-      ],
-      [
-        "used",
-        "Balance"
-      ]
-    ]
-  },
-  "PaymentLedger": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "total",
-        "Balance"
-      ],
-      [
-        "paid",
-        "Balance"
-      ],
-      [
-        "unreserved",
-        "Balance"
-      ]
-    ]
-  },
-  "MerchantPunishment": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "success",
-        "EraIndex"
-      ],
-      [
-        "failed",
-        "EraIndex"
-      ],
-      [
-        "value",
-        "Balance"
-      ]
-    ]
-  },
-  "EraPoints": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "total",
-        "Points"
-      ],
-      [
-        "individual",
-        "Vec<Points>"
-      ]
-    ]
-  },
-  "StakingLedger<AccountId, BalanceOf>": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "stash",
+        "who",
         "AccountId"
       ],
       [
-        "total",
-        "Compact<Balance>"
+        "valid_at",
+        "BlockNumber"
       ],
       [
-        "active",
-        "Compact<Balance>"
+        "anchor",
+        "SworkerAnchor"
       ],
       [
-        "unlocking",
-        "Vec<UnlockChunk<Balance>>"
-      ],
-      [
-        "claimed_rewards",
-        "Option<EraIndex>"
+        "is_reported",
+        "bool"
       ]
-    ]
+    ],
+    "type": "struct"
   },
-  "UnlockChunk": {
-    "type": "struct",
+  "PKInfo": {
     "type_mapping": [
       [
-        "value",
-        "Compact<Balance>"
+        "code",
+        "SworkerCode"
       ],
       [
-        "era",
-        "Compact<EraIndex>"
+        "anchor",
+        "Option<SworkerAnchor>"
       ]
-    ]
+    ],
+    "type": "struct"
   },
+  "FileAlias": "HexBytes",
   "Guarantee": {
-    "type": "struct",
     "type_mapping": [
       [
         "targets",
@@ -259,177 +204,68 @@
         "suppressed",
         "bool"
       ]
-    ]
+    ],
+    "type": "struct"
   },
-  "SorderStatus": {
+  "Box<<T as Config>::Call>": "Call",
+  "CompactAssignments": "CompactAssignmentsLatest",
+  "AccountInfo": "AccountInfoWithProviders",
+  "CsmBalance": "Balance",
+  "CsmBalanceOf": "Balance",
+  "ChainId": "u8",
+  "TokenId": "U256",
+  "ResourceId": "H256",
+  "Erc721Token": {
     "type_mapping": [
       [
-        "completed_on",
-        "BlockNumber"
+        "id",
+        "TokenId"
       ],
       [
-        "expired_on",
-        "BlockNumber"
+        "metadata",
+        "Vec<u8>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "BridgeChainId": "u8",
+  "ProposalStatus": {
+    "value_list": [
+      "Initiated",
+      "Approved",
+      "Rejected"
+    ],
+    "type": "enum"
+  },
+  "ProposalVotes": {
+    "type_mapping": [
+      [
+        "votes_for",
+        "Vec<AccountId>"
+      ],
+      [
+        "votes_against",
+        "Vec<AccountId>"
       ],
       [
         "status",
-        "OrderStatus"
+        "ProposalStatus"
       ],
       [
-        "claimed_at",
+        "expiry",
         "BlockNumber"
       ]
     ],
     "type": "struct"
   },
-  "MerchantInfo": {
+  "DepositNonce": "u64",
+  "ValidatorPrefs": {
     "type_mapping": [
       [
-        "address",
-        "Vec<u8>"
-      ],
-      [
-        "storage_price",
-        "Balance"
-      ],
-      [
-        "file_map",
-        "Vec<(Vec<u8>, Vec<Hash>)>"
+        "guarantee_fee",
+        "Compact<Perbill>"
       ]
     ],
     "type": "struct"
-  },
-  "Status": {
-    "value_list": [
-      "Free",
-      "Reserved"
-    ],
-    "type": "enum"
-  },
-  "Releases": {
-    "value_list": [
-      "V1_0_0",
-      "V2_0_0"
-    ],
-    "type": "enum"
-  },
-  "OrderStatus": {
-    "value_list": [
-      "Success",
-      "Failed",
-      "Pending"
-    ],
-    "type": "enum"
-  },
-  "FileAlias": "Vec<u8>",
-  "WorkReport": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "block_number",
-        "u64"
-      ],
-      [
-        "used",
-        "u64"
-      ],
-      [
-        "reserved",
-        "u64"
-      ],
-      [
-        "cached_reserved",
-        "u64"
-      ],
-      [
-        "files",
-        "Vec<(Vec<u8>, u64)>"
-      ]
-    ]
-  },
-  "WorkReport#5-?": {
-    "type_mapping": [
-      [
-        "report_slot",
-        "u64"
-      ],
-      [
-        "used",
-        "u64"
-      ],
-      [
-        "free",
-        "u64"
-      ],
-      [
-        "files",
-        "BTreeMap<MerkleRoot, u64>"
-      ],
-      [
-        "reported_files_size",
-        "u64"
-      ],
-      [
-        "reported_srd_root",
-        "MerkleRoot"
-      ],
-      [
-        "reported_files_root",
-        "MerkleRoot"
-      ]
-    ],
-    "type": "struct"
-  },
-  "SorderPunishment": {
-    "type_mapping": [
-      [
-        "success",
-        "BlockNumber"
-      ],
-      [
-        "failed",
-        "BlockNumber"
-      ],
-      [
-        "updated_at",
-        "BlockNumber"
-      ]
-    ],
-    "type": "struct"
-  },
-  "SorderInfo": {
-    "type_mapping": [
-      [
-        "file_identifier",
-        "MerkleRoot"
-      ],
-      [
-        "file_size",
-        "u64"
-      ],
-      [
-        "created_on",
-        "BlockNumber"
-      ],
-      [
-        "merchant",
-        "AccountId"
-      ],
-      [
-        "client",
-        "AccountId"
-      ],
-      [
-        "amount",
-        "Balance"
-      ],
-      [
-        "duration",
-        "BlockNumber"
-      ]
-    ],
-    "type": "struct"
-  },
-  "ETHAddress": "Vec<u8>",
-  "RefCount": "u32"
+  }
 }

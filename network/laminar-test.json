@@ -616,5 +616,9 @@
       ]
     ],
     "type": "struct"
-  }
+  },
+  "Address": "MultiAddress",
+  "LookupSource": "MultiAddress",
+  "AccountInfo": "AccountInfoWithTripleRefCount",
+  "ValidatorPrefs": "ValidatorPrefsWithBlocked"
 }

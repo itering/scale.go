@@ -1,0 +1,559 @@
+{
+  "Weight": "u64",
+  "RefCount": "u32",
+  "DispatchResult": {
+    "type": "enum",
+    "type_mapping": [
+      [
+        "Ok",
+        "Null"
+      ],
+      [
+        "Error",
+        "DispatchError"
+      ]
+    ]
+  },
+  "Address": "AccountId",
+  "LookupSource": "AccountId",
+  "Address#23-?": "MultiAddress",
+  "LookupSource#23-?": "MultiAddress",
+  "AccountInfo": "AccountInfoWithTripleRefCount",
+  "CompactAssignments": "CompactAssignmentsLatest",
+  "BlockNumber": "u32",
+  "EpochDetail<Balance>": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "validator_count",
+        "u8"
+      ],
+      [
+        "starting_slot",
+        "SlotNo"
+      ],
+      [
+        "expected_ending_slot",
+        "SlotNo"
+      ],
+      [
+        "ending_slot",
+        "Option<SlotNo>"
+      ],
+      [
+        "emission_for_validators",
+        "Option<Balance>"
+      ],
+      [
+        "emission_for_treasury",
+        "Option<Balance>"
+      ]
+    ]
+  },
+  "ValidatorStatsPerEpoch<Balance>": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "block_count",
+        "EpochLen"
+      ],
+      [
+        "locked_reward",
+        "Option<Balance>"
+      ],
+      [
+        "unlocked_reward",
+        "Option<Balance>"
+      ]
+    ]
+  },
+  "Bonus<Balance, BlockNumber>": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "swap_bonuses",
+        "Vec<(Balance, BlockNumber)>"
+      ],
+      [
+        "vesting_bonuses",
+        "Vec<(Balance, Balance, BlockNumber)>"
+      ]
+    ]
+  },
+  "Bonus": {
+    "type_mapping": [
+      [
+        "swap_bonuses",
+        "Vec<(Balance, BlockNumber)>"
+      ],
+      [
+        "vesting_bonuses",
+        "Vec<(Balance, Balance, BlockNumber)>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "ValidatorStatsPerEpoch": {
+    "type_mapping": [
+      [
+        "block_count",
+        "EpochLen"
+      ],
+      [
+        "locked_reward",
+        "Option<Balance>"
+      ],
+      [
+        "unlocked_reward",
+        "Option<Balance>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "Transaction": {
+    "type_mapping": [
+      [
+        "nonce",
+        "U256"
+      ],
+      [
+        "action",
+        "String"
+      ],
+      [
+        "gas_price",
+        "u64"
+      ],
+      [
+        "gas_limit",
+        "u64"
+      ],
+      [
+        "value",
+        "U256"
+      ],
+      [
+        "input",
+        "Vec<u8>"
+      ],
+      [
+        "signature",
+        "TransactionSignature"
+      ]
+    ],
+    "type": "struct"
+  },
+  "Blob": {
+    "type_mapping": [
+      [
+        "id",
+        "BlobId"
+      ],
+      [
+        "blob",
+        "Vec<u8>"
+      ],
+      [
+        "author",
+        "Did"
+      ]
+    ],
+    "type": "struct"
+  },
+  "Policy": {
+    "type_mapping": [
+      [
+        "OneOf",
+        "BTreeSet<Did>"
+      ]
+    ],
+    "type": "enum"
+  },
+  "SlotNo": "u64",
+  "EpochLen": "u32",
+  "StateChange": {
+    "type_mapping": [
+      [
+        "KeyUpdate",
+        "KeyUpdate"
+      ],
+      [
+        "DidRemoval",
+        "DidRemoval"
+      ],
+      [
+        "Revoke",
+        "Revoke"
+      ],
+      [
+        "UnRevoke",
+        "UnRevoke"
+      ],
+      [
+        "RemoveRegistry",
+        "RemoveRegistry"
+      ],
+      [
+        "Blob",
+        "Blob"
+      ],
+      [
+        "MasterVote",
+        "Payload"
+      ],
+      [
+        "Attestation",
+        "(Did, Attestation)"
+      ]
+    ],
+    "type": "enum"
+  },
+  "BlockLength": {
+    "type_mapping": [
+      [
+        "max",
+        "PerDispatchClassU32"
+      ]
+    ],
+    "type": "struct"
+  },
+  "DidSignature": {
+    "type_mapping": [
+      [
+        "Sr25519",
+        "Bytes64"
+      ],
+      [
+        "Ed25519",
+        "Bytes64"
+      ],
+      [
+        "Secp256k1",
+        "Bytes65"
+      ]
+    ],
+    "type": "enum"
+  },
+  "Membership": {
+    "type_mapping": [
+      [
+        "members",
+        "BTreeSet<Did>"
+      ],
+      [
+        "vote_requirement",
+        "u64"
+      ]
+    ],
+    "type": "struct"
+  },
+  "Registry": {
+    "type_mapping": [
+      [
+        "policy",
+        "Policy"
+      ],
+      [
+        "add_only",
+        "bool"
+      ]
+    ],
+    "type": "struct"
+  },
+  "EpochNo": "u32",
+  "UnRevoke": {
+    "type_mapping": [
+      [
+        "registry_id",
+        "RegistryId"
+      ],
+      [
+        "revoke_ids",
+        "BTreeSet<RevokeId>"
+      ],
+      [
+        "last_modified",
+        "BlockNumber"
+      ]
+    ],
+    "type": "struct"
+  },
+  "PMAuth": "BTreeMap<Did, DidSignature>",
+  "Account": {
+    "type_mapping": [
+      [
+        "nonce",
+        "U256"
+      ],
+      [
+        "balance",
+        "U256"
+      ]
+    ],
+    "type": "struct"
+  },
+  "KeyDetail": {
+    "type_mapping": [
+      [
+        "controller",
+        "Did"
+      ],
+      [
+        "public_key",
+        "PublicKey"
+      ]
+    ],
+    "type": "struct"
+  },
+  "Did": "[u8; 32]",
+  "Bytes33": {
+    "type_mapping": [
+      [
+        "value",
+        "[u8;33]"
+      ]
+    ],
+    "type": "struct"
+  },
+  "RemoveRegistry": {
+    "type_mapping": [
+      [
+        "registry_id",
+        "RegistryId"
+      ],
+      [
+        "last_modified",
+        "BlockNumber"
+      ]
+    ],
+    "type": "struct"
+  },
+  "BlobId": "[u8;32]",
+  "Bytes32": {
+    "type_mapping": [
+      [
+        "value",
+        "[u8;32]"
+      ]
+    ],
+    "type": "struct"
+  },
+  "Attestation": {
+    "type_mapping": [
+      [
+        "priority",
+        "Compact<u64>"
+      ],
+      [
+        "iri",
+        "Option<Vec<u8>>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "RegistryId": "[u8;32]",
+  "TransactionSignature": {
+    "type_mapping": [
+      [
+        "v",
+        "u64"
+      ],
+      [
+        "r",
+        "H256"
+      ],
+      [
+        "s",
+        "H256"
+      ]
+    ],
+    "type": "struct"
+  },
+  "Balance": "u64",
+  "ContractConfig": {
+    "type_mapping": [
+      [
+        "address",
+        "H160"
+      ],
+      [
+        "query_aggregator_call_encoded",
+        "Vec<u8>"
+      ],
+      [
+        "query_price_abi_encoded",
+        "Vec<u8>"
+      ],
+      [
+        "return_val_abi",
+        "Vec<ParamType>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "RevokeId": "[u8;32]",
+  "Revoke": {
+    "type_mapping": [
+      [
+        "registry_id",
+        "RegistryId"
+      ],
+      [
+        "revoke_ids",
+        "BTreeSet<RevokeId>"
+      ],
+      [
+        "last_modified",
+        "BlockNumber"
+      ]
+    ],
+    "type": "struct"
+  },
+  "ParamType": {
+    "type_mapping": [
+      [
+        "Address",
+        "null"
+      ],
+      [
+        "Int",
+        "u16"
+      ],
+      [
+        "Uint",
+        "u16"
+      ]
+    ],
+    "type": "enum"
+  },
+  "DidRemoval": {
+    "type_mapping": [
+      [
+        "did",
+        "Did"
+      ],
+      [
+        "last_modified_in_block",
+        "BlockNumber"
+      ]
+    ],
+    "type": "struct"
+  },
+  "PerDispatchClassU32": {
+    "type_mapping": [
+      [
+        "normal",
+        "u32"
+      ],
+      [
+        "operational",
+        "u32"
+      ],
+      [
+        "mandatory",
+        "u32"
+      ]
+    ],
+    "type": "struct"
+  },
+  "Keys": "SessionKeys2",
+  "PublicKey": {
+    "type_mapping": [
+      [
+        "Sr25519",
+        "Bytes32"
+      ],
+      [
+        "Ed25519",
+        "Bytes32"
+      ],
+      [
+        "Secp256k1",
+        "Bytes33"
+      ]
+    ],
+    "type": "enum"
+  },
+  "KeyUpdate": {
+    "type_mapping": [
+      [
+        "did",
+        "Did"
+      ],
+      [
+        "public_key",
+        "PublicKey"
+      ],
+      [
+        "controller",
+        "Option<Did>"
+      ],
+      [
+        "last_modified_in_block",
+        "BlockNumber"
+      ]
+    ],
+    "type": "struct"
+  },
+  "Bytes64": {
+    "type_mapping": [
+      [
+        "value",
+        "[u8;64]"
+      ]
+    ],
+    "type": "struct"
+  },
+  "Bytes65": {
+    "type_mapping": [
+      [
+        "value",
+        "[u8;65]"
+      ]
+    ],
+    "type": "struct"
+  },
+  "EpochDetail": {
+    "type_mapping": [
+      [
+        "validator_count",
+        "u8"
+      ],
+      [
+        "starting_slot",
+        "SlotNo"
+      ],
+      [
+        "expected_ending_slot",
+        "SlotNo"
+      ],
+      [
+        "ending_slot",
+        "Option<SlotNo>"
+      ],
+      [
+        "emission_for_validators",
+        "Option<Balance>"
+      ],
+      [
+        "emission_for_treasury",
+        "Option<Balance>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "Payload": {
+    "type_mapping": [
+      [
+        "proposal",
+        "Vec<u8>"
+      ],
+      [
+        "round_no",
+        "u64"
+      ]
+    ],
+    "type": "struct"
+  },
+  "PAuth": "BTreeMap<Did, DidSignature>"
+}

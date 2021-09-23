@@ -6,674 +6,674 @@
   "GenericTransfer": {
     "type_mapping": [
       [
-        "dest_id", 
+        "dest_id",
         "BridgeChainId"
-      ], 
+      ],
       [
-        "nonce", 
+        "nonce",
         "DepositNonce"
-      ], 
+      ],
       [
-        "resource_id", 
+        "resource_id",
         "ResourceId"
-      ], 
+      ],
       [
-        "metadata", 
+        "metadata",
         "Vec<u8>"
       ]
-    ], 
+    ],
     "type": "struct"
-  }, 
-  "ContractPublicKey": "Sr25519PublicKey", 
+  },
+  "ContractPublicKey": "Sr25519PublicKey",
   "MinerInfo": {
     "type_mapping": [
       [
-        "state", 
+        "state",
         "MinerState"
-      ], 
+      ],
       [
-        "ve", 
+        "ve",
         "u128"
-      ], 
+      ],
       [
-        "v", 
+        "v",
         "u128"
-      ], 
+      ],
       [
-        "vUpdatedAt", 
+        "vUpdatedAt",
         "u64"
-      ], 
+      ],
       [
-        "benchmark", 
+        "benchmark",
         "Benchmark"
-      ], 
+      ],
       [
-        "coolDownStart", 
+        "coolDownStart",
         "u64"
-      ], 
+      ],
       [
-        "stats", 
+        "stats",
         "MinerStats"
       ]
-    ], 
+    ],
     "type": "struct"
-  }, 
-  "TokenomicParams": "TokenomicParameters", 
-  "U64F64Bits": "u128", 
+  },
+  "TokenomicParams": "TokenomicParameters",
+  "U64F64Bits": "u128",
   "KeyDistribution": {
     "type_mapping": [
       [
-        "MasterKeyDistribution", 
+        "MasterKeyDistribution",
         "DispatchMasterKeyEvent"
       ]
-    ], 
+    ],
     "type": "enum"
-  }, 
-  "BridgeChainId": "u8", 
+  },
+  "BridgeChainId": "u8",
   "Benchmark": {
     "type_mapping": [
       [
-        "pInstant", 
+        "pInit",
         "u32"
-      ], 
+      ],
       [
-        "pInit", 
+        "pInstant",
         "u32"
-      ], 
+      ],
       [
-        "iterations", 
+        "iterations",
         "u64"
-      ], 
+      ],
       [
-        "miningStartTime", 
+        "miningStartTime",
         "u64"
-      ], 
+      ],
       [
-        "updatedAt", 
+        "challengeTimeLast",
         "u64"
       ]
-    ], 
+    ],
     "type": "struct"
-  }, 
-  "DepositNonce": "u64", 
+  },
+  "DepositNonce": "u64",
   "ProxyType": {
     "value_list": [
-      "Any", 
-      "NonTransfer", 
-      "CancelProxy", 
-      "Governance", 
-      "Collator", 
+      "Any",
+      "NonTransfer",
+      "CancelProxy",
+      "Governance",
+      "Collator",
       "StakePoolManager"
-    ], 
+    ],
     "type": "enum"
-  }, 
-  "Keys": "AccountId", 
-  "ResourceId": "[u8; 32]", 
+  },
+  "Keys": "AccountId",
+  "ResourceId": "[u8; 32]",
   "WorkerRegistrationInfo": {
     "type_mapping": [
       [
-        "version", 
+        "version",
         "u32"
-      ], 
+      ],
       [
-        "machineId", 
+        "machineId",
         "Vec<u8>"
-      ], 
+      ],
       [
-        "pubkey", 
+        "pubkey",
         "WorkerPublicKey"
-      ], 
+      ],
       [
-        "ecdhPubkey", 
+        "ecdhPubkey",
         "EcdhPublicKey"
-      ], 
+      ],
       [
-        "genesisBlockHash", 
+        "genesisBlockHash",
         "H256"
-      ], 
+      ],
       [
-        "features", 
+        "features",
         "Vec<u32>"
-      ], 
+      ],
       [
-        "operator", 
+        "operator",
         "Option<AccountId>"
       ]
-    ], 
+    ],
     "type": "struct"
-  }, 
-  "SenderId": "MessageOrigin", 
+  },
+  "SenderId": "MessageOrigin",
   "WorkerInfo": {
     "type_mapping": [
       [
-        "pubkey", 
+        "pubkey",
         "WorkerPublicKey"
-      ], 
+      ],
       [
-        "ecdhPubkey", 
+        "ecdhPubkey",
         "EcdhPublicKey"
-      ], 
+      ],
       [
-        "runtimeVersion", 
+        "runtimeVersion",
         "u32"
-      ], 
+      ],
       [
-        "lastUpdated", 
+        "lastUpdated",
         "u64"
-      ], 
+      ],
       [
-        "operator", 
+        "operator",
         "Option<AccountId>"
-      ], 
+      ],
       [
-        "confidenceLevel", 
+        "confidenceLevel",
         "u8"
-      ], 
+      ],
       [
-        "initialScore", 
+        "initialScore",
         "Option<u32>"
-      ], 
+      ],
       [
-        "features", 
+        "features",
         "Vec<u32>"
       ]
-    ], 
+    ],
     "type": "struct"
-  }, 
+  },
   "AttestationSgxIas": {
     "type_mapping": [
       [
-        "raReport", 
+        "raReport",
         "Vec<u8>"
-      ], 
+      ],
       [
-        "signature", 
+        "signature",
         "Vec<u8>"
-      ], 
+      ],
       [
-        "rawSigningCert", 
+        "rawSigningCert",
         "Vec<u8>"
       ]
-    ], 
+    ],
     "type": "struct"
-  }, 
-  "Address": "MultiAddress", 
-  "Path": "Vec<u8>", 
+  },
+  "Address": "MultiAddress",
+  "Path": "Vec<u8>",
   "TokenomicParameters": {
     "type_mapping": [
       [
-        "phaRate", 
+        "phaRate",
         "U64F64Bits"
-      ], 
+      ],
       [
-        "rho", 
+        "rho",
         "U64F64Bits"
-      ], 
+      ],
       [
-        "budgetPerBlock", 
+        "budgetPerBlock",
         "U64F64Bits"
-      ], 
+      ],
       [
-        "vMax", 
+        "vMax",
         "U64F64Bits"
-      ], 
+      ],
       [
-        "costK", 
+        "costK",
         "U64F64Bits"
-      ], 
+      ],
       [
-        "costB", 
+        "costB",
         "U64F64Bits"
-      ], 
+      ],
       [
-        "slashRate", 
+        "slashRate",
         "U64F64Bits"
-      ], 
+      ],
       [
-        "treasuryRatio", 
+        "treasuryRatio",
         "U64F64Bits"
-      ], 
+      ],
       [
-        "heartbeatWindow", 
+        "heartbeatWindow",
         "u32"
-      ], 
+      ],
       [
-        "rigK", 
+        "rigK",
         "U64F64Bits"
-      ], 
+      ],
       [
-        "rigB", 
+        "rigB",
         "U64F64Bits"
-      ], 
+      ],
       [
-        "re", 
+        "re",
         "U64F64Bits"
-      ], 
+      ],
       [
-        "k", 
+        "k",
         "U64F64Bits"
-      ], 
+      ],
       [
-        "kappa", 
+        "kappa",
         "U64F64Bits"
       ]
-    ], 
+    ],
     "type": "struct"
-  }, 
-  "MasterPublicKey": "Sr25519PublicKey", 
+  },
+  "MasterPublicKey": "Sr25519PublicKey",
   "BridgeEvent": {
     "type_mapping": [
       [
-        "FungibleTransfer", 
+        "FungibleTransfer",
         "FungibleTransfer"
-      ], 
+      ],
       [
-        "NonFungibleTransfer", 
+        "NonFungibleTransfer",
         "NonFungibleTransfer"
-      ], 
+      ],
       [
-        "GenericTransfer", 
+        "GenericTransfer",
         "GenericTransfer"
       ]
-    ], 
+    ],
     "type": "enum"
-  }, 
+  },
   "PoolInfo": {
     "type_mapping": [
       [
-        "pid", 
+        "pid",
         "u64"
-      ], 
+      ],
       [
-        "owner", 
+        "owner",
         "AccountId"
-      ], 
+      ],
       [
-        "payoutCommission", 
+        "payoutCommission",
         "Option<Permill>"
-      ], 
+      ],
       [
-        "ownerReward", 
+        "ownerReward",
         "Balance"
-      ], 
+      ],
       [
-        "cap", 
+        "cap",
         "Option<Balance>"
-      ], 
+      ],
       [
-        "rewardAcc", 
+        "rewardAcc",
         "u128"
-      ], 
+      ],
       [
-        "totalShares", 
+        "totalShares",
         "Balance"
-      ], 
+      ],
       [
-        "totalStake", 
+        "totalStake",
         "Balance"
-      ], 
+      ],
       [
-        "freeStake", 
+        "freeStake",
         "Balance"
-      ], 
+      ],
       [
-        "releasingStake", 
+        "releasingStake",
         "Balance"
-      ], 
+      ],
       [
-        "workers", 
+        "workers",
         "Vec<WorkerPublicKey>"
-      ], 
+      ],
       [
-        "withdrawQueue", 
+        "withdrawQueue",
         "Vec<WithdrawInfo>"
       ]
-    ], 
+    ],
     "type": "struct"
-  }, 
+  },
   "GatekeeperChange": {
     "type_mapping": [
       [
-        "GatekeeperRegistered", 
+        "GatekeeperRegistered",
         "NewGatekeeperEvent"
       ]
-    ], 
+    ],
     "type": "enum"
-  }, 
-  "LookupSource": "MultiAddress", 
-  "TokenId": "U256", 
+  },
+  "LookupSource": "MultiAddress",
+  "TokenId": "U256",
   "SignedMessage": {
     "type_mapping": [
       [
-        "message", 
+        "message",
         "Message"
-      ], 
+      ],
       [
-        "sequence", 
+        "sequence",
         "u64"
-      ], 
+      ],
       [
-        "signature", 
+        "signature",
         "Vec<u8>"
       ]
-    ], 
+    ],
     "type": "struct"
-  }, 
+  },
   "NewGatekeeperEvent": {
     "type_mapping": [
       [
-        "pubkey", 
+        "pubkey",
         "WorkerPublicKey"
-      ], 
+      ],
       [
-        "ecdhPubkey", 
+        "ecdhPubkey",
         "EcdhPublicKey"
       ]
-    ], 
+    ],
     "type": "struct"
-  }, 
+  },
   "WithdrawInfo": {
     "type_mapping": [
       [
-        "user", 
+        "user",
         "AccountId"
-      ], 
+      ],
       [
-        "shares", 
+        "shares",
         "Balance"
-      ], 
+      ],
       [
-        "startTime", 
+        "startTime",
         "u64"
       ]
-    ], 
+    ],
     "type": "struct"
-  }, 
+  },
   "FungibleTransfer": {
     "type_mapping": [
       [
-        "dest_id", 
+        "dest_id",
         "BridgeChainId"
-      ], 
+      ],
       [
-        "nonce", 
+        "nonce",
         "DepositNonce"
-      ], 
+      ],
       [
-        "resource_id", 
+        "resource_id",
         "ResourceId"
-      ], 
+      ],
       [
-        "amount", 
+        "amount",
         "U256"
-      ], 
+      ],
       [
-        "recipient", 
+        "recipient",
         "Vec<u8>"
       ]
-    ], 
+    ],
     "type": "struct"
-  }, 
+  },
   "Attestation": {
     "type_mapping": [
       [
-        "SgxIas", 
+        "SgxIas",
         "AttestationSgxIas"
       ]
-    ], 
+    ],
     "type": "enum"
-  }, 
-  "WorkerPublicKey": "Sr25519PublicKey", 
+  },
+  "WorkerPublicKey": "Sr25519PublicKey",
   "GatekeeperEvent": {
     "type_mapping": [
       [
-        "NewRandomNumber", 
+        "NewRandomNumber",
         "RandomNumberEvent"
-      ], 
+      ],
       [
-        "TokenomicParametersChanged", 
+        "TokenomicParametersChanged",
         "TokenomicParameters"
       ]
-    ], 
+    ],
     "type": "enum"
-  }, 
+  },
   "DispatchMasterKeyEvent": {
     "type_mapping": [
       [
-        "dest", 
+        "dest",
         "WorkerPublicKey"
-      ], 
+      ],
       [
-        "ecdhPubkey", 
+        "ecdhPubkey",
         "EcdhPublicKey"
-      ], 
+      ],
       [
-        "encryptedMasterKey", 
+        "encryptedMasterKey",
         "Vec<u8>"
-      ], 
+      ],
       [
-        "iv", 
+        "iv",
         "[u8; 12]"
       ]
-    ], 
+    ],
     "type": "struct"
-  }, 
-  "EcdhPublicKey": "[u8; 32]", 
+  },
+  "EcdhPublicKey": "[u8; 32]",
   "HeartbeatChallenge": {
     "type_mapping": [
       [
-        "seed", 
+        "seed",
         "U256"
-      ], 
+      ],
       [
-        "onlineTarget", 
+        "onlineTarget",
         "U256"
       ]
-    ], 
+    ],
     "type": "struct"
-  }, 
+  },
   "RandomNumberEvent": {
     "type_mapping": [
       [
-        "blockNumber", 
+        "blockNumber",
         "u32"
-      ], 
+      ],
       [
-        "randomNumber", 
+        "randomNumber",
         "[u8; 32]"
-      ], 
+      ],
       [
-        "lastRandomNumber", 
+        "lastRandomNumber",
         "[u8; 32]"
       ]
-    ], 
+    ],
     "type": "struct"
-  }, 
+  },
   "UserStakeInfo": {
     "type_mapping": [
       [
-        "user", 
+        "user",
         "AccountId"
-      ], 
+      ],
       [
-        "locked", 
+        "locked",
         "Balance"
-      ], 
+      ],
       [
-        "shares", 
+        "shares",
         "Balance"
-      ], 
+      ],
       [
-        "availableRewards", 
+        "availableRewards",
         "Balance"
-      ], 
+      ],
       [
-        "rewardDebt", 
+        "rewardDebt",
         "Balance"
       ]
-    ], 
+    ],
     "type": "struct"
-  }, 
+  },
   "GatekeeperLaunch": {
     "type_mapping": [
       [
-        "FirstGatekeeper", 
+        "FirstGatekeeper",
         "NewGatekeeperEvent"
-      ], 
+      ],
       [
-        "MasterPubkeyOnChain", 
+        "MasterPubkeyOnChain",
         "null"
       ]
-    ], 
+    ],
     "type": "enum"
-  }, 
-  "Sr25519PublicKey": "[u8; 32]", 
-  "Topic": "Path", 
+  },
+  "Sr25519PublicKey": "[u8; 32]",
+  "Topic": "Path",
   "MinerStats": {
     "type_mapping": [
       [
-        "totalReward", 
+        "totalReward",
         "Balance"
       ]
-    ], 
+    ],
     "type": "struct"
-  }, 
+  },
   "ProposalVotes": {
     "type_mapping": [
       [
-        "votes_for", 
+        "votes_for",
         "Vec<AccountId>"
-      ], 
+      ],
       [
-        "votes_against", 
+        "votes_against",
         "Vec<AccountId>"
-      ], 
+      ],
       [
-        "status", 
+        "status",
         "ProposalStatus"
-      ], 
+      ],
       [
-        "expiry", 
+        "expiry",
         "BlockNumber"
       ]
-    ], 
+    ],
     "type": "struct"
-  }, 
+  },
   "MinerState": {
     "type_mapping": [
       [
-        "Ready", 
+        "Ready",
         "null"
-      ], 
+      ],
       [
-        "MiningIdle", 
+        "MiningIdle",
         "null"
-      ], 
+      ],
       [
-        "MiningActive", 
+        "MiningActive",
         "null"
-      ], 
+      ],
       [
-        "MiningUnresponsive", 
+        "MiningUnresponsive",
         "null"
-      ], 
+      ],
       [
-        "MiningCoolingDown", 
+        "MiningCoolingDown",
         "null"
       ]
-    ], 
+    ],
     "type": "enum"
-  }, 
+  },
   "ProposalStatus": {
     "type_mapping": [
       [
-        "Initiated", 
+        "Initiated",
         "null"
-      ], 
+      ],
       [
-        "Approved", 
+        "Approved",
         "null"
-      ], 
+      ],
       [
-        "Rejected", 
+        "Rejected",
         "null"
       ]
-    ], 
+    ],
     "type": "enum"
-  }, 
+  },
   "NonFungibleTransfer": {
     "type_mapping": [
       [
-        "dest_id", 
+        "dest_id",
         "BridgeChainId"
-      ], 
+      ],
       [
-        "nonce", 
+        "nonce",
         "DepositNonce"
-      ], 
+      ],
       [
-        "resource_id", 
+        "resource_id",
         "ResourceId"
-      ], 
+      ],
       [
-        "token_id", 
+        "token_id",
         "Vec<u8>"
-      ], 
+      ],
       [
-        "recipient", 
+        "recipient",
         "Vec<u8>"
-      ], 
+      ],
       [
-        "metadata", 
+        "metadata",
         "Vec<u8>"
       ]
-    ], 
+    ],
     "type": "struct"
-  }, 
+  },
   "Message": {
     "type_mapping": [
       [
-        "sender", 
+        "sender",
         "SenderId"
-      ], 
+      ],
       [
-        "destination", 
+        "destination",
         "Topic"
-      ], 
+      ],
       [
-        "payload", 
+        "payload",
         "Vec<u8>"
       ]
-    ], 
+    ],
     "type": "struct"
-  }, 
+  },
   "MessageOrigin": {
     "type_mapping": [
       [
-        "Pallet", 
+        "Pallet",
         "Vec<u8>"
-      ], 
+      ],
       [
-        "Contract", 
+        "Contract",
         "H256"
-      ], 
+      ],
       [
-        "Worker", 
+        "Worker",
         "Sr25519PublicKey"
-      ], 
+      ],
       [
-        "AccountId", 
+        "AccountId",
         "H256"
-      ], 
+      ],
       [
-        "MultiLocation", 
+        "MultiLocation",
         "Vec<u8>"
-      ], 
+      ],
       [
-        "Gatekeeper", 
+        "Gatekeeper",
         "null"
       ]
-    ], 
+    ],
     "type": "enum"
   }
 }

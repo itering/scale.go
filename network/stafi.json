@@ -41,7 +41,6 @@
   "ResourceId": "[u8; 32]",
   "DepositNonce": "u64",
   "U256": "[u8; 32]",
-  "RateType": "u64",
   "AccountRData": {
     "type": "struct",
     "type_mapping": [
@@ -51,11 +50,422 @@
       ]
     ]
   },
-  "RSymbol": {
-    "type": "enum",
-    "value_list": [
-      "RFIS"
-    ]
+  "Box<Proposal>": "BoxProposal",
+  "RproposalVotes": {
+    "type_mapping": [
+      [
+        "votes_for",
+        "Vec<AccountId>"
+      ],
+      [
+        "votes_against",
+        "Vec<AccountId>"
+      ],
+      [
+        "status",
+        "RproposalStatus"
+      ],
+      [
+        "expiry",
+        "BlockNumber"
+      ]
+    ],
+    "type": "struct"
   },
-  "Box<Proposal>": "BoxProposal"
+  "RefCount": "u32",
+  "XSymbol": {
+    "value_list": [
+      "WRA"
+    ],
+    "type": "enum"
+  },
+  "BondReason": {
+    "value_list": [
+      "Pass",
+      "BlockhashUnmatch",
+      "TxhashUnmatch",
+      "PubkeyUnmatch",
+      "PoolUnmatch",
+      "AmountUnmatch"
+    ],
+    "type": "enum"
+  },
+  "PoolBondState": {
+    "value_list": [
+      "EraUpdated",
+      "BondReported",
+      "ActiveReported",
+      "WithdrawSkipped",
+      "WithdrawReported",
+      "TransferReported"
+    ],
+    "type": "enum"
+  },
+  "BondState": {
+    "value_list": [
+      "Dealing",
+      "Fail",
+      "Success"
+    ],
+    "type": "enum"
+  },
+  "RproposalStatus": {
+    "value_list": [
+      "Initiated",
+      "Approved",
+      "Rejected",
+      "Expired"
+    ],
+    "type": "enum"
+  },
+  "UserUnlockChunk": {
+    "type_mapping": [
+      [
+        "pool",
+        "Vec<u8>"
+      ],
+      [
+        "unlock_era",
+        "u32"
+      ],
+      [
+        "value",
+        "u128"
+      ],
+      [
+        "recipient",
+        "Vec<u8>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "RSymbol": {
+    "value_list": [
+      "RFIS",
+      "RDOT",
+      "RKSM",
+      "RATOM",
+      "RSOL",
+      "RMATIC",
+      "RBNB"
+    ],
+    "type": "enum"
+  },
+  "RateType": "u64",
+  "Unbonding": {
+    "type_mapping": [
+      [
+        "who",
+        "AccountId"
+      ],
+      [
+        "value",
+        "u128"
+      ],
+      [
+        "recipient",
+        "Vec<u8>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "LinkChunk": {
+    "type_mapping": [
+      [
+        "bond",
+        "u128"
+      ],
+      [
+        "unbond",
+        "u128"
+      ],
+      [
+        "active",
+        "u128"
+      ]
+    ],
+    "type": "struct"
+  },
+  "BondSnapshot": {
+    "type_mapping": [
+      [
+        "symbol",
+        "RSymbol"
+      ],
+      [
+        "era",
+        "u32"
+      ],
+      [
+        "pool",
+        "Vec<u8>"
+      ],
+      [
+        "bond",
+        "u128"
+      ],
+      [
+        "unbond",
+        "u128"
+      ],
+      [
+        "active",
+        "u128"
+      ],
+      [
+        "last_voter",
+        "AccountId"
+      ],
+      [
+        "bond_state",
+        "PoolBondState"
+      ]
+    ],
+    "type": "struct"
+  },
+  "BondRecord": {
+    "type_mapping": [
+      [
+        "bonder",
+        "AccountId"
+      ],
+      [
+        "symbol",
+        "RSymbol"
+      ],
+      [
+        "pubkey",
+        "Vec<u8>"
+      ],
+      [
+        "pool",
+        "Vec<u8>"
+      ],
+      [
+        "blockhash",
+        "Vec<u8>"
+      ],
+      [
+        "txhash",
+        "Vec<u8>"
+      ],
+      [
+        "amount",
+        "u128"
+      ]
+    ],
+    "type": "struct"
+  },
+  "AccountXData": {
+    "type_mapping": [
+      [
+        "free",
+        "u128"
+      ]
+    ],
+    "type": "struct"
+  },
+  "OriginalTxType": {
+    "value_list": [
+      "Transfer",
+      "Bond",
+      "Unbond",
+      "WithdrawUnbond",
+      "ClaimRewards"
+    ],
+    "type": "enum"
+  },
+  "SigVerifyResult": {
+    "value_list": [
+      "InvalidPubkey",
+      "Fail",
+      "Pass"
+    ],
+    "type": "enum"
+  },
+  "ProposalVotes": {
+    "type_mapping": [
+      [
+        "voted",
+        "Vec<AccountId>"
+      ],
+      [
+        "status",
+        "ProposalStatus"
+      ],
+      [
+        "expiry",
+        "BlockNumber"
+      ]
+    ],
+    "type": "struct"
+  },
+  "ProposalStatus": {
+    "value_list": [
+      "Active",
+      "Passed",
+      "Expired",
+      "Executed"
+    ],
+    "type": "enum"
+  },
+  "ClaimInfo": {
+    "type_mapping": [
+      [
+        "mint_amount",
+        "u128"
+      ],
+      [
+        "native_token_amount",
+        "u128"
+      ],
+      [
+        "total_reward",
+        "Balance"
+      ],
+      [
+        "total_claimed",
+        "Balance"
+      ],
+      [
+        "latest_claimed_block",
+        "BlockNumber"
+      ],
+      [
+        "mint_block",
+        "BlockNumber"
+      ]
+    ],
+    "type": "struct"
+  },
+  "MintRewardAct": {
+    "type_mapping": [
+      [
+        "begin",
+        "BlockNumber"
+      ],
+      [
+        "end",
+        "BlockNumber"
+      ],
+      [
+        "cycle",
+        "u32"
+      ],
+      [
+        "reward_rate",
+        "u128"
+      ],
+      [
+        "total_reward",
+        "Balance"
+      ],
+      [
+        "left_amount",
+        "Balance"
+      ],
+      [
+        "user_limit",
+        "Balance"
+      ],
+      [
+        "locked_blocks",
+        "u32"
+      ],
+      [
+        "total_rtoken_amount",
+        "u128"
+      ],
+      [
+        "total_native_token_amount",
+        "u128"
+      ]
+    ],
+    "type": "struct"
+  },
+  "SwapRate": {
+    "type_mapping": [
+      [
+        "lock_number",
+        "u64"
+      ],
+      [
+        "rate",
+        "u128"
+      ]
+    ],
+    "type": "struct"
+  },
+  "SwapTransactionInfo": {
+    "type_mapping": [
+      [
+        "account",
+        "AccountId"
+      ],
+      [
+        "receiver",
+        "Vec<u8>"
+      ],
+      [
+        "value",
+        "u128"
+      ],
+      [
+        "is_deal",
+        "bool"
+      ]
+    ],
+    "type": "struct"
+  },
+  "BondSwap": {
+    "type_mapping": [
+      [
+        "bonder",
+        "AccountId"
+      ],
+      [
+        "swap_fee",
+        "Balance"
+      ],
+      [
+        "swap_receiver",
+        "AccountId"
+      ],
+      [
+        "bridger",
+        "AccountId"
+      ],
+      [
+        "recipient",
+        "Vec<u8>"
+      ],
+      [
+        "dest_id",
+        "ChainId"
+      ],
+      [
+        "expire",
+        "BlockNumber"
+      ],
+      [
+        "bond_state",
+        "BondState"
+      ],
+      [
+        "refunded",
+        "bool"
+      ]
+    ],
+    "type": "struct"
+  },
+  "BondAction": {
+    "value_list": [
+      "BondOnly",
+      "UnbondOnly",
+      "BothBondUnbond",
+      "EitherBondUnbond",
+      "InterDeduct"
+    ],
+    "type": "enum"
+  }
 }

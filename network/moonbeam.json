@@ -51,5 +51,64 @@
       ]
     ]
   },
-  "RoundIndex": "u32"
+  "RoundIndex": "u32",
+  "Candidate": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "id",
+        "AccountId"
+      ],
+      [
+        "fee",
+        "Perbill"
+      ],
+      [
+        "bond",
+        "Balance"
+      ],
+      [
+        "nominators",
+        "Vec<Bond>"
+      ],
+      [
+        "total",
+        "Balance"
+      ],
+      [
+        "state",
+        "ValidatorStatus"
+      ]
+    ]
+  },
+  "Bond": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "owner",
+        "AccountId"
+      ],
+      [
+        "amount",
+        "Balance"
+      ]
+    ]
+  },
+  "ValidatorStatus": {
+    "type": "enum",
+    "type_mapping": [
+      [
+        "Active",
+        "NULL"
+      ],
+      [
+        "Idle",
+        "NULL"
+      ],
+      [
+        "Leaving",
+        "RoundIndex"
+      ]
+    ]
+  }
 }

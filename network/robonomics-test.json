@@ -1,0 +1,119 @@
+{
+  "Weight": "u64",
+  "CompactAssignments": "CompactAssignmentsLatest",
+  "RefCount": "u32",
+  "Address": "MultiAddress",
+  "LookupSource": "MultiAddress",
+  "AccountInfo": "AccountInfoWithTripleRefCount",
+  "LaunchParameter": "bool",
+  "Lighthouse": "AccountId",
+  "LiabilityIndex": "u32",
+  "RingBufferItem": "(Compact<Moment>,Record)",
+  "ReportFor": "Report",
+  "Economics": "NULL",
+  "Agreement": {
+    "type_mapping": [
+      [
+        "technics",
+        "Technics"
+      ],
+      [
+        "economics",
+        "Economics"
+      ],
+      [
+        "promisee",
+        "AccountId"
+      ],
+      [
+        "promisor",
+        "AccountId"
+      ],
+      [
+        "promisee_signature",
+        "MultiSignature"
+      ],
+      [
+        "promisor_signature",
+        "MultiSignature"
+      ]
+    ],
+    "type": "struct"
+  },
+  "RingBufferIndex": {
+    "type_mapping": [
+      [
+        "start",
+        "u64"
+      ],
+      [
+        "end",
+        "u64"
+      ]
+    ],
+    "type": "struct"
+  },
+  "Record": "Vec<u8>",
+  "Technics": "Vec<u8>",
+  "Report": {
+    "type_mapping": [
+      [
+        "index",
+        "LiabilityIndex"
+      ],
+      [
+        "sender",
+        "AccountId"
+      ],
+      [
+        "payload",
+        "Vec<u8>"
+      ],
+      [
+        "signature",
+        "MultiSignature"
+      ]
+    ],
+    "type": "struct"
+  },
+  "Parameter": "bool",
+  "Moment": "u64",
+  "StakerLedger": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "stash",
+        "AccountId"
+      ],
+      [
+        "total",
+        "Compact<Balance>"
+      ],
+      [
+        "active",
+        "Compact<Balance>"
+      ],
+      [
+        "unlocking",
+        "Vec<UnlockChunk>"
+      ],
+      [
+        "claimed_rewards",
+        "Moment"
+      ]
+    ]
+  },
+  "UnlockChunk": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "value",
+        "Compact<Balance>"
+      ],
+      [
+        "moment",
+        "Compact<Moment>"
+      ]
+    ]
+  }
+}

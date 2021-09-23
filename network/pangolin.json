@@ -17,7 +17,29 @@
   "TronAddress": "EthereumAddress",
   "Bloom": "[u8; 256]",
   "H": "Hash",
+  "EthereumAddress": "H160",
   "MappedRing": "u128",
+  "Keys": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "babe",
+        "AccountId"
+      ],
+      [
+        "grandpa",
+        "AccountId"
+      ],
+      [
+        "im_online",
+        "AccountId"
+      ],
+      [
+        "authority_discovery",
+        "AccountId"
+      ]
+    ]
+  },
   "Weight": "u64",
   "ModuleId": "[u8; 8]",
   "RuntimeDbWeight": {
@@ -398,6 +420,10 @@
       [
         "seal",
         "Vec<Bytes>"
+      ],
+      [
+        "base_fee_per_gas",
+        "Option<U256>"
       ],
       [
         "hash",
@@ -789,19 +815,6 @@
       ]
     ]
   },
-  "ConfirmedEthereumHeaderInfo": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "header",
-        "EthereumHeader"
-      ],
-      [
-        "mmr_root",
-        "H256"
-      ]
-    ]
-  },
   "Proposal": {
     "type": "struct",
     "type_mapping": [
@@ -898,8 +911,21 @@
         "Balance"
       ],
       [
-        "until",
+        "moment",
         "BlockNumber"
+      ]
+    ]
+  },
+  "RelayVotingState": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "ayes",
+        "Vec<AccountId>"
+      ],
+      [
+        "nays",
+        "Vec<AccountId>"
       ]
     ]
   },
@@ -912,6 +938,7 @@
       "NonTransfer",
       "Governance",
       "Staking",
+      "IdentityJudgement",
       "EthereumBridge"
     ]
   },
@@ -953,7 +980,7 @@
         "EthereumHeader"
       ],
       [
-        "parent_mmr_root",
+        "mmr_root",
         "H256"
       ]
     ]
@@ -1016,72 +1043,56 @@
       ]
     ]
   },
-  "RelayVotingState": {
-    "type": "struct",
+  "Signer": "EthereumAddress",
+  "RelayAuthorityT": {
     "type_mapping": [
       [
-        "ayes",
-        "Vec<AccountId>"
+        "accountId",
+        "AccountId"
       ],
       [
-        "nays",
-        "Vec<AccountId>"
+        "signer",
+        "Signer"
+      ],
+      [
+        "stake",
+        "Balance"
+      ],
+      [
+        "term",
+        "BlockNumber"
       ]
-    ]
-  },
-  "ethereum::Transaction": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "nonce",
-        "U256"
-      ],
-      [
-        "gas_price",
-        "U256"
-      ],
-      [
-        "gas_limit",
-        "U256"
-      ],
-      [
-        "action",
-        "TransactionAction"
-      ],
-      [
-        "value",
-        "U256"
-      ],
-      [
-        "inputs",
-        "Bytes"
-      ],
-      [
-        "signature",
-        "TransactionSignature"
-      ]
-    ]
-  },
-  "TransactionRecoveryId": "U64",
-  "TransactionSignature": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "v",
-        "TransactionRecoveryId"
-      ],
-      [
-        "r",
-        "H256"
-      ],
-      [
-        "s",
-        "H256"
-      ]
-    ]
+    ],
+    "type": "struct"
   },
   "MMRRoot": "Hash",
   "EcdsaAddress": "EthereumAddress",
+  "EcdsaSignature": "[u8; 65]",
+  "EcdsaMessage": "H256",
+  "RelayAuthoritySigner": "EcdsaAddress",
+  "RelayAuthorityMessage": "EcdsaMessage",
+  "RelayAuthoritySignature": "EcdsaSignature",
+  "RelayAuthoritySignature<T, I>": "EcdsaSignature",
+  "Term": "u32",
+  "OpCode": "[u8; 4]",
+  "ScheduledAuthoritiesChange": {
+    "type_mapping": [
+      [
+        "next_authorities",
+        "Vec<RelayAuthorityT>"
+      ],
+      [
+        "deadline",
+        "BlockNumber"
+      ]
+    ],
+    "type": "struct"
+  },
+  "ScheduledAuthoritiesChangeT": "ScheduledAuthoritiesChange",
+  "Address": "MultiAddress",
+  "LookupSource": "MultiAddress",
+  "ValidatorPrefs": "ValidatorPrefsWithBlocked",
+  "AccountInfo": "AccountInfoWithTripleRefCount",
   "ExitReason": {
     "type": "enum",
     "type_mapping": [
@@ -1327,151 +1338,43 @@
       ]
     ]
   },
-  "Signer<T, I>": "EcdsaMessage",
-  "EcdsaMessage": "[u8; 32]",
-  "RelaySignature": "EcdsaSignature",
-  "RelaySignature<T, I>": "RelaySignature",
-  "RelayAuthoritySigner": "EcdsaAddress",
-  "RelayAuthorityMessage": "EcdsaMessage",
-  "RelayAuthoritySignature": "EcdsaSignature",
-  "Term": "u32",
-  "AccountInfo": "AccountInfoWithTripleRefCount",
-  "Address": "MultiAddress",
-  "LookupSource": "MultiAddress",
-  "Keys": {
+  "TransactionSignature": {
     "type": "struct",
     "type_mapping": [
       [
-        "grandpa",
-        "AccountId"
+        "v",
+        "TransactionRecoveryId"
       ],
       [
-        "babe",
-        "AccountId"
+        "r",
+        "H256"
       ],
       [
-        "im_online",
-        "AccountId"
-      ],
-      [
-        "para_validator",
-        "AccountId"
-      ],
-      [
-        "para_assignment",
-        "AccountId"
-      ],
-      [
-        "authority_discovery",
-        "AccountId"
+        "s",
+        "H256"
       ]
     ]
   },
-  "ValidatorPrefs": "ValidatorPrefsWithBlocked",
-  "BridgedHeader": "MillauHeader",
-  "MillauHeader": {
-    "type": "struct",
+  "TransactionRecoveryId": "U64",
+  "NodeIndex": "u64",
+  "MmrNodesPruningConfiguration": {
     "type_mapping": [
       [
-        "parent_hash",
-        "H512"
+        "step",
+        "NodeIndex"
       ],
       [
-        "number",
-        "Compact<u64>"
+        "progress",
+        "NodeIndex"
       ],
       [
-        "state_root",
-        "H512"
-      ],
-      [
-        "extrinsics_root",
-        "H512"
-      ],
-      [
-        "digest",
-        "MillauDigest"
-      ]
-    ]
-  },
-  "MillauDigest": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "logs",
-        "Vec<MillauDigestItem>"
-      ]
-    ]
-  },
-  "MillauDigestItem": {
-    "type": "enum",
-    "type_mapping": [
-      [
-        "Other",
-        "Vec<u8>"
-      ],
-      [
-        "AuthoritiesChange",
-        "Vec<AuthorityId>"
-      ],
-      [
-        "ChangesTrieRoot",
-        "H512"
-      ],
-      [
-        "SealV0",
-        "SealV0"
-      ],
-      [
-        "Consensus",
-        "Consensus"
-      ],
-      [
-        "Seal",
-        "Seal"
-      ],
-      [
-        "PreRuntime",
-        "PreRuntime"
-      ],
-      [
-        "ChangesTrieSignal",
-        "ChangesTrieSignal"
-      ]
-    ]
-  },
-  "GrandpaJustification<BridgedHeader>": {
-    "type_mapping": [
-      [
-        "round",
-        "u64"
-      ],
-      [
-        "commit",
-        "MillauGrandpaCommit"
-      ],
-      [
-        "votesAncestries",
-        "Vec<MillauHeader>"
+        "last_position",
+        "NodeIndex"
       ]
     ],
     "type": "struct"
   },
-  "MillauGrandpaCommit": {
-    "type_mapping": [
-      [
-        "targetHash",
-        "H512"
-      ],
-      [
-        "targetNumber",
-        "BlockNumber"
-      ],
-      [
-        "precommits",
-        "Vec<GrandpaSignedPrecommit>"
-      ]
-    ],
-    "type": "struct"
-  }
+  "BlockNumberFor": "BlockNumber",
+  "MessageId": "(LaneId, MessageNonce)",
+  "SpecVersion": "u32"
 }

@@ -62,5 +62,7 @@
   "RefCount#10-?": "u32",
   "Address#13-?": "MultiAddress",
   "LookupSource#13-?": "MultiAddress",
-  "Box<<T as Config>::Call>": "Call"
+  "Box<<T as Config>::Call>": "Call",
+  "AccountInfo": "AccountInfoWithTripleRefCount",
+  "CampaignIdentifier": "[u8; 4]"
 }

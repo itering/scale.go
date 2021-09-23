@@ -2,39 +2,6 @@
   "Weight": "u64",
   "CompactAssignments": "CompactAssignmentsLatest",
   "RefCount": "u32",
-  "Box<<T as Config>::Call>": "Call",
-  "AccountInfo": "AccountInfoWithTripleRefCount",
-  "DispatchResult": {
-    "type": "enum",
-    "type_mapping": [
-      [
-        "Ok",
-        "Null"
-      ],
-      [
-        "Error",
-        "DispatchError"
-      ]
-    ]
-  },
-  "TransactionRecoveryId": "U64",
-  "TransactionSignature": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "v",
-        "TransactionRecoveryId"
-      ],
-      [
-        "r",
-        "H256"
-      ],
-      [
-        "s",
-        "H256"
-      ]
-    ]
-  },
   "RoundInfo": {
     "type_mapping": [
       [
@@ -77,6 +44,19 @@
       [
         "state",
         "CollatorStatus"
+      ]
+    ],
+    "type": "struct"
+  },
+  "RewardInfo": {
+    "type_mapping": [
+      [
+        "total_reward",
+        "Balance"
+      ],
+      [
+        "claimed_reward",
+        "Balance"
       ]
     ],
     "type": "struct"
@@ -156,7 +136,71 @@
     ],
     "type": "struct"
   },
+  "AccountInfo": "AccountInfoWithTripleRefCount",
+  "Collator2": {
+    "type_mapping": [
+      [
+        "id",
+        "AccountId"
+      ],
+      [
+        "bond",
+        "Balance"
+      ],
+      [
+        "nominators",
+        "Vec<AccountId>"
+      ],
+      [
+        "top_nominators",
+        "Vec<Bond>"
+      ],
+      [
+        "bottom_nominators",
+        "Vec<Bond>"
+      ],
+      [
+        "total_counted",
+        "Balance"
+      ],
+      [
+        "total_backing",
+        "Balance"
+      ],
+      [
+        "state",
+        "CollatorStatus"
+      ]
+    ],
+    "type": "struct"
+  },
   "ExtrinsicSignature": "EthereumSignature",
+  "NominatorAdded": {
+    "type": "enum",
+    "type_mapping": [
+      [
+        "AddedToTop",
+        "Balance"
+      ],
+      [
+        "AddedToBottom",
+        "Null"
+      ]
+    ]
+  },
+  "RegistrationInfo": {
+    "type_mapping": [
+      [
+        "account",
+        "AccountId"
+      ],
+      [
+        "deposit",
+        "Balance"
+      ]
+    ],
+    "type": "struct"
+  },
   "Collator": {
     "type_mapping": [
       [
@@ -236,6 +280,7 @@
     ],
     "type": "struct"
   },
+  "RelayChainAccountId": "AccountId32",
   "LookupSource": "AccountId",
   "InflationInfo": {
     "type_mapping": [
@@ -244,12 +289,17 @@
         "RangeBalance"
       ],
       [
+        "annual",
+        "RangePerbill"
+      ],
+      [
         "round",
         "RangePerbill"
       ]
     ],
     "type": "struct"
   },
+  "AccountId32": "H256",
   "Summary": "Bytes",
   "Range": "RangeBalance",
   "TxPoolResultInspect": {
@@ -283,6 +333,19 @@
     "type": "struct"
   },
   "RoundIndex": "u32",
+  "ParachainBondConfig": {
+    "type_mapping": [
+      [
+        "account",
+        "AccountId"
+      ],
+      [
+        "percent",
+        "Percent"
+      ]
+    ],
+    "type": "struct"
+  },
   "Nominator": {
     "type_mapping": [
       [
@@ -327,6 +390,7 @@
     ],
     "type": "struct"
   },
+  "AuthorId": "AccountId32",
   "TxPoolResultContent": {
     "type_mapping": [
       [
@@ -339,120 +403,5 @@
       ]
     ],
     "type": "struct"
-  },
-  "AuthorId": "AccountId32",
-  "RegistrationInfo": {
-    "type_mapping": [
-      [
-        "account",
-        "AccountId"
-      ],
-      [
-        "deposit",
-        "Balance"
-      ]
-    ],
-    "type": "struct"
-  },
-  "AssetRegistrarMetadata": {
-    "type_mapping": [
-      [
-        "name",
-        "Vec<u8>"
-      ],
-      [
-        "symbol",
-        "Vec<u8>"
-      ],
-      [
-        "decimals",
-        "u8"
-      ],
-      [
-        "is_frozen",
-        "bool"
-      ]
-    ],
-    "type": "struct"
-  },
-  "Collator2": {
-    "type_mapping": [
-      [
-        "id",
-        "AccountId"
-      ],
-      [
-        "bond",
-        "Balance"
-      ],
-      [
-        "nominators",
-        "Vec<AccountId>"
-      ],
-      [
-        "top_nominators",
-        "Vec<Bond>"
-      ],
-      [
-        "bottom_nominators",
-        "Vec<Bond>"
-      ],
-      [
-        "total_counted",
-        "Balance"
-      ],
-      [
-        "total_backing",
-        "Balance"
-      ],
-      [
-        "state",
-        "CollatorStatus"
-      ]
-    ],
-    "type": "struct"
-  },
-  "NominatorAdded": {
-    "type": "enum",
-    "type_mapping": [
-      [
-        "AddedToTop",
-        "Balance"
-      ],
-      [
-        "AddedToBottom",
-        "Null"
-      ]
-    ]
-  },
-  "CurrencyId": {
-    "type": "enum",
-    "type_mapping": [
-      [
-        "SelfReserve",
-        "Null"
-      ],
-      [
-        "OtherReserve",
-        "u128"
-      ]
-    ]
-  },
-  "AssetType": {
-    "type": "enum",
-    "type_mapping": [
-      [
-        "Xcm",
-        "MultiLocation"
-      ]
-    ]
-  },
-  "RelayChainAccountId": "AccountId32",
-  "AssetInstance": "AssetInstanceV0",
-  "MultiAsset": "MultiAssetV0",
-  "Xcm": "XcmV0",
-  "XcmOrder": "XcmOrderV0",
-  "MultiLocation": "MultiLocationV0",
-  "AssetId": "u128",
-  "TAssetBalance": "u128"
+  }
 }

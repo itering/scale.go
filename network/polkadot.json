@@ -148,5 +148,10 @@
   },
   "ValidatorPrefs#28-?": "ValidatorPrefsWithBlocked",
   "Keys#30-?": "SessionKeys6",
-  "AccountInfo#30-?": "AccountInfoWithTripleRefCount"
+  "AccountInfo#30-?": "AccountInfoWithTripleRefCount",
+  "AssetInstance": "AssetInstanceV0",
+  "MultiAsset": "MultiAssetV0",
+  "Xcm": "XcmV0",
+  "XcmOrder": "XcmOrderV0",
+  "MultiLocation": "MultiLocationV0"
 }

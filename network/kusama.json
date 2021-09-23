@@ -206,7 +206,8 @@
       "Governance",
       "Staking",
       "IdentityJudgement",
-      "CancelProxy"
+      "CancelProxy",
+      "Auction"
     ]
   },
   "Address#1050-2027": "AccountId",
@@ -249,5 +250,10 @@
   },
   "ValidatorPrefs#2028-?": "ValidatorPrefsWithBlocked",
   "Keys#2030-?": "SessionKeys6",
-  "CompactAssignments#9010-?": "CompactAssignmentsWith24"
+  "CompactAssignments#9010-?": "CompactAssignmentsWith24",
+  "AssetInstance": "AssetInstanceV0",
+  "MultiAsset": "MultiAssetV0",
+  "Xcm": "XcmV0",
+  "XcmOrder": "XcmOrderV0",
+  "MultiLocation": "MultiLocationV0"
 }

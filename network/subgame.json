@@ -1,0 +1,232 @@
+{
+  "GameInstance": {
+    "type_mapping": [
+      [
+        "game_instance_id",
+        "u32"
+      ],
+      [
+        "owner",
+        "AccountId"
+      ],
+      [
+        "bet_block_number",
+        "u32"
+      ],
+      [
+        "chips_pool",
+        "u128"
+      ],
+      [
+        "game_over",
+        "bool"
+      ]
+    ],
+    "type": "struct"
+  },
+  "BetInfo": {
+    "type_mapping": [
+      [
+        "user",
+        "AccountId"
+      ],
+      [
+        "game_id",
+        "u32"
+      ],
+      [
+        "amount",
+        "u128"
+      ],
+      [
+        "game_mode",
+        "u8"
+      ]
+    ],
+    "type": "struct"
+  },
+  "GameInstanceId": "u32",
+  "ChipBalance": "u128",
+  "SGAssetBalance": "u64",
+  "GameMode": "u8",
+  "GameIndex": "u32",
+  "SusGameAssetBalance": {
+    "type_mapping": [
+      [
+        "balance",
+        "u64"
+      ],
+      [
+        "isFrozen",
+        "bool"
+      ],
+      [
+        "isZombie",
+        "bool"
+      ]
+    ],
+    "type": "struct"
+  },
+  "SubGameAssetDetails": {
+    "type_mapping": [
+      [
+        "owner",
+        "AccountId"
+      ],
+      [
+        "issuer",
+        "AccountId"
+      ],
+      [
+        "admin",
+        "AccountId"
+      ],
+      [
+        "freezer",
+        "AccountId"
+      ],
+      [
+        "supply",
+        "u64"
+      ],
+      [
+        "deposit",
+        "DepositBalance"
+      ],
+      [
+        "max_zombies",
+        "u32"
+      ],
+      [
+        "min_balance",
+        "u64"
+      ],
+      [
+        "zombies",
+        "u32"
+      ],
+      [
+        "accounts",
+        "u32"
+      ],
+      [
+        "isFrozen",
+        "bool"
+      ]
+    ],
+    "type": "struct"
+  },
+  "SubGameAssetMetadata": {
+    "type_mapping": [
+      [
+        "deposit",
+        "DepositBalance"
+      ],
+      [
+        "name",
+        "Vec<u8>"
+      ],
+      [
+        "symbol",
+        "Vec<u8>"
+      ],
+      [
+        "decimals",
+        "u8"
+      ]
+    ],
+    "type": "struct"
+  },
+  "ChipsDetail": {
+    "type_mapping": [
+      [
+        "balance",
+        "ChipBalance"
+      ],
+      [
+        "reserve",
+        "ChipBalance"
+      ]
+    ],
+    "type": "struct"
+  },
+  "Template": {
+    "type_mapping": [
+      [
+        "template_id",
+        "u32"
+      ],
+      [
+        "template_name",
+        "TemplateName"
+      ]
+    ],
+    "type": "struct"
+  },
+  "BridgeRecord": {
+    "type_mapping": [
+      [
+        "from",
+        "AccountId"
+      ],
+      [
+        "to",
+        "AccountId"
+      ],
+      [
+        "amount",
+        "u128"
+      ],
+      [
+        "chain_type",
+        "u8"
+      ],
+      [
+        "coin_type",
+        "u8"
+      ]
+    ],
+    "type": "struct"
+  },
+  "GameInfo": {
+    "type_mapping": [
+      [
+        "owner",
+        "AccountId"
+      ],
+      [
+        "block_number",
+        "u32"
+      ],
+      [
+        "bet_block_number",
+        "u32"
+      ],
+      [
+        "amount",
+        "u128"
+      ]
+    ],
+    "type": "struct"
+  },
+  "TemplateName": "u32",
+  "UserInfo": {
+    "type_mapping": [
+      [
+        "Account",
+        "Vec<u8>"
+      ],
+      [
+        "ReferrerAccount",
+        "Vec<u8>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "Weight": "u64",
+  "CompactAssignments": "CompactAssignmentsLatest",
+  "RefCount": "u32",
+  "Address": "MultiAddress",
+  "LookupSource": "MultiAddress",
+  "AccountInfo": "AccountInfoWithProviders"
+}

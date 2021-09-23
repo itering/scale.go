@@ -46,7 +46,7 @@
       "CancelProxy"
     ]
   },
-  "CompactAssignments#43-9000": "CompactAssignmentsLatest",
+  "CompactAssignments#43-?": "CompactAssignmentsLatest",
   "RefCount#45-?": "u32",
   "Box<<T as Config>::Call>": "Call",
   "AccountInfo#48-49": "AccountInfoWithProviders",
@@ -83,5 +83,9 @@
     ]
   },
   "AccountInfo#50-?": "AccountInfoWithTripleRefCount",
-  "CompactAssignments#9010-?": "CompactAssignmentsWith24"
+  "AssetInstance": "AssetInstanceV0",
+  "MultiAsset": "MultiAssetV0",
+  "Xcm": "XcmV0",
+  "XcmOrder": "XcmOrderV0",
+  "MultiLocation": "MultiLocationV0"
 }

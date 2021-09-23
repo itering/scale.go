@@ -1,0 +1,19 @@
+{
+  "Weight": "u64",
+  "CompactAssignments": "CompactAssignmentsLatest",
+  "RefCount": "u32",
+  "Address": "MultiAddress",
+  "LookupSource": "MultiAddress",
+  "CurrencyId": {
+    "type": "enum",
+    "value_list": [
+      "MA"
+    ]
+  },
+  "CurrencyIdOf": "CurrencyId",
+  "Amount": "i128",
+  "AmountOf": "Amount",
+  "AccountInfo": "AccountInfoWithProviders",
+  "PrivateTransferPayload": "[u8; 608]",
+  "ReclaimPayload": "[u8; 512]"
+}

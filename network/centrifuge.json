@@ -6,8 +6,8 @@
   "DepositNonce": "u64",
   "Points": "u32",
   "Multiplier": "Fixed64",
-  "Address": "GenericAddress",
-  "LookupSource": "GenericAddress",
+  "Address#229-999": "GenericAddress",
+  "LookupSource#229-999": "GenericAddress",
   "U256": "[u8; 32]",
   "Box<Proposal>": "BoxProposal",
   "EraPoints": {
@@ -177,5 +177,10 @@
         "Option<AccountId>"
       ]
     ]
-  }
+  },
+  "CompactAssignments#1000-?": "CompactAssignmentsLatest",
+  "RefCount#1000-?": "u32",
+  "Address#1000-?": "MultiAddress",
+  "LookupSource#1000-?": "MultiAddress",
+  "AccountInfo#1000-?": "AccountInfoWithTripleRefCount"
 }

@@ -1,0 +1,749 @@
+{
+  "ChainId": {
+    "type_mapping": [
+      [
+        "RelayChain",
+        "Null"
+      ],
+      [
+        "ParaChain",
+        "ParaId"
+      ]
+    ],
+    "type": "enum"
+  },
+  "XCurrencyId": {
+    "type_mapping": [
+      [
+        "chainId",
+        "ChainId"
+      ],
+      [
+        "currencyId",
+        "Vec<u8>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "CurrencyId": {
+    "type_mapping": [
+      [
+        "DOT",
+        0
+      ],
+      [
+        "KSM",
+        1
+      ],
+      [
+        "KILT",
+        2
+      ]
+    ],
+    "type": "enum"
+  },
+  "DidRecord": {
+    "type_mapping": [
+      [
+        "signKey",
+        "Hash"
+      ],
+      [
+        "boxKey",
+        "Hash"
+      ],
+      [
+        "docRef",
+        "Option<Vec<u8>>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "PublicBoxKey": "Hash",
+  "DelegationNodeId": "Hash",
+  "Signature": "MultiSignature",
+  "Attestation": {
+    "type_mapping": [
+      [
+        "ctypeHash",
+        "Hash"
+      ],
+      [
+        "attester",
+        "AccountId"
+      ],
+      [
+        "delegationId",
+        "Option<DelegationNodeId>"
+      ],
+      [
+        "revoked",
+        "bool"
+      ]
+    ],
+    "type": "struct"
+  },
+  "XcmError": {
+    "type_mapping": [
+      [
+        "Undefined",
+        0
+      ],
+      [
+        "Unimplemented",
+        1
+      ],
+      [
+        "UnhandledXcmVersion",
+        2
+      ],
+      [
+        "UnhandledXcmMessage",
+        3
+      ],
+      [
+        "UnhandledEffect",
+        4
+      ],
+      [
+        "EscalationOfPrivilege",
+        5
+      ],
+      [
+        "UntrustedReserveLocation",
+        6
+      ],
+      [
+        "UntrustedTeleportLocation",
+        7
+      ],
+      [
+        "DestinationBufferOverflow",
+        8
+      ],
+      [
+        "CannotReachDestination",
+        9
+      ],
+      [
+        "MultiLocationFull",
+        10
+      ],
+      [
+        "FailedToDecode",
+        11
+      ],
+      [
+        "BadOrigin",
+        12
+      ],
+      [
+        "ExceedsMaxMessageSize",
+        13
+      ],
+      [
+        "FailedToTransactAsset",
+        14
+      ]
+    ],
+    "type": "enum"
+  },
+  "ReferendumInfo": {
+    "type_mapping": [
+      [
+        "Ongoing",
+        "ReferendumStatus"
+      ],
+      [
+        "Finished",
+        "ReferendumInfoFinished"
+      ]
+    ],
+    "type": "enum"
+  },
+  "PublicSigningKey": "Hash",
+  "CurrencyIdOf": "CurrencyId",
+  "KeyIdOf": "Hash",
+  "DidDeletionOperation": {
+    "type_mapping": [
+      [
+        "did",
+        "DidIdentifierOf"
+      ],
+      [
+        "txCounter",
+        "u64"
+      ]
+    ],
+    "type": "struct"
+  },
+  "LookupSource": "MultiAddress",
+  "Index": "u64",
+  "BlockNumberOf": "BlockNumber",
+  "RoundInfo": {
+    "type_mapping": [
+      [
+        "current",
+        "SessionIndex"
+      ],
+      [
+        "first",
+        "BlockNumber"
+      ],
+      [
+        "length",
+        "BlockNumber"
+      ]
+    ],
+    "type": "struct"
+  },
+  "DidVerificationKey": {
+    "type_mapping": [
+      [
+        "Ed25519",
+        "[u8; 32]"
+      ],
+      [
+        "Sr25519",
+        "[u8; 32]"
+      ]
+    ],
+    "type": "enum"
+  },
+  "Stake": {
+    "type_mapping": [
+      [
+        "owner",
+        "AccountId"
+      ],
+      [
+        "amount",
+        "Balance"
+      ]
+    ],
+    "type": "struct"
+  },
+  "CtypeCreatorOf": "DidIdentifierOf",
+  "KeyError": {
+    "value_list": [
+      "InvalidVerificationKeyFormat",
+      "InvalidEncryptionKeyFormat"
+    ],
+    "type": "enum"
+  },
+  "TotalStake": {
+    "type_mapping": [
+      [
+        "collators",
+        "Balance"
+      ],
+      [
+        "delegators",
+        "Balance"
+      ]
+    ],
+    "type": "struct"
+  },
+  "AccountInfo": "AccountInfoWithTripleRefCount",
+  "RewardRate": {
+    "type_mapping": [
+      [
+        "annual",
+        "Perquintill"
+      ],
+      [
+        "perBlock",
+        "Perquintill"
+      ]
+    ],
+    "type": "struct"
+  },
+  "DidSignature": {
+    "type_mapping": [
+      [
+        "Ed25519",
+        "Ed25519Signature"
+      ],
+      [
+        "Sr25519",
+        "Sr25519Signature"
+      ]
+    ],
+    "type": "enum"
+  },
+  "DelegationNodeIdOf": "Hash",
+  "IpfsUrl": {
+    "type_mapping": [
+      [
+        "payload",
+        "Text"
+      ]
+    ],
+    "type": "struct"
+  },
+  "DidCallableOf": "Call",
+  "DidUpdateOperation": {
+    "type_mapping": [
+      [
+        "did",
+        "DidIdentifierOf"
+      ],
+      [
+        "newAuthenticationKey",
+        "Option<DidVerificationKey>"
+      ],
+      [
+        "newKeyAgreementKeys",
+        "BTreeSet<DidEncryptionKey>"
+      ],
+      [
+        "attestationKeyUpdate",
+        "DidVerificationKeyUpdateAction"
+      ],
+      [
+        "delegationKeyUpdate",
+        "DidVerificationKeyUpdateAction"
+      ],
+      [
+        "publicKeysToRemove",
+        "BTreeSet<KeyIdOf>"
+      ],
+      [
+        "newEndpointUrl",
+        "Option<Url>"
+      ],
+      [
+        "txCounter",
+        "u64"
+      ]
+    ],
+    "type": "struct"
+  },
+  "DidError": {
+    "type_mapping": [
+      [
+        "StorageError",
+        "StorageError"
+      ],
+      [
+        "SignatureError",
+        "SignatureError"
+      ],
+      [
+        "UrlError",
+        "UrlError"
+      ],
+      [
+        "InternalError",
+        "Null"
+      ]
+    ],
+    "type": "enum"
+  },
+  "DidDetails": {
+    "type_mapping": [
+      [
+        "authenticationKey",
+        "KeyIdOf"
+      ],
+      [
+        "keyAgreementKeys",
+        "BTreeSet<KeyIdOf>"
+      ],
+      [
+        "delegationKey",
+        "Option<KeyIdOf>"
+      ],
+      [
+        "attestationKey",
+        "Option<KeyIdOf>"
+      ],
+      [
+        "publicKeys",
+        "BTreeMap<KeyIdOf, DidPublicKeyDetails>"
+      ],
+      [
+        "endpointUrl",
+        "Option<Url>"
+      ],
+      [
+        "lastTxCounter",
+        "u64"
+      ]
+    ],
+    "type": "struct"
+  },
+  "DidEncryptionKey": {
+    "type_mapping": [
+      [
+        "X25519",
+        "[u8; 32]"
+      ]
+    ],
+    "type": "enum"
+  },
+  "HttpUrl": {
+    "type_mapping": [
+      [
+        "payload",
+        "Text"
+      ]
+    ],
+    "type": "struct"
+  },
+  "AttestationDetails": {
+    "type_mapping": [
+      [
+        "ctypeHash",
+        "CtypeHashOf"
+      ],
+      [
+        "attester",
+        "AttesterOf"
+      ],
+      [
+        "delegationId",
+        "Option<DelegationNodeIdOf>"
+      ],
+      [
+        "revoked",
+        "bool"
+      ]
+    ],
+    "type": "struct"
+  },
+  "DelegationSignature": "DidSignature",
+  "DelegationNode": {
+    "type_mapping": [
+      [
+        "rootId",
+        "DelegationNodeIdOf"
+      ],
+      [
+        "parent",
+        "Option<DelegationNodeIdOf>"
+      ],
+      [
+        "owner",
+        "DelegatorIdOf"
+      ],
+      [
+        "permissions",
+        "Permissions"
+      ],
+      [
+        "revoked",
+        "bool"
+      ]
+    ],
+    "type": "struct"
+  },
+  "Collator": {
+    "type_mapping": [
+      [
+        "id",
+        "AccountId"
+      ],
+      [
+        "stake",
+        "Balance"
+      ],
+      [
+        "delegators",
+        "Vec<Stake>"
+      ],
+      [
+        "total",
+        "Balance"
+      ],
+      [
+        "state",
+        "CollatorStatus"
+      ]
+    ],
+    "type": "struct"
+  },
+  "LockedBalance": {
+    "type_mapping": [
+      [
+        "block",
+        "BlockNumber"
+      ],
+      [
+        "amount",
+        "Balance"
+      ]
+    ],
+    "type": "struct"
+  },
+  "DidPublicKey": {
+    "type_mapping": [
+      [
+        "PublicVerificationKey",
+        "DidVerificationKey"
+      ],
+      [
+        "PublicEncryptionKey",
+        "DidEncryptionKey"
+      ]
+    ],
+    "type": "enum"
+  },
+  "CollatorSnapshot": {
+    "type_mapping": [
+      [
+        "stake",
+        "Balance"
+      ],
+      [
+        "delegators",
+        "Vec<Stake>"
+      ],
+      [
+        "total",
+        "Balance"
+      ]
+    ],
+    "type": "struct"
+  },
+  "AttesterOf": "DidIdentifierOf",
+  "UrlError": {
+    "value_list": [
+      "InvalidUrlEncoding",
+      "InvalidUrlScheme"
+    ],
+    "type": "enum"
+  },
+  "Delegator": {
+    "type_mapping": [
+      [
+        "delegations",
+        "Vec<Stake>"
+      ],
+      [
+        "total",
+        "Balance"
+      ]
+    ],
+    "type": "struct"
+  },
+  "BalanceOf": "Balance",
+  "Permissions": "u32",
+  "DelegationRoot": {
+    "type_mapping": [
+      [
+        "ctypeHash",
+        "CtypeHashOf"
+      ],
+      [
+        "owner",
+        "DelegatorIdOf"
+      ],
+      [
+        "revoked",
+        "bool"
+      ]
+    ],
+    "type": "struct"
+  },
+  "CollatorStatus": {
+    "type_mapping": [
+      [
+        "Active",
+        "Null"
+      ],
+      [
+        "Leaving",
+        "SessionIndex"
+      ]
+    ],
+    "type": "enum"
+  },
+  "DidVerificationKeyRelationship": {
+    "value_list": [
+      "Authentication",
+      "CapabilityDelegation",
+      "CapabilityInvocation",
+      "AssertionMethod"
+    ],
+    "type": "enum"
+  },
+  "AccountIdentifierOf": "AccountId",
+  "DidIdentifierOf": "AccountId",
+  "InflationInfo": {
+    "type_mapping": [
+      [
+        "collator",
+        "StakingInfo"
+      ],
+      [
+        "delegator",
+        "StakingInfo"
+      ]
+    ],
+    "type": "struct"
+  },
+  "Url": {
+    "type_mapping": [
+      [
+        "Http",
+        "HttpUrl"
+      ],
+      [
+        "Ftp",
+        "FtpUrl"
+      ],
+      [
+        "Ipfs",
+        "IpfsUrl"
+      ]
+    ],
+    "type": "enum"
+  },
+  "SignatureError": {
+    "value_list": [
+      "InvalidSignatureFormat",
+      "InvalidSignature",
+      "InvalidNonce"
+    ],
+    "type": "enum"
+  },
+  "Address": "MultiAddress",
+  "StakingInfo": {
+    "type_mapping": [
+      [
+        "maxRate",
+        "Perquintill"
+      ],
+      [
+        "rewardRate",
+        "RewardRate"
+      ]
+    ],
+    "type": "struct"
+  },
+  "AmountOf": "i128",
+  "Balance": "u128",
+  "OrderedSet": "Vec<Stake>",
+  "FtpUrl": {
+    "type_mapping": [
+      [
+        "payload",
+        "Text"
+      ]
+    ],
+    "type": "struct"
+  },
+  "StorageError": {
+    "type_mapping": [
+      [
+        "DidAlreadyPresent",
+        "Null"
+      ],
+      [
+        "DidNotPresent",
+        "Null"
+      ],
+      [
+        "DidKeyNotPresent",
+        "DidVerificationKeyRelationship"
+      ],
+      [
+        "VerificationKeyNotPresent",
+        "Null"
+      ],
+      [
+        "CurrentlyActiveKey",
+        "Null"
+      ],
+      [
+        "MaxTxCounterValue",
+        "Null"
+      ]
+    ],
+    "type": "enum"
+  },
+  "DelegatorIdOf": "DidIdentifierOf",
+  "BlockNumber": "u64",
+  "DidVerificationKeyUpdateAction": {
+    "type_mapping": [
+      [
+        "Ignore",
+        "Null"
+      ],
+      [
+        "Change",
+        "DidVerificationKey"
+      ],
+      [
+        "Delete",
+        "Null"
+      ]
+    ],
+    "type": "enum"
+  },
+  "ClaimHashOf": "Hash",
+  "DidAuthorizedCallOperation": {
+    "type_mapping": [
+      [
+        "did",
+        "DidIdentifierOf"
+      ],
+      [
+        "txCounter",
+        "u64"
+      ],
+      [
+        "call",
+        "DidCallableOf"
+      ]
+    ],
+    "type": "struct"
+  },
+  "DidCreationOperation": {
+    "type_mapping": [
+      [
+        "did",
+        "DidIdentifierOf"
+      ],
+      [
+        "newAuthenticationKey",
+        "DidVerificationKey"
+      ],
+      [
+        "newKeyAgreementKeys",
+        "BTreeSet<DidEncryptionKey>"
+      ],
+      [
+        "newAttestationKey",
+        "Option<DidVerificationKey>"
+      ],
+      [
+        "newDelegationKey",
+        "Option<DidVerificationKey>"
+      ],
+      [
+        "newEndpointUrl",
+        "Option<Url>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "DidPublicKeyDetails": {
+    "type_mapping": [
+      [
+        "key",
+        "DidPublicKey"
+      ],
+      [
+        "blockNumber",
+        "BlockNumberOf"
+      ]
+    ],
+    "type": "struct"
+  },
+  "CtypeHashOf": "Hash",
+  "Weight": "u64",
+  "CompactAssignments": "CompactAssignmentsLatest",
+  "RefCount": "u32"
+}

@@ -1,0 +1,266 @@
+{
+  "Lockdrop": {
+    "type_mapping": [
+      [
+        "duration",
+        "u64"
+      ],
+      [
+        "public_key",
+        "[u8; 33]"
+      ],
+      [
+        "transaction_hash",
+        "H256"
+      ],
+      [
+        "type",
+        "u8"
+      ],
+      [
+        "value",
+        "u128"
+      ]
+    ],
+    "type": "struct"
+  },
+  "Parameters": {
+    "type_mapping": [
+      [
+        "canBeNominated",
+        "bool"
+      ],
+      [
+        "optionExpired",
+        "u128"
+      ],
+      [
+        "optionP",
+        "u32"
+      ]
+    ],
+    "type": "struct"
+  },
+  "ClaimVote": {
+    "type_mapping": [
+      [
+        "approve",
+        "bool"
+      ],
+      [
+        "authority",
+        "u16"
+      ],
+      [
+        "claim_id",
+        "ClaimId"
+      ]
+    ],
+    "type": "struct"
+  },
+  "Decision": {
+    "value_list": [
+      "Undecided",
+      "True",
+      "False"
+    ],
+    "type": "enum"
+  },
+  "ClaimId": "H256",
+  "ChallengeGameOf": {
+    "type_mapping": [
+      [
+        "challenges",
+        "Vec<Hash>"
+      ],
+      [
+        "createdBlock",
+        "BlockNumber"
+      ],
+      [
+        "decision",
+        "Decision"
+      ],
+      [
+        "propertyHash",
+        "Hash"
+      ]
+    ],
+    "type": "struct"
+  },
+  "PropertyOf": {
+    "type_mapping": [
+      [
+        "inputs",
+        "Vec<Vec<u8>>"
+      ],
+      [
+        "predicateAddress",
+        "AccountId"
+      ]
+    ],
+    "type": "struct"
+  },
+  "EraStakingPoints": {
+    "type_mapping": [
+      [
+        "individual",
+        "BTreeMap<AccountId, Balance>"
+      ],
+      [
+        "total",
+        "Balance"
+      ]
+    ],
+    "type": "struct"
+  },
+  "AccountInfo": "AccountInfoWithProviders",
+  "AuthorityVote": "u32",
+  "AuthorityId": "AccountId",
+  "Schedule": {
+    "type_mapping": [
+      [
+        "putCodePerByteCost",
+        "Weight"
+      ],
+      [
+        "version",
+        "u32"
+      ]
+    ],
+    "type": "struct"
+  },
+  "Keys": "SessionKeys3",
+  "PredicateHash": "Hash",
+  "EraIndex": "u32",
+  "DollarRate": "u128",
+  "PredicateContractOf": {
+    "type_mapping": [
+      [
+        "inputs",
+        "Vec<u8>"
+      ],
+      [
+        "predicateHash",
+        "Hash"
+      ]
+    ],
+    "type": "struct"
+  },
+  "SmartContract": {
+    "type_mapping": [
+      [
+        "Wasm",
+        "AccountId"
+      ],
+      [
+        "Evm",
+        "H160"
+      ]
+    ],
+    "type": "enum"
+  },
+  "PrefabOvmModule": {
+    "type_mapping": [
+      [
+        "code",
+        "Vec<u8>"
+      ],
+      [
+        "scheduleVersion",
+        "u32"
+      ]
+    ],
+    "type": "struct"
+  },
+  "VoteCounts": {
+    "type_mapping": [
+      [
+        "bad",
+        "u32"
+      ],
+      [
+        "good",
+        "u32"
+      ]
+    ],
+    "type": "struct"
+  },
+  "TickerRate": {
+    "type_mapping": [
+      [
+        "authority",
+        "u16"
+      ],
+      [
+        "btc",
+        "u128"
+      ],
+      [
+        "eth",
+        "u128"
+      ]
+    ],
+    "type": "struct"
+  },
+  "Property": {
+    "type_mapping": [
+      [
+        "inputs",
+        "Vec<Vec<u8>>"
+      ],
+      [
+        "predicateAddress",
+        "AccountId"
+      ]
+    ],
+    "type": "struct"
+  },
+  "Claim": {
+    "type_mapping": [
+      [
+        "amount",
+        "u128"
+      ],
+      [
+        "approve",
+        "BTreeSet<AuthorityId>"
+      ],
+      [
+        "complete",
+        "bool"
+      ],
+      [
+        "decline",
+        "BTreeSet<AuthorityId>"
+      ],
+      [
+        "params",
+        "Lockdrop"
+      ]
+    ],
+    "type": "struct"
+  },
+  "StakingParameters": {
+    "type_mapping": [
+      [
+        "canBeNominated",
+        "bool"
+      ],
+      [
+        "optionExpired",
+        "u128"
+      ],
+      [
+        "optionP",
+        "u32"
+      ]
+    ],
+    "type": "struct"
+  },
+  "Weight": "u64",
+  "CompactAssignments": "CompactAssignmentsLatest",
+  "RefCount": "u32",
+  "Address": "MultiAddress",
+  "LookupSource": "MultiAddress"
+}

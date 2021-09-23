@@ -1,0 +1,114 @@
+{
+  "ExchangeInfo": {
+    "type_mapping": [
+      [
+        "balance",
+        "Balance"
+      ],
+      [
+        "routes",
+        "Vec<CurrencyTypeEnum>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "Ratio": "u128",
+  "CurrencyId": {
+    "value_list": [
+      "CLV",
+      "CUSDT",
+      "DOT",
+      "CETH"
+    ],
+    "type": "enum"
+  },
+  "EcdsaSignature": "[u8; 65]",
+  "Price": "FixedU128",
+  "PoolId": {
+    "type_mapping": [
+      [
+        "Swap",
+        "u64"
+      ]
+    ],
+    "type": "enum"
+  },
+  "Share": "u128",
+  "Rate": "u128",
+  "CurrencyTypeEnum": {
+    "value_list": [
+      "CLV",
+      "CUSDT",
+      "DOT",
+      "CETH"
+    ],
+    "type": "enum"
+  },
+  "CurrencyIdOf": "CurrencyId",
+  "Amount": "i128",
+  "EvmAddress": "H160",
+  "CurrencyInfo": {
+    "type_mapping": [
+      [
+        "id",
+        "CurrencyId"
+      ],
+      [
+        "name",
+        "CurrencyTypeEnum"
+      ]
+    ],
+    "type": "struct"
+  },
+  "PairKey": "u64",
+  "AmountOf": "Amount",
+  "OracleKey": "CurrencyId",
+  "Balance": "u128",
+  "Weight": "u64",
+  "CompactAssignments": "CompactAssignmentsLatest",
+  "RefCount": "u32",
+  "DispatchResult": {
+    "type": "enum",
+    "type_mapping": [
+      [
+        "Ok",
+        "Null"
+      ],
+      [
+        "Error",
+        "DispatchError"
+      ]
+    ]
+  },
+  "TransactionRecoveryId": "U64",
+  "TransactionSignature": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "v",
+        "TransactionRecoveryId"
+      ],
+      [
+        "r",
+        "H256"
+      ],
+      [
+        "s",
+        "H256"
+      ]
+    ]
+  },
+  "Address": "MultiAddress",
+  "LookupSource": "MultiAddress",
+  "AccountInfo": "AccountInfoWithProviders",
+  "Keys": "(AccountId, AccountId, AccountId, AccountId)",
+  "FixedU128": "u128",
+  "BridgeNetworks": {
+    "value_list": [
+      "BSC",
+      "Ethereum"
+    ],
+    "type": "enum"
+  },
+  "EthereumTxHash": "H256"
+}

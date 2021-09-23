@@ -1,626 +1,5 @@
 {
-  "Weight": "u64",
-  "CallOf": "Call",
-  "FixedU128": "u128",
-  "RefCount": "u32",
-  "U256": "[u8; 32]",
-  "address": "GenericLookupSource",
-  "LookupSource": "GenericLookupSource",
-  "Box<CallOf>": "Call",
-  "DispatchResult": {
-    "type": "enum",
-    "type_mapping": [
-      [
-        "Ok",
-        "Null"
-      ],
-      [
-        "Error",
-        "DispatchError"
-      ]
-    ]
-  },
-  "DispatchTime": {
-    "type": "enum",
-    "type_mapping": [
-      [
-        "At",
-        "BlockNumber"
-      ],
-      [
-        "After",
-        "BlockNumber"
-      ]
-    ]
-  },
-  "SubAccountStatus": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "bonded",
-        "Balance"
-      ],
-      [
-        "available",
-        "Balance"
-      ],
-      [
-        "unbonding",
-        "Vec<(EraIndex,Balance)>"
-      ],
-      [
-        "mockRewardRate",
-        "Rate"
-      ]
-    ]
-  },
-  "ScheduleTaskIndex": "u32",
-  "DelayedOrigin": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "delay",
-        "BlockNumber"
-      ],
-      [
-        "origin",
-        "PalletsOrigin"
-      ]
-    ]
-  },
-  "StorageValue": "Vec<u8>",
-  "GraduallyUpdate": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "key",
-        "StorageKey"
-      ],
-      [
-        "targetValue",
-        "StorageValue"
-      ],
-      [
-        "perBlock",
-        "StorageValue"
-      ]
-    ]
-  },
-  "RpcDataProviderId": "Text",
-  "DataProviderId": {
-    "type": "enum",
-    "value_list": [
-      "Aggregated",
-      "Acala",
-      "Band"
-    ]
-  },
-  "TimestampedValue": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "value",
-        "OracleValue"
-      ],
-      [
-        "timestamp",
-        "Moment"
-      ]
-    ]
-  },
-  "ChangeRate": {
-    "type": "enum",
-    "type_mapping": [
-      [
-        "NoChange",
-        "NULL"
-      ],
-      [
-        "NewValue",
-        "Rate"
-      ]
-    ]
-  },
-  "ChangeRatio": {
-    "type": "enum",
-    "type_mapping": [
-      [
-        "NoChange",
-        "NULL"
-      ],
-      [
-        "NewValue",
-        "Ratio"
-      ]
-    ]
-  },
-  "TimestampedValueOf": "TimestampedValue",
-  "OrderedSet": "Vec<AccountId>",
-  "OrmlAccountData": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "free",
-        "Balance"
-      ],
-      [
-        "frozen",
-        "Balance"
-      ],
-      [
-        "reserved",
-        "Balance"
-      ]
-    ]
-  },
-  "OrmlBalanceLock": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "amount",
-        "Balance"
-      ],
-      [
-        "id",
-        "LockIdentifier"
-      ]
-    ]
-  },
-  "AuctionInfo": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "bid",
-        "Option<(AccountId, Balance)>"
-      ],
-      [
-        "start",
-        "BlockNumber"
-      ],
-      [
-        "end",
-        "Option<BlockNumber>"
-      ]
-    ]
-  },
-  "DelayedDispatchTime": {
-    "type": "enum",
-    "type_mapping": [
-      [
-        "At",
-        "BlockNumber"
-      ],
-      [
-        "After",
-        "BlockNumber"
-      ]
-    ]
-  },
-  "DispatchId": "u32",
-  "Price": "FixedU128",
-  "OrmlVestingSchedule": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "start",
-        "BlockNumber"
-      ],
-      [
-        "period",
-        "BlockNumber"
-      ],
-      [
-        "periodCount",
-        "u32"
-      ],
-      [
-        "perPeriod",
-        "Compact<Balance>"
-      ]
-    ]
-  },
-  "VestingScheduleOf": "OrmlVestingSchedule",
-  "PoolInfo": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "totalShares",
-        "Compact<Share>"
-      ],
-      [
-        "totalRewards",
-        "Compact<Balance>"
-      ],
-      [
-        "totalWithdrawnRewards",
-        "Compact<Balance>"
-      ]
-    ]
-  },
-  "Share": "u128",
-  "PalletBalanceOf": "Balance",
-  "CollateralAuctionItem": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "refundRecipient",
-        "AccountId"
-      ],
-      [
-        "currencyId",
-        "CurrencyId"
-      ],
-      [
-        "initialAmount",
-        "Compact<Balance>"
-      ],
-      [
-        "amount",
-        "Compact<Balance>"
-      ],
-      [
-        "target",
-        "Compact<Balance>"
-      ],
-      [
-        "startTime",
-        "BlockNumber"
-      ]
-    ]
-  },
-  "DebitAuctionItem": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "initialAmount",
-        "Compact<Balance>"
-      ],
-      [
-        "amount",
-        "Compact<Balance>"
-      ],
-      [
-        "fix",
-        "Compact<Balance>"
-      ],
-      [
-        "startTime",
-        "BlockNumber"
-      ]
-    ]
-  },
-  "SurplusAuctionItem": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "amount",
-        "Compact<Balance>"
-      ],
-      [
-        "startTime",
-        "BlockNumber"
-      ]
-    ]
-  },
-  "LiquidationStrategy": {
-    "type": "enum",
-    "value_list": [
-      "Auction",
-      "Exchange"
-    ]
-  },
-  "OptionRate": "Option<Rate>",
-  "OptionRatio": "Option<Ratio>",
-  "ChangeOptionRate": {
-    "type": "enum",
-    "type_mapping": [
-      [
-        "NoChange",
-        "Null"
-      ],
-      [
-        "NewValue",
-        "OptionRate"
-      ]
-    ]
-  },
-  "ChangeOptionRatio": {
-    "type": "enum",
-    "type_mapping": [
-      [
-        "NoChange",
-        "Null"
-      ],
-      [
-        "NewValue",
-        "OptionRatio"
-      ]
-    ]
-  },
-  "ChangeBalance": {
-    "type": "enum",
-    "type_mapping": [
-      [
-        "NoChange",
-        "Null"
-      ],
-      [
-        "NewValue",
-        "Balance"
-      ]
-    ]
-  },
-  "RiskManagementParams": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "maximumTotalDebitValue",
-        "Balance"
-      ],
-      [
-        "stabilityFee",
-        "Option<Rate>"
-      ],
-      [
-        "liquidationRatio",
-        "Option<Rate>"
-      ],
-      [
-        "liquidationPenalty",
-        "Option<Rate>"
-      ],
-      [
-        "requiredCollateralRatio",
-        "Option<Rate>"
-      ]
-    ]
-  },
-  "BalanceWrapper": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "amount",
-        "Balance"
-      ]
-    ]
-  },
-  "BalanceRequest": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "amount",
-        "Balance"
-      ]
-    ]
-  },
-  "RedeemStrategy": {
-    "type": "enum",
-    "type_mapping": [
-      [
-        "Immediately",
-        "Null"
-      ],
-      [
-        "Target",
-        "EraIndex"
-      ],
-      [
-        "WaitForUnbonding",
-        "Null"
-      ]
-    ]
-  },
-  "PoolId": {
-    "type": "enum",
-    "type_mapping": [
-      [
-        "Loans",
-        "CurrencyId"
-      ],
-      [
-        "DexIncentive",
-        "CurrencyId"
-      ],
-      [
-        "DexSaving",
-        "CurrencyId"
-      ],
-      [
-        "Homa",
-        "Null"
-      ]
-    ]
-  },
-  "Position": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "collateral",
-        "Balance"
-      ],
-      [
-        "debit",
-        "Balance"
-      ]
-    ]
-  },
-  "CID": "Vec<u8>",
-  "ClassId": "u64",
-  "TokenId": "u64",
-  "ClassInfoOf": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "metadata",
-        "CID"
-      ],
-      [
-        "totalIssuance",
-        "TokenId"
-      ],
-      [
-        "owner",
-        "AccountId"
-      ],
-      [
-        "data",
-        "ClassData"
-      ]
-    ]
-  },
-  "TokenInfoOf": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "metadata",
-        "CID"
-      ],
-      [
-        "owner",
-        "AccountId"
-      ],
-      [
-        "data",
-        "TokenData"
-      ]
-    ]
-  },
-  "ClassData": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "deposit",
-        "Balance"
-      ],
-      [
-        "properties",
-        "Properties"
-      ]
-    ]
-  },
-  "TokenData": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "deposit",
-        "Balance"
-      ]
-    ]
-  },
-  "Properties": {
-    "type": "set",
-    "bit_length": 8,
-    "value_list": [
-      "Transferable",
-      "Burnable"
-    ]
-  },
-  "HomaUnlockChunk": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "value",
-        "Compact<Balance>"
-      ],
-      [
-        "era",
-        "Compact<EraIndex>"
-      ]
-    ]
-  },
-  "BondingLedger": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "total",
-        "Compact<Balance>"
-      ],
-      [
-        "active",
-        "Compact<Balance>"
-      ],
-      [
-        "unlocking",
-        "Vec<UnlockChunk>"
-      ]
-    ]
-  },
-  "TokenSymbol": {
-    "type": "enum",
-    "value_list": [
-      "ACA",
-      "AUSD",
-      "DOT",
-      "XBTC",
-      "LDOT",
-      "RENBTC"
-    ]
-  },
-  "CurrencyId": {
-    "type": "enum",
-    "type_mapping": [
-      [
-        "Token",
-        "TokenSymbol"
-      ],
-      [
-        "DEXShare",
-        "(TokenSymbol, TokenSymbol)"
-      ]
-    ]
-  },
-  "AirDropCurrencyId": {
-    "type": "enum",
-    "value_list": [
-      "KAR",
-      "ACA"
-    ]
-  },
-  "TradingPair": "(CurrencyId,  CurrencyId)",
-  "AuctionId": "u32",
-  "AuctionIdOf": "AuctionId",
-  "CurrencyIdOf": "CurrencyId",
-  "Amount": "i128",
-  "AmountOf": "Amount",
-  "DebitAmount": "Amount",
-  "DebitAmountOf": "DebitAmount",
-  "DebitBalance": "Balance",
-  "DebitBalanceOf": "Balance",
-  "OracleKey": "CurrencyId",
-  "<T as Trait<I>>::OracleKey": "CurrencyId",
-  "OracleValue": "Price",
-  "DestAddress": "Vec<u8>",
-  "AsOriginId": {
-    "type": "enum",
-    "value_list": [
-      "Root",
-      "AcalaTreasury",
-      "HonzonTreasury",
-      "HomaTreasury",
-      "DSWF"
-    ]
-  },
-  "BalanceInfo": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "amount",
-        "Balance"
-      ]
-    ]
-  },
-  "StakingBalance": "Balance",
-  "LiquidBalance": "Balance",
-  "StakingBalanceOf": "StakingBalance",
-  "LiquidBalanceOf": "LiquidBalance",
-  "PolkadotAccountId": "AccountId",
-  "PolkadotAccountIdOf": "PolkadotAccountId",
-  "ExchangeRate": "FixedU128",
-  "Rate": "FixedU128",
-  "Ratio": "FixedU128",
-  "Keys": "SessionKeys2",
   "PalletsOrigin": {
-    "type": "enum",
     "type_mapping": [
       [
         "System",
@@ -858,7 +237,900 @@
         "TransactionPayment",
         "Null"
       ]
+    ],
+    "type": "enum"
+  },
+  "AuctionInfo": {
+    "type_mapping": [
+      [
+        "bid",
+        "Option<(AccountId, Balance)>"
+      ],
+      [
+        "start",
+        "BlockNumber"
+      ],
+      [
+        "end",
+        "Option<BlockNumber>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "NFTBalance": "u128",
+  "OptionRatio": "Option<Ratio>",
+  "TimestampedValueOf": "TimestampedValue",
+  "Ratio": "FixedU128",
+  "StorageKeyBytes": "Vec<u8>",
+  "ClassIdOf": "ClassId",
+  "DelayedDispatchTime": {
+    "type_mapping": [
+      [
+        "At",
+        "BlockNumber"
+      ],
+      [
+        "After",
+        "BlockNumber"
+      ]
+    ],
+    "type": "enum"
+  },
+  "TimestampedValue": {
+    "type_mapping": [
+      [
+        "value",
+        "OracleValue"
+      ],
+      [
+        "timestamp",
+        "Moment"
+      ]
+    ],
+    "type": "struct"
+  },
+  "AuthoritysOriginId": {
+    "value_list": [
+      "Root",
+      "AcalaTreasury",
+      "HonzonTreasury",
+      "HomaTreasury",
+      "DSWF"
+    ],
+    "type": "enum"
+  },
+  "SlashInfo": {
+    "type_mapping": [
+      [
+        "validator",
+        "RelaychainAccountId"
+      ],
+      [
+        "relaychainTokenAmount",
+        "Balance"
+      ]
+    ],
+    "type": "struct"
+  },
+  "ClassData": {
+    "type_mapping": [
+      [
+        "deposit",
+        "Balance"
+      ],
+      [
+        "properties",
+        "Properties"
+      ]
+    ],
+    "type": "struct"
+  },
+  "PalletBalanceOf": "Balance",
+  "ClassInfoOf": {
+    "type_mapping": [
+      [
+        "metadata",
+        "CID"
+      ],
+      [
+        "totalIssuance",
+        "TokenId"
+      ],
+      [
+        "owner",
+        "AccountId"
+      ],
+      [
+        "data",
+        "ClassData"
+      ]
+    ],
+    "type": "struct"
+  },
+  "ChangeOptionRate": {
+    "type_mapping": [
+      [
+        "NoChange",
+        "Null"
+      ],
+      [
+        "NewValue",
+        "OptionRate"
+      ]
+    ],
+    "type": "enum"
+  },
+  "Amount": "i128",
+  "StorageValue": "Vec<u8>",
+  "Position": {
+    "type_mapping": [
+      [
+        "collateral",
+        "Balance"
+      ],
+      [
+        "debit",
+        "Balance"
+      ]
+    ],
+    "type": "struct"
+  },
+  "DispatchTime": {
+    "type_mapping": [
+      [
+        "At",
+        "BlockNumber"
+      ],
+      [
+        "After",
+        "BlockNumber"
+      ]
+    ],
+    "type": "enum"
+  },
+  "OptionRate": "Option<Rate>",
+  "ChangeRate": {
+    "type_mapping": [
+      [
+        "NoChange",
+        "Null"
+      ],
+      [
+        "NewValue",
+        "Rate"
+      ]
+    ],
+    "type": "enum"
+  },
+  "ExchangeRate": "FixedU128",
+  "Share": "u128",
+  "TradingPairStatus": {
+    "type_mapping": [
+      [
+        "NotEnabled",
+        "Null"
+      ],
+      [
+        "Provisioning",
+        "TradingPairProvisionParameters"
+      ],
+      [
+        "Enabled",
+        "Null"
+      ]
+    ],
+    "type": "enum"
+  },
+  "OracleValue": "Price",
+  "OrmlBalanceLock": {
+    "type_mapping": [
+      [
+        "amount",
+        "Balance"
+      ],
+      [
+        "id",
+        "LockIdentifier"
+      ]
+    ],
+    "type": "struct"
+  },
+  "ChangeRatio": {
+    "type_mapping": [
+      [
+        "NoChange",
+        "Null"
+      ],
+      [
+        "NewValue",
+        "Ratio"
+      ]
+    ],
+    "type": "enum"
+  },
+  "GraduallyUpdate": {
+    "type_mapping": [
+      [
+        "key",
+        "StorageKey"
+      ],
+      [
+        "targetValue",
+        "StorageValue"
+      ],
+      [
+        "perBlock",
+        "StorageValue"
+      ]
+    ],
+    "type": "struct"
+  },
+  "Params": {
+    "type_mapping": [
+      [
+        "targetMaxFreeUnbondedRatio",
+        "Ratio"
+      ],
+      [
+        "targetMinFreeUnbondedRatio",
+        "Ratio"
+      ],
+      [
+        "targetUnbondingToFreeRatio",
+        "Ratio"
+      ],
+      [
+        "unbondingToFreeAdjustment",
+        "Ratio"
+      ],
+      [
+        "baseFeeRate",
+        "Rate"
+      ]
+    ],
+    "type": "struct"
+  },
+  "AirDropCurrencyId": {
+    "value_list": [
+      "KAR",
+      "ACA"
+    ],
+    "type": "enum"
+  },
+  "BalanceRequest": {
+    "type_mapping": [
+      [
+        "amount",
+        "Balance"
+      ]
+    ],
+    "type": "struct"
+  },
+  "RelaychainAccountId": "AccountId",
+  "EvmAddress": "H160",
+  "RpcDataProviderId": "Text",
+  "CollateralAuctionItem": {
+    "type_mapping": [
+      [
+        "refundRecipient",
+        "AccountId"
+      ],
+      [
+        "currencyId",
+        "CurrencyId"
+      ],
+      [
+        "initialAmount",
+        "Compact<Balance>"
+      ],
+      [
+        "amount",
+        "Compact<Balance>"
+      ],
+      [
+        "target",
+        "Compact<Balance>"
+      ],
+      [
+        "startTime",
+        "BlockNumber"
+      ]
+    ],
+    "type": "struct"
+  },
+  "TokenId": "u64",
+  "CurrencyId": {
+    "type_mapping": [
+      [
+        "Token",
+        "TokenSymbol"
+      ],
+      [
+        "DEXShare",
+        "(TokenSymbol, TokenSymbol)"
+      ],
+      [
+        "ERC20",
+        "EvmAddress"
+      ]
+    ],
+    "type": "enum"
+  },
+  "RedeemStrategy": {
+    "type_mapping": [
+      [
+        "Immediately",
+        "Null"
+      ],
+      [
+        "Target",
+        "EraIndex"
+      ],
+      [
+        "WaitForUnbonding",
+        "Null"
+      ]
+    ],
+    "type": "enum"
+  },
+  "CallOf": "Call",
+  "AuctionIdOf": "AuctionId",
+  "AsOriginId": "AuthoritysOriginId",
+  "OrmlVestingSchedule": {
+    "type_mapping": [
+      [
+        "start",
+        "BlockNumber"
+      ],
+      [
+        "period",
+        "BlockNumber"
+      ],
+      [
+        "periodCount",
+        "u32"
+      ],
+      [
+        "perPeriod",
+        "Compact<Balance>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "ClassId": "u32",
+  "ChainId": {
+    "type_mapping": [
+      [
+        "RelayChain",
+        "Null"
+      ],
+      [
+        "ParaChain",
+        "ParaId"
+      ]
+    ],
+    "type": "enum"
+  },
+  "Ledger": {
+    "type_mapping": [
+      [
+        "bonded",
+        "Balance"
+      ],
+      [
+        "unbondingToFree",
+        "Balance"
+      ],
+      [
+        "freePool",
+        "Balance"
+      ],
+      [
+        "toUnbondNextEra",
+        "(Balance, Balance)"
+      ]
+    ],
+    "type": "struct"
+  },
+  "ChangeOptionRatio": {
+    "type_mapping": [
+      [
+        "NoChange",
+        "Null"
+      ],
+      [
+        "NewValue",
+        "OptionRatio"
+      ]
+    ],
+    "type": "enum"
+  },
+  "PolkadotAccountIdOf": "PolkadotAccountId",
+  "RiskManagementParams": {
+    "type_mapping": [
+      [
+        "maximumTotalDebitValue",
+        "Balance"
+      ],
+      [
+        "stabilityFee",
+        "Option<Rate>"
+      ],
+      [
+        "liquidationRatio",
+        "Option<Rate>"
+      ],
+      [
+        "liquidationPenalty",
+        "Option<Rate>"
+      ],
+      [
+        "requiredCollateralRatio",
+        "Option<Rate>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "XCurrencyId": {
+    "type_mapping": [
+      [
+        "chainId",
+        "ChainId"
+      ],
+      [
+        "currencyId",
+        "Vec<u8>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "Keys": "SessionKeys2",
+  "EvmContractInfo": {
+    "type_mapping": [
+      [
+        "codeHash",
+        "H256"
+      ],
+      [
+        "maintainer",
+        "H160"
+      ],
+      [
+        "deployed",
+        "bool"
+      ]
+    ],
+    "type": "struct"
+  },
+  "TradingPair": "(CurrencyId,  CurrencyId)",
+  "ValidatorBacking": {
+    "type_mapping": [
+      [
+        "totalInsurance",
+        "Balance"
+      ],
+      [
+        "isFrozen",
+        "Boolean"
+      ]
+    ],
+    "type": "struct"
+  },
+  "OrmlAccountData": {
+    "type_mapping": [
+      [
+        "free",
+        "Balance"
+      ],
+      [
+        "frozen",
+        "Balance"
+      ],
+      [
+        "reserved",
+        "Balance"
+      ]
+    ],
+    "type": "struct"
+  },
+  "LiquidationStrategy": {
+    "value_list": [
+      "Auction",
+      "Exchange"
+    ],
+    "type": "enum"
+  },
+  "CodeInfo": {
+    "type_mapping": [
+      [
+        "codeSize",
+        "u32"
+      ],
+      [
+        "refCount",
+        "u32"
+      ]
+    ],
+    "type": "struct"
+  },
+  "Properties": {
+    "bit_length": 8,
+    "type_mapping": [
+      "Transferable",
+      "Burnable"
+    ],
+    "type": "set"
+  },
+  "TokenSymbol": {
+    "type_mapping": [
+      [
+        "ACA",
+        "0"
+      ],
+      [
+        "AUSD",
+        "1"
+      ],
+      [
+        "DOT",
+        "2"
+      ],
+      [
+        "LDOT",
+        "3"
+      ],
+      [
+        "XBTC",
+        "4"
+      ],
+      [
+        "RENBTC",
+        "5"
+      ],
+      [
+        "POLKABTC",
+        "6"
+      ],
+      [
+        "PLM",
+        "7"
+      ],
+      [
+        "PHA",
+        "8"
+      ],
+      [
+        "HDT",
+        "9"
+      ],
+      [
+        "KAR",
+        "128"
+      ],
+      [
+        "KUSD",
+        "129"
+      ],
+      [
+        "KSM",
+        "130"
+      ],
+      [
+        "LKSM",
+        "131"
+      ],
+      [
+        "SDN",
+        "135"
+      ],
+      [
+        "KILT",
+        "138"
+      ]
+    ],
+    "type": "enum"
+  },
+  "AuctionId": "u32",
+  "StorageValueBytes": "Vec<u8>",
+  "HomaUnlockChunk": {
+    "type_mapping": [
+      [
+        "value",
+        "Compact<Balance>"
+      ],
+      [
+        "era",
+        "Compact<EraIndex>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "CallRequest": {
+    "type_mapping": [
+      [
+        "from",
+        "Option<H160>"
+      ],
+      [
+        "to",
+        "Option<H160>"
+      ],
+      [
+        "gasLimit",
+        "Option<u32>"
+      ],
+      [
+        "storageLimit",
+        "Option<u32>"
+      ],
+      [
+        "value",
+        "Option<U128>"
+      ],
+      [
+        "data",
+        "Option<Bytes>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "OrderedSet": "Vec<AccountId>",
+  "TradingPairProvisionParameters": {
+    "type_mapping": [
+      [
+        "minContribution",
+        "(Balance, Balance)"
+      ],
+      [
+        "targetProvision",
+        "(Balance, Balance)"
+      ],
+      [
+        "accumulatedProvision",
+        "(Balance, Balance)"
+      ],
+      [
+        "notBefore",
+        "BlockNumber"
+      ]
+    ],
+    "type": "struct"
+  },
+  "TokenInfoOf": {
+    "type_mapping": [
+      [
+        "metadata",
+        "CID"
+      ],
+      [
+        "owner",
+        "AccountId"
+      ],
+      [
+        "data",
+        "TokenData"
+      ]
+    ],
+    "type": "struct"
+  },
+  "OracleKey": "CurrencyId",
+  "TokenIdOf": "TokenId",
+  "BalanceInfo": {
+    "type_mapping": [
+      [
+        "amount",
+        "Balance"
+      ]
+    ],
+    "type": "struct"
+  },
+  "CID": "Vec<u8>",
+  "ChangeBalance": {
+    "type_mapping": [
+      [
+        "NoChange",
+        "Null"
+      ],
+      [
+        "NewValue",
+        "Balance"
+      ]
+    ],
+    "type": "enum"
+  },
+  "VestingScheduleOf": "OrmlVestingSchedule",
+  "PoolId": {
+    "type_mapping": [
+      [
+        "Loans",
+        "CurrencyId"
+      ],
+      [
+        "DexIncentive",
+        "CurrencyId"
+      ],
+      [
+        "DexSaving",
+        "CurrencyId"
+      ],
+      [
+        "Homa",
+        "Null"
+      ]
+    ],
+    "type": "enum"
+  },
+  "SubAccountStatus": {
+    "type_mapping": [
+      [
+        "bonded",
+        "Balance"
+      ],
+      [
+        "available",
+        "Balance"
+      ],
+      [
+        "unbonding",
+        "Vec<(EraIndex,Balance)>"
+      ],
+      [
+        "mockRewardRate",
+        "Rate"
+      ]
+    ],
+    "type": "struct"
+  },
+  "BalanceWrapper": {
+    "type_mapping": [
+      [
+        "amount",
+        "Balance"
+      ]
+    ],
+    "type": "struct"
+  },
+  "Price": "FixedU128",
+  "CurrencyIdOf": "CurrencyId",
+  "AmountOf": "Amount",
+  "BondingLedger": {
+    "type_mapping": [
+      [
+        "total",
+        "Compact<Balance>"
+      ],
+      [
+        "active",
+        "Compact<Balance>"
+      ],
+      [
+        "unlocking",
+        "Vec<UnlockChunk>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "ScheduleTaskIndex": "u32",
+  "PoolInfo": {
+    "type_mapping": [
+      [
+        "totalShares",
+        "Compact<Share>"
+      ],
+      [
+        "totalRewards",
+        "Compact<Balance>"
+      ],
+      [
+        "totalWithdrawnRewards",
+        "Compact<Balance>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "EvmAccountInfo": {
+    "type_mapping": [
+      [
+        "nonce",
+        "Index"
+      ],
+      [
+        "contractInfo",
+        "Option<EvmContractInfo>"
+      ],
+      [
+        "developerDeposit",
+        "Option<Balance>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "DebitAuctionItem": {
+    "type_mapping": [
+      [
+        "initialAmount",
+        "Compact<Balance>"
+      ],
+      [
+        "amount",
+        "Compact<Balance>"
+      ],
+      [
+        "fix",
+        "Compact<Balance>"
+      ],
+      [
+        "startTime",
+        "BlockNumber"
+      ]
+    ],
+    "type": "struct"
+  },
+  "DestAddress": "Vec<u8>",
+  "TokenData": {
+    "type_mapping": [
+      [
+        "deposit",
+        "Balance"
+      ]
+    ],
+    "type": "struct"
+  },
+  "DispatchId": "u32",
+  "DelayedOrigin": {
+    "type_mapping": [
+      [
+        "delay",
+        "BlockNumber"
+      ],
+      [
+        "origin",
+        "PalletsOrigin"
+      ]
+    ],
+    "type": "struct"
+  },
+  "DataProviderId": {
+    "value_list": [
+      "Aggregated",
+      "Acala",
+      "Band"
+    ],
+    "type": "enum"
+  },
+  "PublicKey": "[u8; 20]",
+  "Rate": "FixedU128",
+  "PolkadotAccountId": "AccountId",
+  "SurplusAuctionItem": {
+    "type_mapping": [
+      [
+        "amount",
+        "Compact<Balance>"
+      ],
+      [
+        "startTime",
+        "BlockNumber"
+      ]
+    ],
+    "type": "struct"
+  },
+  "Weight": "u64",
+  "CompactAssignments": "CompactAssignmentsLatest",
+  "RefCount": "u32",
+  "DispatchResult": {
+    "type": "enum",
+    "type_mapping": [
+      [
+        "Ok",
+        "Null"
+      ],
+      [
+        "Error",
+        "DispatchError"
+      ]
     ]
   },
-  "<T as orml_nft::Trait>::ClassId": "u64"
+  "Address": "MultiAddress",
+  "LookupSource": "MultiAddress",
+  "AccountInfo": "AccountInfoWithTripleRefCount"
 }

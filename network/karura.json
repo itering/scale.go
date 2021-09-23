@@ -6,6 +6,7 @@
   "LookupSource": "MultiAddress",
   "AccountInfo": "AccountInfoWithTripleRefCount",
   "PalletsOrigin": "OriginCaller",
+  "Attributes": "BTreeMap<Vec<u8>, Vec<u8>>",
   "AuctionInfo": {
     "type_mapping": [
       [
@@ -742,6 +743,19 @@
   "PoolId": {
     "type_mapping": [
       [
+        "Loans",
+        "CurrencyId"
+      ],
+      [
+        "Dex",
+        "CurrencyId"
+      ]
+    ],
+    "type": "enum"
+  },
+  "PoolId#0-1009": {
+    "type_mapping": [
+      [
         "LoansIncentive",
         "CurrencyId"
       ],
@@ -821,6 +835,19 @@
     "type_mapping": [
       [
         "totalShares",
+        "Share"
+      ],
+      [
+        "rewards",
+        "BTreeMap<OrmlCurrencyId, (Balance, Balance)>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "PoolInfo#0-1009": {
+    "type_mapping": [
+      [
+        "totalShares",
         "Compact<Share>"
       ],
       [
@@ -834,6 +861,7 @@
     ],
     "type": "struct"
   },
+  "OrmlCurrencyId": "CurrencyId",
   "EvmAccountInfo": {
     "type_mapping": [
       [
@@ -917,5 +945,21 @@
       ]
     ],
     "type": "struct"
-  }
+  },
+  "ProxyType": {
+    "type": "enum",
+    "value_list": [
+      "Any",
+      "CancelProxy",
+      "Governance",
+      "Auction",
+      "Swap",
+      "Loan"
+    ]
+  },
+  "AssetInstance": "AssetInstanceV0",
+  "MultiAsset": "MultiAssetV0",
+  "Xcm": "XcmV0",
+  "XcmOrder": "XcmOrderV0",
+  "MultiLocation": "MultiLocationV0"
 }
