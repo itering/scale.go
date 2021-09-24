@@ -164,7 +164,7 @@ type Results struct {
 }
 
 func (b *Results) Process() {
-	optionValue := utiles.BytesToHex(b.NextBytes(b.GetNextU8()))
+	optionValue := utiles.BytesToHex(b.NextBytes(1))
 	subType := strings.Split(b.SubType, ",")
 	if len(subType) != 2 {
 		panic("Results subType not illegal")

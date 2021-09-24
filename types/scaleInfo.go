@@ -249,7 +249,9 @@ func (s *ScaleDecoder) dealOneSiType(id int, SiTyp SiType, id2Portable map[int]S
 			registeredSiType[id] = "Call" // tag
 			return "Call"
 		} else { // enum
-			var types [][]string
+			var types, enumValueList [][]string
+			ValueEnum := false
+
 			sort.Slice(SiTyp.Def.Variant.Variants[:], func(i, j int) bool {
 				return SiTyp.Def.Variant.Variants[i].Index < SiTyp.Def.Variant.Variants[j].Index
 			})
@@ -258,12 +260,14 @@ func (s *ScaleDecoder) dealOneSiType(id int, SiTyp SiType, id2Portable map[int]S
 				typeName := "NULL"
 				var StructTypes [][]string
 				if len(variant.Fields) == 1 {
+					ValueEnum = true
 					if instant, ok := registeredSiType[variant.Fields[0].Type]; ok {
 						typeName = instant
 					} else {
 						typeName = s.dealOneSiType(variant.Fields[0].Type, id2Portable[variant.Fields[0].Type], id2Portable)
 					}
 				} else if len(variant.Fields) > 1 {
+					ValueEnum = true
 					for i, v := range variant.Fields {
 						VName := "NULL"
 						if instant, ok := registeredSiType[v.Type]; ok {
@@ -280,6 +284,8 @@ func (s *ScaleDecoder) dealOneSiType(id int, SiTyp SiType, id2Portable map[int]S
 					if len(StructTypes) > 0 {
 						typeName = utiles.ToString(StructTypes)
 					}
+				} else {
+					enumValueList = append(enumValueList, []string{variant.Name, fmt.Sprintf("%d", variant.Index)})
 				}
 				// fill enum element
 				var interval = variant.Index
@@ -297,6 +303,9 @@ func (s *ScaleDecoder) dealOneSiType(id int, SiTyp SiType, id2Portable map[int]S
 				types = append(types, []string{variant.Name, typeName})
 			}
 			typeString := SiTyp.Path[len(SiTyp.Path)-1]
+			if !ValueEnum {
+				types = enumValueList
+			}
 			RegCustomTypes(map[string]source.TypeStruct{typeString: {Type: "enum", TypeMapping: types}})
 			registeredSiType[id] = typeString
 			return typeString
