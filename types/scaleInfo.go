@@ -282,15 +282,16 @@ func (s *ScaleDecoder) dealOneSiType(id int, SiTyp SiType, id2Portable map[int]S
 					}
 				}
 				// fill enum element
+				var interval = variant.Index
 				if index > 0 {
-					interval := variant.Index - SiTyp.Def.Variant.Variants[index-1].Index - 1
-					for {
-						if interval > 0 {
-							types = append(types, []string{"empty", "NULL"})
-							interval = interval - 1
-						} else {
-							break
-						}
+					interval = variant.Index - SiTyp.Def.Variant.Variants[index-1].Index - 1
+				}
+				for {
+					if interval > 0 {
+						types = append(types, []string{"empty", "NULL"})
+						interval = interval - 1
+					} else {
+						break
 					}
 				}
 				types = append(types, []string{variant.Name, typeName})
