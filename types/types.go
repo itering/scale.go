@@ -459,7 +459,7 @@ func (s *Set) Process() {
 type LogDigest struct{ Enum }
 
 func (l *LogDigest) Init(data ScaleBytes, option *ScaleDecoderOption) {
-	l.ValueList = []string{"Other", "AuthoritiesChange", "ChangesTrieRoot", "SealV0", "Consensus", "Seal", "PreRuntime", "ChangesTrieSignal"}
+	l.ValueList = []string{"Other", "AuthoritiesChange", "ChangesTrieRoot", "SealV0", "Consensus", "Seal", "PreRuntime", "ChangesTrieSignal", "RuntimeEnvironmentUpdated"}
 	l.Enum.Init(data, option)
 }
 
@@ -569,6 +569,8 @@ func (s *RawBabeLabel) Init(data ScaleBytes, option *ScaleDecoderOption) {
 type RawBabePreDigestPrimary struct{ Struct }
 
 type RawBabePreDigestSecondary struct{ Struct }
+
+type RuntimeEnvironmentUpdated struct{ Null }
 
 type SlotNumber struct{ U64 }
 
