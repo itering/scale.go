@@ -8,6 +8,7 @@ import (
 
 	"github.com/huandu/xstrings"
 	"github.com/itering/scale.go/utiles"
+	"github.com/itering/scale.go/utiles/crypto/keccak"
 )
 
 // {
@@ -34,10 +35,11 @@ func (m *MetadataV14Decoder) Process() {
 	// custom type lookup
 	portable := initPortableRaw(m.ProcessAndUpdateData("PortableRegistry").([]interface{}))
 	// utiles.Debug(portable)
-	m.processSiType(portable)
+	metadataUniqueHash := utiles.BytesToHex(keccak.Keccak256(m.Data.Data))
+	m.processSiType(portable, metadataUniqueHash)
 	// utiles.Debug(registeredSiType)
 	// fmt.Println("registeredSiType", len(registeredSiType), "portable", len(portable))
-
+	metadataSiType := registeredSiType[metadataUniqueHash]
 	MetadataV14ModuleCall := m.ProcessAndUpdateData("Vec<MetadataV14Module>").([]interface{})
 	bm, _ := json.Marshal(MetadataV14ModuleCall)
 
@@ -62,7 +64,7 @@ func (m *MetadataV14Decoder) Process() {
 				for _, field := range variant.Fields {
 					call.Args = append(call.Args, MetadataModuleCallArgument{
 						Name: field.Name,
-						Type: registeredSiType[field.Type],
+						Type: metadataSiType[field.Type],
 					})
 				}
 				module.Calls = append(module.Calls, call)
@@ -84,7 +86,7 @@ func (m *MetadataV14Decoder) Process() {
 			for _, variant := range variants.Variants {
 				event := MetadataEvents{Name: variant.Name, Docs: variant.Docs}
 				for _, field := range variant.Fields {
-					event.Args = append(event.Args, registeredSiType[field.Type])
+					event.Args = append(event.Args, metadataSiType[field.Type])
 				}
 				module.Events = append(module.Events, event)
 			}
@@ -112,7 +114,7 @@ func (m *MetadataV14Decoder) Process() {
 
 		// Constant
 		for index, constant := range module.Constants {
-			variant := registeredSiType[constant.TypeValue]
+			variant := metadataSiType[constant.TypeValue]
 			if variant == "" {
 				panic(fmt.Sprintf("%d constant value not variant", constant.TypeValue))
 			}
@@ -122,14 +124,14 @@ func (m *MetadataV14Decoder) Process() {
 		// Storage
 		for index, storage := range module.Storage {
 			if storage.Type.Origin == "PlainType" {
-				variant := registeredSiType[*storage.Type.PlainTypeValue]
+				variant := metadataSiType[*storage.Type.PlainTypeValue]
 				module.Storage[index].Type.PlainType = &variant
 			} else {
 				if maps := storage.Type.NMapType; maps != nil {
 					module.Storage[index].Type.NMapType = &NMapType{
 						Hashers: maps.Hashers,
-						Value:   registeredSiType[maps.ValueId],
-						KeyVec:  TupleDisassemble(registeredSiType[maps.KeysId]),
+						Value:   metadataSiType[maps.ValueId],
+						KeyVec:  TupleDisassemble(metadataSiType[maps.KeysId]),
 					}
 				}
 			}

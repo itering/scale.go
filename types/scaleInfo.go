@@ -109,75 +109,76 @@ type SiTypeWithName struct {
 	Structure  interface{}
 }
 
-var registeredSiType = make(map[int]string)
+var registeredSiType = make(map[string]map[int]string)
 
-func (s *ScaleDecoder) processSiType(id2Portable map[int]SiType) {
+func (s *ScaleDecoder) processSiType(id2Portable map[int]SiType, uniqueHash string) {
+	registeredSiType[uniqueHash] = make(map[int]string)
 	for id, v := range id2Portable {
 		if v.Def.Primitive != nil {
-			s.dealPrimitiveSiType(id, v)
+			s.dealPrimitiveSiType(id, v, uniqueHash)
 		}
 	}
 	for id, v := range id2Portable {
-		if _, ok := registeredSiType[id]; ok {
+		if _, ok := registeredSiType[uniqueHash][id]; ok {
 			continue
 		}
-		s.dealOneSiType(id, v, id2Portable)
+		s.dealOneSiType(id, v, id2Portable, uniqueHash)
 	}
 }
 
-func (s *ScaleDecoder) dealPrimitiveSiType(id int, SiTyp SiType) {
+func (s *ScaleDecoder) dealPrimitiveSiType(id int, SiTyp SiType, uniqueHash string) {
 	if _, ok := TypeRegistry[strings.ToLower(string(*SiTyp.Def.Primitive))]; !ok {
 		panic(fmt.Sprintf("lack Primitive type %v", *SiTyp.Def.Primitive))
 	}
-	registeredSiType[id] = string(*SiTyp.Def.Primitive)
+	registeredSiType[uniqueHash][id] = string(*SiTyp.Def.Primitive)
 }
 
-func (s *ScaleDecoder) dealOneSiType(id int, SiTyp SiType, id2Portable map[int]SiType) string {
+func (s *ScaleDecoder) dealOneSiType(id int, SiTyp SiType, id2Portable map[int]SiType, uniqueHash string) string {
 	if SiTyp.Def.Composite != nil {
 		if len(SiTyp.Def.Composite.Fields) == 1 { // single
 			subTypeValue := SiTyp.Def.Composite.Fields[0].Type
-			if instant, ok := registeredSiType[subTypeValue]; ok {
-				registeredSiType[id] = instant
+			if instant, ok := registeredSiType[uniqueHash][subTypeValue]; ok {
+				registeredSiType[uniqueHash][id] = instant
 			} else {
-				registeredSiType[id] = s.dealOneSiType(subTypeValue, id2Portable[subTypeValue], id2Portable)
+				registeredSiType[uniqueHash][id] = s.dealOneSiType(subTypeValue, id2Portable[subTypeValue], id2Portable, uniqueHash)
 			}
-			return registeredSiType[id]
+			return registeredSiType[uniqueHash][id]
 		} else { // struct
 			var types [][]string
 			for _, field := range SiTyp.Def.Composite.Fields {
 				var typeName string
-				if instant, ok := registeredSiType[field.Type]; ok {
+				if instant, ok := registeredSiType[uniqueHash][field.Type]; ok {
 					typeName = instant
 				} else {
-					typeName = s.dealOneSiType(field.Type, id2Portable[field.Type], id2Portable)
+					typeName = s.dealOneSiType(field.Type, id2Portable[field.Type], id2Portable, uniqueHash)
 				}
 				types = append(types, []string{field.Name, typeName})
 			}
 			typeString := SiTyp.Path[len(SiTyp.Path)-1]
 			RegCustomTypes(map[string]source.TypeStruct{typeString: {Type: "struct", TypeMapping: types}})
-			registeredSiType[id] = typeString
+			registeredSiType[uniqueHash][id] = typeString
 			return typeString
 		}
 
 	} else if SiTyp.Def.Array != nil {
 		subTypeValue := SiTyp.Def.Array.Type
 
-		if instant, ok := registeredSiType[subTypeValue]; ok {
-			registeredSiType[id] = fmt.Sprintf("[%s; %d]", instant, SiTyp.Def.Array.Len)
+		if instant, ok := registeredSiType[uniqueHash][subTypeValue]; ok {
+			registeredSiType[uniqueHash][id] = fmt.Sprintf("[%s; %d]", instant, SiTyp.Def.Array.Len)
 		} else {
-			registeredSiType[id] = fmt.Sprintf("[%s; %d]", s.dealOneSiType(id, id2Portable[subTypeValue], id2Portable),
+			registeredSiType[uniqueHash][id] = fmt.Sprintf("[%s; %d]", s.dealOneSiType(id, id2Portable[subTypeValue], id2Portable, uniqueHash),
 				SiTyp.Def.Array.Len)
 		}
-		return registeredSiType[id]
+		return registeredSiType[uniqueHash][id]
 
 	} else if SiTyp.Def.Sequence != nil {
 		subTypeValue := SiTyp.Def.Sequence.Type
-		if instant, ok := registeredSiType[subTypeValue]; ok {
-			registeredSiType[id] = fmt.Sprintf("Vec<%s>", instant)
+		if instant, ok := registeredSiType[uniqueHash][subTypeValue]; ok {
+			registeredSiType[uniqueHash][id] = fmt.Sprintf("Vec<%s>", instant)
 		} else {
-			registeredSiType[id] = fmt.Sprintf("Vec<%s>", s.dealOneSiType(id, id2Portable[subTypeValue], id2Portable))
+			registeredSiType[uniqueHash][id] = fmt.Sprintf("Vec<%s>", s.dealOneSiType(id, id2Portable[subTypeValue], id2Portable, uniqueHash))
 		}
-		return registeredSiType[id]
+		return registeredSiType[uniqueHash][id]
 
 	} else if SiTyp.Def.Tuple != nil {
 		var tupleSlice []string
@@ -185,30 +186,30 @@ func (s *ScaleDecoder) dealOneSiType(id int, SiTyp SiType, id2Portable map[int]S
 			return "Null"
 		}
 		for _, field := range *SiTyp.Def.Tuple {
-			if instant, ok := registeredSiType[field]; ok {
+			if instant, ok := registeredSiType[uniqueHash][field]; ok {
 				tupleSlice = append(tupleSlice, instant)
 			} else {
-				tupleSlice = append(tupleSlice, s.dealOneSiType(id, id2Portable[field], id2Portable))
+				tupleSlice = append(tupleSlice, s.dealOneSiType(id, id2Portable[field], id2Portable, uniqueHash))
 			}
 		}
-		registeredSiType[id] = fmt.Sprintf("(%s)", strings.Join(tupleSlice, ","))
-		return registeredSiType[id]
+		registeredSiType[uniqueHash][id] = fmt.Sprintf("(%s)", strings.Join(tupleSlice, ","))
+		return registeredSiType[uniqueHash][id]
 
 	} else if SiTyp.Def.Compact != nil {
 		subTypeValue := SiTyp.Def.Compact.Type
 		var compactType string
-		if instant, ok := registeredSiType[subTypeValue]; ok {
+		if instant, ok := registeredSiType[uniqueHash][subTypeValue]; ok {
 			compactType = instant
 		} else {
-			compactType = s.dealOneSiType(id, id2Portable[subTypeValue], id2Portable)
+			compactType = s.dealOneSiType(id, id2Portable[subTypeValue], id2Portable, uniqueHash)
 		}
-		registeredSiType[id] = fmt.Sprintf("compact<%s>", compactType)
-		return registeredSiType[id]
+		registeredSiType[uniqueHash][id] = fmt.Sprintf("compact<%s>", compactType)
+		return registeredSiType[uniqueHash][id]
 	} else if SiTyp.Def.BitSequence != nil { //
 		// https://github.com/polkadot-js/api/blob/662aef203356b8f391415e548e1eb5339f68f828/packages/types/src/generic/PortableRegistry.ts#L293
 		// typeString := SiTyp.Path[len(SiTyp.Path)-1]
-		registeredSiType[id] = fmt.Sprintf("BitVec")
-		return registeredSiType[id]
+		registeredSiType[uniqueHash][id] = fmt.Sprintf("BitVec")
+		return registeredSiType[uniqueHash][id]
 	} else if SiTyp.Def.SiTypeDefRange != nil {
 		// todo
 	} else if SiTyp.Def.Variant != nil {
@@ -217,36 +218,36 @@ func (s *ScaleDecoder) dealOneSiType(id int, SiTyp SiType, id2Portable map[int]S
 		if strings.EqualFold(specialVariant, "option") {
 			subTypeValue := SiTyp.Params[0].Type
 			var subType string
-			if instant, ok := registeredSiType[subTypeValue]; ok {
+			if instant, ok := registeredSiType[uniqueHash][subTypeValue]; ok {
 				subType = instant
 			} else {
-				subType = s.dealOneSiType(id, id2Portable[subTypeValue], id2Portable)
+				subType = s.dealOneSiType(id, id2Portable[subTypeValue], id2Portable, uniqueHash)
 			}
-			registeredSiType[id] = fmt.Sprintf("option<%s>", subType)
-			return registeredSiType[id]
+			registeredSiType[uniqueHash][id] = fmt.Sprintf("option<%s>", subType)
+			return registeredSiType[uniqueHash][id]
 		} else if strings.EqualFold(specialVariant, "Result") {
 			// Results<u8, bool>
 			resultOk := SiTyp.Params[0].Type
 			resultErr := SiTyp.Params[1].Type
 			var okType string
 			var errType string
-			if instant, ok := registeredSiType[resultOk]; ok {
+			if instant, ok := registeredSiType[uniqueHash][resultOk]; ok {
 				okType = instant
 			} else {
-				okType = s.dealOneSiType(id, id2Portable[resultOk], id2Portable)
+				okType = s.dealOneSiType(id, id2Portable[resultOk], id2Portable, uniqueHash)
 			}
-			if instant, ok := registeredSiType[resultErr]; ok {
+			if instant, ok := registeredSiType[uniqueHash][resultErr]; ok {
 				errType = instant
 			} else {
-				errType = s.dealOneSiType(id, id2Portable[resultErr], id2Portable)
+				errType = s.dealOneSiType(id, id2Portable[resultErr], id2Portable, uniqueHash)
 			}
-			registeredSiType[id] = fmt.Sprintf("Results<%s,%s>", okType, errType)
-			return registeredSiType[id]
+			registeredSiType[uniqueHash][id] = fmt.Sprintf("Results<%s,%s>", okType, errType)
+			return registeredSiType[uniqueHash][id]
 		} else if len(SiTyp.Path) >= 2 && ((SiTyp.Path[len(SiTyp.Path)-2] == "pallet" && SiTyp.Path[len(SiTyp.Path)-1] == "Call") || SiTyp.Path[len(SiTyp.Path)-1] == "Instruction") { // Call Extrinsic
-			registeredSiType[id] = "Call"
+			registeredSiType[uniqueHash][id] = "Call"
 			return "Call"
 		} else if utiles.SliceIndex(SiTyp.Path[len(SiTyp.Path)-1], []string{"Call", "Event", "Error"}) != -1 {
-			registeredSiType[id] = "Call" // tag
+			registeredSiType[uniqueHash][id] = "Call" // tag
 			return "Call"
 		} else { // enum
 			var types, enumValueList [][]string
@@ -261,16 +262,16 @@ func (s *ScaleDecoder) dealOneSiType(id int, SiTyp SiType, id2Portable map[int]S
 				var StructTypes [][]string
 				if len(variant.Fields) == 1 {
 					ValueEnum = true
-					if instant, ok := registeredSiType[variant.Fields[0].Type]; ok {
+					if instant, ok := registeredSiType[uniqueHash][variant.Fields[0].Type]; ok {
 						typeName = instant
 					} else {
-						typeName = s.dealOneSiType(variant.Fields[0].Type, id2Portable[variant.Fields[0].Type], id2Portable)
+						typeName = s.dealOneSiType(variant.Fields[0].Type, id2Portable[variant.Fields[0].Type], id2Portable, uniqueHash)
 					}
 				} else if len(variant.Fields) > 1 {
 					ValueEnum = true
 					for i, v := range variant.Fields {
 						VName := "NULL"
-						if instant, ok := registeredSiType[v.Type]; ok {
+						if instant, ok := registeredSiType[uniqueHash][v.Type]; ok {
 							VName = instant
 						} else {
 							// todo need reg new
@@ -307,11 +308,11 @@ func (s *ScaleDecoder) dealOneSiType(id int, SiTyp SiType, id2Portable map[int]S
 				types = enumValueList
 			}
 			RegCustomTypes(map[string]source.TypeStruct{typeString: {Type: "enum", TypeMapping: types}})
-			registeredSiType[id] = typeString
+			registeredSiType[uniqueHash][id] = typeString
 			return typeString
 		}
 	} else {
-		registeredSiType[id] = "NULL"
+		registeredSiType[uniqueHash][id] = "NULL"
 		return "NULL"
 	}
 	return ""
