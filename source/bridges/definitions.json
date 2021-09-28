@@ -72,7 +72,7 @@
   "OutboundLaneData": {
     "type_mapping": [
       [
-        "latestGeneratedNonce",
+        "oldestUnprunedNonce",
         "MessageNonce"
       ],
       [
@@ -80,7 +80,7 @@
         "MessageNonce"
       ],
       [
-        "oldestUnprunedNonce",
+        "latestGeneratedNonce",
         "MessageNonce"
       ]
     ],
@@ -103,6 +103,8 @@
     "type": "enum"
   },
   "MessageNonce": "u64",
+  "SpecVersion": "u32",
+  "BridgeMessageId": "(LaneId, MessageNonce)",
   "OutboundPayload": {
     "type_mapping": [
       [
