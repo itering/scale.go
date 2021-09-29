@@ -1851,7 +1851,8 @@
       "Any",
       "NonTransfer",
       "Governance",
-      "Staking"
+      "Staking",
+      "CancelProxy"
     ]
   },
   "Period": "(BlockNumber, u32)",
