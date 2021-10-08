@@ -16,19 +16,18 @@ type ExtrinsicParam struct {
 
 type ExtrinsicDecoder struct {
 	scaleType.ScaleDecoder
-	ExtrinsicLength     int                       `json:"extrinsic_length"`
-	ExtrinsicHash       string                    `json:"extrinsic_hash"`
-	VersionInfo         string                    `json:"version_info"`
-	ContainsTransaction bool                      `json:"contains_transaction"`
-	Address             interface{}               `json:"address"`
-	Signature           string                    `json:"signature"`
-	SignatureVersion    int                       `json:"signature_version"`
-	Nonce               int                       `json:"nonce"`
-	Era                 string                    `json:"era"`
-	CallIndex           string                    `json:"call_index"`
-	Tip                 interface{}               `json:"tip"`
-	CallModule          scaleType.MetadataModules `json:"call_module"`
-	Params              []ExtrinsicParam          `json:"params"`
+	ExtrinsicLength     int              `json:"extrinsic_length"`
+	ExtrinsicHash       string           `json:"extrinsic_hash"`
+	VersionInfo         string           `json:"version_info"`
+	ContainsTransaction bool             `json:"contains_transaction"`
+	Address             interface{}      `json:"address"`
+	Signature           string           `json:"signature"`
+	SignatureVersion    int              `json:"signature_version"`
+	Nonce               int              `json:"nonce"`
+	Era                 string           `json:"era"`
+	CallIndex           string           `json:"call_index"`
+	Tip                 interface{}      `json:"tip"`
+	Params              []ExtrinsicParam `json:"params"`
 	Metadata            *scaleType.MetadataStruct
 }
 
@@ -121,8 +120,7 @@ func (e *ExtrinsicDecoder) Process() {
 	if !ok {
 		panic(fmt.Sprintf("Not find Extrinsic Lookup %s, please check metadata info", e.CallIndex))
 	}
-	e.CallModule = call.Module
-	e.Module = e.CallModule.Name
+	e.Module = call.Module.Name
 
 	for _, arg := range call.Call.Args {
 		value := e.ProcessAndUpdateData(arg.Type)
@@ -144,7 +142,7 @@ func (e *ExtrinsicDecoder) Process() {
 	if e.CallIndex != "" {
 		result["call_code"] = e.CallIndex
 		result["call_module_function"] = call.Call.Name
-		result["call_module"] = e.CallModule.Name
+		result["call_module"] = call.Module.Name
 	}
 
 	result["nonce"] = e.Nonce

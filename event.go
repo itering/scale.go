@@ -2,6 +2,7 @@ package scalecodec
 
 import (
 	"fmt"
+
 	scaleType "github.com/itering/scale.go/types"
 	"github.com/itering/scale.go/utiles"
 )
@@ -43,13 +44,12 @@ func (e *EventsDecoder) Process() {
 type EventRecord struct {
 	scaleType.ScaleDecoder
 	Metadata     *scaleType.MetadataStruct
-	Phase        int                       `json:"phase"`
-	ExtrinsicIdx int                       `json:"extrinsic_idx"`
-	Type         string                    `json:"type"`
-	Params       []EventParam              `json:"params"`
-	Event        scaleType.MetadataEvents  `json:"event"`
-	EventModule  scaleType.MetadataModules `json:"event_module"`
-	Topic        []string                  `json:"topic"`
+	Phase        int                      `json:"phase"`
+	ExtrinsicIdx int                      `json:"extrinsic_idx"`
+	Type         string                   `json:"type"`
+	Params       []EventParam             `json:"params"`
+	Event        scaleType.MetadataEvents `json:"event"`
+	Topic        []string                 `json:"topic"`
 }
 
 func (e *EventRecord) Process() map[string]interface{} {
@@ -69,8 +69,6 @@ func (e *EventRecord) Process() map[string]interface{} {
 	}
 
 	e.Event = call.Call
-	e.EventModule = call.Module
-	e.Module = e.EventModule.Name
 
 	for _, argType := range e.Event.Args {
 		e.Params = append(e.Params, EventParam{Type: argType, Value: e.ProcessAndUpdateData(argType)})
@@ -89,7 +87,7 @@ func (e *EventRecord) Process() map[string]interface{} {
 		"phase":         e.Phase,
 		"extrinsic_idx": e.ExtrinsicIdx,
 		"type":          e.Type,
-		"module_id":     e.EventModule.Name,
+		"module_id":     call.Module.Name,
 		"event_id":      e.Event.Name,
 		"params":        e.Params,
 		"topic":         e.Topic,

@@ -317,6 +317,9 @@ func (e *Enum) Process() {
 			e.Value = rustEnum[e.Index]
 			return
 		}
+		if e.Index > len(e.TypeMapping.Types) {
+			fmt.Println(e.TypeMapping.Types)
+		}
 		if subType := e.TypeMapping.Types[e.Index]; subType != "" {
 			// struct subType
 			var typeMap [][]string
