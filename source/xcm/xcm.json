@@ -22,19 +22,6 @@
   },
   "MultiAsset": "MultiAssetV1",
   "InteriorMultiLocation": "Junctions",
-  "Fungibility": {
-    "type_mapping": [
-      [
-        "Fungible",
-        "u128"
-      ],
-      [
-        "NonFungible",
-        "AssetInstance"
-      ]
-    ],
-    "type": "enum"
-  },
   "QueryId": "u64",
   "VersionedMultiAsset": {
     "type_mapping": [
@@ -178,13 +165,6 @@
         "Abstract",
         "Bytes"
       ]
-    ],
-    "type": "enum"
-  },
-  "WildFungibility": {
-    "value_list": [
-      "Fungible",
-      "NonFungible"
     ],
     "type": "enum"
   },

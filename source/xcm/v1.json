@@ -365,7 +365,7 @@
       ],
       [
         "fungibility",
-        "Fungibility"
+        "FungibilityV1"
       ]
     ],
     "type": "struct"
@@ -379,8 +379,28 @@
       ],
       [
         "AllOf",
-        "[[\"id\", \"XcmAssetId\"], [\"fungibility\", \"WildFungibility\"]]"
+        "[[\"id\", \"XcmAssetId\"], [\"fungibility\", \"WildFungibilityV1\"]]"
       ]
+    ],
+    "type": "enum"
+  },
+  "FungibilityV1": {
+    "type_mapping": [
+      [
+        "Fungible",
+        "Compact<u128>"
+      ],
+      [
+        "NonFungible",
+        "AssetInstanceV1"
+      ]
+    ],
+    "type": "enum"
+  },
+  "WildFungibilityV1": {
+    "value_list": [
+      "Fungible",
+      "NonFungible"
     ],
     "type": "enum"
   }

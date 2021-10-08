@@ -1,5 +1,8 @@
 {
   "JunctionsV2": "JunctionsV1",
+  "AssetInstanceV2": "AssetInstanceV1",
+  "FungibilityV2": "FungibilityV1",
+  "WildFungibilityV2": "WildFungibilityV1",
   "XcmV2": "Vec<InstructionV2>",
   "ResponseV2": {
     "type_mapping": [
@@ -288,5 +291,7 @@
       ]
     ],
     "type": "enum"
-  }
+  },
+  "XcmOrderV2": "XcmOrderV1",
+  "WildMultiAssetV2": "WildMultiAssetV1"
 }

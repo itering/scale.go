@@ -407,5 +407,7 @@
       ]
     ],
     "type": "enum"
-  }
+  },
+  "FungibilityV0": "FungibilityV1",
+  "WildFungibilityV0": "WildFungibilityV1"
 }
