@@ -360,7 +360,7 @@
       ],
       [
         "publicKeys",
-        "BTreeMap<KeyIdOf, DidPublicKeyDetails>"
+        "DidPublicKeyMap"
       ],
       [
         "endpointUrl",
@@ -755,10 +755,10 @@
     ],
     "type": "enum"
   },
-  "DidPublicKeyMap": "Vec<KeyIdOf, DidPublicKeyDetails, MaxPublicKeysPerDid>",
+  "DidPublicKeyMap": "BTreeMap<KeyIdOf, DidPublicKeyDetails>",
   "MaxVerificationKeysToRevoke": "u32",
-  "DidKeyAgreementKeys": "Vec<KeyIdOf, MaxTotalKeyAgreementKeys>",
-  "DidNewKeyAgreementKeys": "Vec<DidEncryptionKey, MaxNewKeyAgreementKeys>",
+  "DidKeyAgreementKeys": "BTreeSet<KeyIdOf>",
+  "DidNewKeyAgreementKeys": "BTreeSet<DidEncryptionKey>",
   "DidCreationDetails": {
     "type_mapping": [
       [
@@ -832,7 +832,7 @@
       ],
       [
         "children",
-        "Vec<DelegationNodeIdOf, MaxChildren>"
+        "BTreeSet<DelegationNodeIdOf>"
       ],
       [
         "details",
@@ -931,7 +931,7 @@
   "OrderedSet#20-?": "BoundedVec<Stake, MaxCollatorCandidates>",
   "MaxChildren": "u32",
   "MaxUrlLength": "u32",
-  "DidVerificationKeysToRevoke": "Vec<KeyIdOf, MaxVerificationKeysToRevoke>",
+  "DidVerificationKeysToRevoke": "BTreeSet<KeyIdOf>",
   "MaxClaims": "u32",
   "MaxCollatorCandidates": "u32",
   "MaxPublicKeysPerDid": "u32",

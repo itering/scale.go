@@ -1,10 +1,11 @@
 package types
 
 import (
-	"github.com/itering/scale.go/source"
-	"github.com/itering/scale.go/utiles"
 	"regexp"
 	"strings"
+
+	"github.com/itering/scale.go/source"
+	"github.com/itering/scale.go/utiles"
 )
 
 func newStruct(names, typeString []string) *TypeMapping {
@@ -64,6 +65,11 @@ func RegCustomTypes(registry map[string]source.TypeStruct) {
 						continue
 					} else if strings.EqualFold(typeParts[1], "BTreeMap") {
 						v := BTreeMap{}
+						v.SubType = typeParts[2]
+						regCustomKey(key, &v)
+						continue
+					} else if strings.EqualFold(typeParts[1], "BTreeSet") {
+						v := BTreeSet{}
 						v.SubType = typeParts[2]
 						regCustomKey(key, &v)
 						continue
