@@ -24,7 +24,7 @@ type SiType struct {
 
 type SiTypeParameter struct {
 	Name string `json:"name"`
-	Type int    `json:"type,omitempty"`
+	Type int    `json:"type"`
 }
 
 type SiTypeDef struct {
@@ -253,7 +253,7 @@ func (s *ScaleDecoder) dealOneSiType(id int, SiTyp SiType, id2Portable map[int]S
 		} else if len(SiTyp.Path) >= 2 && ((SiTyp.Path[len(SiTyp.Path)-2] == "pallet" && SiTyp.Path[len(SiTyp.Path)-1] == "Call") || SiTyp.Path[len(SiTyp.Path)-1] == "Instruction") { // Call Extrinsic
 			registeredSiType[uniqueHash][id] = "Call"
 			return "Call"
-		} else if utiles.SliceIndex(SiTyp.Path[len(SiTyp.Path)-1], []string{"Call", "Event", "Error"}) != -1 {
+		} else if utiles.SliceIndex(SiTyp.Path[len(SiTyp.Path)-1], []string{"Call", "Event"}) != -1 {
 			registeredSiType[uniqueHash][id] = "Call" // tag
 			return "Call"
 		} else { // enum
@@ -310,7 +310,7 @@ func (s *ScaleDecoder) dealOneSiType(id int, SiTyp SiType, id2Portable map[int]S
 				}
 				types = append(types, []string{variant.Name, typeName})
 			}
-			typeString := SiTyp.Path[len(SiTyp.Path)-1]
+			typeString := strings.Join(SiTyp.Path, "")
 			if !ValueEnum {
 				types = enumValueList
 			}
