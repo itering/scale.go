@@ -182,17 +182,24 @@ func (s *ScaleDecoder) dealOneSiType(id int, SiTyp SiType, id2Portable map[int]S
 
 	} else if SiTyp.Def.Tuple != nil {
 		var tupleSlice []string
+		var tupleStruct [][]string
 		if len(*SiTyp.Def.Tuple) == 0 {
 			return "Null"
 		}
-		for _, field := range *SiTyp.Def.Tuple {
+		for index, field := range *SiTyp.Def.Tuple {
 			if instant, ok := registeredSiType[uniqueHash][field]; ok {
 				tupleSlice = append(tupleSlice, instant)
+				tupleStruct = append(tupleStruct, []string{fmt.Sprintf("col%d", index+1), instant})
 			} else {
-				tupleSlice = append(tupleSlice, s.dealOneSiType(id, id2Portable[field], id2Portable, uniqueHash))
+				instant := s.dealOneSiType(id, id2Portable[field], id2Portable, uniqueHash)
+				tupleStruct = append(tupleStruct, []string{fmt.Sprintf("col%d", index+1), instant})
+				tupleSlice = append(tupleSlice, instant)
 			}
 		}
-		registeredSiType[uniqueHash][id] = fmt.Sprintf("(%s)", strings.Join(tupleSlice, ","))
+		tupleTypeName := fmt.Sprintf("Tuple%s", strings.Join(tupleSlice, ""))
+		RegCustomTypes(map[string]source.TypeStruct{tupleTypeName: {Type: "struct", TypeMapping: tupleStruct}})
+		registeredSiType[uniqueHash][id] = tupleTypeName
+
 		return registeredSiType[uniqueHash][id]
 
 	} else if SiTyp.Def.Compact != nil {
