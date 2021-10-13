@@ -356,7 +356,12 @@ type VecU8FixedLength struct {
 }
 
 func (s *VecU8FixedLength) Process() {
-	s.Value = utiles.AddHex(utiles.BytesToHex(s.NextBytes(s.FixedLength)))
+	value := s.NextBytes(s.FixedLength)
+	if utiles.IsASCII(value) {
+		s.Value = string(value)
+	} else {
+		s.Value = utiles.AddHex(utiles.BytesToHex(value))
+	}
 }
 
 type AccountId struct {
@@ -623,7 +628,12 @@ func (f *FixedLengthArray) Process() {
 	var result []interface{}
 	if f.FixedLength > 0 {
 		if strings.EqualFold(f.SubType, "u8") {
-			f.Value = utiles.BytesToHex(f.NextBytes(f.FixedLength))
+			value := f.NextBytes(f.FixedLength)
+			if utiles.IsASCII(value) {
+				f.Value = string(value)
+			} else {
+				f.Value = utiles.BytesToHex(value)
+			}
 			return
 		}
 		for i := 0; i < f.FixedLength; i++ {
