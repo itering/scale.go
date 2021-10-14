@@ -10,6 +10,7 @@ type TypeStruct struct {
 	TypeMapping [][]string `json:"type_mapping,omitempty"`
 	ValueList   []string   `json:"value_list,omitempty"`
 	BitLength   int        `json:"bit_length,omitempty"`
+	V14         bool       `json:"v_14"`
 }
 
 //go:generate go run ../tools/merge.go

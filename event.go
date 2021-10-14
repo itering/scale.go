@@ -69,9 +69,9 @@ func (e *EventRecord) Process() map[string]interface{} {
 	}
 
 	e.Event = call.Call
-
 	for _, argType := range e.Event.Args {
-		e.Params = append(e.Params, EventParam{Type: argType, Value: e.ProcessAndUpdateData(argType)})
+		value := e.ProcessAndUpdateData(argType)
+		e.Params = append(e.Params, EventParam{Type: argType, Value: value})
 	}
 
 	if e.Metadata.MetadataVersion >= 5 {

@@ -37,8 +37,7 @@ func (m *MetadataV14Decoder) Process() {
 	// utiles.Debug(portable)
 	metadataUniqueHash := utiles.BytesToHex(keccak.Keccak256(m.Data.Data))
 	m.processSiType(portable, metadataUniqueHash)
-	// utiles.Debug(registeredSiType)
-	// fmt.Println("registeredSiType", len(registeredSiType), "portable", len(portable))
+	// fmt.Println("registeredSiType", len(registeredSiType[metadataUniqueHash]), "portable", len(portable))
 	metadataSiType := registeredSiType[metadataUniqueHash]
 	MetadataV14ModuleCall := m.ProcessAndUpdateData("Vec<MetadataV14Module>").([]interface{})
 	bm, _ := json.Marshal(MetadataV14ModuleCall)
