@@ -18,8 +18,13 @@ func newStruct(names, typeString []string) *TypeMapping {
 	return &TypeMapping{Names: names, Types: typeString}
 }
 
+var V14Types []map[string]source.TypeStruct
+
 func RegCustomTypes(registry map[string]source.TypeStruct) {
 	for key, typeStruct := range registry {
+		if typeStruct.V14 {
+			V14Types = append(V14Types, map[string]source.TypeStruct{key: typeStruct})
+		}
 		key = strings.ToLower(key)
 		switch typeStruct.Type {
 		case "string":
@@ -108,6 +113,7 @@ func RegCustomTypes(registry map[string]source.TypeStruct) {
 			s.TypeMapping = newStruct(names, typeStrings)
 
 			regCustomKey(key, &s)
+			continue
 		case "enum":
 			var names, typeStrings []string
 			for _, v := range typeStruct.TypeMapping {
@@ -117,8 +123,10 @@ func RegCustomTypes(registry map[string]source.TypeStruct) {
 			e := Enum{ValueList: typeStruct.ValueList}
 			e.TypeMapping = newStruct(names, typeStrings)
 			regCustomKey(key, &e)
+			continue
 		case "set":
 			regCustomKey(key, &Set{ValueList: typeStruct.ValueList, BitLength: typeStruct.BitLength})
+			continue
 		}
 	}
 }
