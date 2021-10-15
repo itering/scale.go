@@ -133,9 +133,9 @@ func (s *ScaleDecoder) processSiType(id2Portable map[int]SiType, uniqueHash stri
 	}
 }
 
-func nameSiType(SiTyp SiType) string {
+func nameSiType(SiTyp SiType, id int) string {
 	if SiTyp.Def.Composite != nil {
-		return strings.Join(SiTyp.Path, ":")
+		return fmt.Sprintf("%s@%d", strings.Join(SiTyp.Path, ":"), id)
 	}
 	if SiTyp.Def.Variant != nil {
 		specialVariant := SiTyp.Path[0]
@@ -165,7 +165,7 @@ func (s *ScaleDecoder) dealPrimitiveSiType(id int, SiTyp SiType, uniqueHash stri
 }
 
 func (s *ScaleDecoder) expandComposite(id int, SiTyp SiType, id2Portable map[int]SiType, uniqueHash string) string {
-	typeString := nameSiType(SiTyp)
+	typeString := nameSiType(SiTyp, id)
 	// single
 	if len(SiTyp.Def.Composite.Fields) == 1 {
 		subTypeId := SiTyp.Def.Composite.Fields[0].Type
@@ -330,7 +330,7 @@ func (s *ScaleDecoder) expandEnum(id int, SiTyp SiType, id2Portable map[int]SiTy
 	if !valueEnum { // only value,like {"a":1,"b":2,"c":3}
 		types = enumValueList
 	}
-	typeString := nameSiType(SiTyp)
+	typeString := nameSiType(SiTyp, id)
 	RegCustomTypes(map[string]source.TypeStruct{typeString: {Type: "enum", TypeMapping: types, V14: true}})
 	registeredSiType[uniqueHash][id] = typeString
 	return typeString
@@ -346,7 +346,7 @@ func RecursiveOption() SiTypeOption {
 
 func (s *ScaleDecoder) dealOneSiType(id int, SiTyp SiType, id2Portable map[int]SiType, uniqueHash string, opt ...SiTypeOption) string {
 	if len(opt) > 0 && opt[0].Recursive {
-		if siTypName := nameSiType(SiTyp); siTypName != "" {
+		if siTypName := nameSiType(SiTyp, id); siTypName != "" {
 			return siTypName
 		}
 	}
