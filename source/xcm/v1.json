@@ -12,15 +12,15 @@
     "type_mapping": [
       [
         "WithdrawAsset",
-        "[[\"Vassets\", \"MultiAssetsV1\"], [\"effects\", \"Vec<XcmOrderV1>\"]]"
+        "[[\"assets\", \"MultiAssetsV1\"], [\"effects\", \"Vec<XcmOrderV1>\"]]"
       ],
       [
         "ReserveAssetDeposit",
-        "[[\"Vassets\", \"MultiAssetsV1\"], [\"effects\", \"Vec<XcmOrderV1>\"]]"
+        "[[\"assets\", \"MultiAssetsV1\"], [\"effects\", \"Vec<XcmOrderV1>\"]]"
       ],
       [
         "ReceiveTeleportedAsset",
-        "[[\"Vassets\", \"MultiAssetsV1\"], [\"effects\", \"Vec<XcmOrderV1>\"]]"
+        "[[\"assets\", \"MultiAssetsV1\"], [\"effects\", \"Vec<XcmOrderV1>\"]]"
       ],
       [
         "QueryResponse",
@@ -28,11 +28,11 @@
       ],
       [
         "TransferAsset",
-        "[[\"Vassets\", \"MultiAssetsV1\"], [\"dest\", \"MultiLocationV1\"]]"
+        "[[\"assets\", \"MultiAssetsV1\"], [\"dest\", \"MultiLocationV1\"]]"
       ],
       [
         "TransferReserveAsset",
-        "[[\"Vassets\", \"MultiAssetsV1\"], [\"dest\", \"MultiLocationV1\"], [\"effects\", \"Vec<XcmOrderV1>\"]]"
+        "[[\"assets\", \"MultiAssetsV1\"], [\"dest\", \"MultiLocationV1\"], [\"effects\", \"Vec<XcmOrderV1>\"]]"
       ],
       [
         "Transact",
@@ -318,7 +318,7 @@
       ],
       [
         "BuyExecution",
-        "[[\"fees\", \"MultiAsset\"], [\"weight\", \"u64\"], [\"debt\", \"u64\"], [\"haltOnError\", \"bool\"], [\"orders\", \"Vec<XcmOrderV1>\"], [\"instructions\", \"Vec<XcmV1>\"]]"
+        "[[\"fees\", \"MultiAssetV1\"], [\"weight\", \"u64\"], [\"debt\", \"u64\"], [\"haltOnError\", \"bool\"], [\"instructions\", \"Vec<XcmV1>\"]]"
       ]
     ],
     "type": "enum"

@@ -21,5 +21,10 @@
   "MultiAsset": "MultiAssetV0",
   "Xcm": "XcmV0",
   "XcmOrder": "XcmOrderV0",
-  "MultiLocation": "MultiLocationV0"
+  "MultiLocation": "MultiLocationV0",
+  "AssetInstance#4-5": "AssetInstanceV1",
+  "MultiAsset#4-5": "MultiAssetV1",
+  "Xcm#4-5": "XcmV1",
+  "XcmOrder#4-5": "XcmOrderV1",
+  "MultiLocation#4-5": "MultiLocationV1"
 }
