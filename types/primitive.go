@@ -57,6 +57,8 @@ func (c *Compact) Process() {
 			c.Value = uint64(v / 4)
 		case decimal.Decimal:
 			c.Value = v.Div(decimal.New(4, 0)).Floor()
+		case string:
+			c.Value = decimal.RequireFromString(v).Div(decimal.New(4, 0)).Floor()
 		default:
 			c.Value = byteData
 		}
