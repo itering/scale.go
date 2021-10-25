@@ -125,39 +125,7 @@
     ],
     "type": "struct"
   },
-  "EthTransaction": {
-    "type": "struct",
-    "type_mapping": [
-      [
-        "nonce",
-        "U256"
-      ],
-      [
-        "gas_price",
-        "U256"
-      ],
-      [
-        "gas_limit",
-        "U256"
-      ],
-      [
-        "action",
-        "EthTransactionAction"
-      ],
-      [
-        "value",
-        "U256"
-      ],
-      [
-        "inputs",
-        "Bytes"
-      ],
-      [
-        "signature",
-        "TransactionSignature"
-      ]
-    ]
-  },
+  "EthTransaction": "LegacyTransaction",
   "EthSubParams": {
     "type_mapping": [
       [
@@ -759,6 +727,21 @@
       [
         "s",
         "H256"
+      ]
+    ]
+  },
+  "EthAddress": "H160",
+  "EthAccessList": "Vec<EthAccessListItem>",
+  "EthAccessListItem": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "address",
+        "EthAddress"
+      ],
+      [
+        "slots",
+        "Vec<H256>"
       ]
     ]
   },

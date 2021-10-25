@@ -1,0 +1,53 @@
+{
+  "BlockV0": {
+    "type_mapping": [
+      [
+        "header",
+        "EthHeader"
+      ],
+      [
+        "transactions",
+        "Vec<TransactionV0>"
+      ],
+      [
+        "ommers",
+        "Vec<EthHeader>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "LegacyTransaction": {
+    "type_mapping": [
+      [
+        "nonce",
+        "U256"
+      ],
+      [
+        "gasPrice",
+        "U256"
+      ],
+      [
+        "gasLimit",
+        "U256"
+      ],
+      [
+        "action",
+        "EthTransactionAction"
+      ],
+      [
+        "value",
+        "U256"
+      ],
+      [
+        "input",
+        "Bytes"
+      ],
+      [
+        "signature",
+        "EthTransactionSignature"
+      ]
+    ],
+    "type": "struct"
+  },
+  "TransactionV0": "LegacyTransaction"
+}
