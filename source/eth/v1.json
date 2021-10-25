@@ -1,0 +1,81 @@
+{
+  "BlockV1": {
+    "type_mapping": [
+      [
+        "header",
+        "EthHeader"
+      ],
+      [
+        "transactions",
+        "Vec<TransactionV1>"
+      ],
+      [
+        "ommers",
+        "Vec<EthHeader>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "TransactionV1": {
+    "type_mapping": [
+      [
+        "Legacy",
+        "LegacyTransaction"
+      ],
+      [
+        "EIP2930",
+        "EIP2930Transaction"
+      ]
+    ],
+    "type": "enum"
+  },
+  "EIP2930Transaction": {
+    "type_mapping": [
+      [
+        "chainId",
+        "u64"
+      ],
+      [
+        "nonce",
+        "U256"
+      ],
+      [
+        "gasPrice",
+        "U256"
+      ],
+      [
+        "gasLimit",
+        "U256"
+      ],
+      [
+        "action",
+        "EthTransactionAction"
+      ],
+      [
+        "value",
+        "U256"
+      ],
+      [
+        "input",
+        "Bytes"
+      ],
+      [
+        "accessList",
+        "EthAccessList"
+      ],
+      [
+        "oddYParity",
+        "bool"
+      ],
+      [
+        "r",
+        "H256"
+      ],
+      [
+        "s",
+        "H256"
+      ]
+    ],
+    "type": "struct"
+  }
+}
