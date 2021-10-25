@@ -847,3 +847,12 @@ func (b *Box) Process() {
 }
 
 type BTreeSet struct{ Vec }
+
+type WrapperOpaque struct {
+	ScaleDecoder
+}
+
+func (w *WrapperOpaque) Process() {
+	w.ProcessAndUpdateData("Compact<u32>")
+	w.Value = w.ProcessAndUpdateData(w.SubType)
+}

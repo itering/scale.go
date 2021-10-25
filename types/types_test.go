@@ -297,3 +297,11 @@ func TestTupleDisassemble(t *testing.T) {
 	assert.Equal(t, []string{"U32", "(U32,U64)"}, types.TupleDisassemble("(U32,(U32,U64))"))
 	assert.Equal(t, []string{"(U32,U16)", "(U32,U64)"}, types.TupleDisassemble("((U32,U16),(U32,U64))"))
 }
+
+func TestWWrapperOpaque(t *testing.T) {
+	raw := []byte{4 << 2, 135, 214, 18, 0}
+	m := types.ScaleDecoder{}
+	m.Init(types.ScaleBytes{Data: raw}, nil)
+	value := m.ProcessAndUpdateData("WrapperOpaque<u32>")
+	assert.Equal(t, 1234567, int(value.(uint32)))
+}
