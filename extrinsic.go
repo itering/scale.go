@@ -25,9 +25,9 @@ type ExtrinsicDecoder struct {
 	Nonce               int              `json:"nonce"`
 	Era                 string           `json:"era"`
 	CallIndex           string           `json:"call_index"`
-	Tip                 interface{}      `json:"tip"`
 	Params              []ExtrinsicParam `json:"params"`
 	Metadata            *scaleType.MetadataStruct
+	SignedExtensions    []scaleType.SignedExtension `json:"signed_extensions"`
 }
 
 func (e *ExtrinsicDecoder) Init(data scaleType.ScaleBytes, option *scaleType.ScaleDecoderOption) {
@@ -36,6 +36,7 @@ func (e *ExtrinsicDecoder) Init(data scaleType.ScaleBytes, option *scaleType.Sca
 	}
 	e.Params = []ExtrinsicParam{}
 	e.Metadata = option.Metadata
+	e.SignedExtensions = option.SignedExtensions
 	e.ScaleDecoder.Init(data, option)
 }
 
@@ -100,10 +101,18 @@ func (e *ExtrinsicDecoder) Process() {
 			e.Nonce = int(e.ProcessAndUpdateData("Compact<U64>").(uint64))
 			if e.Metadata.Extrinsic != nil {
 				if utiles.SliceIndex("ChargeTransactionPayment", e.Metadata.Extrinsic.SignedIdentifier) != -1 {
-					e.Tip = e.ProcessAndUpdateData("Compact<Balance>")
+					result["tip"] = e.ProcessAndUpdateData("Compact<Balance>")
 				}
 			} else {
-				e.Tip = e.ProcessAndUpdateData("Compact<Balance>")
+				result["tip"] = e.ProcessAndUpdateData("Compact<Balance>")
+			}
+
+			// SignedExtensions
+			// https://github.com/polkadot-js/api/blob/9ae87bed782a5e3e345e20f6a9b64687d399a257/packages/types/src/extrinsic/signedExtensions/index.ts
+			for _, extension := range e.SignedExtensions {
+				for _, v := range extension.AdditionalSigned {
+					result[v.Name] = e.ProcessAndUpdateData(v.Type)
+				}
 			}
 			e.ExtrinsicHash = e.generateHash()
 		}
@@ -146,7 +155,6 @@ func (e *ExtrinsicDecoder) Process() {
 
 	result["nonce"] = e.Nonce
 	result["era"] = e.Era
-	result["tip"] = e.Tip
 	result["params"] = e.Params
 	e.Value = result
 }

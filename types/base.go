@@ -12,12 +12,13 @@ import (
 var RuntimeCodecType []string
 
 type ScaleDecoderOption struct {
-	Spec        int
-	SubType     string
-	Module      string
-	ValueList   []string
-	Metadata    *MetadataStruct
-	FixedLength int
+	Spec             int
+	SubType          string
+	Module           string
+	ValueList        []string
+	Metadata         *MetadataStruct
+	FixedLength      int
+	SignedExtensions []SignedExtension `json:"signed_extensions"`
 }
 
 type TypeMapping struct {

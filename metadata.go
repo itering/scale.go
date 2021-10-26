@@ -2,6 +2,7 @@ package scalecodec
 
 import (
 	"errors"
+
 	"github.com/itering/scale.go/types"
 	"github.com/itering/scale.go/utiles"
 )
