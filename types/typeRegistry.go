@@ -169,12 +169,12 @@ func (r RuntimeType) Reg() *RuntimeType {
 }
 
 func (r *RuntimeType) getCodecInstant(t string, spec int) (reflect.Type, reflect.Value, error) {
-	t = strings.ToLower(t)
-	t = r.overrideModuleType(t)
+	t = r.overrideModuleType(strings.ToLower(t))
 	rt, err := r.specialVersionCodec(t, spec)
 
 	if err != nil {
 		rt = TypeRegistry[strings.ToLower(t)]
+		// fixed array
 		if rt == nil && t != "[]" && string(t[0]) == "[" && t[len(t)-1:] == "]" {
 			if typePart := strings.Split(t[1:len(t)-1], ";"); len(typePart) >= 2 {
 				remainPart := typePart[0 : len(typePart)-1]
@@ -194,9 +194,6 @@ func (r *RuntimeType) getCodecInstant(t string, spec int) (reflect.Type, reflect
 	if value.Kind() == reflect.Ptr {
 		value = reflect.Indirect(value)
 	}
-	//if f := value.FieldByName("TypeString"); f.String() == "" && f.IsValid() && f.CanSet() {
-	//	f.SetString(t)
-	//}
 	p := reflect.New(value.Type())
 	p.Elem().Set(value)
 	return p.Type(), p, nil

@@ -193,7 +193,7 @@ func TestGenericLookupSource(t *testing.T) {
 		t.Errorf("Test TestGenericLookupSource Process fail, decode return %d", r)
 	}
 	m.Init(types.ScaleBytes{Data: []byte{0xfc, 0, 1}}, nil)
-	r = m.ProcessAndUpdateData("GenericLookupSource")
+	m.ProcessAndUpdateData("GenericLookupSource")
 }
 
 func TestBTreeMap(t *testing.T) {

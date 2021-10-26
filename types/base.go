@@ -140,9 +140,10 @@ func (s *ScaleDecoder) ProcessAndUpdateData(typeString string) interface{} {
 
 	// process
 	value.MethodByName("Process").Call(nil)
+	elementData := value.Elem().FieldByName("Data").Interface().(ScaleBytes)
 
-	s.Data.Offset = int(value.Elem().FieldByName("Data").FieldByName("Offset").Int())
-	s.Data.Data = value.Elem().FieldByName("Data").FieldByName("Data").Bytes()
+	s.Data.Offset = elementData.Offset
+	s.Data.Data = elementData.Data
 	s.RawValue = utiles.BytesToHex(s.Data.Data[offsetStart:s.Data.Offset])
 
 	return value.Elem().FieldByName("Value").Interface()

@@ -204,9 +204,9 @@ func (v *Vec) Process() {
 	if elementCount > 50000 {
 		panic(fmt.Sprintf("Vec length %d exceeds %d with subType %s", elementCount, 50000, v.SubType))
 	}
+	subType := v.SubType
 	for i := 0; i < elementCount; i++ {
-		element := v.ProcessAndUpdateData(v.SubType)
-		result = append(result, element)
+		result = append(result, v.ProcessAndUpdateData(subType))
 	}
 	v.Value = result
 }
