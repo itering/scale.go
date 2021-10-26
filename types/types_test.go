@@ -305,3 +305,9 @@ func TestWWrapperOpaque(t *testing.T) {
 	value := m.ProcessAndUpdateData("WrapperOpaque<u32>")
 	assert.Equal(t, 1234567, int(value.(uint32)))
 }
+
+func TestRange(t *testing.T) {
+	m := types.ScaleDecoder{}
+	m.Init(types.ScaleBytes{Data: []byte{1, 0, 0, 0, 2, 0, 0, 0}}, nil)
+	assert.Equal(t, map[string]interface{}{"start": uint32(1), "end": uint32(2)}, m.ProcessAndUpdateData("Range<u32>"))
+}

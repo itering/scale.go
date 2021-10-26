@@ -131,6 +131,8 @@ func (r RuntimeType) Reg() *RuntimeType {
 		&Results{},
 		&RuntimeEnvironmentUpdated{},
 		&WrapperOpaque{},
+		&Range{},
+		&RangeInclusive{},
 	}
 	for _, class := range scales {
 		valueOf := reflect.ValueOf(class)

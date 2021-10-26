@@ -838,9 +838,7 @@ func (b *BTreeMap) Process() {
 	b.Value = result
 }
 
-type Box struct {
-	ScaleDecoder
-}
+type Box struct{ ScaleDecoder }
 
 func (b *Box) Process() {
 	b.Value = b.ProcessAndUpdateData(b.SubType)
@@ -848,11 +846,26 @@ func (b *Box) Process() {
 
 type BTreeSet struct{ Vec }
 
-type WrapperOpaque struct {
-	ScaleDecoder
-}
+type WrapperOpaque struct{ ScaleDecoder }
 
 func (w *WrapperOpaque) Process() {
 	w.ProcessAndUpdateData("Compact<u32>")
 	w.Value = w.ProcessAndUpdateData(w.SubType)
+}
+
+type Range struct{ ScaleDecoder }
+type RangeInclusive struct{ Range }
+
+func (r *Range) Process() {
+	subTypeSlice := strings.Split(r.SubType, ",")
+	start := r.SubType
+	end := r.SubType
+	if len(subTypeSlice) == 2 {
+		start = subTypeSlice[0]
+		end = subTypeSlice[1]
+	}
+	r.Value = map[string]interface{}{
+		"start": r.ProcessAndUpdateData(start),
+		"end":   r.ProcessAndUpdateData(end),
+	}
 }
