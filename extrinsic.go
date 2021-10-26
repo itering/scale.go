@@ -22,7 +22,6 @@ type ExtrinsicDecoder struct {
 	ContainsTransaction bool             `json:"contains_transaction"`
 	Address             interface{}      `json:"address"`
 	Signature           string           `json:"signature"`
-	SignatureVersion    int              `json:"signature_version"`
 	Nonce               int              `json:"nonce"`
 	Era                 string           `json:"era"`
 	CallIndex           string           `json:"call_index"`
