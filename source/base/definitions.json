@@ -1863,7 +1863,7 @@
     "type": "struct",
     "type_mapping": [
       [
-        "maybeId",
+        "maybe_id",
         "Option<Bytes>"
       ],
       [
@@ -1875,7 +1875,7 @@
         "Call"
       ],
       [
-        "maybePeriodic",
+        "maybe_periodic",
         "Option<SchedulePeriod>"
       ],
       [
