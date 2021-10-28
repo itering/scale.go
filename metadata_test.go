@@ -1,8 +1,6 @@
 package scalecodec_test
 
 import (
-	"fmt"
-	"runtime/debug"
 	"testing"
 
 	scalecodec "github.com/itering/scale.go"
@@ -17,26 +15,14 @@ const (
 )
 
 func TestMetadataV13DecoderProcess(t *testing.T) {
-
-	for i := 0; i < 1000; i++ {
-		m := scalecodec.MetadataDecoder{}
-		m.Init(utiles.HexToBytes(metadataV13))
-		if err := m.Process(); err != nil {
-			panic(err)
-		}
-		if i%100 == 0 {
-			fmt.Println(i)
-			debug.FreeOSMemory()
-		}
+	m := scalecodec.MetadataDecoder{}
+	m.Init(utiles.HexToBytes(metadataV13))
+	if m.Process() != nil {
+		t.Errorf("Test MetadataDecoder Process fail")
 	}
-	// m := scalecodec.MetadataDecoder{}
-	// m.Init(utiles.HexToBytes(metadataV13))
-	// if m.Process() != nil {
-	// 	t.Errorf("Test MetadataDecoder Process fail")
-	// }
-	// if m.Version != "MetadataV13Decoder" {
-	// 	t.Errorf("MetadataV13 version should equal 13")
-	// }
+	if m.Version != "MetadataV13Decoder" {
+		t.Errorf("MetadataV13 version should equal 13")
+	}
 }
 
 func TestMetadataV14DecoderProcess(t *testing.T) {

@@ -201,7 +201,7 @@ func (r *RuntimeType) getCodecInstant(t string, spec int) (reflect.Type, reflect
 
 func (r *RuntimeType) DecoderClass(typeString string, spec int) (reflect.Type, reflect.Value, string) {
 	var typeParts []string
-	typeString = ConvertType(typeString, true)
+	typeString = ConvertType(typeString)
 
 	// complex
 	if typeString[len(typeString)-1:] == ">" {

@@ -9,8 +9,6 @@ import (
 	"github.com/itering/scale.go/utiles"
 )
 
-var RuntimeCodecType []string
-
 type ScaleDecoderOption struct {
 	Spec             int
 	SubType          string

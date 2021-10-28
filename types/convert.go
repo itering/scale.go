@@ -2,12 +2,7 @@ package types
 
 import "strings"
 
-func ConvertType(name string, option ...interface{}) string {
-	defer func() {
-		if len(option) == 0 {
-			RuntimeCodecType = append(RuntimeCodecType, name)
-		}
-	}()
+func ConvertType(name string) string {
 	name = strings.TrimSpace(name)
 	name = strings.ReplaceAll(name, "T::", "")
 	name = strings.ReplaceAll(name, "VecDeque<", "Vec<")
