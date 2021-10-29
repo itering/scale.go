@@ -11,7 +11,9 @@ func ConvertType(name string) string {
 	name = strings.ReplaceAll(name, "<T, I>", "")
 	name = strings.ReplaceAll(name, "\n", " ")
 	name = strings.ReplaceAll(name, `&'static[u8]`, "Bytes")
-	name = strings.ReplaceAll(name, `BoundedBTreeSet`, "BTreeSet")
+	if strings.HasPrefix(name, "BoundedBTreeSet") {
+		name = strings.ReplaceAll(name, `BoundedBTreeSet`, "BTreeSet")
+	}
 	if strings.EqualFold(name, "Vec<u8>") {
 		name = "Bytes"
 	}

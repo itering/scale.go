@@ -18,12 +18,12 @@ func newStruct(names, typeString []string) *TypeMapping {
 	return &TypeMapping{Names: names, Types: typeString}
 }
 
-var V14Types []map[string]source.TypeStruct
+var V14Types = make(map[string]source.TypeStruct)
 
 func RegCustomTypes(registry map[string]source.TypeStruct) {
 	for key, typeStruct := range registry {
 		if typeStruct.V14 {
-			V14Types = append(V14Types, map[string]source.TypeStruct{key: typeStruct})
+			V14Types[key] = typeStruct
 		}
 		key = strings.ToLower(key)
 		switch typeStruct.Type {
