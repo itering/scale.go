@@ -123,6 +123,8 @@ func (s *ScaleDecoder) processSiType(id2Portable map[int]SiType, uniqueHash stri
 	for id, v := range id2Portable {
 		if len(v.Path) > 0 && v.Path[0] == "sp_core" {
 			s.dealOneSiType(id, v, id2Portable, uniqueHash)
+		} else if len(v.Path) >= 3 && v.Path[0] == "frame_support" && v.Path[1] == "storage" {
+			s.dealFrameSupportStorageSiType(id, v, uniqueHash)
 		}
 	}
 	for id, v := range id2Portable {
@@ -162,6 +164,10 @@ func (s *ScaleDecoder) dealPrimitiveSiType(id int, SiTyp SiType, uniqueHash stri
 	RegCustomTypes(map[string]source.TypeStruct{
 		fmt.Sprintf("%s:%s", "primitive_types", typeString): {Type: "string", TypeString: typeString, V14: true},
 	})
+}
+
+func (s *ScaleDecoder) dealFrameSupportStorageSiType(id int, SiTyp SiType, uniqueHash string) {
+	registeredSiType[uniqueHash][id] = SiTyp.Path[len(SiTyp.Path)-1]
 }
 
 func (s *ScaleDecoder) expandComposite(id int, SiTyp SiType, id2Portable map[int]SiType, uniqueHash string) string {
