@@ -138,7 +138,7 @@ func (e *ExtrinsicDecoder) Process() {
 			Type:  arg.Type,
 			Value: value,
 		}
-		if param.TypeName != "" {
+		if param.TypeName == "" {
 			param.TypeName = arg.TypeName
 		}
 		e.Params = append(e.Params, param)
