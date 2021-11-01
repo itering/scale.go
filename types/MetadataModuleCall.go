@@ -29,8 +29,9 @@ func (m *MetadataModuleCall) Process() {
 
 type MetadataModuleCallArgument struct {
 	ScaleDecoder
-	Name string `json:"name"`
-	Type string `json:"type"`
+	Name     string `json:"name"`
+	Type     string `json:"type"`
+	TypeName string `json:"type_name,omitempty"`
 }
 
 func (m *MetadataModuleCallArgument) Process() {

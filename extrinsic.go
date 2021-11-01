@@ -9,9 +9,10 @@ import (
 )
 
 type ExtrinsicParam struct {
-	Name  string      `json:"name"`
-	Type  string      `json:"type"`
-	Value interface{} `json:"value"`
+	Name     string      `json:"name"`
+	Type     string      `json:"type"`
+	TypeName string      `json:"type_name"`
+	Value    interface{} `json:"value"`
 }
 
 type ExtrinsicDecoder struct {
@@ -132,11 +133,15 @@ func (e *ExtrinsicDecoder) Process() {
 
 	for _, arg := range call.Call.Args {
 		value := e.ProcessAndUpdateData(arg.Type)
-		e.Params = append(e.Params, ExtrinsicParam{
+		param := ExtrinsicParam{
 			Name:  arg.Name,
 			Type:  arg.Type,
 			Value: value,
-		})
+		}
+		if param.TypeName != "" {
+			param.TypeName = arg.TypeName
+		}
+		e.Params = append(e.Params, param)
 	}
 
 	if e.ContainsTransaction {

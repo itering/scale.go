@@ -65,10 +65,11 @@ type MetadataCalls struct {
 }
 
 type MetadataEvents struct {
-	Lookup string   `json:"lookup"`
-	Name   string   `json:"name"`
-	Docs   []string `json:"docs"`
-	Args   []string `json:"args"`
+	Lookup       string   `json:"lookup"`
+	Name         string   `json:"name"`
+	Docs         []string `json:"docs"`
+	Args         []string `json:"args"`
+	ArgsTypeName []string `json:"args_type_name,omitempty"`
 }
 
 type MetadataStruct struct {

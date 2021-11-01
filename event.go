@@ -22,8 +22,9 @@ func (e *EventsDecoder) Init(data scaleType.ScaleBytes, option *scaleType.ScaleD
 }
 
 type EventParam struct {
-	Type  string      `json:"type"`
-	Value interface{} `json:"value"`
+	Type     string      `json:"type"`
+	TypeName string      `json:"type_name"`
+	Value    interface{} `json:"value"`
 }
 
 func (e *EventsDecoder) Process() {
@@ -69,9 +70,13 @@ func (e *EventRecord) Process() map[string]interface{} {
 	}
 
 	e.Event = call.Call
-	for _, argType := range e.Event.Args {
+	for index, argType := range e.Event.Args {
 		value := e.ProcessAndUpdateData(argType)
-		e.Params = append(e.Params, EventParam{Type: argType, Value: value})
+		param := EventParam{Type: argType, Value: value}
+		if len(e.Event.ArgsTypeName) == len(e.Event.Args) {
+			param.TypeName = e.Event.ArgsTypeName[index]
+		}
+		e.Params = append(e.Params, param)
 	}
 
 	if e.Metadata.MetadataVersion >= 5 {

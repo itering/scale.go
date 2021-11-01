@@ -62,8 +62,9 @@ func (m *MetadataV14Decoder) Process() {
 				call := MetadataCalls{Name: variant.Name, Docs: variant.Docs}
 				for _, field := range variant.Fields {
 					call.Args = append(call.Args, MetadataModuleCallArgument{
-						Name: field.Name,
-						Type: metadataSiType[field.Type],
+						Name:     field.Name,
+						Type:     metadataSiType[field.Type],
+						TypeName: ConvertType(field.TypeName),
 					})
 				}
 				module.Calls = append(module.Calls, call)
@@ -86,6 +87,7 @@ func (m *MetadataV14Decoder) Process() {
 				event := MetadataEvents{Name: variant.Name, Docs: variant.Docs}
 				for _, field := range variant.Fields {
 					event.Args = append(event.Args, metadataSiType[field.Type])
+					event.ArgsTypeName = append(event.ArgsTypeName, ConvertType(field.TypeName))
 				}
 				module.Events = append(module.Events, event)
 			}
