@@ -55,9 +55,15 @@ type EventRecord struct {
 
 func (e *EventRecord) Process() map[string]interface{} {
 	e.Params = []EventParam{}
+	e.ExtrinsicIdx = 0
 	e.Topic = []string{}
 
 	e.Phase = e.GetNextU8()
+	// enum
+	// isApplyExtrinsic: bool;
+	// asApplyExtrinsic: u32;
+	// isFinalization: boolean;
+	// isInitialization: boolean;
 
 	if e.Phase == 0 {
 		e.ExtrinsicIdx = int(e.ProcessAndUpdateData("U32").(uint32))
