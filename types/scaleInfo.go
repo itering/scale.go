@@ -119,6 +119,13 @@ func (s *ScaleDecoder) processSiType(id2Portable map[int]SiType, uniqueHash stri
 			s.dealPrimitiveSiType(id, v, uniqueHash)
 		}
 	}
+	// deal primitive_types
+	for id, v := range id2Portable {
+		if len(v.Path) > 0 && v.Path[0] == "primitive_types" {
+			s.expandPrimitiveTypes(id, v, uniqueHash)
+		}
+	}
+
 	// deal sp_core
 	for id, v := range id2Portable {
 		if len(v.Path) > 0 && v.Path[0] == "sp_core" {
@@ -151,6 +158,17 @@ func nameSiType(SiTyp SiType, id int) string {
 		}
 	}
 	return ""
+}
+
+func (s *ScaleDecoder) expandPrimitiveTypes(id int, SiTyp SiType, uniqueHash string) {
+	typeString := SiTyp.Path[len(SiTyp.Path)-1]
+	if _, ok := TypeRegistry[strings.ToLower(typeString)]; !ok {
+		panic(fmt.Sprintf("lack Primitive type %s", SiTyp.Path[len(SiTyp.Path)-1]))
+	}
+	registeredSiType[uniqueHash][id] = typeString
+	RegCustomTypes(map[string]source.TypeStruct{
+		fmt.Sprintf("%s:%s", "primitive_types", typeString): {Type: "string", TypeString: typeString, V14: true},
+	})
 }
 
 func (s *ScaleDecoder) dealPrimitiveSiType(id int, SiTyp SiType, uniqueHash string) {
@@ -229,7 +247,7 @@ func (s *ScaleDecoder) expandTuple(id int, SiTyp SiType, id2Portable map[int]SiT
 		tupleStruct = append(tupleStruct, []string{fmt.Sprintf("col%d", index+1), subType})
 		tupleSlice = append(tupleSlice, subType)
 	}
-	tupleTypeName := fmt.Sprintf("Tuple%s", strings.Join(tupleSlice, ""))
+	tupleTypeName := fmt.Sprintf("Tuple:%s", strings.Join(tupleSlice, ""))
 	RegCustomTypes(map[string]source.TypeStruct{tupleTypeName: {Type: "struct", TypeMapping: tupleStruct, V14: true}})
 	registeredSiType[uniqueHash][id] = tupleTypeName
 	return registeredSiType[uniqueHash][id]
