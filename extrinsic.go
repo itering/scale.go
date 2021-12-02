@@ -111,8 +111,10 @@ func (e *ExtrinsicDecoder) Process() {
 			// SignedExtensions
 			// https://github.com/polkadot-js/api/blob/9ae87bed782a5e3e345e20f6a9b64687d399a257/packages/types/src/extrinsic/signedExtensions/index.ts
 			for _, extension := range e.SignedExtensions {
-				for _, v := range extension.AdditionalSigned {
-					result[v.Name] = e.ProcessAndUpdateData(v.Type)
+				if utiles.SliceIndex(extension.Name, e.Metadata.Extrinsic.SignedIdentifier) != -1 {
+					for _, v := range extension.AdditionalSigned {
+						result[v.Name] = e.ProcessAndUpdateData(v.Type)
+					}
 				}
 			}
 			e.ExtrinsicHash = e.generateHash()
