@@ -1,6 +1,8 @@
 package types
 
-import "strings"
+import (
+	"strings"
+)
 
 var typesModules = map[string]map[string]string{
 	"parasInclusion": {
@@ -42,6 +44,10 @@ var typesModules = map[string]map[string]string{
 		"receipt":           "EthReceipt",
 		"transaction":       "EthTransaction",
 		"transactionstatus": "EthTransactionStatus",
+	},
+	// sora
+	"bridgemultisig": {
+		"timepoint": "BridgeTimepoint",
 	},
 }
 

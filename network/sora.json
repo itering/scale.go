@@ -25,7 +25,7 @@
       ]
     ]
   },
-  "Timepoint": {
+  "BridgeTimepoint": {
     "type": "struct",
     "type_mapping": [
       [
@@ -38,7 +38,6 @@
       ]
     ]
   },
-  "BridgeTimepoint": "Timepoint",
   "AssetInfo": {
     "type": "struct",
     "type_mapping": [
