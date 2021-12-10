@@ -22,6 +22,15 @@ type SiType struct {
 	Docs   []string          `json:"docs"`
 }
 
+func (s *SiType) FindParameter(name string) *SiTypeParameter {
+	for _, param := range s.Params {
+		if strings.EqualFold(param.Name, name) {
+			return &param
+		}
+	}
+	return nil
+}
+
 type SiTypeParameter struct {
 	Name string `json:"name"`
 	Type int    `json:"type"`
@@ -184,7 +193,13 @@ func (s *ScaleDecoder) dealPrimitiveSiType(id int, SiTyp SiType, uniqueHash stri
 
 func (s *ScaleDecoder) expandComposite(id int, SiTyp SiType, id2Portable map[int]SiType, uniqueHash string) string {
 	typeString := nameSiType(SiTyp, id)
-	// single
+	// SpRuntimeUncheckedExtrinsic
+	if len(SiTyp.Path) >= 2 && SiTyp.Path[0] == "sp_runtime" && SiTyp.Path[len(SiTyp.Path)-1] == "UncheckedExtrinsic" {
+		if param := SiTyp.FindParameter("Signature"); param != nil {
+			SignatureType := s.dealOneSiType(param.Type, id2Portable[param.Type], id2Portable, uniqueHash)
+			RegCustomTypes(map[string]source.TypeStruct{"ExtrinsicSignature": {Type: "string", TypeString: SignatureType}})
+		}
+	}
 	if len(SiTyp.Def.Composite.Fields) == 1 {
 		subTypeId := SiTyp.Def.Composite.Fields[0].Type
 		subType, ok := registeredSiType[uniqueHash][subTypeId]
@@ -195,7 +210,6 @@ func (s *ScaleDecoder) expandComposite(id int, SiTyp SiType, id2Portable map[int
 		RegCustomTypes(map[string]source.TypeStruct{typeString: {Type: "string", TypeString: subType, V14: true}})
 		return registeredSiType[uniqueHash][id]
 	}
-
 	var typeMapping [][]string
 	for _, field := range SiTyp.Def.Composite.Fields {
 		subType, ok := registeredSiType[uniqueHash][field.Type]
