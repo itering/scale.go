@@ -22,6 +22,11 @@ type Special struct {
 
 var TypeRegistry map[string]interface{}
 
+func HasReg(typeName string) bool {
+	_, ok := TypeRegistry[strings.ToLower(typeName)]
+	return ok
+}
+
 var specialRegistry map[string][]Special
 
 func (r RuntimeType) Reg() *RuntimeType {

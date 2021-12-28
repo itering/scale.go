@@ -77,7 +77,7 @@ func (e *ExtrinsicDecoder) Process() {
 	if e.VersionInfo == "04" || e.VersionInfo == "84" {
 		if e.ContainsTransaction {
 			// Address
-			address := e.ProcessAndUpdateData("Address")
+			address := e.ProcessAndUpdateData(utiles.TrueOrElse(e.Metadata.MetadataVersion >= 14 && scaleType.HasReg("ExtrinsicSigner"), "ExtrinsicSigner", "Address"))
 			switch v := address.(type) {
 			case string:
 				e.Address = v

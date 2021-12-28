@@ -134,3 +134,10 @@ func SliceIndex(a string, list []string) int {
 	}
 	return -1
 }
+
+func TrueOrElse(expect bool, a, b string) string {
+	if expect {
+		return a
+	}
+	return b
+}

@@ -196,8 +196,10 @@ func (s *ScaleDecoder) expandComposite(id int, SiTyp SiType, id2Portable map[int
 	// SpRuntimeUncheckedExtrinsic
 	if len(SiTyp.Path) >= 2 && SiTyp.Path[0] == "sp_runtime" && SiTyp.Path[len(SiTyp.Path)-1] == "UncheckedExtrinsic" {
 		if param := SiTyp.FindParameter("Signature"); param != nil {
-			SignatureType := s.dealOneSiType(param.Type, id2Portable[param.Type], id2Portable, uniqueHash)
-			RegCustomTypes(map[string]source.TypeStruct{"ExtrinsicSignature": {Type: "string", TypeString: SignatureType}})
+			RegCustomTypes(map[string]source.TypeStruct{"ExtrinsicSignature": {Type: "string", TypeString: s.dealOneSiType(param.Type, id2Portable[param.Type], id2Portable, uniqueHash)}})
+		}
+		if param := SiTyp.FindParameter("Address"); param != nil {
+			RegCustomTypes(map[string]source.TypeStruct{"ExtrinsicSigner": {Type: "string", TypeString: s.dealOneSiType(param.Type, id2Portable[param.Type], id2Portable, uniqueHash)}})
 		}
 	}
 	if len(SiTyp.Def.Composite.Fields) == 1 {
