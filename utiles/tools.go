@@ -141,3 +141,9 @@ func TrueOrElse(expect bool, a, b string) string {
 	}
 	return b
 }
+
+func U8Encode(i int) string {
+	bs := make([]byte, 1)
+	bs[0] = byte(i)
+	return BytesToHex(bs)
+}

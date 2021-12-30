@@ -65,10 +65,10 @@ func (u *U32) Process() {
 	u.Value = binary.LittleEndian.Uint32(c)
 }
 
-func (u *U32) Encode(value int) {
+func (u *U32) Encode(value int) string {
 	bs := make([]byte, 4)
 	binary.LittleEndian.PutUint32(bs, uint32(value))
-	u.Data = ScaleBytes{Data: bs}
+	return utiles.BytesToHex(bs)
 }
 
 type U64 struct {
@@ -335,6 +335,41 @@ func (e *Enum) Process() {
 	if e.ValueList[e.Index] != "" {
 		e.Value = e.ValueList[e.Index]
 	}
+}
+
+func (e *Enum) Encode(data interface{}) string {
+	// struct
+	if e.TypeMapping != nil {
+		isCLikeEnum := true
+		for _, subType := range e.TypeMapping.Types {
+			if !regexp.MustCompile("^[0-9]+$").MatchString(subType) {
+				isCLikeEnum = false
+				break
+			}
+		}
+		if isCLikeEnum {
+			for k, v := range e.TypeMapping.Names {
+				if v == utiles.ToString(data) {
+					return utiles.U8Encode(utiles.StringToInt(e.TypeMapping.Types[k]))
+				}
+			}
+		}
+		for enumKey, value := range data.(map[string]interface{}) {
+			index := 0
+			for k, v := range e.TypeMapping.Names {
+				if v == enumKey {
+					return utiles.U8Encode(index) + Encode(e.TypeMapping.Types[k], value)
+				}
+				index++
+			}
+		}
+	}
+	for index, v := range e.ValueList {
+		if utiles.ToString(data) == v {
+			return utiles.U8Encode(index)
+		}
+	}
+	return ""
 }
 
 type StorageHasher struct {

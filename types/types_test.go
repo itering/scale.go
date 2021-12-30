@@ -311,3 +311,7 @@ func TestRange(t *testing.T) {
 	m.Init(types.ScaleBytes{Data: []byte{1, 0, 0, 0, 2, 0, 0, 0}}, nil)
 	assert.Equal(t, map[string]interface{}{"start": uint32(1), "end": uint32(2)}, m.ProcessAndUpdateData("Range<u32>"))
 }
+
+func TestEncode(t *testing.T) {
+	assert.Equal(t, "01000000", types.Encode("U32", 1))
+}

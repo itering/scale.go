@@ -27,6 +27,7 @@ type TypeMapping struct {
 type IScaleDecoder interface {
 	Init(data ScaleBytes, option *ScaleDecoderOption)
 	Process()
+	Encode(interface{}) string
 	buildStruct()
 	NextBytes(int) []byte
 	GetNextU8() int
@@ -69,6 +70,8 @@ func (s *ScaleDecoder) Init(data ScaleBytes, option *ScaleDecoderOption) {
 }
 
 func (s *ScaleDecoder) Process() {}
+
+func (s *ScaleDecoder) Encode(interface{}) string { return "" }
 
 func (s *ScaleDecoder) NextBytes(length int) []byte {
 	data := s.Data.GetNextBytes(length)
@@ -145,4 +148,17 @@ func (s *ScaleDecoder) ProcessAndUpdateData(typeString string) interface{} {
 	s.RawValue = utiles.BytesToHex(s.Data.Data[offsetStart:s.Data.Offset])
 
 	return value.Elem().FieldByName("Value").Interface()
+}
+
+func Encode(typeString string, data interface{}) string {
+	r := RuntimeType{}
+	if TypeRegistry == nil {
+		r.Reg()
+	}
+	class, value, _ := r.DecoderClass(typeString, -1)
+	if class == nil {
+		panic(fmt.Sprintf("Not found decoder class %s", typeString))
+	}
+	out := value.MethodByName("Encode").Call([]reflect.Value{reflect.ValueOf(data)})
+	return out[0].String()
 }
