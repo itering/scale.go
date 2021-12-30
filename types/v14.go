@@ -129,11 +129,19 @@ func (m *MetadataV14Decoder) Process() {
 				module.Storage[index].Type.PlainType = &variant
 			} else {
 				if maps := storage.Type.NMapType; maps != nil {
-					module.Storage[index].Type.NMapType = &NMapType{
+					NMapTypeValue := &NMapType{
 						Hashers: maps.Hashers,
 						Value:   metadataSiType[maps.ValueId],
-						KeyVec:  TupleDisassemble(metadataSiType[maps.KeysId]),
+						KeysId:  maps.KeysId,
 					}
+					if t := portable[maps.KeysId].Def.Tuple; t != nil {
+						for _, v := range *t {
+							NMapTypeValue.KeyVec = append(NMapTypeValue.KeyVec, metadataSiType[v])
+						}
+					} else {
+						NMapTypeValue.KeyVec = TupleDisassemble(metadataSiType[maps.KeysId])
+					}
+					module.Storage[index].Type.NMapType = NMapTypeValue
 				}
 			}
 		}
