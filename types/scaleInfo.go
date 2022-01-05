@@ -202,6 +202,13 @@ func (s *ScaleDecoder) expandComposite(id int, SiTyp SiType, id2Portable map[int
 			RegCustomTypes(map[string]source.TypeStruct{"ExtrinsicSigner": {Type: "string", TypeString: s.dealOneSiType(param.Type, id2Portable[param.Type], id2Portable, uniqueHash)}})
 		}
 	}
+
+	if len(SiTyp.Path) >= 2 && utiles.SliceIndex(SiTyp.Path[len(SiTyp.Path)-1], []string{"WrapperKeepOpaque", "WrapperOpaque"}) != -1 {
+		subType := fmt.Sprintf("WrapperOpaque<%s>", s.dealOneSiType(SiTyp.Params[0].Type, id2Portable[SiTyp.Params[0].Type], id2Portable, uniqueHash))
+		registeredSiType[uniqueHash][id] = subType
+		return registeredSiType[uniqueHash][id]
+	}
+
 	if len(SiTyp.Def.Composite.Fields) == 1 {
 		subTypeId := SiTyp.Def.Composite.Fields[0].Type
 		subType, ok := registeredSiType[uniqueHash][subTypeId]
@@ -219,6 +226,10 @@ func (s *ScaleDecoder) expandComposite(id int, SiTyp SiType, id2Portable map[int
 			subType = s.dealOneSiType(field.Type, id2Portable[field.Type], id2Portable, uniqueHash, RecursiveOption())
 		}
 		typeMapping = append(typeMapping, []string{field.Name, subType})
+	}
+
+	if typeString == "frame_support:traits:misc:WrapperKeepOpaque@375" {
+		utiles.Debug(typeMapping)
 	}
 	RegCustomTypes(map[string]source.TypeStruct{typeString: {Type: "struct", TypeMapping: typeMapping, V14: true}})
 	registeredSiType[uniqueHash][id] = typeString

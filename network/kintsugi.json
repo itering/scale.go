@@ -1,0 +1,19 @@
+{
+  "Weight": "u64",
+  "CompactAssignments": "CompactAssignmentsLatest",
+  "RefCount": "u32",
+  "Address": "AccountId",
+  "LookupSource": "AccountId",
+  "AccountInfo": "AccountInfoWithTripleRefCount",
+  "CurrencyId": {
+    "type": "enum",
+    "value_list": [
+      "DOT",
+      "INTERBTC",
+      "INTR",
+      "KSM",
+      "KBTC",
+      "KINT"
+    ]
+  }
+}
