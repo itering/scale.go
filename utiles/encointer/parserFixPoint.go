@@ -25,11 +25,11 @@ import (
 // raw: substrate_fixed::types::I<upper>F<lower> as I<upper+lower>
 // precision: 0..lower number bits in fractional part to process
 
-func parseI32F32(value decimal.Decimal, precision int) decimal.Decimal {
+func ParseI32F32(value decimal.Decimal, precision int) decimal.Decimal {
 	return parserFixPoint(value, precision, 32, 32)
 }
 
-func parseI16F16(value decimal.Decimal, precision int) decimal.Decimal {
+func ParseI16F16(value decimal.Decimal, precision int) decimal.Decimal {
 	return parserFixPoint(value, precision, 16, 16)
 }
 
@@ -49,10 +49,10 @@ func parserFixPoint(value decimal.Decimal, precision int, upper, lower int) deci
 	length, err := assertLength(upper, lower)
 	zero := big.NewInt(0)
 	if err != nil {
-		return decimal.Zero
+		return value
 	}
 	if len(fmt.Sprintf("%b", bn)) > length {
-		return decimal.Zero
+		return value
 	}
 
 	bits := xstrings.RightJustify(fmt.Sprintf("%b", bn), length, "0")

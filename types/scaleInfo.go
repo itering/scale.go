@@ -390,6 +390,12 @@ func RecursiveOption() SiTypeOption {
 }
 
 func (s *ScaleDecoder) dealOneSiType(id int, SiTyp SiType, id2Portable map[int]SiType, uniqueHash string, opt ...SiTypeOption) string {
+	// Intercept some fixed types
+	if ot := overriderTypesName(SiTyp); ot != "" {
+		registeredSiType[uniqueHash][id] = ot
+		return ot
+	}
+
 	if len(opt) > 0 && opt[0].Recursive {
 		if siTypName := nameSiType(SiTyp, id); siTypName != "" {
 			return siTypName

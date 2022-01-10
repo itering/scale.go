@@ -12,6 +12,7 @@ import (
 	"github.com/itering/scale.go/source"
 	"github.com/itering/scale.go/types"
 	"github.com/itering/scale.go/utiles"
+	"github.com/shopspring/decimal"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -314,4 +315,10 @@ func TestRange(t *testing.T) {
 
 func TestEncode(t *testing.T) {
 	assert.Equal(t, "01000000", types.Encode("U32", 1))
+}
+
+func TestSubstrateFixedU64(t *testing.T) {
+	m := types.ScaleDecoder{}
+	m.Init(types.ScaleBytes{Data: utiles.HexToBytes("001e85eb01000000")}, nil)
+	assert.Equal(t, "1.919921875", m.ProcessAndUpdateData("SubstrateFixedU64").(decimal.Decimal).String())
 }

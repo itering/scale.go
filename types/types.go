@@ -85,6 +85,12 @@ func (u *U64) Process() {
 	u.Value = binary.LittleEndian.Uint64(c)
 }
 
+func (u *U64) Encode(value uint64) string {
+	bs := make([]byte, 8)
+	binary.LittleEndian.PutUint64(bs, value)
+	return utiles.BytesToHex(bs)
+}
+
 type U128 struct {
 	ScaleDecoder
 }
