@@ -1,0 +1,452 @@
+{
+  "Weight": "u64",
+  "CompactAssignments": "CompactAssignmentsLatest",
+  "RefCount": "u32",
+  "Votes": {
+    "type_mapping": [
+      [
+        "ayes", 
+        "Vec<Voter>"
+      ], 
+      [
+        "nays", 
+        "Vec<Voter>"
+      ]
+    ], 
+    "type": "struct"
+  }, 
+  "ChainId": "u8", 
+  "Stake": {
+    "type_mapping": [
+      [
+        "stakedAmount", 
+        "Balance"
+      ], 
+      [
+        "unlockingBlock", 
+        "BlockNumber"
+      ]
+    ], 
+    "type": "struct"
+  }, 
+  "FundingRoundWithPrimitives": {
+    "type_mapping": [
+      [
+        "tokenA", 
+        "AssetId"
+      ], 
+      [
+        "creator", 
+        "AccountId"
+      ], 
+      [
+        "amount", 
+        "String"
+      ], 
+      [
+        "tokenB", 
+        "AssetId"
+      ], 
+      [
+        "vestingPerBlock", 
+        "String"
+      ], 
+      [
+        "startBlock", 
+        "BlockNumber"
+      ], 
+      [
+        "voteEndBlock", 
+        "BlockNumber"
+      ], 
+      [
+        "vestingEndBlock", 
+        "BlockNumber"
+      ], 
+      [
+        "projectInfoCid", 
+        "Vec<u8>"
+      ], 
+      [
+        "minAllocation", 
+        "String"
+      ], 
+      [
+        "maxAllocation", 
+        "String"
+      ], 
+      [
+        "tokenAPriceperTokenB", 
+        "String"
+      ], 
+      [
+        "closeRoundBlock", 
+        "BlockNumber"
+      ], 
+      [
+        "actualRaise", 
+        "String"
+      ]
+    ], 
+    "type": "struct"
+  }, 
+  "StoredHeader": {
+    "type_mapping": [
+      [
+        "submitter", 
+        "Option<AccountId>"
+      ], 
+      [
+        "header", 
+        "EthereumHeader"
+      ], 
+      [
+        "totalDifficulty", 
+        "U256"
+      ]
+    ], 
+    "type": "struct"
+  },
+  "AccountInfo": "AccountInfoWithTripleRefCount",
+  "Voter": {
+    "type_mapping": [
+      [
+        "accountId", 
+        "AccountId"
+      ], 
+      [
+        "votes", 
+        "Balance"
+      ]
+    ], 
+    "type": "struct"
+  }, 
+  "Erc721Token": {
+    "type_mapping": [
+      [
+        "id", 
+        "TokenId"
+      ], 
+      [
+        "metadata", 
+        "Vec<u8>"
+      ]
+    ], 
+    "type": "struct"
+  }, 
+  "ShardIdentifier": "H256", 
+  "KYCStatus": {
+    "type_mapping": [
+      [
+        "Tier0", 
+        "null"
+      ], 
+      [
+        "Tier1", 
+        "null"
+      ], 
+      [
+        "Tier2", 
+        "null"
+      ]
+    ], 
+    "type": "enum"
+  }, 
+  "DepositNonce": "u64", 
+  "FundingRound": {
+    "type_mapping": [
+      [
+        "tokenA", 
+        "AssetId"
+      ], 
+      [
+        "creator", 
+        "AccountId"
+      ], 
+      [
+        "amount", 
+        "Balance"
+      ], 
+      [
+        "tokenB", 
+        "AssetId"
+      ], 
+      [
+        "projectInfoCid", 
+        "Vec<u8>"
+      ], 
+      [
+        "voteEndBlock", 
+        "BlockNumber"
+      ], 
+      [
+        "vestingEndBlock", 
+        "BlockNumber"
+      ], 
+      [
+        "vestingPerBlock", 
+        "Balance"
+      ], 
+      [
+        "startBlock", 
+        "BlockNumber"
+      ], 
+      [
+        "minAllocation", 
+        "Balance"
+      ], 
+      [
+        "maxAllocation", 
+        "Balance"
+      ], 
+      [
+        "tokenAPriceperTokenB", 
+        "Balance"
+      ], 
+      [
+        "closeRoundBlock", 
+        "BlockNumber"
+      ], 
+      [
+        "actualRaise", 
+        "Balance"
+      ]
+    ], 
+    "type": "struct"
+  }, 
+  "EthereumHeader": {
+    "type_mapping": [
+      [
+        "parentHash", 
+        "H256"
+      ], 
+      [
+        "timestamp", 
+        "u64"
+      ], 
+      [
+        "number", 
+        "u64"
+      ], 
+      [
+        "author", 
+        "H160"
+      ], 
+      [
+        "transactionsRoot", 
+        "H256"
+      ], 
+      [
+        "ommersHash", 
+        "H256"
+      ], 
+      [
+        "extraData", 
+        "Vec<u8>"
+      ], 
+      [
+        "stateRoot", 
+        "H256"
+      ], 
+      [
+        "receiptsRoot", 
+        "H256"
+      ], 
+      [
+        "logBloom", 
+        "Bloom"
+      ], 
+      [
+        "gasUsed", 
+        "U256"
+      ], 
+      [
+        "gasLimit", 
+        "U256"
+      ], 
+      [
+        "difficulty", 
+        "U256"
+      ], 
+      [
+        "seal", 
+        "Vec<Vec<u8>>"
+      ]
+    ], 
+    "type": "struct"
+  }, 
+  "ResourceId": "[u8; 32]", 
+  "CHAINSAFE": "H160", 
+  "CurrencyIdOf": "AssetId", 
+  "EthashProofData": {
+    "type_mapping": [
+      [
+        "dagNodes", 
+        "[H512; 2]"
+      ], 
+      [
+        "proof", 
+        "Vec<H128>"
+      ]
+    ], 
+    "type": "struct"
+  }, 
+  "Address": "MultiAddress", 
+  "Bloom": "[u8; 256]", 
+  "BalanceOf": "Balance", 
+  "StakeInfo": {
+    "type_mapping": [
+      [
+        "stakes", 
+        "Vec<Stake>"
+      ]
+    ], 
+    "type": "struct"
+  }, 
+  "VoteCast": {
+    "type_mapping": [
+      [
+        "amount", 
+        "Balance"
+      ], 
+      [
+        "unlockingBlock", 
+        "BlockNumber"
+      ], 
+      [
+        "voterAccount", 
+        "AccountId"
+      ]
+    ], 
+    "type": "struct"
+  }, 
+  "LookupSource": "MultiAddress", 
+  "TokenId": "U256", 
+  "AssetId": {
+    "type_mapping": [
+      [
+        "POLKADEX", 
+        "null"
+      ], 
+      [
+        "ASSET", 
+        "u64"
+      ]
+    ], 
+    "type": "enum"
+  }, 
+  "PruningRange": {
+    "type_mapping": [
+      [
+        "oldestUnprunedBlock", 
+        "u64"
+      ], 
+      [
+        "oldestBlockToKeep", 
+        "u64"
+      ]
+    ], 
+    "type": "struct"
+  }, 
+  "EthereumHeaderId": {
+    "type_mapping": [
+      [
+        "number", 
+        "u64"
+      ], 
+      [
+        "hash", 
+        "H256"
+      ]
+    ], 
+    "type": "struct"
+  }, 
+  "VoteStat": {
+    "type_mapping": [
+      [
+        "yes", 
+        "String"
+      ], 
+      [
+        "no", 
+        "String"
+      ]
+    ], 
+    "type": "struct"
+  }, 
+  "InvestorInfo": {
+    "type_mapping": [
+      [
+        "kycStatus", 
+        "KYCStatus"
+      ]
+    ], 
+    "type": "struct"
+  }, 
+  "Proof": {
+    "type_mapping": [
+      [
+        "blockHash", 
+        "H256"
+      ], 
+      [
+        "txIndex", 
+        "u32"
+      ], 
+      [
+        "data", 
+        "(Vec<Vec<u8>>, Vec<Vec<u8>>)"
+      ]
+    ], 
+    "type": "struct"
+  }, 
+  "chainbridge::ChainId": "u8", 
+  "ProposalVotes": {
+    "type_mapping": [
+      [
+        "votes_for", 
+        "Vec<MultiAddress>"
+      ], 
+      [
+        "votes_against", 
+        "Vec<MultiAddress>"
+      ], 
+      [
+        "status", 
+        "enum"
+      ]
+    ], 
+    "type": "struct"
+  }, 
+  "AccountData": {
+    "type_mapping": [
+      [
+        "free", 
+        "Balance"
+      ], 
+      [
+        "reserved", 
+        "Balance"
+      ], 
+      [
+        "frozen", 
+        "Balance"
+      ]
+    ], 
+    "type": "struct"
+  }, 
+  "Message": {
+    "type_mapping": [
+      [
+        "data", 
+        "Vec<u8>"
+      ], 
+      [
+        "proof", 
+        "Proof"
+      ]
+    ], 
+    "type": "struct"
+  }, 
+  "CurrencyId": "AssetId"
+}
