@@ -109,6 +109,10 @@ func (s *ScaleDecoder) buildStruct() {
 		}
 
 		for k, v := range strings.Split(typeString, ",") {
+			v = strings.TrimSpace(v)
+			if v == "" {
+				continue
+			}
 			types = append(types, strings.ReplaceAll(strings.TrimSpace(v), "#", ","))
 			names = append(names, fmt.Sprintf("col%d", k+1))
 		}
