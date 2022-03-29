@@ -33,6 +33,10 @@ func ParseI16F16(value decimal.Decimal, precision int) decimal.Decimal {
 	return parserFixPoint(value, precision, 16, 16)
 }
 
+func ParseI64F64(value decimal.Decimal, precision int) decimal.Decimal {
+	return parserFixPoint(value, precision, 64, 64)
+}
+
 func assertLength(upper, lower int) (int, error) {
 	length := upper + lower
 	if length < 8 || length > 128 {
