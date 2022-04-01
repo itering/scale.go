@@ -37,7 +37,7 @@
         "AccountId"
       ],
       [
-        "updateDue",
+        "update_due",
         "BlockNumber"
       ]
     ]
@@ -84,7 +84,7 @@
         "Balance"
       ],
       [
-        "curatorDeposit",
+        "curator_deposit",
         "Balance"
       ],
       [

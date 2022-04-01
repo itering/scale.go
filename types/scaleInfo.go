@@ -369,7 +369,6 @@ func (s *ScaleDecoder) expandEnum(id int, SiTyp SiType, id2Portable map[int]SiTy
 				break
 			}
 		}
-
 		types = append(types, []string{variant.Name, typeName})
 	}
 	if !valueEnum { // only value,like {"a":1,"b":2,"c":3}
