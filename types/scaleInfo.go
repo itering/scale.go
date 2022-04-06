@@ -150,8 +150,15 @@ func (s *ScaleDecoder) processSiType(id2Portable map[int]SiType, uniqueHash stri
 }
 
 func nameSiType(SiTyp SiType, id int) string {
+	var generateName = func(s SiType) string {
+		pathName := strings.Join(s.Path, ":")
+		if _, ok := V14Types[strings.Join(s.Path, ":")]; ok {
+			return fmt.Sprintf("%s@%d", pathName, id)
+		}
+		return pathName
+	}
 	if SiTyp.Def.Composite != nil {
-		return fmt.Sprintf("%s@%d", strings.Join(SiTyp.Path, ":"), id)
+		return generateName(SiTyp)
 	}
 	if SiTyp.Def.Variant != nil {
 		specialVariant := SiTyp.Path[0]
@@ -163,7 +170,7 @@ func nameSiType(SiTyp SiType, id int) string {
 		} else if utiles.SliceIndex(SiTyp.Path[len(SiTyp.Path)-1], []string{"Call", "Event"}) != -1 {
 			return ""
 		} else {
-			return strings.Join(SiTyp.Path, ":")
+			return generateName(SiTyp)
 		}
 	}
 	return ""
@@ -228,9 +235,6 @@ func (s *ScaleDecoder) expandComposite(id int, SiTyp SiType, id2Portable map[int
 		typeMapping = append(typeMapping, []string{field.Name, subType})
 	}
 
-	if typeString == "frame_support:traits:misc:WrapperKeepOpaque@375" {
-		utiles.Debug(typeMapping)
-	}
 	RegCustomTypes(map[string]source.TypeStruct{typeString: {Type: "struct", TypeMapping: typeMapping, V14: true}})
 	registeredSiType[uniqueHash][id] = typeString
 	return typeString

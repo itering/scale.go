@@ -23,7 +23,9 @@ var V14Types = make(map[string]source.TypeStruct)
 func RegCustomTypes(registry map[string]source.TypeStruct) {
 	for key, typeStruct := range registry {
 		if typeStruct.V14 {
-			V14Types[key] = typeStruct
+			if _, ok := V14Types[key]; !ok {
+				V14Types[key] = typeStruct
+			}
 		}
 		key = strings.ToLower(key)
 		switch typeStruct.Type {
