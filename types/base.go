@@ -17,6 +17,7 @@ type ScaleDecoderOption struct {
 	Metadata         *MetadataStruct
 	FixedLength      int
 	SignedExtensions []SignedExtension `json:"signed_extensions"`
+	TypeName         string
 }
 
 type TypeMapping struct {
@@ -44,6 +45,7 @@ type ScaleDecoder struct {
 	Metadata    *MetadataStruct `json:"-"`
 	Spec        int             `json:"-"`
 	Module      string          `json:"-"`
+	TypeName    string
 }
 
 func (s *ScaleDecoder) Init(data ScaleBytes, option *ScaleDecoderOption) {
@@ -59,6 +61,9 @@ func (s *ScaleDecoder) Init(data ScaleBytes, option *ScaleDecoderOption) {
 		}
 		if option.Module != "" {
 			s.Module = option.Module
+		}
+		if option.TypeName != "" {
+			s.TypeName = option.TypeName
 		}
 	}
 	s.Data = data
@@ -140,7 +145,7 @@ func (s *ScaleDecoder) ProcessAndUpdateData(typeString string) interface{} {
 	if !exist {
 		panic(fmt.Sprintf("%s not implement init function", typeString))
 	}
-	option := ScaleDecoderOption{SubType: subType, Spec: s.Spec, Metadata: s.Metadata, Module: s.Module}
+	option := ScaleDecoderOption{SubType: subType, Spec: s.Spec, Metadata: s.Metadata, Module: s.Module, TypeName: typeString}
 	method.Func.Call([]reflect.Value{value, reflect.ValueOf(s.Data), reflect.ValueOf(&option)})
 
 	// process

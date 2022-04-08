@@ -323,6 +323,9 @@ func (e *Enum) Process() {
 			e.Value = rustEnum[e.Index]
 			return
 		}
+		if len(e.TypeMapping.Types) <= e.Index {
+			panic(fmt.Errorf("type %s index out of range [%d] with length %d", e.TypeName, e.Index, len(e.TypeMapping.Types)))
+		}
 		if subType := e.TypeMapping.Types[e.Index]; subType != "" {
 			// struct subType
 			var typeMap [][]string

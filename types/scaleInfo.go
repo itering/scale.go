@@ -121,31 +121,33 @@ type SiTypeWithName struct {
 var registeredSiType = make(map[string]map[int]string)
 
 func (s *ScaleDecoder) processSiType(id2Portable map[int]SiType, uniqueHash string) {
+	elementCount := len(id2Portable)
+
 	registeredSiType[uniqueHash] = make(map[int]string)
 	// deal Primitive
-	for id, v := range id2Portable {
-		if v.Def.Primitive != nil {
-			s.dealPrimitiveSiType(id, v, uniqueHash)
+	for i := 0; i < elementCount; i++ {
+		if id2Portable[i].Def.Primitive != nil {
+			s.dealPrimitiveSiType(i, id2Portable[i], uniqueHash)
 		}
 	}
 	// deal primitive_types
-	for id, v := range id2Portable {
-		if len(v.Path) > 0 && v.Path[0] == "primitive_types" {
-			s.expandPrimitiveTypes(id, v, uniqueHash)
+	for i := 0; i < elementCount; i++ {
+		if len(id2Portable[i].Path) > 0 && id2Portable[i].Path[0] == "primitive_types" {
+			s.expandPrimitiveTypes(i, id2Portable[i], uniqueHash)
 		}
 	}
 
 	// deal sp_core
-	for id, v := range id2Portable {
-		if len(v.Path) > 0 && v.Path[0] == "sp_core" {
-			s.dealOneSiType(id, v, id2Portable, uniqueHash)
+	for i := 0; i < elementCount; i++ {
+		if len(id2Portable[i].Path) > 0 && id2Portable[i].Path[0] == "sp_core" {
+			s.dealOneSiType(i, id2Portable[i], id2Portable, uniqueHash)
 		}
 	}
-	for id, v := range id2Portable {
-		if _, ok := registeredSiType[uniqueHash][id]; ok {
+	for i := 0; i < elementCount; i++ {
+		if _, ok := registeredSiType[uniqueHash][i]; ok {
 			continue
 		}
-		s.dealOneSiType(id, v, id2Portable, uniqueHash)
+		s.dealOneSiType(i, id2Portable[i], id2Portable, uniqueHash)
 	}
 }
 
@@ -199,7 +201,6 @@ func (s *ScaleDecoder) dealPrimitiveSiType(id int, SiTyp SiType, uniqueHash stri
 }
 
 func (s *ScaleDecoder) expandComposite(id int, SiTyp SiType, id2Portable map[int]SiType, uniqueHash string) string {
-	typeString := nameSiType(SiTyp, id)
 	// SpRuntimeUncheckedExtrinsic
 	if len(SiTyp.Path) >= 2 && SiTyp.Path[0] == "sp_runtime" && SiTyp.Path[len(SiTyp.Path)-1] == "UncheckedExtrinsic" {
 		if param := SiTyp.FindParameter("Signature"); param != nil {
@@ -223,7 +224,7 @@ func (s *ScaleDecoder) expandComposite(id int, SiTyp SiType, id2Portable map[int
 			subType = s.dealOneSiType(subTypeId, id2Portable[subTypeId], id2Portable, uniqueHash)
 		}
 		registeredSiType[uniqueHash][id] = subType
-		RegCustomTypes(map[string]source.TypeStruct{typeString: {Type: "string", TypeString: subType, V14: true}})
+		RegCustomTypes(map[string]source.TypeStruct{nameSiType(SiTyp, id): {Type: "string", TypeString: subType, V14: true}})
 		return registeredSiType[uniqueHash][id]
 	}
 	var typeMapping [][]string
@@ -234,7 +235,7 @@ func (s *ScaleDecoder) expandComposite(id int, SiTyp SiType, id2Portable map[int
 		}
 		typeMapping = append(typeMapping, []string{field.Name, subType})
 	}
-
+	typeString := nameSiType(SiTyp, id)
 	RegCustomTypes(map[string]source.TypeStruct{typeString: {Type: "struct", TypeMapping: typeMapping, V14: true}})
 	registeredSiType[uniqueHash][id] = typeString
 	return typeString
