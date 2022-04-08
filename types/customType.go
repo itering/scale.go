@@ -25,6 +25,9 @@ func RegCustomTypes(registry map[string]source.TypeStruct) {
 		if typeStruct.V14 {
 			if _, ok := V14Types[key]; !ok {
 				V14Types[key] = typeStruct
+			} else {
+				// Avoid type being overwritten
+				return
 			}
 		}
 		key = strings.ToLower(key)
