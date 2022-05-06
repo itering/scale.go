@@ -150,8 +150,10 @@ func (m *MetadataV14Decoder) Process() {
 	extrinsicMetadata := m.ProcessAndUpdateData("ExtrinsicMetadataV14").(map[string]interface{})
 	bm, _ = json.Marshal(extrinsicMetadata)
 	_ = json.Unmarshal(bm, &result.Extrinsic)
-	for _, Extension := range result.Extrinsic.SignedExtensions {
-		result.Extrinsic.SignedIdentifier = append(result.Extrinsic.SignedIdentifier, Extension.Identifier)
+
+	for index, extension := range result.Extrinsic.SignedExtensions {
+		result.Extrinsic.SignedExtensions[index].TypeString = metadataSiType[extension.Type]
+		result.Extrinsic.SignedIdentifier = append(result.Extrinsic.SignedIdentifier, extension.Identifier)
 	}
 
 	registerOriginCaller(originCallers)

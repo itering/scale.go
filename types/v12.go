@@ -14,6 +14,7 @@ type MetadataV12Decoder struct {
 type SignedExtensions struct {
 	Identifier       string `json:"identifier"`
 	Type             int    `json:"type"`
+	TypeString       string `json:"-"`
 	AdditionalSigned int    `json:"additionalSigned"`
 }
 

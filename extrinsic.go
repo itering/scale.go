@@ -31,18 +31,17 @@ type ExtrinsicDecoder struct {
 	SignedExtensions    []scaleType.SignedExtension `json:"signed_extensions"`
 }
 
-var signedExts = map[string]*scaleType.SignedExtension{
-	"CheckSpecVersion":         nil,
-	"CheckTxVersion":           nil,
-	"CheckGenesis":             nil,
-	"CheckMortality":           nil,
-	"CheckNonce":               nil,
-	"CheckWeight":              nil,
-	"ChargeTransactionPayment": nil,
-	"ChargeAssetTxPayment": {Name: "ChargeAssetTxPayment", AdditionalSigned: []scaleType.AdditionalSigned{
-		{Type: "Compact<Balance>", Name: "tip"},
-		{Type: "Option<AssetId>", Name: "asset_id"},
-	}},
+// https://github.com/polkadot-js/api/blob/master/packages/types/src/extrinsic/signedExtensions/index.ts#L24
+var signedExts = map[string]bool{
+	"CheckSpecVersion":         false,
+	"CheckTxVersion":           false,
+	"CheckGenesis":             false,
+	"CheckMortality":           false,
+	"CheckNonce":               false,
+	"CheckWeight":              false,
+	"ChargeTransactionPayment": false,
+	"CheckBlockGasLimit":       false,
+	"ChargeAssetTxPayment":     true,
 }
 
 func (e *ExtrinsicDecoder) Init(data scaleType.ScaleBytes, option *scaleType.ScaleDecoderOption) {
@@ -122,7 +121,6 @@ func (e *ExtrinsicDecoder) Process() {
 				result["tip"] = e.ProcessAndUpdateData("Compact<Balance>")
 			}
 			// spec SignedExtensions
-			// https://github.com/polkadot-js/api/blob/9ae87bed782a5e3e345e20f6a9b64687d399a257/packages/types/src/extrinsic/signedExtensions/index.ts
 			if len(e.SignedExtensions) > 0 {
 				for _, extension := range e.SignedExtensions {
 					if utiles.SliceIndex(extension.Name, e.Metadata.Extrinsic.SignedIdentifier) != -1 {
@@ -132,10 +130,10 @@ func (e *ExtrinsicDecoder) Process() {
 					}
 				}
 			} else {
-				for _, name := range e.Metadata.Extrinsic.SignedIdentifier {
-					if ext, ok := signedExts[name]; ok && ext != nil {
-						for _, v := range ext.AdditionalSigned {
-							result[v.Name] = e.ProcessAndUpdateData(v.Type)
+				if e.Metadata.MetadataVersion >= 14 {
+					for _, ext := range e.Metadata.Extrinsic.SignedExtensions {
+						if enable, ok := signedExts[ext.Identifier]; ok && enable {
+							result[ext.Identifier] = e.ProcessAndUpdateData(ext.TypeString)
 						}
 					}
 				}
