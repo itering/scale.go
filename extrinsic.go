@@ -31,6 +31,20 @@ type ExtrinsicDecoder struct {
 	SignedExtensions    []scaleType.SignedExtension `json:"signed_extensions"`
 }
 
+var signedExts = map[string]*scaleType.SignedExtension{
+	"CheckSpecVersion":         nil,
+	"CheckTxVersion":           nil,
+	"CheckGenesis":             nil,
+	"CheckMortality":           nil,
+	"CheckNonce":               nil,
+	"CheckWeight":              nil,
+	"ChargeTransactionPayment": nil,
+	"ChargeAssetTxPayment": {Name: "ChargeAssetTxPayment", AdditionalSigned: []scaleType.AdditionalSigned{
+		{Type: "Compact<Balance>", Name: "tip"},
+		{Type: "Option<AssetId>", Name: "asset_id"},
+	}},
+}
+
 func (e *ExtrinsicDecoder) Init(data scaleType.ScaleBytes, option *scaleType.ScaleDecoderOption) {
 	if option == nil || option.Metadata == nil {
 		panic("ExtrinsicDecoder option metadata required")
@@ -107,13 +121,22 @@ func (e *ExtrinsicDecoder) Process() {
 			} else {
 				result["tip"] = e.ProcessAndUpdateData("Compact<Balance>")
 			}
-
-			// SignedExtensions
+			// spec SignedExtensions
 			// https://github.com/polkadot-js/api/blob/9ae87bed782a5e3e345e20f6a9b64687d399a257/packages/types/src/extrinsic/signedExtensions/index.ts
-			for _, extension := range e.SignedExtensions {
-				if utiles.SliceIndex(extension.Name, e.Metadata.Extrinsic.SignedIdentifier) != -1 {
-					for _, v := range extension.AdditionalSigned {
-						result[v.Name] = e.ProcessAndUpdateData(v.Type)
+			if len(e.SignedExtensions) > 0 {
+				for _, extension := range e.SignedExtensions {
+					if utiles.SliceIndex(extension.Name, e.Metadata.Extrinsic.SignedIdentifier) != -1 {
+						for _, v := range extension.AdditionalSigned {
+							result[v.Name] = e.ProcessAndUpdateData(v.Type)
+						}
+					}
+				}
+			} else {
+				for _, name := range e.Metadata.Extrinsic.SignedIdentifier {
+					if ext, ok := signedExts[name]; ok && ext != nil {
+						for _, v := range ext.AdditionalSigned {
+							result[v.Name] = e.ProcessAndUpdateData(v.Type)
+						}
 					}
 				}
 			}
@@ -135,11 +158,7 @@ func (e *ExtrinsicDecoder) Process() {
 
 	for _, arg := range call.Call.Args {
 		value := e.ProcessAndUpdateData(arg.Type)
-		param := ExtrinsicParam{
-			Name:  arg.Name,
-			Type:  arg.Type,
-			Value: value,
-		}
+		param := ExtrinsicParam{Name: arg.Name, Type: arg.Type, Value: value}
 		if param.TypeName == "" {
 			param.TypeName = arg.TypeName
 		}
