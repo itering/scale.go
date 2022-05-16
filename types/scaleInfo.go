@@ -216,14 +216,22 @@ func (s *ScaleDecoder) expandComposite(id int, SiTyp SiType, id2Portable map[int
 		registeredSiType[uniqueHash][id] = subType
 		return registeredSiType[uniqueHash][id]
 	}
+
+	if len(SiTyp.Def.Composite.Fields) == 1 {
+		subTypeId := SiTyp.Def.Composite.Fields[0].Type
+		subType, ok := registeredSiType[uniqueHash][subTypeId]
+		if !ok {
+			subType = s.dealOneSiType(subTypeId, id2Portable[subTypeId], id2Portable, uniqueHash)
+		}
+		registeredSiType[uniqueHash][id] = subType
+		RegCustomTypes(map[string]source.TypeStruct{nameSiType(SiTyp, id): {Type: "string", TypeString: subType, V14: true}})
+		return registeredSiType[uniqueHash][id]
+	}
 	var typeMapping [][]string
-	for index, field := range SiTyp.Def.Composite.Fields {
+	for _, field := range SiTyp.Def.Composite.Fields {
 		subType, ok := registeredSiType[uniqueHash][field.Type]
 		if !ok {
 			subType = s.dealOneSiType(field.Type, id2Portable[field.Type], id2Portable, uniqueHash, RecursiveOption())
-		}
-		if field.Name == "" {
-			field.Name = fmt.Sprintf("col%d", index)
 		}
 		typeMapping = append(typeMapping, []string{field.Name, subType})
 	}
