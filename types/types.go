@@ -65,9 +65,18 @@ func (u *U32) Process() {
 	u.Value = binary.LittleEndian.Uint32(c)
 }
 
-func (u *U32) Encode(value int) string {
+func (u *U32) Encode(value interface{}) string {
+	var u32 uint32
+	switch v := value.(type) {
+	case int:
+		u32 = uint32(v)
+	case decimal.Decimal:
+		u32 = uint32(v.IntPart())
+	case uint32:
+		u32 = v
+	}
 	bs := make([]byte, 4)
-	binary.LittleEndian.PutUint32(bs, uint32(value))
+	binary.LittleEndian.PutUint32(bs, u32)
 	return utiles.BytesToHex(bs)
 }
 
@@ -101,6 +110,13 @@ func (u *U128) Process() {
 		elementBytes = utiles.HexToBytes(xstrings.LeftJustify(utiles.BytesToHex(elementBytes), 32, "0"))
 	}
 	u.Value = uint128.FromBytes(elementBytes).String()
+}
+
+func (u *U128) Encode(value decimal.Decimal) string {
+	bs := make([]byte, 16)
+	u128 := uint128.FromBig(value.BigInt())
+	u128.PutBytes(bs)
+	return utiles.BytesToHex(bs)
 }
 
 type H256 struct {

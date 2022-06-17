@@ -315,6 +315,10 @@ func TestRange(t *testing.T) {
 
 func TestEncode(t *testing.T) {
 	assert.Equal(t, "01000000", types.Encode("U32", 1))
+	assert.Equal(t, "01000000", types.Encode("U32", decimal.NewFromInt32(1)))
+	assert.Equal(t, "00000000000000000000000000000000", types.Encode("U128", decimal.Zero))
+	assert.Equal(t, "87d61200000000000000000000000000", types.Encode("U128", decimal.NewFromInt32(1234567)))
+	assert.Equal(t, "47a952404f2b1568e6881efeb58c8918", types.Encode("U128", decimal.RequireFromString("32615670524745285411807346420584982855")))
 }
 
 func TestSubstrateFixedU64(t *testing.T) {
