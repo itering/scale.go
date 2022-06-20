@@ -326,3 +326,10 @@ func TestSubstrateFixedU64(t *testing.T) {
 	m.Init(types.ScaleBytes{Data: utiles.HexToBytes("001e85eb01000000")}, nil)
 	assert.Equal(t, "1.919921875", m.ProcessAndUpdateData("SubstrateFixedU64").(decimal.Decimal).String())
 }
+
+func TestDataRawDecode(t *testing.T) {
+	m := types.ScaleDecoder{}
+	m.Init(types.ScaleBytes{Data: utiles.HexToBytes("0x00a41a130d84010000000000000000000000076f6e64696e33000000136f6e64696e37373740676d61696c2e636f6d000000")}, nil)
+	value := m.ProcessAndUpdateData("Registration").(map[string]interface{})
+	assert.Equal(t, map[string]interface{}{"Raw18": "ondin777@gmail.com"}, value["info"].(map[string]interface{})["email"])
+}

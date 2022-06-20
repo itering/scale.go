@@ -777,9 +777,9 @@ func (d *Data) Process() {
 	if d.Index >= 1 && d.Index <= 33 {
 		data := d.NextBytes(d.Index - 1)
 		if utf8.Valid(data) {
-			d.Value = map[string]interface{}{"Raw": string(data)}
+			d.Value = map[string]interface{}{fmt.Sprintf("Raw%d", d.Index-1): string(data)}
 		} else {
-			d.Value = map[string]interface{}{"Raw": utiles.BytesToHex(data)}
+			d.Value = map[string]interface{}{fmt.Sprintf("Raw%d", d.Index-1): utiles.BytesToHex(data)}
 		}
 
 	}
