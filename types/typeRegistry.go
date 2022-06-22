@@ -40,7 +40,6 @@ func (r RuntimeType) Reg() *RuntimeType {
 		&U32{},
 		&U64{},
 		&U128{},
-		&Compact{},
 		&H160{},
 		&H256{},
 		&H512{},
@@ -53,9 +52,9 @@ func (r RuntimeType) Reg() *RuntimeType {
 		&BoundedVec{},
 		&WeakBoundedVec{},
 		&Set{},
+		&Compact{},
 		&CompactU32{},
 		&Bool{},
-		&StorageHasher{},
 		&HexBytes{},
 		&Moment{},
 		&BlockNumber{},
@@ -65,10 +64,6 @@ func (r RuntimeType) Reg() *RuntimeType {
 		&Era{},
 		&EraExtrinsic{},
 		&Balance{},
-		&Index{},
-		&SessionIndex{},
-		&EraIndex{},
-		&ParaId{},
 		&LogDigest{},
 		&Other{},
 		&ChangesTrieRoot{},
@@ -84,20 +79,14 @@ func (r RuntimeType) Reg() *RuntimeType {
 		&RawBabePreDigestSecondary{},
 		&RawBabePreDigestSecondaryVRF{},
 		&SlotNumber{},
-		&AccountIndex{},
 		&LockIdentifier{},
 		&BabeBlockWeight{},
-		&AuthorityId{},
 		&Call{},
-		&ReferendumIndex{},
 		&EcdsaSignature{},
 		&EthereumAddress{},
-		&PropIndex{},
 		&Data{},
-		&Vote{},
 		&VoteOutcome{},
 		&RawBabeLabel{},
-		&Key{},
 		&String{},
 		&GenericAddress{},
 		&OpaqueCall{},
@@ -105,22 +94,10 @@ func (r RuntimeType) Reg() *RuntimeType {
 		&MetadataModuleEvent{},
 		&MetadataModuleCallArgument{},
 		&MetadataModuleCall{},
-		&MetadataV6Decoder{},
-		&MetadataV6Module{},
-		&MetadataV6ModuleStorage{},
-		&MetadataV6ModuleConstants{},
-		&MetadataV7Decoder{},
-		&MetadataV7Module{},
-		&MetadataV7ModuleStorage{},
 		&MetadataV13ModuleStorage{},
 		&MetadataV7ModuleConstants{},
-		&MetadataV7ModuleStorageEntry{},
 		&MetadataV13ModuleStorageEntry{},
 		&MetadataV8Module{},
-		// &MetadataV8Decoder{},
-		&MetadataV9Decoder{},
-		&MetadataV10Decoder{},
-		&MetadataV11Decoder{},
 		&MetadataV12Decoder{},
 		&MetadataV13Decoder{},
 		&MetadataV14Decoder{},
@@ -161,16 +138,16 @@ func (r RuntimeType) Reg() *RuntimeType {
 	registry["i32"] = &IntFixed{FixedLength: 4}
 	registry["i64"] = &IntFixed{FixedLength: 8}
 	registry["i128"] = &IntFixed{FixedLength: 16}
-	registry["[u8; 32]"] = &VecU8FixedLength{FixedLength: 32}
-	registry["[u8; 64]"] = &VecU8FixedLength{FixedLength: 64}
-	registry["[u8; 65]"] = &VecU8FixedLength{FixedLength: 65}
-	registry["[u8; 16]"] = &VecU8FixedLength{FixedLength: 16}
-	registry["[u8; 20]"] = &VecU8FixedLength{FixedLength: 20}
-	registry["[u8; 8]"] = &VecU8FixedLength{FixedLength: 8}
-	registry["[u8; 4]"] = &VecU8FixedLength{FixedLength: 4}
-	registry["[u8; 2]"] = &VecU8FixedLength{FixedLength: 2}
-	registry["[u8; 256]"] = &VecU8FixedLength{FixedLength: 256}
-	registry["[u128; 3]"] = &FixedLengthArray{FixedLength: 3, SubType: "u128"}
+	registry["[u8; 32]"] = &FixedU8{FixedLength: 32}
+	registry["[u8; 64]"] = &FixedU8{FixedLength: 64}
+	registry["[u8; 65]"] = &FixedU8{FixedLength: 65}
+	registry["[u8; 16]"] = &FixedU8{FixedLength: 16}
+	registry["[u8; 20]"] = &FixedU8{FixedLength: 20}
+	registry["[u8; 8]"] = &FixedU8{FixedLength: 8}
+	registry["[u8; 4]"] = &FixedU8{FixedLength: 4}
+	registry["[u8; 2]"] = &FixedU8{FixedLength: 2}
+	registry["[u8; 256]"] = &FixedU8{FixedLength: 256}
+	registry["[u128; 3]"] = &FixedArray{FixedLength: 3, SubType: "u128"}
 	TypeRegistry = registry
 
 	RegCustomTypes(source.LoadTypeRegistry([]byte(source.BaseType)))
@@ -187,7 +164,7 @@ func (r *RuntimeType) getCodecInstant(t string, spec int) (reflect.Type, reflect
 		if rt == nil && t != "[]" && string(t[0]) == "[" && t[len(t)-1:] == "]" {
 			if typePart := strings.Split(t[1:len(t)-1], ";"); len(typePart) >= 2 {
 				remainPart := typePart[0 : len(typePart)-1]
-				fixed := FixedLengthArray{
+				fixed := FixedArray{
 					FixedLength: utiles.StringToInt(strings.TrimSpace(typePart[len(typePart)-1])),
 					SubType:     strings.TrimSpace(strings.Join(remainPart, ";")),
 				}

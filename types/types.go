@@ -18,6 +18,26 @@ import (
 	"github.com/shopspring/decimal"
 )
 
+type H160 struct{ ScaleDecoder }
+
+type Other struct{ HexBytes }
+
+type ChangesTrieRoot struct{ HexBytes }
+
+type BTreeSet struct{ Vec }
+
+type RuntimeEnvironmentUpdated struct{ Null }
+
+type SlotNumber struct{ U64 }
+
+type BabeBlockWeight struct{ U32 }
+
+type Null struct{ ScaleDecoder }
+
+func (h *H160) Process() {
+	h.Value = utiles.AddHex(utiles.BytesToHex(h.NextBytes(20)))
+}
+
 type H256 struct {
 	ScaleDecoder
 }
@@ -122,64 +142,12 @@ func (s *Signature) Process() {
 	s.Value = utiles.BytesToHex(s.NextBytes(64))
 }
 
-type StorageHasher struct {
-	Enum
-}
-
-func (s *StorageHasher) Init(data scaleBytes.ScaleBytes, option *ScaleDecoderOption) {
-	option.ValueList = []string{"Blake2_128", "Blake2_256", "Blake2_128Concat", "Twox128", "Twox256", "Twox64Concat", "Identity"}
-	s.Enum.Init(data, option)
-}
-
-type Null struct {
-	ScaleDecoder
-}
-
-type VecU8FixedLength struct {
-	ScaleDecoder
-	FixedLength int
-}
-
-func (s *VecU8FixedLength) Process() {
-	value := s.NextBytes(s.FixedLength)
-	if utiles.IsASCII(value) {
-		s.Value = string(value)
-	} else {
-		s.Value = utiles.AddHex(utiles.BytesToHex(value))
-	}
-}
-
 type AccountId struct {
 	ScaleDecoder
 }
 
 func (s *AccountId) Process() {
 	s.Value = xstrings.RightJustify(utiles.BytesToHex(s.NextBytes(32)), 64, "0")
-}
-
-type BoxProposal struct {
-	ScaleDecoder
-}
-
-func (s *BoxProposal) Process() {
-	callIndex := utiles.BytesToHex(s.NextBytes(2))
-	callModule := s.Metadata.CallIndex[callIndex]
-	result := map[string]interface{}{
-		"call_index":  callIndex,
-		"call_name":   callModule.Call.Name,
-		"call_module": callModule.Module.Name,
-	}
-	var param []ExtrinsicParam
-	s.Module = callModule.Module.Name
-	for _, arg := range callModule.Call.Args {
-		param = append(param, ExtrinsicParam{
-			Name:  arg.Name,
-			Type:  arg.Type,
-			Value: s.ProcessAndUpdateData(arg.Type),
-		})
-	}
-	result["params"] = param
-	s.Value = result
 }
 
 type Balance struct {
@@ -199,14 +167,6 @@ func (b *Balance) Process() {
 	}
 	b.Value = decimal.NewFromBigInt(uint128.FromBytes(c).Big(), 0)
 }
-
-type Index struct{ U64 }
-
-type SessionIndex struct{ U32 }
-
-type EraIndex struct{ U32 }
-
-type ParaId struct{ U32 }
 
 type LogDigest struct{ Enum }
 
@@ -229,10 +189,6 @@ func (l *LogDigest) Process() {
 		"value": l.ProcessAndUpdateData(indexType),
 	}
 }
-
-type Other struct{ HexBytes }
-
-type ChangesTrieRoot struct{ HexBytes }
 
 type AuthoritiesChange struct{ Vec }
 
@@ -320,14 +276,6 @@ func (s *RawBabeLabel) Init(data scaleBytes.ScaleBytes, option *ScaleDecoderOpti
 
 type RawBabePreDigestPrimary struct{ Struct }
 
-type RawBabePreDigestSecondary struct{ Struct }
-
-type RuntimeEnvironmentUpdated struct{ Null }
-
-type SlotNumber struct{ U64 }
-
-type BabeBlockWeight struct{ U32 }
-
 func (r *RawBabePreDigestPrimary) Init(data scaleBytes.ScaleBytes, option *ScaleDecoderOption) {
 	r.Struct.TypeMapping = &TypeMapping{
 		Names: []string{"authorityIndex", "slotNumber", "weight", "vrfOutput", "vrfProof"},
@@ -335,6 +283,8 @@ func (r *RawBabePreDigestPrimary) Init(data scaleBytes.ScaleBytes, option *Scale
 	}
 	r.Struct.Init(data, option)
 }
+
+type RawBabePreDigestSecondary struct{ Struct }
 
 func (r *RawBabePreDigestSecondary) Init(data scaleBytes.ScaleBytes, option *ScaleDecoderOption) {
 	r.Struct.TypeMapping = &TypeMapping{Names: []string{"authorityIndex", "slotNumber", "weight"}, Types: []string{"u32", "SlotNumber", "BabeBlockWeight"}}
@@ -356,44 +306,6 @@ func (l *LockIdentifier) Process() {
 	l.Value = utiles.AddHex(utiles.BytesToHex(l.NextBytes(8)))
 }
 
-type AccountIndex struct{ U32 }
-
-type FixedLengthArray struct {
-	ScaleDecoder
-	FixedLength int
-	SubType     string
-}
-
-func (f *FixedLengthArray) Init(data scaleBytes.ScaleBytes, option *ScaleDecoderOption) {
-	if option != nil && option.FixedLength != 0 {
-		f.FixedLength = option.FixedLength
-	}
-	f.ScaleDecoder.Init(data, option)
-}
-
-func (f *FixedLengthArray) Process() {
-	var result []interface{}
-	if f.FixedLength > 0 {
-		if strings.EqualFold(f.SubType, "u8") {
-			value := f.NextBytes(f.FixedLength)
-			if utiles.IsASCII(value) {
-				f.Value = string(value)
-			} else {
-				f.Value = utiles.BytesToHex(value)
-			}
-			return
-		}
-		for i := 0; i < f.FixedLength; i++ {
-			result = append(result, f.ProcessAndUpdateData(f.SubType))
-		}
-		f.Value = result
-	} else {
-		f.GetNextU8()
-	}
-}
-
-type AuthorityId struct{ H256 }
-
 type EcdsaSignature struct {
 	ScaleDecoder
 }
@@ -401,36 +313,6 @@ type EcdsaSignature struct {
 func (e *EcdsaSignature) Process() {
 	e.Value = utiles.AddHex(utiles.BytesToHex(e.NextBytes(65)))
 }
-
-type Call struct {
-	ScaleDecoder
-}
-
-func (s *Call) Process() {
-	callIndex := utiles.BytesToHex(s.NextBytes(2))
-	callModule := s.Metadata.CallIndex[callIndex]
-	result := map[string]interface{}{
-		"call_index":  callIndex,
-		"call_name":   callModule.Call.Name,
-		"call_module": callModule.Module.Name,
-	}
-	var param []ExtrinsicParam
-	s.Module = callModule.Module.Name
-	for _, arg := range callModule.Call.Args {
-		param = append(param, ExtrinsicParam{
-			Name:  arg.Name,
-			Type:  arg.Type,
-			Value: s.ProcessAndUpdateData(arg.Type),
-		})
-	}
-	result["params"] = param
-	s.Value = result
-
-}
-
-type ReferendumIndex struct{ U32 }
-
-type PropIndex struct{ U32 }
 
 type EthereumAddress struct {
 	ScaleDecoder
@@ -476,22 +358,12 @@ func (d *Data) Process() {
 	}
 }
 
-type Vote struct {
-	U8
-}
-
 type VoteOutcome struct {
 	ScaleDecoder
 }
 
 func (v *VoteOutcome) Process() {
 	v.Value = utiles.BytesToHex(v.NextBytes(32))
-}
-
-type H160 struct{ ScaleDecoder }
-
-func (h *H160) Process() {
-	h.Value = utiles.AddHex(utiles.BytesToHex(h.NextBytes(20)))
 }
 
 type IntFixed struct {
@@ -518,8 +390,6 @@ func (f *IntFixed) Process() {
 	}
 	f.Value = value
 }
-
-type Key struct{ Bytes }
 
 type OpaqueCall struct {
 	Bytes
@@ -548,23 +418,21 @@ func (g *GenericLookupSource) Process() {
 		g.Value = utiles.BytesToHex(g.NextBytes(32))
 		return
 	}
-	offset, length := readLength(AccountLength)
+	offset, length := func(value []byte) (int, int) {
+		first := value[0]
+		switch first {
+		case 0xfc:
+			return 1, 2
+		case 0xfd:
+			return 1, 4
+		case 0xfe:
+			return 1, 8
+		}
+		return 0, 1
+	}(AccountLength)
 	e := ScaleDecoder{}
 	e.Init(scaleBytes.ScaleBytes{Data: g.Data.Data[offset : offset+length]}, nil)
 	g.Value = strconv.Itoa(int(e.ProcessAndUpdateData("U32").(uint32)))
-}
-
-func readLength(value []byte) (int, int) {
-	first := value[0]
-	switch first {
-	case 0xfc:
-		return 1, 2
-	case 0xfd:
-		return 1, 4
-	case 0xfe:
-		return 1, 8
-	}
-	return 0, 1
 }
 
 type BTreeMap struct{ ScaleDecoder }
@@ -590,8 +458,6 @@ type Box struct{ ScaleDecoder }
 func (b *Box) Process() {
 	b.Value = b.ProcessAndUpdateData(b.SubType)
 }
-
-type BTreeSet struct{ Vec }
 
 type WrapperOpaque struct{ ScaleDecoder }
 
