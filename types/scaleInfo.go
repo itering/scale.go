@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/itering/scale.go/source"
+	"github.com/itering/scale.go/types/convert"
 	"github.com/itering/scale.go/utiles"
 )
 
@@ -306,7 +307,7 @@ func (s *ScaleDecoder) expandOption(id int, SiTyp SiType, id2Portable map[int]Si
 }
 
 func (s *ScaleDecoder) expandResult(id int, SiTyp SiType, id2Portable map[int]SiType, uniqueHash string) string {
-	// Results<u8, bool>
+	// Result<u8, bool>
 	resultOk := SiTyp.Params[0].Type
 	resultErr := SiTyp.Params[1].Type
 	okType, ok := registeredSiType[uniqueHash][resultOk]
@@ -317,7 +318,7 @@ func (s *ScaleDecoder) expandResult(id int, SiTyp SiType, id2Portable map[int]Si
 	if !ok {
 		errType = s.dealOneSiType(resultErr, id2Portable[resultErr], id2Portable, uniqueHash, RecursiveOption())
 	}
-	registeredSiType[uniqueHash][id] = fmt.Sprintf("Results<%s,%s>", okType, errType)
+	registeredSiType[uniqueHash][id] = fmt.Sprintf("Result<%s,%s>", okType, errType)
 	return registeredSiType[uniqueHash][id]
 }
 
@@ -354,7 +355,7 @@ func (s *ScaleDecoder) expandEnum(id int, SiTyp SiType, id2Portable map[int]SiTy
 				if v.Name == "" {
 					v.Name = fmt.Sprintf("col%d", i)
 				}
-				StructTypes = append(StructTypes, []string{v.Name, ConvertType(typeName)})
+				StructTypes = append(StructTypes, []string{v.Name, convert.ConvertType(typeName)})
 			}
 			if len(StructTypes) > 0 {
 				typeName = utiles.ToString(StructTypes)

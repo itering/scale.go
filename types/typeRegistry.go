@@ -8,6 +8,8 @@ import (
 	"strings"
 
 	"github.com/itering/scale.go/source"
+	"github.com/itering/scale.go/types/convert"
+	"github.com/itering/scale.go/types/override"
 	"github.com/itering/scale.go/utiles"
 )
 
@@ -133,7 +135,7 @@ func (r RuntimeType) Reg() *RuntimeType {
 		&BTreeMap{},
 		&BTreeSet{},
 		&Box{},
-		&Results{},
+		&Result{},
 		&RuntimeEnvironmentUpdated{},
 		&WrapperOpaque{},
 		&Range{},
@@ -176,7 +178,7 @@ func (r RuntimeType) Reg() *RuntimeType {
 }
 
 func (r *RuntimeType) getCodecInstant(t string, spec int) (reflect.Type, reflect.Value, error) {
-	t = r.overrideModuleType(strings.ToLower(t))
+	t = override.ModuleType(strings.ToLower(t), r.Module)
 	rt, err := r.specialVersionCodec(t, spec)
 
 	if err != nil {
@@ -208,7 +210,7 @@ func (r *RuntimeType) getCodecInstant(t string, spec int) (reflect.Type, reflect
 
 func (r *RuntimeType) DecoderClass(typeString string, spec int) (reflect.Type, reflect.Value, string) {
 	var typeParts []string
-	typeString = ConvertType(typeString)
+	typeString = convert.ConvertType(typeString)
 
 	// complex
 	if typeString[len(typeString)-1:] == ">" {

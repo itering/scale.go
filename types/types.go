@@ -2,122 +2,21 @@ package types
 
 import (
 	"bytes"
-	"encoding/binary"
-	"encoding/json"
 	"fmt"
 	"io"
 	"math"
 	"math/big"
-	"regexp"
 	"strconv"
 	"strings"
 	"unicode/utf8"
 
 	"github.com/huandu/xstrings"
+	"github.com/itering/scale.go/types/scaleBytes"
 	"github.com/itering/scale.go/utiles"
 	"github.com/itering/scale.go/utiles/crypto/ethereum"
 	"github.com/itering/scale.go/utiles/uint128"
 	"github.com/shopspring/decimal"
 )
-
-type HexBytes struct {
-	ScaleDecoder
-}
-
-func (h *HexBytes) Process() {
-	length := h.ProcessAndUpdateData("Compact<u32>").(int)
-	h.Value = utiles.AddHex(utiles.BytesToHex(h.NextBytes(int(length))))
-}
-
-type U8 struct {
-	ScaleDecoder
-}
-
-func (u *U8) Process() {
-	u.Value = u.GetNextU8()
-}
-
-type U16 struct {
-	Reader io.Reader
-	ScaleDecoder
-}
-
-func (u *U16) Process() {
-	buf := &bytes.Buffer{}
-	u.Reader = buf
-	_, _ = buf.Write(u.NextBytes(2))
-	c := make([]byte, 2)
-	_, _ = u.Reader.Read(c)
-	u.Value = binary.LittleEndian.Uint16(c)
-}
-
-type U32 struct {
-	Reader io.Reader
-	ScaleDecoder
-}
-
-func (u *U32) Process() {
-	buf := &bytes.Buffer{}
-	u.Reader = buf
-	_, _ = buf.Write(u.NextBytes(4))
-	c := make([]byte, 4)
-	_, _ = u.Reader.Read(c)
-	u.Value = binary.LittleEndian.Uint32(c)
-}
-
-func (u *U32) Encode(value interface{}) string {
-	var u32 uint32
-	switch v := value.(type) {
-	case int:
-		u32 = uint32(v)
-	case decimal.Decimal:
-		u32 = uint32(v.IntPart())
-	case uint32:
-		u32 = v
-	}
-	bs := make([]byte, 4)
-	binary.LittleEndian.PutUint32(bs, u32)
-	return utiles.BytesToHex(bs)
-}
-
-type U64 struct {
-	ScaleDecoder
-	Reader io.Reader
-}
-
-func (u *U64) Process() {
-	buf := &bytes.Buffer{}
-	u.Reader = buf
-	_, _ = buf.Write(u.NextBytes(8))
-	c := make([]byte, 8)
-	_, _ = u.Reader.Read(c)
-	u.Value = binary.LittleEndian.Uint64(c)
-}
-
-func (u *U64) Encode(value uint64) string {
-	bs := make([]byte, 8)
-	binary.LittleEndian.PutUint64(bs, value)
-	return utiles.BytesToHex(bs)
-}
-
-type U128 struct {
-	ScaleDecoder
-}
-
-func (u *U128) Process() {
-	elementBytes := u.NextBytes(16)
-	if len(elementBytes) < 16 {
-		elementBytes = utiles.HexToBytes(xstrings.LeftJustify(utiles.BytesToHex(elementBytes), 32, "0"))
-	}
-	u.Value = uint128.FromBytes(elementBytes).String()
-}
-
-func (u *U128) Encode(value decimal.Decimal) string {
-	bs := make([]byte, 16)
-	u128 := uint128.FromBig(value.BigInt())
-	u128.PutBytes(bs)
-	return utiles.BytesToHex(bs)
-}
 
 type H256 struct {
 	ScaleDecoder
@@ -148,26 +47,7 @@ func (e *Era) Process() {
 	}
 }
 
-type EraExtrinsic struct {
-	ScaleDecoder
-}
-
-func (e *EraExtrinsic) Process() {
-	optionHex := utiles.BytesToHex(e.NextBytes(1))
-	if optionHex == "00" {
-		e.Value = optionHex
-	} else {
-		e.Value = optionHex + utiles.BytesToHex(e.NextBytes(1))
-	}
-}
-
-type Bool struct {
-	ScaleDecoder
-}
-
-func (b *Bool) Process() {
-	b.Value = b.getNextBool()
-}
+type EraExtrinsic struct{ Era }
 
 type CompactMoment struct {
 	CompactU32
@@ -191,68 +71,8 @@ func (m *Moment) Process() {
 	}
 }
 
-type Struct struct {
-	ScaleDecoder
-}
-
-func (s *Struct) Process() {
-	result := make(map[string]interface{})
-	if s.TypeMapping != nil {
-		for k, v := range s.TypeMapping.Names {
-			result[v] = s.ProcessAndUpdateData(s.TypeMapping.Types[k])
-		}
-	}
-	s.Value = result
-}
-
 type BlockNumber struct {
 	U32
-}
-
-type Vec struct {
-	ScaleDecoder
-}
-
-func (v *Vec) Init(data ScaleBytes, option *ScaleDecoderOption) {
-	if v.SubType != "" && option != nil {
-		option.SubType = v.SubType
-	}
-	v.ScaleDecoder.Init(data, option)
-}
-
-func (v *Vec) Process() {
-	elementCount := v.ProcessAndUpdateData("Compact<u32>").(int)
-	var result []interface{}
-	if elementCount > 50000 {
-		panic(fmt.Sprintf("Vec length %d exceeds %d with subType %s", elementCount, 50000, v.SubType))
-	}
-	subType := v.SubType
-	for i := 0; i < elementCount; i++ {
-		result = append(result, v.ProcessAndUpdateData(subType))
-	}
-	v.Value = result
-}
-
-type BoundedVec struct {
-	Vec
-}
-
-// BoundedVec<Type, Size> to Vec<Type>
-// https://github.com/paritytech/substrate/pull/8556
-func (v *BoundedVec) Init(data ScaleBytes, option *ScaleDecoderOption) {
-	if option != nil {
-		if BoundedArr := strings.Split(option.SubType, ","); len(BoundedArr) >= 2 {
-			size := BoundedArr[len(BoundedArr)-1]
-			v.SubType = strings.Replace(option.SubType, fmt.Sprintf(",%s", size), "", 1)
-			option.SubType = v.SubType
-		}
-	}
-	v.ScaleDecoder.Init(data, option)
-}
-
-// https://github.com/paritytech/substrate/pull/8842
-type WeakBoundedVec struct {
-	BoundedVec
 }
 
 type Address struct {
@@ -260,7 +80,6 @@ type Address struct {
 	AccountLength string `json:"account_length"`
 }
 
-// only support latest address type
 func (a *Address) Process() {
 	AccountLength := a.NextBytes(1)
 	a.AccountLength = utiles.BytesToHex(AccountLength)
@@ -303,105 +122,11 @@ func (s *Signature) Process() {
 	s.Value = utiles.BytesToHex(s.NextBytes(64))
 }
 
-type Enum struct {
-	ScaleDecoder
-	ValueList []string `json:"value_list"`
-	Index     int      `json:"index"`
-}
-
-func (e *Enum) Init(data ScaleBytes, option *ScaleDecoderOption) {
-	e.Index = 0
-	if option != nil && len(e.ValueList) == 0 {
-		e.ValueList = option.ValueList
-	}
-	e.ScaleDecoder.Init(data, option)
-}
-
-func (e *Enum) Process() {
-	index := utiles.BytesToHex(e.NextBytes(1))
-	if utiles.U256(index) != nil {
-		e.Index = int(utiles.U256(index).Uint64())
-	}
-	if e.TypeMapping != nil {
-		// check c-like enum
-		isCLikeEnum := true
-		for _, subType := range e.TypeMapping.Types {
-			if !regexp.MustCompile("^[0-9]+$").MatchString(subType) {
-				isCLikeEnum = false
-				break
-			}
-		}
-		if isCLikeEnum {
-			rustEnum := make(map[int]string)
-			for index, v := range e.TypeMapping.Names {
-				rustEnum[utiles.StringToInt(e.TypeMapping.Types[index])] = v
-			}
-			e.Value = rustEnum[e.Index]
-			return
-		}
-		if len(e.TypeMapping.Types) <= e.Index {
-			panic(fmt.Errorf("type %s index out of range [%d] with length %d", e.TypeName, e.Index, len(e.TypeMapping.Types)))
-		}
-		if subType := e.TypeMapping.Types[e.Index]; subType != "" {
-			// struct subType
-			var typeMap [][]string
-			if len(subType) > 4 && subType[0:2] == "[[" && json.Unmarshal([]byte(subType), &typeMap) == nil && len(typeMap) > 0 && len(typeMap[0]) == 2 {
-				result := make(map[string]interface{})
-				for _, v := range typeMap {
-					result[v[0]] = e.ProcessAndUpdateData(v[1])
-				}
-				e.Value = map[string]interface{}{e.TypeMapping.Names[e.Index]: result}
-				return
-			}
-			e.Value = map[string]interface{}{e.TypeMapping.Names[e.Index]: e.ProcessAndUpdateData(subType)}
-			return
-		}
-	}
-	if e.ValueList[e.Index] != "" {
-		e.Value = e.ValueList[e.Index]
-	}
-}
-
-func (e *Enum) Encode(data interface{}) string {
-	// struct
-	if e.TypeMapping != nil {
-		isCLikeEnum := true
-		for _, subType := range e.TypeMapping.Types {
-			if !regexp.MustCompile("^[0-9]+$").MatchString(subType) {
-				isCLikeEnum = false
-				break
-			}
-		}
-		if isCLikeEnum {
-			for k, v := range e.TypeMapping.Names {
-				if v == utiles.ToString(data) {
-					return utiles.U8Encode(utiles.StringToInt(e.TypeMapping.Types[k]))
-				}
-			}
-		}
-		for enumKey, value := range data.(map[string]interface{}) {
-			index := 0
-			for k, v := range e.TypeMapping.Names {
-				if v == enumKey {
-					return utiles.U8Encode(index) + Encode(e.TypeMapping.Types[k], value)
-				}
-				index++
-			}
-		}
-	}
-	for index, v := range e.ValueList {
-		if utiles.ToString(data) == v {
-			return utiles.U8Encode(index)
-		}
-	}
-	return ""
-}
-
 type StorageHasher struct {
 	Enum
 }
 
-func (s *StorageHasher) Init(data ScaleBytes, option *ScaleDecoderOption) {
+func (s *StorageHasher) Init(data scaleBytes.ScaleBytes, option *ScaleDecoderOption) {
 	option.ValueList = []string{"Blake2_128", "Blake2_256", "Blake2_128Concat", "Twox128", "Twox256", "Twox64Concat", "Identity"}
 	s.Enum.Init(data, option)
 }
@@ -483,47 +208,9 @@ type EraIndex struct{ U32 }
 
 type ParaId struct{ U32 }
 
-type Set struct {
-	ScaleDecoder
-	SetValue  int
-	ValueList []string
-	BitLength int
-}
-
-func (s *Set) Init(data ScaleBytes, option *ScaleDecoderOption) {
-	s.SetValue = 0
-	if option.ValueList != nil {
-		s.ValueList = option.ValueList
-	}
-	s.ScaleDecoder.Init(data, option)
-}
-
-func (s *Set) Process() {
-	setValue := s.ProcessAndUpdateData(fmt.Sprintf("U%d", s.BitLength))
-	switch v := setValue.(type) {
-	case uint64:
-		s.SetValue = int(v)
-	case uint8:
-		s.SetValue = int(v)
-	case uint32:
-		s.SetValue = int(v)
-	case uint16:
-		s.SetValue = int(v)
-	}
-	var result []string
-	if s.SetValue > 0 {
-		for k, value := range s.ValueList {
-			if s.SetValue&int(math.Pow(2, float64(k))) > 0 {
-				result = append(result, value)
-			}
-		}
-	}
-	s.Value = result
-}
-
 type LogDigest struct{ Enum }
 
-func (l *LogDigest) Init(data ScaleBytes, option *ScaleDecoderOption) {
+func (l *LogDigest) Init(data scaleBytes.ScaleBytes, option *ScaleDecoderOption) {
 	l.ValueList = []string{"Other", "AuthoritiesChange", "ChangesTrieRoot", "SealV0", "Consensus", "Seal", "PreRuntime", "ChangesTrieSignal", "RuntimeEnvironmentUpdated"}
 	l.Enum.Init(data, option)
 }
@@ -549,56 +236,56 @@ type ChangesTrieRoot struct{ HexBytes }
 
 type AuthoritiesChange struct{ Vec }
 
-func (l *AuthoritiesChange) Init(data ScaleBytes, option *ScaleDecoderOption) {
+func (l *AuthoritiesChange) Init(data scaleBytes.ScaleBytes, option *ScaleDecoderOption) {
 	option.SubType = "AccountId"
 	l.Vec.Init(data, option)
 }
 
 type SealV0 struct{ Struct }
 
-func (s *SealV0) Init(data ScaleBytes, option *ScaleDecoderOption) {
+func (s *SealV0) Init(data scaleBytes.ScaleBytes, option *ScaleDecoderOption) {
 	s.Struct.TypeMapping = &TypeMapping{Names: []string{"slot", "signature"}, Types: []string{"u64", "Signature"}}
 	s.Struct.Init(data, option)
 }
 
 type Consensus struct{ Struct }
 
-func (s *Consensus) Init(data ScaleBytes, option *ScaleDecoderOption) {
+func (s *Consensus) Init(data scaleBytes.ScaleBytes, option *ScaleDecoderOption) {
 	s.Struct.TypeMapping = &TypeMapping{Names: []string{"engine", "data"}, Types: []string{"u32", "Vec<u8>"}}
 	s.Struct.Init(data, option)
 }
 
 type Seal struct{ Struct }
 
-func (s *Seal) Init(data ScaleBytes, option *ScaleDecoderOption) {
+func (s *Seal) Init(data scaleBytes.ScaleBytes, option *ScaleDecoderOption) {
 	s.Struct.TypeMapping = &TypeMapping{Names: []string{"engine", "data"}, Types: []string{"u32", "HexBytes"}}
 	s.Struct.Init(data, option)
 }
 
 type PreRuntime struct{ Struct }
 
-func (s *PreRuntime) Init(data ScaleBytes, option *ScaleDecoderOption) {
+func (s *PreRuntime) Init(data scaleBytes.ScaleBytes, option *ScaleDecoderOption) {
 	s.Struct.TypeMapping = &TypeMapping{Names: []string{"engine", "data"}, Types: []string{"u32", "HexBytes"}}
 	s.Struct.Init(data, option)
 }
 
 type Exposure struct{ Struct }
 
-func (s *Exposure) Init(data ScaleBytes, option *ScaleDecoderOption) {
+func (s *Exposure) Init(data scaleBytes.ScaleBytes, option *ScaleDecoderOption) {
 	s.Struct.TypeMapping = &TypeMapping{Names: []string{"total", "own", "others"}, Types: []string{"Compact<Balance>", "Compact<Balance>", "Vec<IndividualExposure<AccountId, Balance>>"}}
 	s.Struct.Init(data, option)
 }
 
 type IndividualExposure struct{ Struct }
 
-func (s *IndividualExposure) Init(data ScaleBytes, option *ScaleDecoderOption) {
+func (s *IndividualExposure) Init(data scaleBytes.ScaleBytes, option *ScaleDecoderOption) {
 	s.Struct.TypeMapping = &TypeMapping{Names: []string{"who", "value"}, Types: []string{"AccountId", "Compact<Balance>"}}
 	s.Struct.Init(data, option)
 }
 
 type RawAuraPreDigest struct{ Struct }
 
-func (s *RawAuraPreDigest) Init(data ScaleBytes, option *ScaleDecoderOption) {
+func (s *RawAuraPreDigest) Init(data scaleBytes.ScaleBytes, option *ScaleDecoderOption) {
 	s.Struct.TypeMapping = &TypeMapping{Names: []string{"slotNumber"}, Types: []string{"u64"}}
 	s.Struct.Init(data, option)
 }
@@ -607,7 +294,7 @@ type RawBabePreDigest struct {
 	Struct
 }
 
-func (r *RawBabePreDigest) Init(data ScaleBytes, option *ScaleDecoderOption) {
+func (r *RawBabePreDigest) Init(data scaleBytes.ScaleBytes, option *ScaleDecoderOption) {
 	r.Struct.TypeMapping = &TypeMapping{Names: []string{"isPhantom", "Primary", "Secondary", "VRF"}, Types: []string{"bool", "RawBabePreDigestPrimary", "RawBabePreDigestSecondary", "RawBabePreDigestSecondaryVRF"}}
 	r.Struct.Init(data, option)
 }
@@ -626,7 +313,7 @@ type RawBabeLabel struct {
 	Enum
 }
 
-func (s *RawBabeLabel) Init(data ScaleBytes, option *ScaleDecoderOption) {
+func (s *RawBabeLabel) Init(data scaleBytes.ScaleBytes, option *ScaleDecoderOption) {
 	option.ValueList = []string{"isPhantom", "Primary", "Secondary", "VRF"}
 	s.Enum.Init(data, option)
 }
@@ -641,7 +328,7 @@ type SlotNumber struct{ U64 }
 
 type BabeBlockWeight struct{ U32 }
 
-func (r *RawBabePreDigestPrimary) Init(data ScaleBytes, option *ScaleDecoderOption) {
+func (r *RawBabePreDigestPrimary) Init(data scaleBytes.ScaleBytes, option *ScaleDecoderOption) {
 	r.Struct.TypeMapping = &TypeMapping{
 		Names: []string{"authorityIndex", "slotNumber", "weight", "vrfOutput", "vrfProof"},
 		Types: []string{"u32", "SlotNumber", "BabeBlockWeight", "H256", "H256"},
@@ -649,14 +336,14 @@ func (r *RawBabePreDigestPrimary) Init(data ScaleBytes, option *ScaleDecoderOpti
 	r.Struct.Init(data, option)
 }
 
-func (r *RawBabePreDigestSecondary) Init(data ScaleBytes, option *ScaleDecoderOption) {
+func (r *RawBabePreDigestSecondary) Init(data scaleBytes.ScaleBytes, option *ScaleDecoderOption) {
 	r.Struct.TypeMapping = &TypeMapping{Names: []string{"authorityIndex", "slotNumber", "weight"}, Types: []string{"u32", "SlotNumber", "BabeBlockWeight"}}
 	r.Struct.Init(data, option)
 }
 
 type RawBabePreDigestSecondaryVRF struct{ Struct }
 
-func (r *RawBabePreDigestSecondaryVRF) Init(data ScaleBytes, option *ScaleDecoderOption) {
+func (r *RawBabePreDigestSecondaryVRF) Init(data scaleBytes.ScaleBytes, option *ScaleDecoderOption) {
 	r.Struct.TypeMapping = &TypeMapping{Names: []string{"authorityIndex", "slotNumber", "vrfOutput", "vrfProof"}, Types: []string{"u32", "SlotNumber", "VrfData", "VrfProof"}}
 	r.Struct.Init(data, option)
 }
@@ -677,7 +364,7 @@ type FixedLengthArray struct {
 	SubType     string
 }
 
-func (f *FixedLengthArray) Init(data ScaleBytes, option *ScaleDecoderOption) {
+func (f *FixedLengthArray) Init(data scaleBytes.ScaleBytes, option *ScaleDecoderOption) {
 	if option != nil && option.FixedLength != 0 {
 		f.FixedLength = option.FixedLength
 	}
@@ -757,7 +444,7 @@ type Data struct {
 	Enum
 }
 
-func (d *Data) Init(data ScaleBytes, option *ScaleDecoderOption) {
+func (d *Data) Init(data scaleBytes.ScaleBytes, option *ScaleDecoderOption) {
 	d.TypeMapping = &TypeMapping{
 		Names: []string{"None", "Raw", "BlakeTwo256", "Sha256", "Keccak256", "ShaThree256"},
 		Types: []string{"Null", "String", "H256", "H256", "H256", "H256"},
@@ -813,7 +500,7 @@ type IntFixed struct {
 	Reader      io.Reader
 }
 
-func (f *IntFixed) Init(data ScaleBytes, option *ScaleDecoderOption) {
+func (f *IntFixed) Init(data scaleBytes.ScaleBytes, option *ScaleDecoderOption) {
 	if option != nil && option.FixedLength != 0 {
 		f.FixedLength = option.FixedLength
 	}
@@ -842,7 +529,7 @@ func (f *OpaqueCall) Process() {
 	f.Bytes.Process()
 	e := ScaleDecoder{}
 	option := ScaleDecoderOption{Metadata: f.Metadata, Spec: f.Spec}
-	e.Init(ScaleBytes{Data: utiles.HexToBytes(f.Value.(string))}, &option)
+	e.Init(scaleBytes.ScaleBytes{Data: utiles.HexToBytes(f.Value.(string))}, &option)
 	value := e.ProcessAndUpdateData("Call")
 	f.Value = value
 }
@@ -863,7 +550,7 @@ func (g *GenericLookupSource) Process() {
 	}
 	offset, length := readLength(AccountLength)
 	e := ScaleDecoder{}
-	e.Init(ScaleBytes{Data: g.Data.Data[offset : offset+length]}, nil)
+	e.Init(scaleBytes.ScaleBytes{Data: g.Data.Data[offset : offset+length]}, nil)
 	g.Value = strconv.Itoa(int(e.ProcessAndUpdateData("U32").(uint32)))
 }
 
@@ -928,4 +615,13 @@ func (r *Range) Process() {
 		"start": r.ProcessAndUpdateData(start),
 		"end":   r.ProcessAndUpdateData(end),
 	}
+}
+
+type BitVec struct {
+	Compact
+}
+
+func (b *BitVec) Process() {
+	length := b.ProcessAndUpdateData("Compact<u32>").(int)
+	b.Value = utiles.BytesToHex(b.NextBytes(int(math.Ceil(float64(length) / 8))))
 }

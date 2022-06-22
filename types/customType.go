@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/itering/scale.go/source"
+	"github.com/itering/scale.go/types/convert"
 	"github.com/itering/scale.go/utiles"
 )
 
@@ -33,7 +34,7 @@ func RegCustomTypes(registry map[string]source.TypeStruct) {
 		key = strings.ToLower(key)
 		switch typeStruct.Type {
 		case "string":
-			typeString := ConvertType(typeStruct.TypeString)
+			typeString := convert.ConvertType(typeStruct.TypeString)
 			instant := TypeRegistry[strings.ToLower(typeString)]
 			if instant != nil {
 				regCustomKey(key, instant)

@@ -1,4 +1,4 @@
-package types
+package scaleBytes
 
 import (
 	"github.com/itering/scale.go/utiles"

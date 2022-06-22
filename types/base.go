@@ -6,6 +6,7 @@ import (
 	"regexp"
 	"strings"
 
+	"github.com/itering/scale.go/types/scaleBytes"
 	"github.com/itering/scale.go/utiles"
 )
 
@@ -25,30 +26,36 @@ type TypeMapping struct {
 	Types []string
 }
 
+type SignedExtension struct {
+	Name             string             `json:"name"`
+	AdditionalSigned []AdditionalSigned `json:"additional_signed"`
+}
+
+type AdditionalSigned struct {
+	Name string `json:"name"`
+	Type string `json:"type"`
+}
+
 type IScaleDecoder interface {
-	Init(data ScaleBytes, option *ScaleDecoderOption)
+	Init(data scaleBytes.ScaleBytes, option *ScaleDecoderOption)
 	Process()
 	Encode(interface{}) string
-	buildStruct()
-	NextBytes(int) []byte
-	GetNextU8() int
-	reset()
 }
 
 type ScaleDecoder struct {
-	Data        ScaleBytes      `json:"-"`
-	TypeString  string          `json:"-"`
-	SubType     string          `json:"-"`
-	Value       interface{}     `json:"-"`
-	RawValue    string          `json:"-"`
-	TypeMapping *TypeMapping    `json:"-"`
-	Metadata    *MetadataStruct `json:"-"`
-	Spec        int             `json:"-"`
-	Module      string          `json:"-"`
+	Data        scaleBytes.ScaleBytes `json:"-"`
+	TypeString  string                `json:"-"`
+	SubType     string                `json:"-"`
+	Value       interface{}           `json:"-"`
+	RawValue    string                `json:"-"`
+	TypeMapping *TypeMapping          `json:"-"`
+	Metadata    *MetadataStruct       `json:"-"`
+	Spec        int                   `json:"-"`
+	Module      string                `json:"-"`
 	TypeName    string
 }
 
-func (s *ScaleDecoder) Init(data ScaleBytes, option *ScaleDecoderOption) {
+func (s *ScaleDecoder) Init(data scaleBytes.ScaleBytes, option *ScaleDecoderOption) {
 	if option != nil {
 		if option.Metadata != nil {
 			s.Metadata = option.Metadata
@@ -150,7 +157,7 @@ func (s *ScaleDecoder) ProcessAndUpdateData(typeString string) interface{} {
 
 	// process
 	value.MethodByName("Process").Call(nil)
-	elementData := value.Elem().FieldByName("Data").Interface().(ScaleBytes)
+	elementData := value.Elem().FieldByName("Data").Interface().(scaleBytes.ScaleBytes)
 
 	s.Data.Offset = elementData.Offset
 	s.Data.Data = elementData.Data
