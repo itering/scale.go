@@ -21,7 +21,7 @@ func newStruct(names, typeString []string) *TypeMapping {
 
 var V14Types = make(map[string]source.TypeStruct)
 
-func RegCustomTypes(registry map[string]source.TypeStruct) {
+func RegCustomTypes(registry map[string]source.TypeStruct, _ ...string) {
 	for key, typeStruct := range registry {
 		if typeStruct.V14 {
 			if _, ok := V14Types[key]; !ok {
@@ -54,7 +54,7 @@ func RegCustomTypes(registry map[string]source.TypeStruct) {
 				}
 			}
 
-			// sub type vec|option
+			// subtype vec|option
 			if typeString[len(typeString)-1:] == ">" {
 				reg := regexp.MustCompile("^([^<]*)<(.+)>$")
 				typeParts := reg.FindStringSubmatch(typeString)

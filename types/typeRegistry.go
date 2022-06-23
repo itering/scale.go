@@ -22,16 +22,17 @@ type Special struct {
 	Registry interface{}
 }
 
-var TypeRegistry map[string]interface{}
+var (
+	TypeRegistry    map[string]interface{}
+	specialRegistry map[string][]Special
+)
 
 func HasReg(typeName string) bool {
 	_, ok := TypeRegistry[strings.ToLower(typeName)]
 	return ok
 }
 
-var specialRegistry map[string][]Special
-
-func (r RuntimeType) Reg() *RuntimeType {
+func regDefaultType() {
 	registry := make(map[string]interface{})
 	scales := []interface{}{
 		&Null{},
@@ -149,9 +150,8 @@ func (r RuntimeType) Reg() *RuntimeType {
 	registry["[u8; 256]"] = &FixedU8{FixedLength: 256}
 	registry["[u128; 3]"] = &FixedArray{FixedLength: 3, SubType: "u128"}
 	TypeRegistry = registry
-
+	// todo change load source pallet type to lazy load
 	RegCustomTypes(source.LoadTypeRegistry([]byte(source.BaseType)))
-	return &r
 }
 
 func (r *RuntimeType) getCodecInstant(t string, spec int) (reflect.Type, reflect.Value, error) {
@@ -185,7 +185,7 @@ func (r *RuntimeType) getCodecInstant(t string, spec int) (reflect.Type, reflect
 	return p.Type(), p, nil
 }
 
-func (r *RuntimeType) DecoderClass(typeString string, spec int) (reflect.Type, reflect.Value, string) {
+func (r *RuntimeType) GetCodecClass(typeString string, spec int) (reflect.Type, reflect.Value, string) {
 	var typeParts []string
 	typeString = convert.ConvertType(typeString)
 
@@ -223,7 +223,7 @@ func (r *RuntimeType) DecoderClass(typeString string, spec int) (reflect.Type, r
 	// namespace
 	if strings.Contains(typeString, "::") && typeString != "::" {
 		namespaceSlice := strings.Split(typeString, "::")
-		return r.DecoderClass(namespaceSlice[len(namespaceSlice)-1], spec)
+		return r.GetCodecClass(namespaceSlice[len(namespaceSlice)-1], spec)
 	}
 
 	return nil, reflect.ValueOf((*error)(nil)).Elem(), ""

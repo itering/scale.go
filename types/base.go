@@ -137,10 +137,10 @@ func (s *ScaleDecoder) ProcessAndUpdateData(typeString string) interface{} {
 	r := RuntimeType{Module: s.Module}
 
 	if TypeRegistry == nil {
-		r.Reg()
+		regDefaultType()
 	}
 
-	class, value, subType := r.DecoderClass(typeString, s.Spec)
+	class, value, subType := r.GetCodecClass(typeString, s.Spec)
 	if class == nil {
 		panic(fmt.Sprintf("Not found decoder class %s", typeString))
 	}
@@ -155,7 +155,7 @@ func (s *ScaleDecoder) ProcessAndUpdateData(typeString string) interface{} {
 	option := ScaleDecoderOption{SubType: subType, Spec: s.Spec, Metadata: s.Metadata, Module: s.Module, TypeName: typeString}
 	method.Func.Call([]reflect.Value{value, reflect.ValueOf(s.Data), reflect.ValueOf(&option)})
 
-	// process
+	// process do decode
 	value.MethodByName("Process").Call(nil)
 	elementData := value.Elem().FieldByName("Data").Interface().(scaleBytes.ScaleBytes)
 
@@ -169,9 +169,9 @@ func (s *ScaleDecoder) ProcessAndUpdateData(typeString string) interface{} {
 func Encode(typeString string, data interface{}) string {
 	r := RuntimeType{}
 	if TypeRegistry == nil {
-		r.Reg()
+		regDefaultType()
 	}
-	class, value, _ := r.DecoderClass(typeString, -1)
+	class, value, _ := r.GetCodecClass(typeString, -1)
 	if class == nil {
 		panic(fmt.Sprintf("Not found decoder class %s", typeString))
 	}
