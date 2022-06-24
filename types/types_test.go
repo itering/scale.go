@@ -327,6 +327,14 @@ func TestSubstrateFixedU64(t *testing.T) {
 	assert.Equal(t, "1.919921875", m.ProcessAndUpdateData("SubstrateFixedU64").(decimal.Decimal).String())
 }
 
+func TestFloat(t *testing.T) {
+	m := ScaleDecoder{}
+	m.Init(scaleBytes.ScaleBytes{Data: utiles.HexToBytes("0x0000000000000080")}, nil)
+	assert.Equal(t, float64(0), m.ProcessAndUpdateData("Float64"))
+	m.Init(scaleBytes.ScaleBytes{Data: utiles.HexToBytes("0x00000080")}, nil)
+	assert.Equal(t, float32(-0), m.ProcessAndUpdateData("Float32"))
+}
+
 func TestDataRawDecode(t *testing.T) {
 	m := ScaleDecoder{}
 	m.Init(scaleBytes.ScaleBytes{Data: utiles.HexToBytes("0x00a41a130d84010000000000000000000000076f6e64696e33000000136f6e64696e37373740676d61696c2e636f6d000000")}, nil)

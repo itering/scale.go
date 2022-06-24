@@ -40,6 +40,8 @@ func regDefaultType() {
 		&U16{},
 		&U32{},
 		&U64{},
+		&Float64{},
+		&Float32{},
 		&U128{},
 		&H160{},
 		&H256{},
