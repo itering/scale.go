@@ -298,7 +298,7 @@ type PalletConstantMetadataV14 struct {
 func (m *PalletConstantMetadataV14) Process() {
 	name := m.ProcessAndUpdateData("String").(string)
 	ConstantType := m.ProcessAndUpdateData("SiLookupTypeId").(int)
-	value := m.ProcessAndUpdateData("Bytes").(string)
+	value := utiles.TrimHex(m.ProcessAndUpdateData("HexBytes").(string))
 	docsRaw := m.ProcessAndUpdateData("Vec<String>").([]interface{})
 	var docs []string
 	for _, v := range docsRaw {
