@@ -51,6 +51,25 @@ func (u *U16) Process() {
 	u.Value = binary.LittleEndian.Uint16(c)
 }
 
+func (u *U16) Encode(value interface{}) string {
+	var u16 uint16
+	switch v := value.(type) {
+	case int:
+		u16 = uint16(v)
+	case decimal.Decimal:
+		u16 = uint16(v.IntPart())
+	case uint32:
+		u16 = uint16(v)
+	case int64:
+		u16 = uint16(v)
+	case uint16:
+		u16 = v
+	}
+	bs := make([]byte, 2)
+	binary.LittleEndian.PutUint16(bs, u16)
+	return utiles.BytesToHex(bs)
+}
+
 type U32 struct {
 	Reader io.Reader
 	ScaleDecoder
@@ -805,6 +824,10 @@ type H160 struct{ ScaleDecoder }
 
 func (h *H160) Process() {
 	h.Value = utiles.AddHex(utiles.BytesToHex(h.NextBytes(20)))
+}
+
+func (h *H160) Encode(value string) string {
+	return utiles.AddHex(strings.ToLower(value))
 }
 
 type IntFixed struct {
