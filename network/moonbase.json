@@ -454,5 +454,10 @@
   "XcmOrder": "XcmOrderV0",
   "MultiLocation": "MultiLocationV0",
   "AssetId": "u128",
-  "TAssetBalance": "u128"
+  "TAssetBalance": "u128",
+  "AssetInstance#800-?": "AssetInstanceV1",
+  "MultiAsset#800-?": "MultiAssetV1",
+  "Xcm#800-?": "XcmV1",
+  "XcmOrder#800-?": "XcmOrderV1",
+  "MultiLocation#800-?": "MultiLocationV1"
 }

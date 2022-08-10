@@ -38,6 +38,10 @@ func (h *H160) Process() {
 	h.Value = utiles.AddHex(utiles.BytesToHex(h.NextBytes(20)))
 }
 
+func (h *H160) Encode(value string) string {
+	return utiles.AddHex(strings.ToLower(value))
+}
+
 type H256 struct {
 	ScaleDecoder
 }
