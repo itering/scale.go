@@ -29,7 +29,6 @@ func TestCompactU64(t *testing.T) {
 	m := ScaleDecoder{}
 	m.Init(scaleBytes.ScaleBytes{Data: utiles.HexToBytes(raw)}, nil)
 	assert.EqualValues(t, 4, m.ProcessAndUpdateData("Compact<U64>").(uint64))
-	assert.Equal(t, raw, Encode("Compact<U64>", 4))
 }
 
 func TestU32(t *testing.T) {
@@ -107,12 +106,10 @@ func TestRegistration(t *testing.T) {
 }
 
 func TestInt(t *testing.T) {
-	raw := "0x2efb"
+	raw := "2efb"
 	m := ScaleDecoder{}
 	m.Init(scaleBytes.ScaleBytes{Data: utiles.HexToBytes(raw)}, nil)
-	r := m.ProcessAndUpdateData("i16")
-	rb, _ := json.Marshal(r)
-	fmt.Println(string(rb))
+	assert.Equal(t, raw, Encode("i16", m.ProcessAndUpdateData("i16").(*big.Int).Int64()))
 }
 
 func TestBoolArray(t *testing.T) {
@@ -121,7 +118,6 @@ func TestBoolArray(t *testing.T) {
 	m.Init(scaleBytes.ScaleBytes{Data: utiles.HexToBytes(raw)}, nil)
 	r := m.ProcessAndUpdateData("[bool; 4]")
 	c := []interface{}{false, false, true, false}
-	fmt.Println(r)
 	if !reflect.DeepEqual(c, r.([]interface{})) {
 		t.Errorf("Test TestBoolArray Process fail, decode return %v", r)
 	}
@@ -306,7 +302,7 @@ func TestRange(t *testing.T) {
 }
 
 func TestEncode(t *testing.T) {
-	assert.Equal(t, "01000000", Encode("U32", 1))
+	assert.Equal(t, "00000000", Encode("U32", 0))
 	assert.Equal(t, "01000000", Encode("U32", decimal.NewFromInt32(1)))
 	assert.Equal(t, "0100", Encode("U16", decimal.NewFromInt32(1)))
 	assert.Equal(t, "0d00", Encode("U16", 13))

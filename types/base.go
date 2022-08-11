@@ -180,7 +180,6 @@ func Encode(typeString string, data interface{}) string {
 	}
 	method, _ := class.MethodByName("Init")
 	method.Func.Call([]reflect.Value{value, reflect.ValueOf(scaleBytes.EmptyScaleBytes()), reflect.ValueOf(&ScaleDecoderOption{SubType: subType})})
-	fmt.Println(typeString, data)
 	var val reflect.Value
 	if data == nil {
 		val = reflect.New(reflect.TypeOf("")).Elem()

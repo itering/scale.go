@@ -2195,7 +2195,7 @@
       ]
     ]
   },
-  "SlotNumber": "u32",
+  "SlotNumber": "u64",
   "BabeBlockWeight": "u32",
   "EpochAuthorship": {
     "type": "struct",

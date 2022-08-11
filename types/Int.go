@@ -38,12 +38,12 @@ func (f *IntFixed) Process() {
 
 func (f *IntFixed) Encode(value interface{}) string {
 	if f.FixedLength < 16 {
-		var buffer = bytes.Buffer{}
-		err := binary.Write(&buffer, binary.LittleEndian, value)
+		var buffer = &bytes.Buffer{}
+		err := binary.Write(buffer, binary.LittleEndian, value)
 		if err != nil {
 			panic(fmt.Errorf("fixed write raise err %s", err.Error()))
 		}
-		var c []byte
+		c := make([]byte, f.FixedLength)
 		_, _ = buffer.Read(c)
 		return utiles.BytesToHex(c)
 	}
