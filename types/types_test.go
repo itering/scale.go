@@ -20,54 +20,49 @@ func TestString(t *testing.T) {
 	raw := "1054657374"
 	m := ScaleDecoder{}
 	m.Init(scaleBytes.ScaleBytes{Data: utiles.HexToBytes(raw)}, nil)
-	r := m.ProcessAndUpdateData("String").(string)
-	if r != "Test" {
-		t.Errorf("Test String Process fail, decode return %s", r)
-	}
+	assert.Equal(t, "Test", m.ProcessAndUpdateData("String").(string))
+	assert.Equal(t, raw, Encode("String", "Test"))
 }
 
 func TestCompactU64(t *testing.T) {
 	raw := "10"
 	m := ScaleDecoder{}
 	m.Init(scaleBytes.ScaleBytes{Data: utiles.HexToBytes(raw)}, nil)
-	r := m.ProcessAndUpdateData("Compact<U64>").(uint64)
-	if r != 4 {
-		t.Errorf("Test TestCompactU64 Process fail, decode return %d", r)
-	}
+	assert.EqualValues(t, 4, m.ProcessAndUpdateData("Compact<U64>").(uint64))
+	assert.Equal(t, raw, Encode("Compact<U64>", 4))
 }
 
 func TestU32(t *testing.T) {
 	raw := "64000000"
 	m := ScaleDecoder{}
 	m.Init(scaleBytes.ScaleBytes{Data: utiles.HexToBytes(raw)}, nil)
-	r := m.ProcessAndUpdateData("u32").(uint32)
-	if r != 100 {
-		t.Errorf("Test TestCompactU64 Process fail, expect return 100, decode return %d", r)
-	}
+	assert.EqualValues(t, 100, m.ProcessAndUpdateData("U32"))
+	assert.Equal(t, raw, Encode("U32", 100))
 }
 
 func TestU16(t *testing.T) {
 	raw := "0300"
 	m := ScaleDecoder{}
 	m.Init(scaleBytes.ScaleBytes{Data: utiles.HexToBytes(raw)}, nil)
-	r := m.ProcessAndUpdateData("u16").(uint16)
-	if r != 3 {
-		t.Errorf("Test TestU16 Process fail, expect return 3, decode return %d", r)
-	}
+	assert.EqualValues(t, 3, m.ProcessAndUpdateData("u16"))
+	assert.Equal(t, raw, Encode("U16", 3))
 }
 
 func TestRawBabePreDigest(t *testing.T) {
-	raw := "0x02020000008b86750900000000"
+	raw := "02" + // enum
+		"02000000" + // u32
+		"8b86750900000000" + // u64
+		"00000000" // u32
 	m := ScaleDecoder{}
 	m.Init(scaleBytes.ScaleBytes{Data: utiles.HexToBytes(raw)}, nil)
-	m.ProcessAndUpdateData("RawBabePreDigest")
+	assert.Equal(t, raw, Encode("RawBabePreDigest", m.ProcessAndUpdateData("RawBabePreDigest")))
 }
 
 func TestRawBabePreDigestVRF(t *testing.T) {
-	raw := "0x030000000099decc0f0000000040a523a6fdd15ef7ffb2956689b828185b4d60cfac789f64d1b6f26257ebbe543349f8ceae602875c705a59b156af586c7cf907df5c8d5b541fa755638e32b07b02bfb5e7549fb88aa1f32da93519c67275e999da1cd58ec168c80b30e5b4d05"
+	raw := "030000000099decc0f0000000040a523a6fdd15ef7ffb2956689b828185b4d60cfac789f64d1b6f26257ebbe543349f8ceae602875c705a59b156af586c7cf907df5c8d5b541fa755638e32b07b02bfb5e7549fb88aa1f32da93519c67275e999da1cd58ec168c80b3"
 	m := ScaleDecoder{}
 	m.Init(scaleBytes.ScaleBytes{Data: utiles.HexToBytes(raw)}, nil)
-	m.ProcessAndUpdateData("RawBabePreDigest")
+	assert.Equal(t, raw, Encode("RawBabePreDigest", m.ProcessAndUpdateData("RawBabePreDigest")))
 }
 
 func TestSet_Process(t *testing.T) {
@@ -97,11 +92,10 @@ func TestCompactBalance(t *testing.T) {
 
 // 0xe52d2254c67c430a0000000000000000 Balance
 func TestBalance(t *testing.T) {
-	raw := "0xe52d2254c67c430a0000000000000000"
+	raw := "e52d2254c67c430a0000000000000000"
 	m := ScaleDecoder{}
 	m.Init(scaleBytes.ScaleBytes{Data: utiles.HexToBytes(raw)}, nil)
-	c := m.ProcessAndUpdateData("Balance")
-	fmt.Println(c)
+	assert.Equal(t, raw, Encode("Balance", m.ProcessAndUpdateData("Balance")))
 }
 
 //
@@ -109,9 +103,7 @@ func TestRegistration(t *testing.T) {
 	raw := "0x04010000000200a0724e180900000000000000000000000d505552455354414b452d30310e507572655374616b65204c74641b68747470733a2f2f7777772e707572657374616b652e636f6d2f000000000d40707572657374616b65636f"
 	m := ScaleDecoder{}
 	m.Init(scaleBytes.ScaleBytes{Data: utiles.HexToBytes(raw)}, nil)
-	r := m.ProcessAndUpdateData("Registration<BalanceOf>")
-	rb, _ := json.Marshal(r)
-	fmt.Println(string(rb))
+	assert.Equal(t, `{"deposit":"10000000000000","info":{"additional":null,"display":{"Raw12":"PURESTAKE-01"},"email":{"None":null},"image":{"None":null},"legal":{"Raw13":"PureStake Ltd"},"pgpFingerprint":null,"riot":{"None":null},"twitter":{"Raw12":"@purestakeco"},"web":{"Raw26":"https://www.purestake.com/"}},"judgements":[{"col1":1,"col2":{"Reasonable":null}}]}`, utiles.ToString(m.ProcessAndUpdateData("Registration<BalanceOf>")))
 }
 
 func TestInt(t *testing.T) {

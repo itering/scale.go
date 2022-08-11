@@ -9,6 +9,13 @@ type ScaleBytes struct {
 	Offset int    `json:"offset"`
 }
 
+func EmptyScaleBytes() ScaleBytes {
+	return ScaleBytes{
+		Data:   []byte{},
+		Offset: 0,
+	}
+}
+
 func (s *ScaleBytes) GetNextBytes(length int) []byte {
 	if s.Offset+length > len(s.Data) {
 		data := s.Data[s.Offset:]

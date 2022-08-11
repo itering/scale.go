@@ -24,3 +24,17 @@ func (b *Result) Process() {
 		panic("illegal Result data")
 	}
 }
+
+func (b *Result) Encode(value map[string]interface{}) string {
+	subType := strings.Split(b.SubType, ",")
+	if len(subType) != 2 {
+		panic("Result subType not illegal")
+	}
+	if data, ok := value["Ok"]; ok {
+		return "01" + Encode(subType[0], data)
+	}
+	if data, ok := value["Error"]; ok {
+		return "00" + Encode(subType[1], data)
+	}
+	panic("illegal Result data")
+}

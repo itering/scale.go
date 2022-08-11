@@ -15,3 +15,7 @@ func (s *FixedU8) Process() {
 		s.Value = utiles.AddHex(utiles.BytesToHex(value))
 	}
 }
+
+func (s *FixedU8) Encode(value string) string {
+	return utiles.TrimHex(value)
+}

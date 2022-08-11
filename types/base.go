@@ -171,10 +171,25 @@ func Encode(typeString string, data interface{}) string {
 	if TypeRegistry == nil {
 		regDefaultType()
 	}
-	class, value, _ := r.GetCodecClass(typeString, -1)
+	if typeString == "Null" {
+		return ""
+	}
+	class, value, subType := r.GetCodecClass(typeString, -1)
 	if class == nil {
 		panic(fmt.Sprintf("Not found decoder class %s", typeString))
 	}
-	out := value.MethodByName("Encode").Call([]reflect.Value{reflect.ValueOf(data)})
-	return out[0].String()
+	method, _ := class.MethodByName("Init")
+	method.Func.Call([]reflect.Value{value, reflect.ValueOf(scaleBytes.EmptyScaleBytes()), reflect.ValueOf(&ScaleDecoderOption{SubType: subType})})
+	fmt.Println(typeString, data)
+	var val reflect.Value
+	if data == nil {
+		val = reflect.New(reflect.TypeOf("")).Elem()
+	} else {
+		val = reflect.ValueOf(data)
+	}
+	out := value.MethodByName("Encode").Call([]reflect.Value{val})
+	if len(out) > 0 {
+		return out[0].String()
+	}
+	return ""
 }

@@ -77,19 +77,16 @@ func regDefaultType() {
 		&PreRuntime{},
 		&Exposure{},
 		&RawAuraPreDigest{},
-		&RawBabePreDigest{},
 		&RawBabePreDigestPrimary{},
 		&RawBabePreDigestSecondary{},
 		&RawBabePreDigestSecondaryVRF{},
 		&SlotNumber{},
 		&LockIdentifier{},
-		&BabeBlockWeight{},
 		&Call{},
 		&EcdsaSignature{},
 		&EthereumAddress{},
 		&Data{},
 		&VoteOutcome{},
-		&RawBabeLabel{},
 		&String{},
 		&GenericAddress{},
 		&OpaqueCall{},
@@ -141,6 +138,7 @@ func regDefaultType() {
 	registry["i32"] = &IntFixed{FixedLength: 4}
 	registry["i64"] = &IntFixed{FixedLength: 8}
 	registry["i128"] = &IntFixed{FixedLength: 16}
+	registry["i256"] = &IntFixed{FixedLength: 32}
 	registry["[u8; 32]"] = &FixedU8{FixedLength: 32}
 	registry["[u8; 64]"] = &FixedU8{FixedLength: 64}
 	registry["[u8; 65]"] = &FixedU8{FixedLength: 65}

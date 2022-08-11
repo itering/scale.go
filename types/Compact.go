@@ -6,6 +6,7 @@ import (
 	"io"
 
 	"github.com/itering/scale.go/types/scaleBytes"
+	"github.com/itering/scale.go/utiles"
 	"github.com/shopspring/decimal"
 )
 
@@ -89,7 +90,7 @@ func (c *CompactU32) Process() {
 
 }
 
-func (c *CompactU32) Encode(value int) scaleBytes.ScaleBytes {
+func (c *CompactU32) Encode(value int) string {
 	if value <= 63 {
 		bs := make([]byte, 4)
 		binary.LittleEndian.PutUint32(bs, uint32(value<<2))
@@ -103,5 +104,5 @@ func (c *CompactU32) Encode(value int) scaleBytes.ScaleBytes {
 		binary.LittleEndian.PutUint32(bs, uint32(value<<2)|2)
 		c.Data.Data = bs
 	}
-	return c.Data
+	return utiles.BytesToHex(c.Data.Data)
 }

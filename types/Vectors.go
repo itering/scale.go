@@ -2,6 +2,7 @@ package types
 
 import (
 	"fmt"
+	"reflect"
 	"strings"
 
 	"github.com/itering/scale.go/types/scaleBytes"
@@ -29,6 +30,20 @@ func (v *Vec) Process() {
 		result = append(result, v.ProcessAndUpdateData(subType))
 	}
 	v.Value = result
+}
+
+func (v *Vec) Encode(value interface{}) string {
+	var raw string
+	switch reflect.TypeOf(value).Kind() {
+	case reflect.Slice:
+		s := reflect.ValueOf(value)
+		for i := 0; i < s.Len(); i++ {
+			raw += Encode(v.SubType, s.Index(i).Interface())
+		}
+		return raw
+	default:
+		panic(fmt.Errorf("invalid vec input"))
+	}
 }
 
 type BoundedVec struct {

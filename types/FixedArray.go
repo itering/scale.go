@@ -1,6 +1,8 @@
 package types
 
 import (
+	"fmt"
+	"reflect"
 	"strings"
 
 	"github.com/itering/scale.go/types/scaleBytes"
@@ -38,5 +40,22 @@ func (f *FixedArray) Process() {
 		f.Value = result
 	} else {
 		f.GetNextU8()
+	}
+}
+
+func (f *FixedArray) Encode(value interface{}) string {
+	var raw string
+	switch reflect.TypeOf(value).Kind() {
+	case reflect.Slice:
+		s := reflect.ValueOf(value)
+		if s.Len() != f.FixedLength {
+			panic("fixed length not match")
+		}
+		for i := 0; i < s.Len(); i++ {
+			raw += Encode(f.SubType, s.Index(i))
+		}
+		return raw
+	default:
+		panic(fmt.Errorf("invalid vec input"))
 	}
 }

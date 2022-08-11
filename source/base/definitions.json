@@ -2174,6 +2174,29 @@
       ]
     ]
   },
+  "RawBabePreDigest": {
+    "type": "enum",
+    "type_mapping": [
+      [
+        "isPhantom",
+        "bool"
+      ],
+      [
+        "Primary",
+        "RawBabePreDigestPrimary"
+      ],
+      [
+        "Secondary",
+        "RawBabePreDigestSecondary"
+      ],
+      [
+        "VRF",
+        "RawBabePreDigestSecondaryVRF"
+      ]
+    ]
+  },
+  "SlotNumber": "u32",
+  "BabeBlockWeight": "u32",
   "EpochAuthorship": {
     "type": "struct",
     "type_mapping": [

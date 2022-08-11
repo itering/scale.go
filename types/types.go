@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"io"
 	"math"
-	"math/big"
 	"strconv"
 	"strings"
 	"unicode/utf8"
@@ -29,8 +28,6 @@ type BTreeSet struct{ Vec }
 type RuntimeEnvironmentUpdated struct{ Null }
 
 type SlotNumber struct{ U64 }
-
-type BabeBlockWeight struct{ U32 }
 
 type Null struct{ ScaleDecoder }
 
@@ -155,7 +152,7 @@ func (s *AccountId) Process() {
 }
 
 type Balance struct {
-	ScaleDecoder
+	U128
 	Reader io.Reader
 }
 
@@ -166,7 +163,7 @@ func (b *Balance) Process() {
 	c := make([]byte, 16)
 	_, _ = b.Reader.Read(c)
 	if utiles.BytesToHex(c) == "ffffffffffffffffffffffffffffffff" {
-		b.Value = decimal.Zero
+		b.Value = decimal.NewFromInt32(-1)
 		return
 	}
 	b.Value = decimal.NewFromBigInt(uint128.FromBytes(c).Big(), 0)
@@ -248,34 +245,6 @@ type RawAuraPreDigest struct{ Struct }
 func (s *RawAuraPreDigest) Init(data scaleBytes.ScaleBytes, option *ScaleDecoderOption) {
 	s.Struct.TypeMapping = &TypeMapping{Names: []string{"slotNumber"}, Types: []string{"u64"}}
 	s.Struct.Init(data, option)
-}
-
-type RawBabePreDigest struct {
-	Struct
-}
-
-func (r *RawBabePreDigest) Init(data scaleBytes.ScaleBytes, option *ScaleDecoderOption) {
-	r.Struct.TypeMapping = &TypeMapping{Names: []string{"isPhantom", "Primary", "Secondary", "VRF"}, Types: []string{"bool", "RawBabePreDigestPrimary", "RawBabePreDigestSecondary", "RawBabePreDigestSecondaryVRF"}}
-	r.Struct.Init(data, option)
-}
-
-func (r *RawBabePreDigest) Process() {
-	label := r.ProcessAndUpdateData("RawBabeLabel").(string)
-	for k, name := range r.Struct.TypeMapping.Names {
-		if name == label {
-			r.Value = map[string]interface{}{label: r.ProcessAndUpdateData(r.TypeMapping.Types[k])}
-			break
-		}
-	}
-}
-
-type RawBabeLabel struct {
-	Enum
-}
-
-func (s *RawBabeLabel) Init(data scaleBytes.ScaleBytes, option *ScaleDecoderOption) {
-	option.ValueList = []string{"isPhantom", "Primary", "Secondary", "VRF"}
-	s.Enum.Init(data, option)
 }
 
 type RawBabePreDigestPrimary struct{ Struct }
@@ -370,31 +339,6 @@ func (v *VoteOutcome) Process() {
 	v.Value = utiles.BytesToHex(v.NextBytes(32))
 }
 
-type IntFixed struct {
-	ScaleDecoder
-	FixedLength int
-	Reader      io.Reader
-}
-
-func (f *IntFixed) Init(data scaleBytes.ScaleBytes, option *ScaleDecoderOption) {
-	if option != nil && option.FixedLength != 0 {
-		f.FixedLength = option.FixedLength
-	}
-	f.ScaleDecoder.Init(data, option)
-}
-
-func (f *IntFixed) Process() {
-	value := utiles.U256(utiles.BytesToHex(utiles.ReverseBytes(f.NextBytes(f.FixedLength))))
-	var i, e, b = big.NewInt(2), big.NewInt(int64(f.FixedLength*8) - 1), big.NewInt(int64(f.FixedLength * 8))
-	unsignedMid := big.NewInt(2).Exp(i, e, nil)
-	ceiling := big.NewInt(2).Exp(i, b, nil)
-	if value.Cmp(unsignedMid) > 0 {
-		f.Value = value.Sub(value, ceiling)
-		return
-	}
-	f.Value = value
-}
-
 type OpaqueCall struct {
 	Bytes
 }
@@ -437,24 +381,6 @@ func (g *GenericLookupSource) Process() {
 	e := ScaleDecoder{}
 	e.Init(scaleBytes.ScaleBytes{Data: g.Data.Data[offset : offset+length]}, nil)
 	g.Value = strconv.Itoa(int(e.ProcessAndUpdateData("U32").(uint32)))
-}
-
-type BTreeMap struct{ ScaleDecoder }
-
-func (b *BTreeMap) Process() {
-	elementCount := b.ProcessAndUpdateData("Compact<u32>").(int)
-	var result []interface{}
-	if elementCount > 1000 {
-		panic(fmt.Sprintf("BTreeMap length %d exceeds %d", elementCount, 1000))
-	}
-	for i := 0; i < elementCount; i++ {
-		subType := strings.Split(b.SubType, ",")
-		key := utiles.ToString(b.ProcessAndUpdateData(subType[0]))
-		result = append(result, map[string]interface{}{
-			key: b.ProcessAndUpdateData(subType[1]),
-		})
-	}
-	b.Value = result
 }
 
 type Box struct{ ScaleDecoder }

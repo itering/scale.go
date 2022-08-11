@@ -7,3 +7,10 @@ type Bool struct {
 func (b *Bool) Process() {
 	b.Value = b.getNextBool()
 }
+
+func (b *Bool) Encode(value bool) string {
+	if value {
+		return "01"
+	}
+	return "00"
+}

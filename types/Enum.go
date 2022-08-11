@@ -15,6 +15,11 @@ type Enum struct {
 	Index     int      `json:"index"`
 }
 
+func (e *Enum) WithValueList(valueList []string) *Enum {
+	e.ValueList = valueList
+	return e
+}
+
 func (e *Enum) Init(data scaleBytes.ScaleBytes, option *ScaleDecoderOption) {
 	e.Index = 0
 	if option != nil && len(e.ValueList) == 0 {

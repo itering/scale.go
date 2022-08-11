@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"math/big"
+	"reflect"
 	"strconv"
 	"strings"
 )
@@ -146,4 +147,15 @@ func U8Encode(i int) string {
 	bs := make([]byte, 1)
 	bs[0] = byte(i)
 	return BytesToHex(bs)
+}
+
+func IsNil(a interface{}) bool {
+	if a == nil {
+		return true
+	}
+	switch reflect.TypeOf(a).Kind() {
+	case reflect.Ptr, reflect.Map, reflect.Array, reflect.Chan, reflect.Slice, reflect.Interface, reflect.Func:
+		return reflect.ValueOf(a).IsNil()
+	}
+	return false
 }
