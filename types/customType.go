@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/itering/scale.go/source"
+	"github.com/itering/scale.go/types/convert"
 	"github.com/itering/scale.go/utiles"
 )
 
@@ -20,7 +21,7 @@ func newStruct(names, typeString []string) *TypeMapping {
 
 var V14Types = make(map[string]source.TypeStruct)
 
-func RegCustomTypes(registry map[string]source.TypeStruct) {
+func RegCustomTypes(registry map[string]source.TypeStruct, _ ...string) {
 	for key, typeStruct := range registry {
 		if typeStruct.V14 {
 			if _, ok := V14Types[key]; !ok {
@@ -33,7 +34,7 @@ func RegCustomTypes(registry map[string]source.TypeStruct) {
 		key = strings.ToLower(key)
 		switch typeStruct.Type {
 		case "string":
-			typeString := ConvertType(typeStruct.TypeString)
+			typeString := convert.ConvertType(typeStruct.TypeString)
 			instant := TypeRegistry[strings.ToLower(typeString)]
 			if instant != nil {
 				regCustomKey(key, instant)
@@ -53,7 +54,7 @@ func RegCustomTypes(registry map[string]source.TypeStruct) {
 				}
 			}
 
-			// sub type vec|option
+			// subtype vec|option
 			if typeString[len(typeString)-1:] == ">" {
 				reg := regexp.MustCompile("^([^<]*)<(.+)>$")
 				typeParts := reg.FindStringSubmatch(typeString)
@@ -100,7 +101,7 @@ func RegCustomTypes(registry map[string]source.TypeStruct) {
 			// Array
 			if typeString != "[]" && string(typeString[0]) == "[" && typeString[len(typeString)-1:] == "]" {
 				if typePart := strings.Split(typeString[1:len(typeString)-1], ";"); len(typePart) == 2 {
-					fixed := FixedLengthArray{
+					fixed := FixedArray{
 						FixedLength: utiles.StringToInt(strings.TrimSpace(typePart[1])),
 						SubType:     strings.TrimSpace(typePart[0]),
 					}

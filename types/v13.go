@@ -7,6 +7,8 @@ import (
 	"strings"
 
 	"github.com/huandu/xstrings"
+	"github.com/itering/scale.go/types/convert"
+	"github.com/itering/scale.go/types/scaleBytes"
 	"github.com/itering/scale.go/utiles"
 )
 
@@ -14,7 +16,7 @@ type MetadataV13Decoder struct {
 	ScaleDecoder
 }
 
-func (m *MetadataV13Decoder) Init(data ScaleBytes, option *ScaleDecoderOption) {
+func (m *MetadataV13Decoder) Init(data scaleBytes.ScaleBytes, option *ScaleDecoderOption) {
 	m.ScaleDecoder.Init(data, option)
 }
 
@@ -194,7 +196,7 @@ type MetadataV13ModuleStorageEntry struct {
 	Hasher   string      `json:"hasher"`
 }
 
-func (m *MetadataV13ModuleStorageEntry) Init(data ScaleBytes, option *ScaleDecoderOption) {
+func (m *MetadataV13ModuleStorageEntry) Init(data scaleBytes.ScaleBytes, option *ScaleDecoderOption) {
 	m.ScaleDecoder.Init(data, option)
 }
 
@@ -210,15 +212,15 @@ func (m *MetadataV13ModuleStorageEntry) Process() {
 			Origin: "MapType",
 			MapType: &MapType{
 				Hasher:   m.Hasher,
-				Key:      ConvertType(m.ProcessAndUpdateData("String").(string)),
-				Value:    ConvertType(m.ProcessAndUpdateData("String").(string)),
+				Key:      convert.ConvertType(m.ProcessAndUpdateData("String").(string)),
+				Value:    convert.ConvertType(m.ProcessAndUpdateData("String").(string)),
 				IsLinked: m.ProcessAndUpdateData("bool").(bool)},
 		}
 	case "DoubleMapType":
 		m.Hasher = m.ProcessAndUpdateData("StorageHasher").(string)
-		key1 := ConvertType(m.ProcessAndUpdateData("String").(string))
-		key2 := ConvertType(m.ProcessAndUpdateData("String").(string))
-		value := ConvertType(m.ProcessAndUpdateData("String").(string))
+		key1 := convert.ConvertType(m.ProcessAndUpdateData("String").(string))
+		key2 := convert.ConvertType(m.ProcessAndUpdateData("String").(string))
+		value := convert.ConvertType(m.ProcessAndUpdateData("String").(string))
 		key2Hasher := m.ProcessAndUpdateData("StorageHasher").(string)
 		m.Type = StorageType{
 			Origin: "DoubleMapType",
@@ -231,25 +233,25 @@ func (m *MetadataV13ModuleStorageEntry) Process() {
 			},
 		}
 	case "PlainType":
-		plainType := ConvertType(m.ProcessAndUpdateData("String").(string))
+		plainType := convert.ConvertType(m.ProcessAndUpdateData("String").(string))
 		m.Type = StorageType{
 			Origin:    "PlainType",
 			PlainType: &plainType}
 	case "NMap":
 		var KeyVec []string
 		for _, v := range m.ProcessAndUpdateData("Vec<String>").([]interface{}) {
-			KeyVec = append(KeyVec, ConvertType(v.(string)))
+			KeyVec = append(KeyVec, convert.ConvertType(v.(string)))
 		}
 		var hasherVec []string
 		for _, v := range m.ProcessAndUpdateData("Vec<StorageHasher>").([]interface{}) {
-			hasherVec = append(hasherVec, ConvertType(v.(string)))
+			hasherVec = append(hasherVec, convert.ConvertType(v.(string)))
 		}
 		m.Type = StorageType{
 			Origin: "NMapType",
 			NMapType: &NMapType{
 				Hashers: hasherVec,
 				KeyVec:  KeyVec,
-				Value:   ConvertType(m.ProcessAndUpdateData("String").(string)),
+				Value:   convert.ConvertType(m.ProcessAndUpdateData("String").(string)),
 			}}
 	}
 

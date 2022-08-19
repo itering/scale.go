@@ -1,4 +1,4 @@
-package types
+package scaleBytes
 
 import (
 	"github.com/itering/scale.go/utiles"
@@ -7,6 +7,13 @@ import (
 type ScaleBytes struct {
 	Data   []byte `json:"data"`
 	Offset int    `json:"offset"`
+}
+
+func EmptyScaleBytes() ScaleBytes {
+	return ScaleBytes{
+		Data:   []byte{},
+		Offset: 0,
+	}
 }
 
 func (s *ScaleBytes) GetNextBytes(length int) []byte {

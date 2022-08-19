@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	scaleType "github.com/itering/scale.go/types"
+	"github.com/itering/scale.go/types/scaleBytes"
 	"github.com/itering/scale.go/utiles"
 	"golang.org/x/crypto/blake2b"
 )
@@ -44,7 +45,7 @@ var signedExts = map[string]bool{
 	"ChargeAssetTxPayment":     true,
 }
 
-func (e *ExtrinsicDecoder) Init(data scaleType.ScaleBytes, option *scaleType.ScaleDecoderOption) {
+func (e *ExtrinsicDecoder) Init(data scaleBytes.ScaleBytes, option *scaleType.ScaleDecoderOption) {
 	if option == nil || option.Metadata == nil {
 		panic("ExtrinsicDecoder option metadata required")
 	}

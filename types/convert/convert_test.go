@@ -1,8 +1,9 @@
-package types
+package convert
 
 import (
-	"github.com/stretchr/testify/assert"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestConvertType(t *testing.T) {

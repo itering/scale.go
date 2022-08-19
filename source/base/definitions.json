@@ -19,6 +19,24 @@
       "MetadataV14Decoder"
     ]
   },
+  "AccountIndex": "U32",
+  "AuthorityId": "H256",
+  "Vote": "U8",
+  "Key": "Bytes",
+  "PropIndex": "U32",
+  "StorageHasher": {
+    "type": "enum",
+    "value_list": [
+      "Blake2_128",
+      "Blake2_256",
+      "Blake2_128Concat",
+      "Twox128",
+      "Twox256",
+      "Twox64Concat",
+      "Identity"
+    ]
+  },
+  "EraIndex": "U32",
   "StorageModify": {
     "type": "enum",
     "value_list": [
@@ -1249,6 +1267,7 @@
       ]
     ]
   },
+  "ReferendumIndex": "U32",
   "VotingDirectVote": {
     "type": "struct",
     "type_mapping": [
@@ -2155,6 +2174,29 @@
       ]
     ]
   },
+  "RawBabePreDigest": {
+    "type": "enum",
+    "type_mapping": [
+      [
+        "isPhantom",
+        "bool"
+      ],
+      [
+        "Primary",
+        "RawBabePreDigestPrimary"
+      ],
+      [
+        "Secondary",
+        "RawBabePreDigestSecondary"
+      ],
+      [
+        "VRF",
+        "RawBabePreDigestSecondaryVRF"
+      ]
+    ]
+  },
+  "SlotNumber": "u64",
+  "BabeBlockWeight": "u32",
   "EpochAuthorship": {
     "type": "struct",
     "type_mapping": [

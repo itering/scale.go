@@ -1,4 +1,4 @@
-package types
+package override
 
 import (
 	"strings"
@@ -51,8 +51,11 @@ var typesModules = map[string]map[string]string{
 	},
 }
 
-func (r *RuntimeType) overrideModuleType(t string) string {
-	moduleTypes, ok := typesModules[strings.ToLower(r.Module)]
+func ModuleType(t, module string) string {
+	if module == "" {
+		return t
+	}
+	moduleTypes, ok := typesModules[strings.ToLower(module)]
 	if !ok {
 		return t
 	}

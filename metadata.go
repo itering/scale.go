@@ -4,6 +4,7 @@ import (
 	"errors"
 
 	"github.com/itering/scale.go/types"
+	"github.com/itering/scale.go/types/scaleBytes"
 	"github.com/itering/scale.go/utiles"
 )
 
@@ -16,7 +17,7 @@ type MetadataDecoder struct {
 }
 
 func (m *MetadataDecoder) Init(data []byte) {
-	sData := types.ScaleBytes{Data: data}
+	sData := scaleBytes.ScaleBytes{Data: data}
 	m.ScaleDecoder.Init(sData, nil)
 }
 

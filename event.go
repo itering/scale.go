@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	scaleType "github.com/itering/scale.go/types"
+	"github.com/itering/scale.go/types/scaleBytes"
 	"github.com/itering/scale.go/utiles"
 )
 
@@ -12,7 +13,7 @@ type EventsDecoder struct {
 	Metadata *scaleType.MetadataStruct
 }
 
-func (e *EventsDecoder) Init(data scaleType.ScaleBytes, option *scaleType.ScaleDecoderOption) {
+func (e *EventsDecoder) Init(data scaleBytes.ScaleBytes, option *scaleType.ScaleDecoderOption) {
 	if option.Metadata == nil {
 		panic("ExtrinsicDecoder option metadata required")
 	}

@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/huandu/xstrings"
+	"github.com/itering/scale.go/types/convert"
 	"github.com/itering/scale.go/utiles"
 	"github.com/itering/scale.go/utiles/crypto/keccak"
 )
@@ -64,7 +65,7 @@ func (m *MetadataV14Decoder) Process() {
 					call.Args = append(call.Args, MetadataModuleCallArgument{
 						Name:     field.Name,
 						Type:     metadataSiType[field.Type],
-						TypeName: ConvertType(field.TypeName),
+						TypeName: convert.ConvertType(field.TypeName),
 					})
 				}
 				module.Calls = append(module.Calls, call)
@@ -87,7 +88,7 @@ func (m *MetadataV14Decoder) Process() {
 				event := MetadataEvents{Name: variant.Name, Docs: variant.Docs}
 				for _, field := range variant.Fields {
 					event.Args = append(event.Args, metadataSiType[field.Type])
-					event.ArgsTypeName = append(event.ArgsTypeName, ConvertType(field.TypeName))
+					event.ArgsTypeName = append(event.ArgsTypeName, convert.ConvertType(field.TypeName))
 				}
 				module.Events = append(module.Events, event)
 			}

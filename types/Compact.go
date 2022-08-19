@@ -4,9 +4,8 @@ import (
 	"bytes"
 	"encoding/binary"
 	"io"
-	"math"
-	"strings"
 
+	"github.com/itering/scale.go/types/scaleBytes"
 	"github.com/itering/scale.go/utiles"
 	"github.com/shopspring/decimal"
 )
@@ -45,7 +44,7 @@ func (c *Compact) Process() {
 		c.Value = c.CompactBytes
 		return
 	}
-	s := ScaleDecoder{TypeString: c.SubType, Data: ScaleBytes{Data: c.CompactBytes}}
+	s := ScaleDecoder{TypeString: c.SubType, Data: scaleBytes.ScaleBytes{Data: c.CompactBytes}}
 	byteData := s.ProcessAndUpdateData(c.SubType)
 	if c.CompactLength <= 4 {
 		switch v := byteData.(type) {
@@ -72,7 +71,7 @@ type CompactU32 struct {
 	Reader io.Reader
 }
 
-func (c *CompactU32) Init(data ScaleBytes, option *ScaleDecoderOption) {
+func (c *CompactU32) Init(data scaleBytes.ScaleBytes, option *ScaleDecoderOption) {
 	c.TypeString = "Compact<u32>"
 	c.ScaleDecoder.Init(data, option)
 }
@@ -91,7 +90,7 @@ func (c *CompactU32) Process() {
 
 }
 
-func (c *CompactU32) Encode(value int) ScaleBytes {
+func (c *CompactU32) Encode(value int) string {
 	if value <= 63 {
 		bs := make([]byte, 4)
 		binary.LittleEndian.PutUint32(bs, uint32(value<<2))
@@ -105,77 +104,5 @@ func (c *CompactU32) Encode(value int) ScaleBytes {
 		binary.LittleEndian.PutUint32(bs, uint32(value<<2)|2)
 		c.Data.Data = bs
 	}
-	return c.Data
-}
-
-type Option struct {
-	ScaleDecoder
-}
-
-func (o *Option) Process() {
-	optionType := o.NextBytes(1)
-	if o.SubType != "" && utiles.BytesToHex(optionType) != "00" {
-		o.Value = o.ProcessAndUpdateData(o.SubType)
-	}
-}
-
-type Bytes struct {
-	ScaleDecoder
-}
-
-func (b *Bytes) Init(data ScaleBytes, option *ScaleDecoderOption) {
-	b.TypeString = "Vec<u8>"
-	b.ScaleDecoder.Init(data, option)
-}
-
-func (b *Bytes) Process() {
-	length := b.ProcessAndUpdateData("Compact<u32>").(int)
-	value := b.NextBytes(length)
-	if utiles.IsASCII(value) {
-		b.Value = string(value)
-	} else {
-		b.Value = utiles.BytesToHex(value)
-	}
-}
-
-type String struct {
-	ScaleDecoder
-}
-
-func (b *String) Process() {
-	length := b.ProcessAndUpdateData("Compact<u32>").(int)
-	value := b.NextBytes(length)
-	if utiles.IsASCII(value) {
-		b.Value = string(value)
-	} else {
-		b.Value = utiles.BytesToHex(value)
-	}
-}
-
-type BitVec struct {
-	Compact
-}
-
-func (b *BitVec) Process() {
-	length := b.ProcessAndUpdateData("Compact<u32>").(int)
-	b.Value = utiles.BytesToHex(b.NextBytes(int(math.Ceil(float64(length) / 8))))
-}
-
-type Results struct {
-	ScaleDecoder
-}
-
-func (b *Results) Process() {
-	optionValue := utiles.BytesToHex(b.NextBytes(1))
-	subType := strings.Split(b.SubType, ",")
-	if len(subType) != 2 {
-		panic("Results subType not illegal")
-	}
-	if optionValue == "00" || optionValue == "" {
-		b.Value = map[string]interface{}{"Ok": b.ProcessAndUpdateData(subType[0])}
-	} else if optionValue == "01" {
-		b.Value = map[string]interface{}{"Error": b.ProcessAndUpdateData(subType[1])}
-	} else {
-		panic("illegal Results data")
-	}
+	return utiles.BytesToHex(c.Data.Data)
 }

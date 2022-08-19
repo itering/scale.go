@@ -4,16 +4,15 @@ Scale Codec written by golang, reference from [polkascan/py-scale-codec](https:/
 
 ## Features
 
-- [x] low level codec decode
+- [x] scale decode
+- [x] scale encode
 - [x] metadata decode
 - [x] extrinsic decode
-- [x] LogDigest decode
-- [x] event decode
+- [x] EventRecord decode
 - [x] custom type reg
 - [x] reg special version type
-- [ ] low level codec encode
 
-## Installation 
+## Installation
 
 ```bash
 go get -u github.com/itering/scale.go
