@@ -37,6 +37,7 @@ func (v *Vec) Encode(value interface{}) string {
 	switch reflect.TypeOf(value).Kind() {
 	case reflect.Slice:
 		s := reflect.ValueOf(value)
+		raw += Encode("Compact<u32>", s.Len())
 		for i := 0; i < s.Len(); i++ {
 			raw += Encode(v.SubType, s.Index(i).Interface())
 		}

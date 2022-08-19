@@ -47,12 +47,20 @@ func (h *H256) Process() {
 	h.Value = utiles.AddHex(utiles.BytesToHex(h.NextBytes(32)))
 }
 
+func (h *H256) Encode(value string) string {
+	return utiles.AddHex(strings.ToLower(value))
+}
+
 type H512 struct {
 	ScaleDecoder
 }
 
 func (h *H512) Process() {
 	h.Value = utiles.AddHex(utiles.BytesToHex(h.NextBytes(64)))
+}
+
+func (h *H512) Encode(value string) string {
+	return utiles.AddHex(strings.ToLower(value))
 }
 
 type Era struct {
@@ -331,13 +339,35 @@ func (d *Data) Process() {
 	}
 }
 
-type VoteOutcome struct {
-	ScaleDecoder
+func (d *Data) Encode(v map[string]interface{}) string {
+	key, val, err := utiles.GetEnumValue(v)
+	if err != nil {
+		panic(err)
+	}
+	if index := utiles.SliceIndex(key, d.TypeMapping.Names); index > -1 {
+		if key == "None" {
+			return Encode("U8", 0)
+		}
+		return Encode("U8", index+32) + Encode(d.TypeMapping.Types[index], val.(string))
+	}
+	// raw data
+	if strings.HasPrefix(key, "Raw") {
+		var l int
+		if _, err := fmt.Sscanf(key, "Raw%d", &l); err != nil {
+			panic("invalid data Raw data key")
+		} else {
+			l++
+			indexRaw := Encode("U8", l)
+			if l == len(val.(string)) {
+				return indexRaw + val.(string)
+			}
+			return indexRaw + utiles.BytesToHex([]byte(val.(string)))
+		}
+	}
+	panic("invalid enum key")
 }
 
-func (v *VoteOutcome) Process() {
-	v.Value = utiles.BytesToHex(v.NextBytes(32))
-}
+type VoteOutcome struct{ H256 }
 
 type OpaqueCall struct {
 	Bytes

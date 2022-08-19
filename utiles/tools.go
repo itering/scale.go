@@ -3,6 +3,7 @@ package utiles
 import (
 	"encoding/hex"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"math/big"
 	"reflect"
@@ -158,4 +159,12 @@ func IsNil(a interface{}) bool {
 		return reflect.ValueOf(a).IsNil()
 	}
 	return false
+}
+
+// GetEnumValue  get enum single key && value
+func GetEnumValue(e map[string]interface{}) (string, interface{}, error) {
+	for key, v := range e {
+		return key, v, nil
+	}
+	return "", "", errors.New("empty enum")
 }

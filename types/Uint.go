@@ -19,6 +19,10 @@ func (u *U8) Process() {
 	u.Value = u.GetNextU8()
 }
 
+func (u *U8) Encode(v int) string {
+	return utiles.U8Encode(v)
+}
+
 type U16 struct {
 	Reader io.Reader
 	ScaleDecoder

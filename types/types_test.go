@@ -99,10 +99,10 @@ func TestBalance(t *testing.T) {
 
 //
 func TestRegistration(t *testing.T) {
-	raw := "0x04010000000200a0724e180900000000000000000000000d505552455354414b452d30310e507572655374616b65204c74641b68747470733a2f2f7777772e707572657374616b652e636f6d2f000000000d40707572657374616b65636f"
+	raw := "04010000000200a0724e180900000000000000000000000d505552455354414b452d30310e507572655374616b65204c74641b68747470733a2f2f7777772e707572657374616b652e636f6d2f000000000d40707572657374616b65636f"
 	m := ScaleDecoder{}
 	m.Init(scaleBytes.ScaleBytes{Data: utiles.HexToBytes(raw)}, nil)
-	assert.Equal(t, `{"deposit":"10000000000000","info":{"additional":null,"display":{"Raw12":"PURESTAKE-01"},"email":{"None":null},"image":{"None":null},"legal":{"Raw13":"PureStake Ltd"},"pgpFingerprint":null,"riot":{"None":null},"twitter":{"Raw12":"@purestakeco"},"web":{"Raw26":"https://www.purestake.com/"}},"judgements":[{"col1":1,"col2":{"Reasonable":null}}]}`, utiles.ToString(m.ProcessAndUpdateData("Registration<BalanceOf>")))
+	assert.Equal(t, raw, Encode("Registration<BalanceOf>", m.ProcessAndUpdateData("Registration<BalanceOf>")))
 }
 
 func TestInt(t *testing.T) {
@@ -113,14 +113,10 @@ func TestInt(t *testing.T) {
 }
 
 func TestBoolArray(t *testing.T) {
-	raw := "0x00000100"
+	raw := "00000100"
 	m := ScaleDecoder{}
 	m.Init(scaleBytes.ScaleBytes{Data: utiles.HexToBytes(raw)}, nil)
-	r := m.ProcessAndUpdateData("[bool; 4]")
-	c := []interface{}{false, false, true, false}
-	if !reflect.DeepEqual(c, r.([]interface{})) {
-		t.Errorf("Test TestBoolArray Process fail, decode return %v", r)
-	}
+	assert.EqualValues(t, []interface{}{false, false, true, false}, m.ProcessAndUpdateData("[bool; 4]"))
 }
 
 func TestReferendumInfo(t *testing.T) {

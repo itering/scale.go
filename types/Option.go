@@ -1,6 +1,8 @@
 package types
 
-import "github.com/itering/scale.go/utiles"
+import (
+	"github.com/itering/scale.go/utiles"
+)
 
 type Option struct {
 	ScaleDecoder
@@ -17,18 +19,18 @@ func (o *Option) Process() {
 	}
 }
 
-func (o *Option) Encode(value interface{}) {
+func (o *Option) Encode(value interface{}) string {
+	if v, ok := value.(string); ok && v == "" {
+		return "00"
+	}
 	if utiles.IsNil(value) {
-		o.Value = "00"
-		return
+		return "00"
 	}
 	if o.SubType == "bool" {
 		if value.(bool) {
-			o.Value = "01"
-		} else {
-			o.Value = "02"
+			return "01"
 		}
-		return
+		return "02"
 	}
-	o.Value = Encode(o.SubType, value)
+	return Encode(o.SubType, value)
 }
