@@ -100,6 +100,7 @@ func regDefaultType() {
 		&MetadataV13ModuleStorageEntry{},
 		&MetadataV8Module{},
 		&MetadataV7ModuleStorage{},
+		&MetadataV11Decoder{},
 		&MetadataV12Decoder{},
 		&MetadataV13Decoder{},
 		&MetadataV14Decoder{},
