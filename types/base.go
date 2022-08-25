@@ -43,16 +43,17 @@ type IScaleDecoder interface {
 }
 
 type ScaleDecoder struct {
-	Data        scaleBytes.ScaleBytes `json:"-"`
-	TypeString  string                `json:"-"`
-	SubType     string                `json:"-"`
-	Value       interface{}           `json:"-"`
-	RawValue    string                `json:"-"`
-	TypeMapping *TypeMapping          `json:"-"`
-	Metadata    *MetadataStruct       `json:"-"`
-	Spec        int                   `json:"-"`
-	Module      string                `json:"-"`
-	TypeName    string
+	Data          scaleBytes.ScaleBytes `json:"-"`
+	TypeString    string                `json:"-"`
+	SubType       string                `json:"-"`
+	Value         interface{}           `json:"-"`
+	RawValue      string                `json:"-"`
+	TypeMapping   *TypeMapping          `json:"-"`
+	Metadata      *MetadataStruct       `json:"-"`
+	Spec          int                   `json:"-"`
+	Module        string                `json:"-"`
+	DuplicateName map[string]int        `json:"-"`
+	TypeName      string
 }
 
 func (s *ScaleDecoder) Init(data scaleBytes.ScaleBytes, option *ScaleDecoderOption) {
@@ -72,6 +73,9 @@ func (s *ScaleDecoder) Init(data scaleBytes.ScaleBytes, option *ScaleDecoderOpti
 		if option.TypeName != "" {
 			s.TypeName = option.TypeName
 		}
+	}
+	if len(s.DuplicateName) == 0 {
+		s.DuplicateName = make(map[string]int)
 	}
 	s.Data = data
 	s.RawValue = ""

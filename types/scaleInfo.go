@@ -123,7 +123,11 @@ var registeredSiType = make(map[string]map[int]string)
 
 func (s *ScaleDecoder) processSiType(id2Portable map[int]SiType, uniqueHash string) {
 	elementCount := len(id2Portable)
-
+	for i := 0; i < elementCount; i++ {
+		if typeName := s.nameSiType(id2Portable[i], -1); typeName != "" {
+			s.DuplicateName[typeName] = s.DuplicateName[typeName] + 1
+		}
+	}
 	registeredSiType[uniqueHash] = make(map[int]string)
 	// deal Primitive
 	for i := 0; i < elementCount; i++ {
@@ -150,12 +154,13 @@ func (s *ScaleDecoder) processSiType(id2Portable map[int]SiType, uniqueHash stri
 		}
 		s.dealOneSiType(i, id2Portable[i], id2Portable, uniqueHash)
 	}
+	s.DuplicateName = nil
 }
 
-func nameSiType(SiTyp SiType, id int) string {
-	var generateName = func(s SiType) string {
-		pathName := strings.Join(s.Path, ":")
-		if _, ok := V14Types[strings.Join(s.Path, ":")]; ok {
+func (s *ScaleDecoder) nameSiType(SiTyp SiType, id int) string {
+	var generateName = func(st SiType) string {
+		pathName := strings.Join(st.Path, ":")
+		if s.DuplicateName[pathName] > 1 && id >= 0 {
 			return fmt.Sprintf("%s@%d", pathName, id)
 		}
 		return pathName
@@ -225,7 +230,7 @@ func (s *ScaleDecoder) expandComposite(id int, SiTyp SiType, id2Portable map[int
 			subType = s.dealOneSiType(subTypeId, id2Portable[subTypeId], id2Portable, uniqueHash)
 		}
 		registeredSiType[uniqueHash][id] = subType
-		RegCustomTypes(map[string]source.TypeStruct{nameSiType(SiTyp, id): {Type: "string", TypeString: subType, V14: true}})
+		RegCustomTypes(map[string]source.TypeStruct{s.nameSiType(SiTyp, id): {Type: "string", TypeString: subType, V14: true}})
 		return registeredSiType[uniqueHash][id]
 	}
 	var typeMapping [][]string
@@ -236,7 +241,7 @@ func (s *ScaleDecoder) expandComposite(id int, SiTyp SiType, id2Portable map[int
 		}
 		typeMapping = append(typeMapping, []string{field.Name, subType})
 	}
-	typeString := nameSiType(SiTyp, id)
+	typeString := s.nameSiType(SiTyp, id)
 	RegCustomTypes(map[string]source.TypeStruct{typeString: {Type: "struct", TypeMapping: typeMapping, V14: true}})
 	registeredSiType[uniqueHash][id] = typeString
 	return typeString
@@ -380,7 +385,7 @@ func (s *ScaleDecoder) expandEnum(id int, SiTyp SiType, id2Portable map[int]SiTy
 	if !valueEnum { // only value,like {"a":1,"b":2,"c":3}
 		types = enumValueList
 	}
-	typeString := nameSiType(SiTyp, id)
+	typeString := s.nameSiType(SiTyp, id)
 	RegCustomTypes(map[string]source.TypeStruct{typeString: {Type: "enum", TypeMapping: types, V14: true}})
 	registeredSiType[uniqueHash][id] = typeString
 	return typeString
@@ -402,7 +407,7 @@ func (s *ScaleDecoder) dealOneSiType(id int, SiTyp SiType, id2Portable map[int]S
 	}
 
 	if len(opt) > 0 && opt[0].Recursive {
-		if siTypName := nameSiType(SiTyp, id); siTypName != "" {
+		if siTypName := s.nameSiType(SiTyp, id); siTypName != "" {
 			return siTypName
 		}
 	}
