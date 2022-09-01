@@ -51,8 +51,9 @@ func (f *FixedArray) Encode(value interface{}) string {
 		if s.Len() != f.FixedLength {
 			panic("fixed length not match")
 		}
+		subType := f.SubType
 		for i := 0; i < s.Len(); i++ {
-			raw += Encode(f.SubType, s.Index(i))
+			raw += Encode(subType, s.Index(i).Interface())
 		}
 		return raw
 	default:

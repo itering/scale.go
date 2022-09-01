@@ -31,10 +31,10 @@ func (b *Result) Encode(value map[string]interface{}) string {
 		panic("Result subType not illegal")
 	}
 	if data, ok := value["Ok"]; ok {
-		return "01" + Encode(subType[0], data)
+		return "00" + Encode(subType[0], data)
 	}
 	if data, ok := value["Error"]; ok {
-		return "00" + Encode(subType[1], data)
+		return "01" + Encode(subType[1], data)
 	}
 	panic("illegal Result data")
 }

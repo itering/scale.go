@@ -299,6 +299,7 @@ func TestRange(t *testing.T) {
 
 func TestEncode(t *testing.T) {
 	assert.Equal(t, "00000000", Encode("U32", 0))
+	assert.Equal(t, "010000000200000003000000040000000500000006000000", Encode("[U32; 6]", []uint32{1, 2, 3, 4, 5, 6}))
 	assert.Equal(t, "01000000", Encode("U32", decimal.NewFromInt32(1)))
 	assert.Equal(t, "0100", Encode("U16", decimal.NewFromInt32(1)))
 	assert.Equal(t, "0d00", Encode("U16", 13))
