@@ -81,6 +81,19 @@ func TestSet_Process(t *testing.T) {
 	}
 }
 
+func Test_ComplexEnum(t *testing.T) {
+	regDefaultType()
+
+	RegCustomTypes(map[string]source.TypeStruct{
+		"CustomEnum": {
+			Type:        "enum",
+			TypeMapping: [][]string{{"a", "[[\"col1\", \"u32\"], [\"col2\", \"u32\"]]"}},
+		},
+	})
+	assert.EqualValues(t, "0100000002000000", Encode("CustomEnum", map[string]interface{}{"a": map[string]interface{}{"col1": 1, "col2": 2}}))
+
+}
+
 // 0x025ed0b2 Compact<Balance>
 func TestCompactBalance(t *testing.T) {
 	raw := "0x025ed0b2"
