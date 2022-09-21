@@ -1,18 +1,15 @@
 package utiles
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+)
 
 func TestIsASCII(t *testing.T) {
-	if !IsASCII([]byte("hello world")) {
-		t.Error("hello world is ASCII")
-	}
-	if IsASCII([]byte{5}) {
-		t.Error("[]byte{5} not  ASCII")
-	}
-	if IsASCII(HexToBytes("1c08144900000000000000")) {
-		t.Error("hex 1c08144900000000000000 not ASCII")
-	}
-	if IsASCII(HexToBytes("080b2501")) {
-		t.Error("hex 080b2501 not ASCII")
-	}
+	assert.True(t, IsASCII([]byte("hello world")))
+	assert.False(t, IsASCII([]byte{5}))
+	assert.False(t, IsASCII(HexToBytes("1c08144900000000000000")))
+	assert.False(t, IsASCII(HexToBytes("080b2501")))
+	assert.True(t, IsASCII(HexToBytes("0x73686f7274206d656d6f00000000000000000000000000000000000000000000")))
 }
