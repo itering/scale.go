@@ -60,7 +60,7 @@ func (m *MetadataV14Decoder) Process() {
 			}
 
 			for _, variant := range variants.Variants {
-				call := MetadataCalls{Name: variant.Name, Docs: variant.Docs}
+				call := MetadataCalls{Name: variant.Name, Docs: variant.Docs, LookupIndex: variant.Index}
 				for _, field := range variant.Fields {
 					call.Args = append(call.Args, MetadataModuleCallArgument{
 						Name:     field.Name,
@@ -73,7 +73,7 @@ func (m *MetadataV14Decoder) Process() {
 		}
 		modulesType[k].Calls = module.Calls
 		for callIndex, call := range module.Calls {
-			modulesType[k].Calls[callIndex].Lookup = xstrings.RightJustify(utiles.IntToHex(module.Index), 2, "0") + xstrings.RightJustify(utiles.IntToHex(callIndex), 2, "0")
+			modulesType[k].Calls[callIndex].Lookup = xstrings.RightJustify(utiles.IntToHex(module.Index), 2, "0") + xstrings.RightJustify(utiles.IntToHex(call.LookupIndex), 2, "0")
 			result.CallIndex[modulesType[k].Calls[callIndex].Lookup] = CallIndex{Module: MetadataModules{Name: module.Name}, Call: call}
 		}
 

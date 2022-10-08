@@ -67,10 +67,11 @@ type NMapType struct {
 }
 
 type MetadataCalls struct {
-	Lookup string                       `json:"lookup"`
-	Name   string                       `json:"name"`
-	Docs   []string                     `json:"docs"`
-	Args   []MetadataModuleCallArgument `json:"args"`
+	Lookup      string                       `json:"lookup"`
+	Name        string                       `json:"name"`
+	Docs        []string                     `json:"docs"`
+	Args        []MetadataModuleCallArgument `json:"args"`
+	LookupIndex int                          `json:"-"`
 }
 
 type MetadataEvents struct {
