@@ -6,6 +6,7 @@ import (
 	"reflect"
 	"regexp"
 	"strings"
+	"sync"
 
 	"github.com/itering/scale.go/source"
 	"github.com/itering/scale.go/types/convert"
@@ -23,16 +24,22 @@ type Special struct {
 }
 
 var (
-	TypeRegistry    map[string]interface{}
-	specialRegistry map[string][]Special
+	TypeRegistry        map[string]interface{}
+	TypeRegistryLock    = &sync.RWMutex{}
+	specialRegistry     = make(map[string][]Special)
+	specialRegistryLock = &sync.RWMutex{}
+	V14Types            = make(map[string]source.TypeStruct)
+	V14TypesLock        = &sync.RWMutex{}
 )
 
 func HasReg(typeName string) bool {
+	TypeRegistryLock.RLock()
 	_, ok := TypeRegistry[strings.ToLower(typeName)]
+	TypeRegistryLock.RUnlock()
 	return ok
 }
 
-func regDefaultType() {
+func init() {
 	registry := make(map[string]interface{})
 	scales := []interface{}{
 		&Null{},
@@ -152,7 +159,9 @@ func regDefaultType() {
 	registry["[u8; 2]"] = &FixedU8{FixedLength: 2}
 	registry["[u8; 256]"] = &FixedU8{FixedLength: 256}
 	registry["[u128; 3]"] = &FixedArray{FixedLength: 3, SubType: "u128"}
+	TypeRegistryLock.Lock()
 	TypeRegistry = registry
+	TypeRegistryLock.Unlock()
 	// todo change load source pallet type to lazy load
 	RegCustomTypes(source.LoadTypeRegistry([]byte(source.BaseType)))
 }
@@ -162,7 +171,9 @@ func (r *RuntimeType) getCodecInstant(t string, spec int) (reflect.Type, reflect
 	rt, err := r.specialVersionCodec(t, spec)
 
 	if err != nil {
+		TypeRegistryLock.RLock()
 		rt = TypeRegistry[strings.ToLower(t)]
+		TypeRegistryLock.RUnlock()
 		// fixed array
 		if rt == nil && t != "[]" && string(t[0]) == "[" && t[len(t)-1:] == "]" {
 			if typePart := strings.Split(t[1:len(t)-1], ";"); len(typePart) >= 2 {
@@ -234,8 +245,10 @@ func (r *RuntimeType) GetCodecClass(typeString string, spec int) (reflect.Type, 
 
 func (r *RuntimeType) specialVersionCodec(t string, spec int) (interface{}, error) {
 	var rt interface{}
-
-	if specials, ok := specialRegistry[t]; ok {
+	specialRegistryLock.RLock()
+	specials, ok := specialRegistry[t]
+	specialRegistryLock.RUnlock()
+	if ok {
 		for _, special := range specials {
 			if spec >= special.Version[0] && spec <= special.Version[1] {
 				rt = special.Registry

@@ -9,7 +9,6 @@ import (
 	"github.com/huandu/xstrings"
 	"github.com/itering/scale.go/types/convert"
 	"github.com/itering/scale.go/utiles"
-	"github.com/itering/scale.go/utiles/crypto/keccak"
 )
 
 // {
@@ -36,10 +35,9 @@ func (m *MetadataV14Decoder) Process() {
 	// custom type lookup
 	portable := initPortableRaw(m.ProcessAndUpdateData("PortableRegistry").([]interface{}))
 	// utiles.Debug(portable)
-	metadataUniqueHash := utiles.BytesToHex(keccak.Keccak256(m.Data.Data))
-	m.processSiType(portable, metadataUniqueHash)
-	// fmt.Println("registeredSiType", len(registeredSiType[metadataUniqueHash]), "portable", len(portable))
-	metadataSiType := registeredSiType[metadataUniqueHash]
+
+	m.processSiType(portable)
+	metadataSiType := m.RegisteredSiType
 	MetadataV14ModuleCall := m.ProcessAndUpdateData("Vec<MetadataV14Module>").([]interface{})
 	bm, _ := json.Marshal(MetadataV14ModuleCall)
 

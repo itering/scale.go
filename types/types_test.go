@@ -65,7 +65,6 @@ func TestRawBabePreDigestVRF(t *testing.T) {
 }
 
 func TestSet_Process(t *testing.T) {
-	regDefaultType()
 	RegCustomTypes(map[string]source.TypeStruct{
 		"CustomSet": {
 			Type:      "set",
@@ -82,7 +81,6 @@ func TestSet_Process(t *testing.T) {
 }
 
 func Test_ComplexEnum(t *testing.T) {
-	regDefaultType()
 
 	RegCustomTypes(map[string]source.TypeStruct{
 		"CustomEnum": {
@@ -208,7 +206,6 @@ func TestClikeEnum(t *testing.T) {
 	raw := "0x45"
 	m := ScaleDecoder{}
 	m.Init(scaleBytes.ScaleBytes{Data: utiles.HexToBytes(raw)}, nil)
-	regDefaultType()
 	RegCustomTypes(source.LoadTypeRegistry([]byte(`{"t": {"type": "enum","type_mapping": [["A","42"],["B","69"],["C","255"]]}}`)))
 	r := m.ProcessAndUpdateData("t")
 	if utiles.ToString(r) != `B` {
