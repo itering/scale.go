@@ -19,13 +19,16 @@ func newStruct(names, typeString []string) *TypeMapping {
 	return &TypeMapping{Names: names, Types: typeString}
 }
 
-var V14Types = make(map[string]source.TypeStruct)
-
 func RegCustomTypes(registry map[string]source.TypeStruct, _ ...string) {
 	for key, typeStruct := range registry {
 		if typeStruct.V14 {
-			if _, ok := V14Types[key]; !ok {
+			V14TypesLock.RLock()
+			_, ok := V14Types[key]
+			V14TypesLock.RUnlock()
+			if !ok {
+				V14TypesLock.Lock()
 				V14Types[key] = typeStruct
+				V14TypesLock.Unlock()
 			} else {
 				// Avoid type being overwritten
 				return
@@ -35,7 +38,9 @@ func RegCustomTypes(registry map[string]source.TypeStruct, _ ...string) {
 		switch typeStruct.Type {
 		case "string":
 			typeString := convert.ConvertType(typeStruct.TypeString)
+			TypeRegistryLock.RLock()
 			instant := TypeRegistry[strings.ToLower(typeString)]
+			TypeRegistryLock.RUnlock()
 			if instant != nil {
 				regCustomKey(key, instant)
 				continue
@@ -44,7 +49,9 @@ func RegCustomTypes(registry map[string]source.TypeStruct, _ ...string) {
 			// Explained
 			if explainedType, ok := registry[typeString]; ok {
 				if explainedType.Type == "string" {
+					TypeRegistryLock.RLock()
 					instant := TypeRegistry[strings.ToLower(explainedType.TypeString)]
+					TypeRegistryLock.RUnlock()
 					if instant != nil {
 						regCustomKey(key, instant)
 						continue
@@ -147,18 +154,21 @@ func regCustomKey(key string, rt interface{}) {
 				special.Version[1] = utiles.StringToInt(version[1])
 			}
 		}
-		if specialRegistry == nil {
-			specialRegistry = make(map[string][]Special)
-		}
-		if instant, ok := specialRegistry[slice[0]]; ok {
+		specialRegistryLock.RLock()
+		instant, ok := specialRegistry[slice[0]]
+		specialRegistryLock.RUnlock()
+		if ok {
 			instant = append(instant, special)
-			specialRegistry[slice[0]] = instant
 		} else {
-			specialRegistry[slice[0]] = []Special{special}
+			instant = []Special{special}
 		}
-
+		specialRegistryLock.Lock()
+		specialRegistry[slice[0]] = instant
+		specialRegistryLock.Unlock()
 	} else {
+		TypeRegistryLock.Lock()
 		TypeRegistry[key] = rt
+		TypeRegistryLock.Unlock()
 	}
 
 }

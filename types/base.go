@@ -43,17 +43,18 @@ type IScaleDecoder interface {
 }
 
 type ScaleDecoder struct {
-	Data          scaleBytes.ScaleBytes `json:"-"`
-	TypeString    string                `json:"-"`
-	SubType       string                `json:"-"`
-	Value         interface{}           `json:"-"`
-	RawValue      string                `json:"-"`
-	TypeMapping   *TypeMapping          `json:"-"`
-	Metadata      *MetadataStruct       `json:"-"`
-	Spec          int                   `json:"-"`
-	Module        string                `json:"-"`
-	DuplicateName map[string]int        `json:"-"`
-	TypeName      string
+	Data             scaleBytes.ScaleBytes `json:"-"`
+	TypeString       string                `json:"-"`
+	SubType          string                `json:"-"`
+	Value            interface{}           `json:"-"`
+	RawValue         string                `json:"-"`
+	TypeMapping      *TypeMapping          `json:"-"`
+	Metadata         *MetadataStruct       `json:"-"`
+	Spec             int                   `json:"-"`
+	Module           string                `json:"-"`
+	DuplicateName    map[string]int        `json:"-"`
+	TypeName         string
+	RegisteredSiType map[int]string `json:"-"`
 }
 
 func (s *ScaleDecoder) Init(data scaleBytes.ScaleBytes, option *ScaleDecoderOption) {
@@ -140,10 +141,6 @@ func (s *ScaleDecoder) buildStruct() {
 func (s *ScaleDecoder) ProcessAndUpdateData(typeString string) interface{} {
 	r := RuntimeType{Module: s.Module}
 
-	if TypeRegistry == nil {
-		regDefaultType()
-	}
-
 	class, value, subType := r.GetCodecClass(typeString, s.Spec)
 	if class == nil {
 		panic(fmt.Sprintf("Not found decoder class %s", typeString))
@@ -172,9 +169,6 @@ func (s *ScaleDecoder) ProcessAndUpdateData(typeString string) interface{} {
 
 func Encode(typeString string, data interface{}) string {
 	r := RuntimeType{}
-	if TypeRegistry == nil {
-		regDefaultType()
-	}
 	if typeString == "Null" {
 		return ""
 	}

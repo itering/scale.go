@@ -4,13 +4,13 @@ Scale Codec written by golang, reference from [polkascan/py-scale-codec](https:/
 
 ## Features
 
-- [x] scale decode
-- [x] scale encode
-- [x] metadata decode
-- [x] extrinsic decode
+- [x] Decode
+- [x] Encode
+- [x] Metadata decode(V11,V12,V13,V14)
+- [x] Extrinsic decode
 - [x] EventRecord decode
-- [x] custom type reg
-- [x] reg special version type
+- [x] Custom type reg
+- [x] Reg special version type
 
 ## Installation
 

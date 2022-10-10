@@ -119,40 +119,38 @@ type SiTypeWithName struct {
 	Structure  interface{}
 }
 
-var registeredSiType = make(map[string]map[int]string)
-
-func (s *ScaleDecoder) processSiType(id2Portable map[int]SiType, uniqueHash string) {
+func (s *ScaleDecoder) processSiType(id2Portable map[int]SiType) {
 	elementCount := len(id2Portable)
 	for i := 0; i < elementCount; i++ {
 		if typeName := s.nameSiType(id2Portable[i], -1); typeName != "" {
 			s.DuplicateName[typeName] = s.DuplicateName[typeName] + 1
 		}
 	}
-	registeredSiType[uniqueHash] = make(map[int]string)
+	s.RegisteredSiType = make(map[int]string)
 	// deal Primitive
 	for i := 0; i < elementCount; i++ {
 		if id2Portable[i].Def.Primitive != nil {
-			s.dealPrimitiveSiType(i, id2Portable[i], uniqueHash)
+			s.dealPrimitiveSiType(i, id2Portable[i])
 		}
 	}
 	// deal primitive_types
 	for i := 0; i < elementCount; i++ {
 		if len(id2Portable[i].Path) > 0 && id2Portable[i].Path[0] == "primitive_types" {
-			s.expandPrimitiveTypes(i, id2Portable[i], uniqueHash)
+			s.expandPrimitiveTypes(i, id2Portable[i])
 		}
 	}
 
 	// deal sp_core
 	for i := 0; i < elementCount; i++ {
 		if len(id2Portable[i].Path) > 0 && id2Portable[i].Path[0] == "sp_core" {
-			s.dealOneSiType(i, id2Portable[i], id2Portable, uniqueHash)
+			s.dealOneSiType(i, id2Portable[i], id2Portable)
 		}
 	}
 	for i := 0; i < elementCount; i++ {
-		if _, ok := registeredSiType[uniqueHash][i]; ok {
+		if _, ok := s.RegisteredSiType[i]; ok {
 			continue
 		}
-		s.dealOneSiType(i, id2Portable[i], id2Portable, uniqueHash)
+		s.dealOneSiType(i, id2Portable[i], id2Portable)
 	}
 	s.DuplicateName = nil
 }
@@ -184,150 +182,156 @@ func (s *ScaleDecoder) nameSiType(SiTyp SiType, id int) string {
 	return ""
 }
 
-func (s *ScaleDecoder) expandPrimitiveTypes(id int, SiTyp SiType, uniqueHash string) {
+func (s *ScaleDecoder) expandPrimitiveTypes(id int, SiTyp SiType) {
 	typeString := SiTyp.Path[len(SiTyp.Path)-1]
-	if _, ok := TypeRegistry[strings.ToLower(typeString)]; !ok {
+	TypeRegistryLock.RLock()
+	_, ok := TypeRegistry[strings.ToLower(typeString)]
+	TypeRegistryLock.RUnlock()
+	if !ok {
 		panic(fmt.Sprintf("lack Primitive type %s", SiTyp.Path[len(SiTyp.Path)-1]))
 	}
-	registeredSiType[uniqueHash][id] = typeString
+	s.RegisteredSiType[id] = typeString
 	RegCustomTypes(map[string]source.TypeStruct{
 		fmt.Sprintf("%s:%s", "primitive_types", typeString): {Type: "string", TypeString: typeString, V14: true},
 	})
 }
 
-func (s *ScaleDecoder) dealPrimitiveSiType(id int, SiTyp SiType, uniqueHash string) {
-	if _, ok := TypeRegistry[strings.ToLower(string(*SiTyp.Def.Primitive))]; !ok {
+func (s *ScaleDecoder) dealPrimitiveSiType(id int, SiTyp SiType) {
+	TypeRegistryLock.RLock()
+	_, ok := TypeRegistry[strings.ToLower(string(*SiTyp.Def.Primitive))]
+	TypeRegistryLock.RUnlock()
+	if !ok {
 		panic(fmt.Sprintf("lack Primitive type %v", *SiTyp.Def.Primitive))
 	}
 	typeString := string(*SiTyp.Def.Primitive)
-	registeredSiType[uniqueHash][id] = typeString
+	s.RegisteredSiType[id] = typeString
 	RegCustomTypes(map[string]source.TypeStruct{
 		fmt.Sprintf("%s:%s", "primitive_types", typeString): {Type: "string", TypeString: typeString, V14: true},
 	})
 }
 
-func (s *ScaleDecoder) expandComposite(id int, SiTyp SiType, id2Portable map[int]SiType, uniqueHash string) string {
+func (s *ScaleDecoder) expandComposite(id int, SiTyp SiType, id2Portable map[int]SiType) string {
 	// SpRuntimeUncheckedExtrinsic
 	if len(SiTyp.Path) >= 2 && SiTyp.Path[0] == "sp_runtime" && SiTyp.Path[len(SiTyp.Path)-1] == "UncheckedExtrinsic" {
 		if param := SiTyp.FindParameter("Signature"); param != nil {
-			RegCustomTypes(map[string]source.TypeStruct{"ExtrinsicSignature": {Type: "string", TypeString: s.dealOneSiType(param.Type, id2Portable[param.Type], id2Portable, uniqueHash)}})
+			RegCustomTypes(map[string]source.TypeStruct{"ExtrinsicSignature": {Type: "string", TypeString: s.dealOneSiType(param.Type, id2Portable[param.Type], id2Portable)}})
 		}
 		if param := SiTyp.FindParameter("Address"); param != nil {
-			RegCustomTypes(map[string]source.TypeStruct{"ExtrinsicSigner": {Type: "string", TypeString: s.dealOneSiType(param.Type, id2Portable[param.Type], id2Portable, uniqueHash)}})
+			RegCustomTypes(map[string]source.TypeStruct{"ExtrinsicSigner": {Type: "string", TypeString: s.dealOneSiType(param.Type, id2Portable[param.Type], id2Portable)}})
 		}
 	}
 
 	if len(SiTyp.Path) >= 2 && utiles.SliceIndex(SiTyp.Path[len(SiTyp.Path)-1], []string{"WrapperKeepOpaque", "WrapperOpaque"}) != -1 {
-		subType := fmt.Sprintf("WrapperOpaque<%s>", s.dealOneSiType(SiTyp.Params[0].Type, id2Portable[SiTyp.Params[0].Type], id2Portable, uniqueHash))
-		registeredSiType[uniqueHash][id] = subType
-		return registeredSiType[uniqueHash][id]
+		subType := fmt.Sprintf("WrapperOpaque<%s>", s.dealOneSiType(SiTyp.Params[0].Type, id2Portable[SiTyp.Params[0].Type], id2Portable))
+		s.RegisteredSiType[id] = subType
+		return s.RegisteredSiType[id]
 	}
 
 	if len(SiTyp.Def.Composite.Fields) == 1 {
 		subTypeId := SiTyp.Def.Composite.Fields[0].Type
-		subType, ok := registeredSiType[uniqueHash][subTypeId]
+		subType, ok := s.RegisteredSiType[subTypeId]
 		if !ok {
-			subType = s.dealOneSiType(subTypeId, id2Portable[subTypeId], id2Portable, uniqueHash)
+			subType = s.dealOneSiType(subTypeId, id2Portable[subTypeId], id2Portable)
 		}
-		registeredSiType[uniqueHash][id] = subType
+		s.RegisteredSiType[id] = subType
 		RegCustomTypes(map[string]source.TypeStruct{s.nameSiType(SiTyp, id): {Type: "string", TypeString: subType, V14: true}})
-		return registeredSiType[uniqueHash][id]
+		return s.RegisteredSiType[id]
 	}
 	var typeMapping [][]string
 	for _, field := range SiTyp.Def.Composite.Fields {
-		subType, ok := registeredSiType[uniqueHash][field.Type]
+		subType, ok := s.RegisteredSiType[field.Type]
 		if !ok {
-			subType = s.dealOneSiType(field.Type, id2Portable[field.Type], id2Portable, uniqueHash, RecursiveOption())
+			subType = s.dealOneSiType(field.Type, id2Portable[field.Type], id2Portable, RecursiveOption())
 		}
 		typeMapping = append(typeMapping, []string{field.Name, subType})
 	}
 	typeString := s.nameSiType(SiTyp, id)
 	RegCustomTypes(map[string]source.TypeStruct{typeString: {Type: "struct", TypeMapping: typeMapping, V14: true}})
-	registeredSiType[uniqueHash][id] = typeString
+	s.RegisteredSiType[id] = typeString
 	return typeString
 }
 
-func (s *ScaleDecoder) expandArray(id int, SiTyp SiType, id2Portable map[int]SiType, uniqueHash string) string {
+func (s *ScaleDecoder) expandArray(id int, SiTyp SiType, id2Portable map[int]SiType) string {
 	subTypeId := SiTyp.Def.Array.Type
 	if SiTyp.Def.Array.Len == 0 {
-		registeredSiType[uniqueHash][id] = "NULL"
+		s.RegisteredSiType[id] = "NULL"
 		return "NULL"
 	}
-	subType, ok := registeredSiType[uniqueHash][subTypeId]
+	subType, ok := s.RegisteredSiType[subTypeId]
 	if !ok {
-		subType = s.dealOneSiType(subTypeId, id2Portable[subTypeId], id2Portable, uniqueHash, RecursiveOption())
+		subType = s.dealOneSiType(subTypeId, id2Portable[subTypeId], id2Portable, RecursiveOption())
 	}
-	registeredSiType[uniqueHash][id] = fmt.Sprintf("[%s; %d]", subType, SiTyp.Def.Array.Len)
-	return registeredSiType[uniqueHash][id]
+	s.RegisteredSiType[id] = fmt.Sprintf("[%s; %d]", subType, SiTyp.Def.Array.Len)
+	return s.RegisteredSiType[id]
 }
 
-func (s *ScaleDecoder) expandSequence(id int, SiTyp SiType, id2Portable map[int]SiType, uniqueHash string) string {
+func (s *ScaleDecoder) expandSequence(id int, SiTyp SiType, id2Portable map[int]SiType) string {
 	subTypeId := SiTyp.Def.Sequence.Type
-	subType, ok := registeredSiType[uniqueHash][subTypeId]
+	subType, ok := s.RegisteredSiType[subTypeId]
 	if !ok {
-		subType = s.dealOneSiType(subTypeId, id2Portable[subTypeId], id2Portable, uniqueHash, RecursiveOption())
+		subType = s.dealOneSiType(subTypeId, id2Portable[subTypeId], id2Portable, RecursiveOption())
 	}
-	registeredSiType[uniqueHash][id] = fmt.Sprintf("Vec<%s>", subType)
-	return registeredSiType[uniqueHash][id]
+	s.RegisteredSiType[id] = fmt.Sprintf("Vec<%s>", subType)
+	return s.RegisteredSiType[id]
 }
 
-func (s *ScaleDecoder) expandTuple(id int, SiTyp SiType, id2Portable map[int]SiType, uniqueHash string) string {
+func (s *ScaleDecoder) expandTuple(id int, SiTyp SiType, id2Portable map[int]SiType) string {
 	var tupleSlice []string
 	var tupleStruct [][]string
 	if len(*SiTyp.Def.Tuple) == 0 {
 		return "NULL"
 	}
 	for index, field := range *SiTyp.Def.Tuple {
-		subType, ok := registeredSiType[uniqueHash][field]
+		subType, ok := s.RegisteredSiType[field]
 		if !ok {
-			subType = s.dealOneSiType(field, id2Portable[field], id2Portable, uniqueHash, RecursiveOption())
+			subType = s.dealOneSiType(field, id2Portable[field], id2Portable, RecursiveOption())
 		}
 		tupleStruct = append(tupleStruct, []string{fmt.Sprintf("col%d", index+1), subType})
 		tupleSlice = append(tupleSlice, subType)
 	}
 	tupleTypeName := fmt.Sprintf("Tuple:%s", strings.Join(tupleSlice, ""))
 	RegCustomTypes(map[string]source.TypeStruct{tupleTypeName: {Type: "struct", TypeMapping: tupleStruct, V14: true}})
-	registeredSiType[uniqueHash][id] = tupleTypeName
-	return registeredSiType[uniqueHash][id]
+	s.RegisteredSiType[id] = tupleTypeName
+	return s.RegisteredSiType[id]
 }
 
-func (s *ScaleDecoder) expandCompact(id int, SiTyp SiType, id2Portable map[int]SiType, uniqueHash string) string {
+func (s *ScaleDecoder) expandCompact(id int, SiTyp SiType, id2Portable map[int]SiType) string {
 	subTypeId := SiTyp.Def.Compact.Type
-	subType, ok := registeredSiType[uniqueHash][subTypeId]
+	subType, ok := s.RegisteredSiType[subTypeId]
 	if !ok {
-		subType = s.dealOneSiType(subTypeId, id2Portable[subTypeId], id2Portable, uniqueHash, RecursiveOption())
+		subType = s.dealOneSiType(subTypeId, id2Portable[subTypeId], id2Portable, RecursiveOption())
 	}
-	registeredSiType[uniqueHash][id] = fmt.Sprintf("compact<%s>", subType)
-	return registeredSiType[uniqueHash][id]
+	s.RegisteredSiType[id] = fmt.Sprintf("compact<%s>", subType)
+	return s.RegisteredSiType[id]
 }
 
-func (s *ScaleDecoder) expandOption(id int, SiTyp SiType, id2Portable map[int]SiType, uniqueHash string) string {
+func (s *ScaleDecoder) expandOption(id int, SiTyp SiType, id2Portable map[int]SiType) string {
 	subTypeId := SiTyp.Params[0].Type
-	subType, ok := registeredSiType[uniqueHash][subTypeId]
+	subType, ok := s.RegisteredSiType[subTypeId]
 	if !ok {
-		subType = s.dealOneSiType(subTypeId, id2Portable[subTypeId], id2Portable, uniqueHash, RecursiveOption())
+		subType = s.dealOneSiType(subTypeId, id2Portable[subTypeId], id2Portable, RecursiveOption())
 	}
-	registeredSiType[uniqueHash][id] = fmt.Sprintf("option<%s>", subType)
-	return registeredSiType[uniqueHash][id]
+	s.RegisteredSiType[id] = fmt.Sprintf("option<%s>", subType)
+	return s.RegisteredSiType[id]
 }
 
-func (s *ScaleDecoder) expandResult(id int, SiTyp SiType, id2Portable map[int]SiType, uniqueHash string) string {
+func (s *ScaleDecoder) expandResult(id int, SiTyp SiType, id2Portable map[int]SiType) string {
 	// Result<u8, bool>
 	resultOk := SiTyp.Params[0].Type
 	resultErr := SiTyp.Params[1].Type
-	okType, ok := registeredSiType[uniqueHash][resultOk]
+	okType, ok := s.RegisteredSiType[resultOk]
 	if !ok {
-		okType = s.dealOneSiType(resultOk, id2Portable[resultOk], id2Portable, uniqueHash, RecursiveOption())
+		okType = s.dealOneSiType(resultOk, id2Portable[resultOk], id2Portable, RecursiveOption())
 	}
-	errType, ok := registeredSiType[uniqueHash][resultErr]
+	errType, ok := s.RegisteredSiType[resultErr]
 	if !ok {
-		errType = s.dealOneSiType(resultErr, id2Portable[resultErr], id2Portable, uniqueHash, RecursiveOption())
+		errType = s.dealOneSiType(resultErr, id2Portable[resultErr], id2Portable, RecursiveOption())
 	}
-	registeredSiType[uniqueHash][id] = fmt.Sprintf("Result<%s,%s>", okType, errType)
-	return registeredSiType[uniqueHash][id]
+	s.RegisteredSiType[id] = fmt.Sprintf("Result<%s,%s>", okType, errType)
+	return s.RegisteredSiType[id]
 }
 
-func (s *ScaleDecoder) expandEnum(id int, SiTyp SiType, id2Portable map[int]SiType, uniqueHash string) string {
+func (s *ScaleDecoder) expandEnum(id int, SiTyp SiType, id2Portable map[int]SiType) string {
 	var types, enumValueList [][]string
 	var ok bool
 
@@ -346,16 +350,16 @@ func (s *ScaleDecoder) expandEnum(id int, SiTyp SiType, id2Portable map[int]SiTy
 			enumValueList = append(enumValueList, []string{variant.Name, fmt.Sprintf("%d", variant.Index)})
 		case 1:
 			valueEnum = true
-			typeName, ok = registeredSiType[uniqueHash][variant.Fields[0].Type]
+			typeName, ok = s.RegisteredSiType[variant.Fields[0].Type]
 			if !ok {
-				typeName = s.dealOneSiType(variant.Fields[0].Type, id2Portable[variant.Fields[0].Type], id2Portable, uniqueHash, RecursiveOption())
+				typeName = s.dealOneSiType(variant.Fields[0].Type, id2Portable[variant.Fields[0].Type], id2Portable, RecursiveOption())
 			}
 		default:
 			valueEnum = true
 			for i, v := range variant.Fields {
-				typeName, ok = registeredSiType[uniqueHash][v.Type]
+				typeName, ok = s.RegisteredSiType[v.Type]
 				if !ok {
-					typeName = s.dealOneSiType(v.Type, id2Portable[v.Type], id2Portable, uniqueHash, RecursiveOption())
+					typeName = s.dealOneSiType(v.Type, id2Portable[v.Type], id2Portable, RecursiveOption())
 				}
 				if v.Name == "" {
 					v.Name = fmt.Sprintf("col%d", i)
@@ -387,7 +391,7 @@ func (s *ScaleDecoder) expandEnum(id int, SiTyp SiType, id2Portable map[int]SiTy
 	}
 	typeString := s.nameSiType(SiTyp, id)
 	RegCustomTypes(map[string]source.TypeStruct{typeString: {Type: "enum", TypeMapping: types, V14: true}})
-	registeredSiType[uniqueHash][id] = typeString
+	s.RegisteredSiType[id] = typeString
 	return typeString
 }
 
@@ -399,10 +403,10 @@ func RecursiveOption() SiTypeOption {
 	return SiTypeOption{Recursive: true}
 }
 
-func (s *ScaleDecoder) dealOneSiType(id int, SiTyp SiType, id2Portable map[int]SiType, uniqueHash string, opt ...SiTypeOption) string {
+func (s *ScaleDecoder) dealOneSiType(id int, SiTyp SiType, id2Portable map[int]SiType, opt ...SiTypeOption) string {
 	// Intercept some fixed types
 	if ot := overriderTypesName(SiTyp); ot != "" {
-		registeredSiType[uniqueHash][id] = ot
+		s.RegisteredSiType[id] = ot
 		return ot
 	}
 
@@ -412,23 +416,23 @@ func (s *ScaleDecoder) dealOneSiType(id int, SiTyp SiType, id2Portable map[int]S
 		}
 	}
 	if SiTyp.Def.Composite != nil {
-		return s.expandComposite(id, SiTyp, id2Portable, uniqueHash)
+		return s.expandComposite(id, SiTyp, id2Portable)
 
 	} else if SiTyp.Def.Array != nil {
-		return s.expandArray(id, SiTyp, id2Portable, uniqueHash)
+		return s.expandArray(id, SiTyp, id2Portable)
 
 	} else if SiTyp.Def.Sequence != nil {
-		return s.expandSequence(id, SiTyp, id2Portable, uniqueHash)
+		return s.expandSequence(id, SiTyp, id2Portable)
 
 	} else if SiTyp.Def.Tuple != nil {
-		return s.expandTuple(id, SiTyp, id2Portable, uniqueHash)
+		return s.expandTuple(id, SiTyp, id2Portable)
 
 	} else if SiTyp.Def.Compact != nil {
-		return s.expandCompact(id, SiTyp, id2Portable, uniqueHash)
+		return s.expandCompact(id, SiTyp, id2Portable)
 
 	} else if SiTyp.Def.BitSequence != nil {
-		registeredSiType[uniqueHash][id] = "BitVec"
-		return registeredSiType[uniqueHash][id]
+		s.RegisteredSiType[id] = "BitVec"
+		return s.RegisteredSiType[id]
 	} else if SiTyp.Def.SiTypeDefRange != nil { // Todo
 
 	} else if SiTyp.Def.Variant != nil {
@@ -436,24 +440,24 @@ func (s *ScaleDecoder) dealOneSiType(id int, SiTyp SiType, id2Portable map[int]S
 		// Option
 		if strings.EqualFold(specialVariant, "Option") {
 			// Option
-			return s.expandOption(id, SiTyp, id2Portable, uniqueHash)
+			return s.expandOption(id, SiTyp, id2Portable)
 
 		} else if strings.EqualFold(specialVariant, "Result") {
 			// Result
-			return s.expandResult(id, SiTyp, id2Portable, uniqueHash)
+			return s.expandResult(id, SiTyp, id2Portable)
 
 		} else if len(SiTyp.Path) >= 2 && (SiTyp.Path[len(SiTyp.Path)-2] == "pallet" && SiTyp.Path[len(SiTyp.Path)-1] == "Call") { // Call Extrinsic
-			registeredSiType[uniqueHash][id] = "Call"
+			s.RegisteredSiType[id] = "Call"
 			return "Call"
 		} else if utiles.SliceIndex(SiTyp.Path[len(SiTyp.Path)-1], []string{"Call", "Event"}) != -1 {
-			registeredSiType[uniqueHash][id] = "Call" // tag
+			s.RegisteredSiType[id] = "Call" // tag
 			return "Call"
 		} else {
 			// enum
-			return s.expandEnum(id, SiTyp, id2Portable, uniqueHash)
+			return s.expandEnum(id, SiTyp, id2Portable)
 		}
 	} else {
-		registeredSiType[uniqueHash][id] = "NULL"
+		s.RegisteredSiType[id] = "NULL"
 		return "NULL"
 	}
 	return ""
