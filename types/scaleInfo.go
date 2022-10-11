@@ -452,6 +452,10 @@ func (s *ScaleDecoder) dealOneSiType(id int, SiTyp SiType, id2Portable map[int]S
 		} else if utiles.SliceIndex(SiTyp.Path[len(SiTyp.Path)-1], []string{"Call", "Event"}) != -1 {
 			s.RegisteredSiType[id] = "Call" // tag
 			return "Call"
+		} else if utiles.SliceIndex(SiTyp.Path[len(SiTyp.Path)-1], []string{"RuntimeCall"}) != -1 {
+			typeString := s.nameSiType(SiTyp, id)
+			RegCustomTypes(map[string]source.TypeStruct{typeString: {Type: "string", TypeString: "Call"}})
+			return typeString
 		} else {
 			// enum
 			return s.expandEnum(id, SiTyp, id2Portable)
