@@ -156,12 +156,7 @@ func (e *ExtrinsicDecoder) Process() {
 	e.Module = call.Module.Name
 
 	for _, arg := range call.Call.Args {
-		value := e.ProcessAndUpdateData(arg.Type)
-		param := ExtrinsicParam{Name: arg.Name, Type: arg.Type, Value: value}
-		if param.TypeName == "" {
-			param.TypeName = arg.TypeName
-		}
-		e.Params = append(e.Params, param)
+		e.Params = append(e.Params, ExtrinsicParam{Name: arg.Name, Type: arg.Type, Value: e.ProcessAndUpdateData(arg.Type), TypeName: arg.TypeName})
 	}
 
 	if e.ContainsTransaction {

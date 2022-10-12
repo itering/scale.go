@@ -53,8 +53,8 @@ type ScaleDecoder struct {
 	Spec             int                   `json:"-"`
 	Module           string                `json:"-"`
 	DuplicateName    map[string]int        `json:"-"`
-	TypeName         string
-	RegisteredSiType map[int]string `json:"-"`
+	TypeName         string                `json:"-"`
+	RegisteredSiType map[int]string        `json:"-"`
 }
 
 func (s *ScaleDecoder) Init(data scaleBytes.ScaleBytes, option *ScaleDecoderOption) {
