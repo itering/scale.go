@@ -129,6 +129,7 @@ func init() {
 		&RangeInclusive{},
 		&SubstrateFixedU64{},
 		&SubstrateFixedI128{},
+		&Empty{},
 	}
 	for _, class := range scales {
 		valueOf := reflect.ValueOf(class)

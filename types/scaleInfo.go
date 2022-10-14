@@ -343,7 +343,7 @@ func (s *ScaleDecoder) expandEnum(id int, SiTyp SiType, id2Portable map[int]SiTy
 
 	// deal enum element
 	for index, variant := range SiTyp.Def.Variant.Variants {
-		typeName := "NULL"
+		typeName := "empty"
 		var StructTypes [][]string
 		switch len(variant.Fields) {
 		case 0:

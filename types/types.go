@@ -31,6 +31,12 @@ type SlotNumber struct{ U64 }
 
 type Null struct{ ScaleDecoder }
 
+type Empty struct{ ScaleDecoder }
+
+func (e *Empty) Process() {
+	e.Value = ""
+}
+
 func (h *H160) Process() {
 	h.Value = utiles.AddHex(utiles.BytesToHex(h.NextBytes(20)))
 }

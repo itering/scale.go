@@ -132,6 +132,7 @@ func (m *MetadataV14Decoder) Process() {
 						Hashers: maps.Hashers,
 						Value:   metadataSiType[maps.ValueId],
 						KeysId:  maps.KeysId,
+						ValueId: maps.ValueId,
 					}
 					if t := portable[maps.KeysId].Def.Tuple; t != nil {
 						for _, v := range *t {
