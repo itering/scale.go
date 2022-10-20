@@ -11,7 +11,7 @@ func (b *Bytes) Process() {
 	if value := b.NextBytes(length); utiles.IsASCII(value) {
 		b.Value = string(value)
 	} else {
-		b.Value = utiles.BytesToHex(value)
+		b.Value = utiles.AddHex(utiles.BytesToHex(value))
 	}
 }
 

@@ -30,7 +30,7 @@ func (f *FixedArray) Process() {
 			if utiles.IsASCII(value) {
 				f.Value = string(value)
 			} else {
-				f.Value = utiles.BytesToHex(value)
+				f.Value = utiles.AddHex(utiles.BytesToHex(value))
 			}
 			return
 		}
