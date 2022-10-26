@@ -35,5 +35,6 @@ func Test_bytes(t *testing.T) {
 	assert.Equal(t, "1", parserFixPoint(decimal.New(65536, 0), 0, 16, 16).String())
 	assert.Equal(t, "0", parserFixPoint(decimal.New(0, 0), 0, 16, 16).String())
 	assert.Equal(t, "0", parserFixPoint(decimal.New(0, 0), 0, 16, 16).String())
+	assert.Equal(t, "-18.1233978271484375", parserFixPoint(decimal.RequireFromString("-334317721545467687680"), 18, 64, 64).String())
 
 }

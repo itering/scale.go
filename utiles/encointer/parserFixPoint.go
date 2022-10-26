@@ -60,6 +60,9 @@ func parserFixPoint(value decimal.Decimal, precision int, upper, lower int) deci
 	}
 
 	bits := xstrings.RightJustify(fmt.Sprintf("%b", bn), length, "0")
+	if value.Sign() == -1 {
+		bits = xstrings.RightJustify(fmt.Sprintf("%b", bn)[1:], length, "0")
+	}
 	var lowerBits string
 	if lower > len(bits) {
 		lowerBits = xstrings.RightJustify(bits, lower, "0")
@@ -82,7 +85,7 @@ func parserFixPoint(value decimal.Decimal, precision int, upper, lower int) deci
 	if bn.Cmp(zero) == 1 {
 		return decimal.NewFromBigInt(decimalPart, 0).Add(decimal.NewFromFloat(floatValue))
 	}
-	return decimal.NewFromBigInt(decimalPart, 0).Sub(decimal.NewFromFloat(floatValue))
+	return decimal.NewFromBigInt(decimalPart, 0).Neg().Sub(decimal.NewFromFloat(floatValue))
 
 }
 
