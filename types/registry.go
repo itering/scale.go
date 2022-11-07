@@ -107,6 +107,8 @@ func init() {
 		&MetadataV13ModuleStorageEntry{},
 		&MetadataV8Module{},
 		&MetadataV7ModuleStorage{},
+		&MetadataV9Decoder{},
+		&MetadataV10Decoder{},
 		&MetadataV11Decoder{},
 		&MetadataV12Decoder{},
 		&MetadataV13Decoder{},
