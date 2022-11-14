@@ -1,6 +1,7 @@
 package types
 
 import (
+	"fmt"
 	"regexp"
 	"strings"
 
@@ -19,8 +20,9 @@ func newStruct(names, typeString []string) *TypeMapping {
 	return &TypeMapping{Names: names, Types: typeString}
 }
 
-func RegCustomTypes(registry map[string]source.TypeStruct, _ ...string) {
-	for key, typeStruct := range registry {
+func RegCustomTypes(registry map[string]source.TypeStruct) {
+	for key := range registry {
+		typeStruct := registry[key]
 		if typeStruct.V14 {
 			V14TypesLock.RLock()
 			_, ok := V14Types[key]
@@ -30,8 +32,11 @@ func RegCustomTypes(registry map[string]source.TypeStruct, _ ...string) {
 				V14Types[key] = typeStruct
 				V14TypesLock.Unlock()
 			} else {
-				// Avoid type being overwritten
-				return
+				if typeStruct.SpecVec == 0 || Eq(key, &typeStruct) {
+					return
+				}
+				// history spec type
+				key = fmt.Sprintf("%s#%d-%d", key, typeStruct.SpecVec, typeStruct.SpecVec)
 			}
 		}
 		key = strings.ToLower(key)

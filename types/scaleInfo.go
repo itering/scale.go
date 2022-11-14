@@ -192,7 +192,7 @@ func (s *ScaleDecoder) expandPrimitiveTypes(id int, SiTyp SiType) {
 	}
 	s.RegisteredSiType[id] = typeString
 	RegCustomTypes(map[string]source.TypeStruct{
-		fmt.Sprintf("%s:%s", "primitive_types", typeString): {Type: "string", TypeString: typeString, V14: true},
+		fmt.Sprintf("%s:%s", "primitive_types", typeString): {Type: "string", TypeString: typeString, V14: true, SpecVec: s.Spec},
 	})
 }
 
@@ -206,7 +206,7 @@ func (s *ScaleDecoder) dealPrimitiveSiType(id int, SiTyp SiType) {
 	typeString := string(*SiTyp.Def.Primitive)
 	s.RegisteredSiType[id] = typeString
 	RegCustomTypes(map[string]source.TypeStruct{
-		fmt.Sprintf("%s:%s", "primitive_types", typeString): {Type: "string", TypeString: typeString, V14: true},
+		fmt.Sprintf("%s:%s", "primitive_types", typeString): {Type: "string", TypeString: typeString, V14: true, SpecVec: s.Spec},
 	})
 }
 
@@ -234,7 +234,7 @@ func (s *ScaleDecoder) expandComposite(id int, SiTyp SiType, id2Portable map[int
 			subType = s.dealOneSiType(subTypeId, id2Portable[subTypeId], id2Portable)
 		}
 		s.RegisteredSiType[id] = subType
-		RegCustomTypes(map[string]source.TypeStruct{s.nameSiType(SiTyp, id): {Type: "string", TypeString: subType, V14: true}})
+		RegCustomTypes(map[string]source.TypeStruct{s.nameSiType(SiTyp, id): {Type: "string", TypeString: subType, V14: true, SpecVec: s.Spec}})
 		return s.RegisteredSiType[id]
 	}
 	var typeMapping [][]string
@@ -246,7 +246,7 @@ func (s *ScaleDecoder) expandComposite(id int, SiTyp SiType, id2Portable map[int
 		typeMapping = append(typeMapping, []string{field.Name, subType})
 	}
 	typeString := s.nameSiType(SiTyp, id)
-	RegCustomTypes(map[string]source.TypeStruct{typeString: {Type: "struct", TypeMapping: typeMapping, V14: true}})
+	RegCustomTypes(map[string]source.TypeStruct{typeString: {Type: "struct", TypeMapping: typeMapping, V14: true, SpecVec: s.Spec}})
 	s.RegisteredSiType[id] = typeString
 	return typeString
 }
@@ -290,7 +290,7 @@ func (s *ScaleDecoder) expandTuple(id int, SiTyp SiType, id2Portable map[int]SiT
 		tupleSlice = append(tupleSlice, subType)
 	}
 	tupleTypeName := fmt.Sprintf("Tuple:%s", strings.Join(tupleSlice, ""))
-	RegCustomTypes(map[string]source.TypeStruct{tupleTypeName: {Type: "struct", TypeMapping: tupleStruct, V14: true}})
+	RegCustomTypes(map[string]source.TypeStruct{tupleTypeName: {Type: "struct", TypeMapping: tupleStruct, V14: true, SpecVec: s.Spec}})
 	s.RegisteredSiType[id] = tupleTypeName
 	return s.RegisteredSiType[id]
 }
@@ -390,7 +390,7 @@ func (s *ScaleDecoder) expandEnum(id int, SiTyp SiType, id2Portable map[int]SiTy
 		types = enumValueList
 	}
 	typeString := s.nameSiType(SiTyp, id)
-	RegCustomTypes(map[string]source.TypeStruct{typeString: {Type: "enum", TypeMapping: types, V14: true}})
+	RegCustomTypes(map[string]source.TypeStruct{typeString: {Type: "enum", TypeMapping: types, V14: true, SpecVec: s.Spec}})
 	s.RegisteredSiType[id] = typeString
 	return typeString
 }

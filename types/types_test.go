@@ -263,7 +263,7 @@ func TestNestFixedArray(t *testing.T) {
 	m.Init(scaleBytes.ScaleBytes{Data: utiles.HexToBytes(raw)}, nil)
 	assert.Equal(
 		t,
-		[]interface{}{"010101", "010101", "010101"},
+		[]interface{}{"0x010101", "0x010101", "0x010101"},
 		m.ProcessAndUpdateData("[[u8; 3]; 3]"),
 	)
 }

@@ -1,5 +1,7 @@
 package types
 
+import "strings"
+
 type Struct struct {
 	ScaleDecoder
 }
@@ -27,4 +29,11 @@ func (s *Struct) Encode(value map[string]interface{}) string {
 		}
 	}
 	return raw
+}
+
+func (s *Struct) ToString() string {
+	if s.TypeMapping != nil {
+		return strings.Join(s.TypeMapping.Types, "")
+	}
+	return s.ScaleDecoder.TypeString
 }

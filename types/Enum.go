@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"regexp"
+	"strings"
 
 	"github.com/itering/scale.go/types/scaleBytes"
 	"github.com/itering/scale.go/utiles"
@@ -116,4 +117,14 @@ func (e *Enum) Encode(data interface{}) string {
 		}
 	}
 	return ""
+}
+
+func (e *Enum) ToString() string {
+	if e.TypeMapping != nil {
+		return strings.Join(e.TypeMapping.Types, "")
+	}
+	if e.ValueList != nil {
+		return strings.Join(e.ValueList, "")
+	}
+	return e.ScaleDecoder.TypeString
 }

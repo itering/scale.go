@@ -6,6 +6,7 @@ import (
 	"regexp"
 	"strings"
 
+	"github.com/itering/scale.go/source"
 	"github.com/itering/scale.go/types/scaleBytes"
 	"github.com/itering/scale.go/utiles"
 )
@@ -40,6 +41,8 @@ type IScaleDecoder interface {
 	Init(data scaleBytes.ScaleBytes, option *ScaleDecoderOption)
 	Process()
 	Encode(interface{}) string
+
+	ToString() string
 }
 
 type ScaleDecoder struct {
@@ -89,6 +92,10 @@ func (s *ScaleDecoder) Init(data scaleBytes.ScaleBytes, option *ScaleDecoderOpti
 func (s *ScaleDecoder) Process() {}
 
 func (s *ScaleDecoder) Encode(interface{}) string { return "" }
+
+func (s *ScaleDecoder) ToString() string {
+	return s.TypeName
+}
 
 func (s *ScaleDecoder) NextBytes(length int) []byte {
 	data := s.Data.GetNextBytes(length)
@@ -189,4 +196,37 @@ func Encode(typeString string, data interface{}) string {
 		return out[0].String()
 	}
 	return ""
+}
+
+func Eq(typeString string, dest *source.TypeStruct) bool {
+	r := RuntimeType{}
+	class, value, subType := r.GetCodecClass(typeString, 0)
+	if class == nil {
+		return true
+	}
+	method, _ := class.MethodByName("Init")
+	method.Func.Call([]reflect.Value{value, reflect.ValueOf(scaleBytes.EmptyScaleBytes()), reflect.ValueOf(&ScaleDecoderOption{SubType: subType, TypeName: typeString})})
+	typeNameValue := value.MethodByName("ToString").Call(nil)
+	if len(typeNameValue) == 0 {
+		return true
+	}
+	typeName := typeNameValue[0].String()
+	switch dest.Type {
+	case "struct":
+		var typeStrings []string
+		for _, v := range dest.TypeMapping {
+			typeStrings = append(typeStrings, v[1])
+		}
+		return typeName == strings.Join(typeStrings, "")
+	case "enum":
+		if len(dest.ValueList) > 0 {
+			return typeName == strings.Join(dest.ValueList, "")
+		}
+		var typeStrings []string
+		for _, v := range dest.TypeMapping {
+			typeStrings = append(typeStrings, v[1])
+		}
+		return typeName == strings.Join(typeStrings, "")
+	}
+	return true
 }
