@@ -3,7 +3,7 @@ package convert
 import "strings"
 
 func ConvertType(name string) string {
-	name = strings.ReplaceAll(name, " ", "")
+	name = strings.TrimSpace(name)
 	name = strings.ReplaceAll(name, "T::", "")
 	name = strings.ReplaceAll(name, "VecDeque<", "Vec<")
 	name = strings.ReplaceAll(name, "<T>", "")
@@ -16,9 +16,6 @@ func ConvertType(name string) string {
 	}
 	if strings.EqualFold(name, "Vec<u8>") {
 		name = "Bytes"
-	}
-	if len(name) > 3 && name[len(name)-2:] == ",)" {
-		name = name[0:len(name)-2] + ")"
 	}
 	switch name {
 	case "()", "<InherentOfflineReport as InherentOfflineReport>::Inherent":
