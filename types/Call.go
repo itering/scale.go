@@ -1,6 +1,10 @@
 package types
 
-import "github.com/itering/scale.go/utiles"
+import (
+	"encoding/json"
+
+	"github.com/itering/scale.go/utiles"
+)
 
 type Call struct {
 	ScaleDecoder
@@ -30,10 +34,21 @@ type BoxCall struct {
 	Params     []ExtrinsicParam `json:"params"`
 }
 
-func (s *Call) Encode(value *BoxCall) string {
-	var raw string
-	raw += utiles.TrimHex(value.CallIndex)
-	for _, arg := range value.Params {
+func (s *Call) Encode(value interface{}) string {
+	var boxCall BoxCall
+	switch v := value.(type) {
+	case BoxCall:
+		boxCall = v
+	case map[string]interface{}:
+		b, _ := json.Marshal(v)
+		if err := json.Unmarshal(b, &boxCall); err != nil {
+			panic("input value is not valid boxCall")
+		}
+	default:
+		panic("input value is not valid boxCall")
+	}
+	raw := utiles.TrimHex(boxCall.CallIndex)
+	for _, arg := range boxCall.Params {
 		raw += Encode(arg.Type, arg.Value)
 	}
 	return raw
