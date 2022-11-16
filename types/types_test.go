@@ -97,7 +97,12 @@ func TestCompactBalance(t *testing.T) {
 	raw := "0x025ed0b2"
 	m := ScaleDecoder{}
 	m.Init(scaleBytes.ScaleBytes{Data: utiles.HexToBytes(raw)}, nil)
-	m.ProcessAndUpdateData("Compact<Balance>")
+	assert.Equal(t, decimal.NewFromInt32(750000000), m.ProcessAndUpdateData("Compact<Balance>"))
+	assert.Equal(t, "04", Encode("Compact<Balance>", 1))
+	assert.Equal(t, "025ed0b2", Encode("Compact<Balance>", decimal.NewFromInt32(750000000)))
+	assert.Equal(t, "025ed0b2", Encode("Compact<Balance>", decimal.NewFromInt32(750000000)))
+	assert.Equal(t, "0f0000c16ff28623", Encode("Compact<Balance>", decimal.RequireFromString("10000000000000000")))
+	assert.Equal(t, "13000064a7b3b6e00d", Encode("Compact<Balance>", decimal.RequireFromString("1000000000000000000")))
 }
 
 // 0xe52d2254c67c430a0000000000000000 Balance
@@ -315,6 +320,7 @@ func TestEncode(t *testing.T) {
 	assert.Equal(t, "0d00", Encode("U16", 13))
 	assert.Equal(t, "0d00", Encode("U16", int64(13)))
 	assert.Equal(t, "00000000000000000000000000000000", Encode("U128", decimal.Zero))
+	assert.Equal(t, "87d61200000000000000000000000000", Encode("U128", decimal.NewFromInt32(1234567)))
 	assert.Equal(t, "87d61200000000000000000000000000", Encode("U128", decimal.NewFromInt32(1234567)))
 	assert.Equal(t, "47a952404f2b1568e6881efeb58c8918", Encode("U128", decimal.RequireFromString("32615670524745285411807346420584982855")))
 	assert.Equal(t, "0x9a5b8a1b7bca89cdb3931d8ee71aa468081d971c", Encode("H160", "0x9a5b8a1B7Bca89CDB3931D8eE71AA468081D971c"))

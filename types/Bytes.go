@@ -17,6 +17,9 @@ func (b *Bytes) Process() {
 
 func (b *Bytes) Encode(value string) string {
 	value = utiles.TrimHex(value)
+	if len(value)%2 == 1 {
+		value += "0"
+	}
 	bytes := utiles.HexToBytes(value)
 	return Encode("Compact<u32>", len(bytes)) + value
 }
@@ -29,6 +32,9 @@ func (h *HexBytes) Process() {
 
 func (h *HexBytes) Encode(value string) string {
 	value = utiles.TrimHex(value)
+	if len(value)%2 == 1 {
+		value += "0"
+	}
 	bytes := utiles.HexToBytes(value)
 	return Encode("Compact<u32>", len(bytes)) + value
 }

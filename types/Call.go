@@ -23,6 +23,22 @@ func (s *Call) Process() {
 	s.Value = result
 }
 
+type BoxCall struct {
+	CallIndex  string           `json:"call_Index"`
+	CallName   string           `json:"call_name"`
+	CallModule string           `json:"call_module"`
+	Params     []ExtrinsicParam `json:"params"`
+}
+
+func (s *Call) Encode(value *BoxCall) string {
+	var raw string
+	raw += utiles.TrimHex(value.CallIndex)
+	for _, arg := range value.Params {
+		raw += Encode(arg.Type, arg.Value)
+	}
+	return raw
+}
+
 type BoxProposal struct {
 	Call
 }
