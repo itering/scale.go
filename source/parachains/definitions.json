@@ -12,12 +12,19 @@
     ],
     "type": "struct"
   },
+  "ValidationCodeHash": "H256",
   "InboundHrmpMessages": "Vec<InboundHrmpMessage>",
   "OriginKind": {
     "value_list": [
       "Native",
       "SovereignAccount",
       "Superuser"
+    ],
+    "type": "enum"
+  },
+  "UpgradeRestriction": {
+    "value_list": [
+      "Present"
     ],
     "type": "enum"
   },

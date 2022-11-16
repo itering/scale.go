@@ -1,0 +1,20 @@
+{
+  "DeferredOffenceOf": "(Vec<OffenceDetails>, Vec<Perbill>, SessionIndex)",
+  "OffenceDetails": {
+    "type_mapping": [
+      [
+        "offender",
+        "Offender"
+      ],
+      [
+        "reporters",
+        "Vec<Reporter>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "Offender": "IdentificationTuple",
+  "OpaqueTimeSlot": "Bytes",
+  "ReportIdOf": "Hash",
+  "Reporter": "AccountId"
+}

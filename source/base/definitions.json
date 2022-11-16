@@ -2336,6 +2336,7 @@
       ]
     ]
   },
+  "(BoundedVec<ProxyDefinition<AccountId,ProxyType,BlockNumber>,MaxProxies>,BalanceOf)": "(Vec<ProxyDefinition>,BalanceOf)",
   "ProxyAnnouncement": {
     "type": "struct",
     "type_mapping": [
