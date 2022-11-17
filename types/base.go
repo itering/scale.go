@@ -175,6 +175,10 @@ func (s *ScaleDecoder) ProcessAndUpdateData(typeString string) interface{} {
 }
 
 func Encode(typeString string, data interface{}) string {
+	return EncodeWithOpt(typeString, data, nil)
+}
+
+func EncodeWithOpt(typeString string, data interface{}, opt *ScaleDecoderOption) string {
 	r := RuntimeType{}
 	if typeString == "Null" {
 		return ""
@@ -184,7 +188,11 @@ func Encode(typeString string, data interface{}) string {
 		panic(fmt.Sprintf("Not found decoder class %s", typeString))
 	}
 	method, _ := class.MethodByName("Init")
-	method.Func.Call([]reflect.Value{value, reflect.ValueOf(scaleBytes.EmptyScaleBytes()), reflect.ValueOf(&ScaleDecoderOption{SubType: subType})})
+	if opt == nil {
+		opt = &ScaleDecoderOption{}
+	}
+	opt.SubType = subType
+	method.Func.Call([]reflect.Value{value, reflect.ValueOf(scaleBytes.EmptyScaleBytes()), reflect.ValueOf(opt)})
 	var val reflect.Value
 	if data == nil {
 		val = reflect.New(reflect.TypeOf("")).Elem()

@@ -2,6 +2,7 @@ package types
 
 import (
 	"encoding/json"
+	"fmt"
 
 	"github.com/itering/scale.go/utiles"
 )
@@ -28,13 +29,14 @@ func (s *Call) Process() {
 }
 
 type BoxCall struct {
-	CallIndex  string           `json:"call_Index"`
-	CallName   string           `json:"call_name"`
-	CallModule string           `json:"call_module"`
-	Params     []ExtrinsicParam `json:"params"`
+	CallIndex string           `json:"call_Index"`
+	Params    []ExtrinsicParam `json:"params"`
 }
 
 func (s *Call) Encode(value interface{}) string {
+	if s.Metadata == nil {
+		panic("nil metadata")
+	}
 	var boxCall BoxCall
 	switch v := value.(type) {
 	case BoxCall:
@@ -47,9 +49,14 @@ func (s *Call) Encode(value interface{}) string {
 	default:
 		panic("input value is not valid boxCall")
 	}
-	raw := utiles.TrimHex(boxCall.CallIndex)
-	for _, arg := range boxCall.Params {
-		raw += Encode(arg.Type, arg.Value)
+	callIndex := utiles.TrimHex(boxCall.CallIndex)
+	raw := callIndex
+	callModule, ok := s.Metadata.CallIndex[callIndex]
+	if !ok {
+		panic(fmt.Sprintf("Not find Extrinsic Lookup %s, please check metadata info", callIndex))
+	}
+	for index, arg := range callModule.Call.Args {
+		raw += Encode(arg.Type, boxCall.Params[index].Value)
 	}
 	return raw
 }

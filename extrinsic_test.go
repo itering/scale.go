@@ -36,21 +36,17 @@ func TestCallEncode(t *testing.T) {
 	_ = m.Process()
 
 	callMapInterface := map[string]interface{}{
-		"call_index":  "0x0001",
-		"call_name":   "system",
-		"call_module": "remark",
-		"params":      []types.ExtrinsicParam{{Type: "Bytes", Value: "0x11111"}},
+		"call_index": "0x0001",
+		"params":     []types.ExtrinsicParam{{Type: "Bytes", Value: "0x11111"}},
 	}
-	assert.Equal(t, types.Encode("Call", callMapInterface), "00010c111110")
+	assert.Equal(t, types.EncodeWithOpt("Call", callMapInterface, &types.ScaleDecoderOption{Metadata: &m.Metadata}), "00010c111110")
 
 	call := types.BoxCall{
-		CallIndex:  "0400",
-		CallName:   "balance",
-		CallModule: "transfer",
+		CallIndex: "0400",
 		Params: []types.ExtrinsicParam{
 			{Type: "sp_runtime:multiaddress:MultiAddress", Value: map[string]interface{}{"Id": "9094c424429709a324e65c64f151630e6c3700192bba8abd3c8e2218b61c0a7a"}},
 			{Type: "Compact<u128>", Value: decimal.RequireFromString("1000000000000000000")},
 		}}
 
-	assert.Equal(t, "0400009094c424429709a324e65c64f151630e6c3700192bba8abd3c8e2218b61c0a7a13000064a7b3b6e00d", types.Encode("Call", call), "")
+	assert.Equal(t, "0400009094c424429709a324e65c64f151630e6c3700192bba8abd3c8e2218b61c0a7a13000064a7b3b6e00d", types.EncodeWithOpt("Call", call, &types.ScaleDecoderOption{Metadata: &m.Metadata}), "")
 }
