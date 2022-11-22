@@ -165,6 +165,10 @@ func (s *AccountId) Process() {
 	s.Value = xstrings.RightJustify(utiles.BytesToHex(s.NextBytes(32)), 64, "0")
 }
 
+func (s *AccountId) Encode(value string) string {
+	return value
+}
+
 type Balance struct {
 	U128
 	Reader io.Reader

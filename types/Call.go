@@ -56,7 +56,7 @@ func (s *Call) Encode(value interface{}) string {
 		panic(fmt.Sprintf("Not find Extrinsic Lookup %s, please check metadata info", callIndex))
 	}
 	for index, arg := range callModule.Call.Args {
-		raw += Encode(arg.Type, boxCall.Params[index].Value)
+		raw += EncodeWithOpt(arg.Type, boxCall.Params[index].Value, &ScaleDecoderOption{Spec: s.Spec})
 	}
 	return raw
 }

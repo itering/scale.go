@@ -25,7 +25,7 @@ func (s *Struct) Encode(value map[string]interface{}) string {
 	var raw string
 	if s.TypeMapping != nil {
 		for k, v := range s.TypeMapping.Names {
-			raw += Encode(s.TypeMapping.Types[k], value[v])
+			raw += EncodeWithOpt(s.TypeMapping.Types[k], value[v], &ScaleDecoderOption{Spec: s.Spec})
 		}
 	}
 	return raw

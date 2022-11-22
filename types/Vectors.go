@@ -39,7 +39,7 @@ func (v *Vec) Encode(value interface{}) string {
 		s := reflect.ValueOf(value)
 		raw += Encode("Compact<u32>", s.Len())
 		for i := 0; i < s.Len(); i++ {
-			raw += Encode(v.SubType, s.Index(i).Interface())
+			raw += EncodeWithOpt(v.SubType, s.Index(i).Interface(), &ScaleDecoderOption{Spec: v.Spec})
 		}
 		return raw
 	default:

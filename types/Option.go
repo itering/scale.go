@@ -32,5 +32,5 @@ func (o *Option) Encode(value interface{}) string {
 		}
 		return "02"
 	}
-	return Encode(o.SubType, value)
+	return EncodeWithOpt(o.SubType, value, &ScaleDecoderOption{Spec: o.Spec})
 }

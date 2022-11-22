@@ -183,14 +183,14 @@ func EncodeWithOpt(typeString string, data interface{}, opt *ScaleDecoderOption)
 	if typeString == "Null" {
 		return ""
 	}
-	class, value, subType := r.GetCodecClass(typeString, -1)
+	if opt == nil {
+		opt = &ScaleDecoderOption{Spec: -1}
+	}
+	class, value, subType := r.GetCodecClass(typeString, opt.Spec)
 	if class == nil {
 		panic(fmt.Sprintf("Not found decoder class %s", typeString))
 	}
 	method, _ := class.MethodByName("Init")
-	if opt == nil {
-		opt = &ScaleDecoderOption{}
-	}
 	opt.SubType = subType
 	method.Func.Call([]reflect.Value{value, reflect.ValueOf(scaleBytes.EmptyScaleBytes()), reflect.ValueOf(opt)})
 	var val reflect.Value
