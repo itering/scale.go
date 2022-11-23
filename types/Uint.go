@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/binary"
 	"io"
+	"math/big"
 
 	"github.com/huandu/xstrings"
 	"github.com/itering/scale.go/utiles"
@@ -117,9 +118,24 @@ func (u *U128) Process() {
 	u.Value = uint128.FromBytes(elementBytes).String()
 }
 
-func (u *U128) Encode(value decimal.Decimal) string {
+func (u *U128) Encode(value interface{}) string {
+	var bigInt *big.Int
+	switch v := value.(type) {
+	case *big.Int:
+		bigInt = v
+	case decimal.Decimal:
+		bigInt = v.BigInt()
+	case string:
+		bigInt = decimal.RequireFromString(v).BigInt()
+	case int64:
+		bigInt = big.NewInt(v)
+	case int:
+		bigInt = big.NewInt(int64(v))
+	default:
+		panic("U128 value not decimal or big int")
+	}
 	bs := make([]byte, 16)
-	u128 := uint128.FromBig(value.BigInt())
+	u128 := uint128.FromBig(bigInt)
 	u128.PutBytes(bs)
 	return utiles.BytesToHex(bs)
 }
