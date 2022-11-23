@@ -346,3 +346,11 @@ func TestDataRawDecode(t *testing.T) {
 	value := m.ProcessAndUpdateData("Registration").(map[string]interface{})
 	assert.Equal(t, map[string]interface{}{"Raw18": "ondin777@gmail.com"}, value["info"].(map[string]interface{})["email"])
 }
+
+func TestEmptyVec(t *testing.T) {
+	raw := "00"
+	m := ScaleDecoder{}
+	m.Init(scaleBytes.ScaleBytes{Data: utiles.HexToBytes(raw)}, nil)
+	assert.EqualValues(t, []interface{}(nil), m.ProcessAndUpdateData("Vec<u32>"))
+	assert.Equal(t, raw, Encode("Vec<u32>", nil))
+}

@@ -53,7 +53,7 @@ func (f *FixedArray) Encode(value interface{}) string {
 		}
 		subType := f.SubType
 		for i := 0; i < s.Len(); i++ {
-			raw += EncodeWithOpt(subType, s.Index(i).Interface(), &ScaleDecoderOption{Spec: f.Spec})
+			raw += EncodeWithOpt(subType, s.Index(i).Interface(), &ScaleDecoderOption{Spec: f.Spec, Metadata: f.Metadata})
 		}
 		return raw
 	default:

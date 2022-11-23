@@ -101,11 +101,11 @@ func (e *Enum) Encode(data interface{}) string {
 						var raw string
 						valueStruct := value.(map[string]interface{})
 						for _, st := range typeMap {
-							raw += EncodeWithOpt(st[1], valueStruct[st[0]], &ScaleDecoderOption{Spec: e.Spec})
+							raw += EncodeWithOpt(st[1], valueStruct[st[0]], &ScaleDecoderOption{Spec: e.Spec, Metadata: e.Metadata})
 						}
 						return raw
 					}
-					return utiles.U8Encode(index) + EncodeWithOpt(subType, value, &ScaleDecoderOption{Spec: e.Spec})
+					return utiles.U8Encode(index) + EncodeWithOpt(subType, value, &ScaleDecoderOption{Spec: e.Spec, Metadata: e.Metadata})
 				}
 				index++
 			}

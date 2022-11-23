@@ -34,12 +34,15 @@ func (v *Vec) Process() {
 
 func (v *Vec) Encode(value interface{}) string {
 	var raw string
+	if reflect.TypeOf(value).Kind() == reflect.String && value.(string) == "" {
+		return Encode("Compact<u32>", 0)
+	}
 	switch reflect.TypeOf(value).Kind() {
 	case reflect.Slice:
 		s := reflect.ValueOf(value)
 		raw += Encode("Compact<u32>", s.Len())
 		for i := 0; i < s.Len(); i++ {
-			raw += EncodeWithOpt(v.SubType, s.Index(i).Interface(), &ScaleDecoderOption{Spec: v.Spec})
+			raw += EncodeWithOpt(v.SubType, s.Index(i).Interface(), &ScaleDecoderOption{Spec: v.Spec, Metadata: v.Metadata})
 		}
 		return raw
 	default:

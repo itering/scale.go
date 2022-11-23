@@ -77,6 +77,8 @@ func (c *Compact) Encode(value interface{}) string {
 		compactValue = decimal.New(v, 0)
 	case int:
 		compactValue = decimal.New(int64(v), 0)
+	case float64:
+		compactValue = decimal.NewFromFloat(v)
 	}
 	bs := make([]byte, 4)
 	if compactValue.IntPart() <= 63 {

@@ -20,8 +20,23 @@ func (u *U8) Process() {
 	u.Value = u.GetNextU8()
 }
 
-func (u *U8) Encode(v int) string {
-	return utiles.U8Encode(v)
+func (u *U8) Encode(value interface{}) string {
+	var i int
+	switch v := value.(type) {
+	case int:
+		i = v
+	case decimal.Decimal:
+		i = int(v.IntPart())
+	case uint32:
+		i = int(v)
+	case int64:
+		i = int(v)
+	case uint16:
+		i = int(v)
+	case float64:
+		i = int(v)
+	}
+	return utiles.U8Encode(i)
 }
 
 type U16 struct {
@@ -51,6 +66,8 @@ func (u *U16) Encode(value interface{}) string {
 		u16 = uint16(v)
 	case uint16:
 		u16 = v
+	case float64:
+		u16 = uint16(v)
 	}
 	bs := make([]byte, 2)
 	binary.LittleEndian.PutUint16(bs, u16)
@@ -80,6 +97,8 @@ func (u *U32) Encode(value interface{}) string {
 		u32 = uint32(v.IntPart())
 	case uint32:
 		u32 = v
+	case float64:
+		u32 = uint32(v)
 	}
 	bs := make([]byte, 4)
 	binary.LittleEndian.PutUint32(bs, u32)
@@ -100,9 +119,22 @@ func (u *U64) Process() {
 	u.Value = binary.LittleEndian.Uint64(c)
 }
 
-func (u *U64) Encode(value uint64) string {
+func (u *U64) Encode(value interface{}) string {
+	var u64 uint64
+	switch v := value.(type) {
+	case int:
+		u64 = uint64(v)
+	case decimal.Decimal:
+		u64 = uint64(v.IntPart())
+	case uint32:
+		u64 = uint64(v)
+	case uint64:
+		u64 = v
+	case float64:
+		u64 = uint64(v)
+	}
 	bs := make([]byte, 8)
-	binary.LittleEndian.PutUint64(bs, value)
+	binary.LittleEndian.PutUint64(bs, u64)
 	return utiles.BytesToHex(bs)
 }
 
