@@ -135,18 +135,33 @@ func (c *CompactU32) Process() {
 
 }
 
-func (c *CompactU32) Encode(value int) string {
-	if value <= 63 {
+func (c *CompactU32) Encode(value interface{}) string {
+	var i int
+	switch v := value.(type) {
+	case int:
+		i = v
+	case decimal.Decimal:
+		i = int(v.IntPart())
+	case uint32:
+		i = int(v)
+	case int64:
+		i = int(v)
+	case uint16:
+		i = int(v)
+	case float64:
+		i = int(v)
+	}
+	if i <= 63 {
 		bs := make([]byte, 4)
-		binary.LittleEndian.PutUint32(bs, uint32(value<<2))
+		binary.LittleEndian.PutUint32(bs, uint32(i<<2))
 		c.Data.Data = bs[0:1]
-	} else if value <= 16383 {
+	} else if i <= 16383 {
 		bs := make([]byte, 4)
-		binary.LittleEndian.PutUint32(bs, uint32(value<<2)|1)
+		binary.LittleEndian.PutUint32(bs, uint32(i<<2)|1)
 		c.Data.Data = bs[0:2]
-	} else if value <= 1073741823 {
+	} else if i <= 1073741823 {
 		bs := make([]byte, 4)
-		binary.LittleEndian.PutUint32(bs, uint32(value<<2)|2)
+		binary.LittleEndian.PutUint32(bs, uint32(i<<2)|2)
 		c.Data.Data = bs
 	}
 	return utiles.BytesToHex(c.Data.Data)
