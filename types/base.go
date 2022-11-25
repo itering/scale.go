@@ -58,6 +58,7 @@ type ScaleDecoder struct {
 	DuplicateName    map[string]int        `json:"-"`
 	TypeName         string                `json:"-"`
 	RegisteredSiType map[int]string        `json:"-"`
+	InternalCall     []string              `json:"-"`
 }
 
 func (s *ScaleDecoder) Init(data scaleBytes.ScaleBytes, option *ScaleDecoderOption) {
@@ -166,7 +167,9 @@ func (s *ScaleDecoder) ProcessAndUpdateData(typeString string) interface{} {
 	// process do decode
 	value.MethodByName("Process").Call(nil)
 	elementData := value.Elem().FieldByName("Data").Interface().(scaleBytes.ScaleBytes)
-
+	if internalCall := value.Elem().FieldByName("InternalCall").Interface().([]string); len(internalCall) > 0 {
+		s.InternalCall = append(s.InternalCall, internalCall...)
+	}
 	s.Data.Offset = elementData.Offset
 	s.Data.Data = elementData.Data
 	s.RawValue = utiles.BytesToHex(s.Data.Data[offsetStart:s.Data.Offset])

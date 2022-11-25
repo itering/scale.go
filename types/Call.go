@@ -12,6 +12,7 @@ type Call struct {
 }
 
 func (s *Call) Process() {
+	start := s.Data.Offset
 	callIndex := utiles.BytesToHex(s.NextBytes(2))
 	callModule := s.Metadata.CallIndex[callIndex]
 	result := map[string]interface{}{
@@ -25,6 +26,7 @@ func (s *Call) Process() {
 		param = append(param, ExtrinsicParam{Name: arg.Name, Type: arg.Type, Value: s.ProcessAndUpdateData(arg.Type)})
 	}
 	result["params"] = param
+	s.InternalCall = append(s.InternalCall, utiles.BytesToHex(s.Data.Data[start:s.Data.Offset]))
 	s.Value = result
 }
 
