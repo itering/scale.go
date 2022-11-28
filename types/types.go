@@ -389,6 +389,7 @@ func (f *OpaqueCall) Process() {
 	option := ScaleDecoderOption{Metadata: f.Metadata, Spec: f.Spec}
 	e.Init(scaleBytes.ScaleBytes{Data: utiles.HexToBytes(f.Value.(string))}, &option)
 	value := e.ProcessAndUpdateData("Call")
+	f.InternalCall = append(f.InternalCall, e.InternalCall...)
 	f.Value = value
 }
 
