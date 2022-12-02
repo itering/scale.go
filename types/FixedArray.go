@@ -45,6 +45,9 @@ func (f *FixedArray) Process() {
 
 func (f *FixedArray) Encode(value interface{}) string {
 	var raw string
+	if reflect.TypeOf(value).Kind() == reflect.String && value.(string) == "" {
+		return ""
+	}
 	switch reflect.TypeOf(value).Kind() {
 	case reflect.Slice:
 		s := reflect.ValueOf(value)
@@ -56,6 +59,13 @@ func (f *FixedArray) Encode(value interface{}) string {
 			raw += EncodeWithOpt(subType, s.Index(i).Interface(), &ScaleDecoderOption{Spec: f.Spec, Metadata: f.Metadata})
 		}
 		return raw
+	case reflect.String:
+		valueStr := value.(string)
+		if strings.HasPrefix(valueStr, "0x") {
+			return valueStr
+		} else {
+			return utiles.BytesToHex([]byte(valueStr))
+		}
 	default:
 		panic(fmt.Errorf("invalid vec input"))
 	}

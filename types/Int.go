@@ -9,6 +9,7 @@ import (
 
 	"github.com/itering/scale.go/types/scaleBytes"
 	"github.com/itering/scale.go/utiles"
+	"github.com/shopspring/decimal"
 )
 
 type IntFixed struct {
@@ -47,7 +48,20 @@ func (f *IntFixed) Encode(value interface{}) string {
 		_, _ = buffer.Read(c)
 		return utiles.BytesToHex(c)
 	}
-	if c, err := BigIntToIntBytes(value.(*big.Int), f.FixedLength); err != nil {
+	valueBigInt := big.NewInt(0)
+	switch v := value.(type) {
+	case float64:
+		valueBigInt = decimal.NewFromFloat(v).BigInt()
+	case decimal.Decimal:
+		valueBigInt = v.BigInt()
+	case *big.Int:
+		valueBigInt = v
+	case string:
+		valueBigInt = decimal.RequireFromString(v).BigInt()
+	default:
+		panic("invalid intFixed value type")
+	}
+	if c, err := BigIntToIntBytes(valueBigInt, f.FixedLength); err != nil {
 		panic(err)
 	} else {
 		return utiles.BytesToHex(c)
