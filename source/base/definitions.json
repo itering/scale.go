@@ -583,6 +583,7 @@
       ]
     ]
   },
+  "KeyTypeId": "u32",
   "OpenTip<AccountId, BalanceOf, BlockNumber, Hash>": {
     "type": "struct",
     "type_mapping": [
@@ -608,6 +609,7 @@
       ]
     ]
   },
+  "OpenTipFinder": "(AccountId, Balance)",
   "OpenTip": {
     "type": "struct",
     "type_mapping": [
