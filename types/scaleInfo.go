@@ -119,7 +119,13 @@ type SiTypeWithName struct {
 	Structure  interface{}
 }
 
-func (s *ScaleDecoder) processSiType(id2Portable map[int]SiType) {
+type ScaleInfo struct {
+	*ScaleDecoder
+	PathPrefix string
+	V14        bool
+}
+
+func (s *ScaleInfo) ProcessSiType(id2Portable map[int]SiType) {
 	elementCount := len(id2Portable)
 	for i := 0; i < elementCount; i++ {
 		if typeName := s.nameSiType(id2Portable[i], -1); typeName != "" {
@@ -155,9 +161,12 @@ func (s *ScaleDecoder) processSiType(id2Portable map[int]SiType) {
 	s.DuplicateName = nil
 }
 
-func (s *ScaleDecoder) nameSiType(SiTyp SiType, id int) string {
+func (s *ScaleInfo) nameSiType(SiTyp SiType, id int) string {
 	var generateName = func(st SiType) string {
 		pathName := strings.Join(st.Path, ":")
+		if s.PathPrefix != "" {
+			pathName = fmt.Sprintf("%s:%s", s.PathPrefix, pathName)
+		}
 		if s.DuplicateName[pathName] > 1 && id >= 0 {
 			return fmt.Sprintf("%s@%d", pathName, id)
 		}
@@ -182,7 +191,7 @@ func (s *ScaleDecoder) nameSiType(SiTyp SiType, id int) string {
 	return ""
 }
 
-func (s *ScaleDecoder) expandPrimitiveTypes(id int, SiTyp SiType) {
+func (s *ScaleInfo) expandPrimitiveTypes(id int, SiTyp SiType) {
 	typeString := SiTyp.Path[len(SiTyp.Path)-1]
 	TypeRegistryLock.RLock()
 	_, ok := TypeRegistry[strings.ToLower(typeString)]
@@ -192,11 +201,11 @@ func (s *ScaleDecoder) expandPrimitiveTypes(id int, SiTyp SiType) {
 	}
 	s.RegisteredSiType[id] = typeString
 	RegCustomTypes(map[string]source.TypeStruct{
-		fmt.Sprintf("%s:%s", "primitive_types", typeString): {Type: "string", TypeString: typeString, V14: true, SpecVec: s.Spec},
+		fmt.Sprintf("%s:%s", "primitive_types", typeString): {Type: "string", TypeString: typeString, V14: s.V14, SpecVec: s.Spec},
 	})
 }
 
-func (s *ScaleDecoder) dealPrimitiveSiType(id int, SiTyp SiType) {
+func (s *ScaleInfo) dealPrimitiveSiType(id int, SiTyp SiType) {
 	TypeRegistryLock.RLock()
 	_, ok := TypeRegistry[strings.ToLower(string(*SiTyp.Def.Primitive))]
 	TypeRegistryLock.RUnlock()
@@ -206,11 +215,11 @@ func (s *ScaleDecoder) dealPrimitiveSiType(id int, SiTyp SiType) {
 	typeString := string(*SiTyp.Def.Primitive)
 	s.RegisteredSiType[id] = typeString
 	RegCustomTypes(map[string]source.TypeStruct{
-		fmt.Sprintf("%s:%s", "primitive_types", typeString): {Type: "string", TypeString: typeString, V14: true, SpecVec: s.Spec},
+		fmt.Sprintf("%s:%s", "primitive_types", typeString): {Type: "string", TypeString: typeString, V14: s.V14, SpecVec: s.Spec},
 	})
 }
 
-func (s *ScaleDecoder) expandComposite(id int, SiTyp SiType, id2Portable map[int]SiType) string {
+func (s *ScaleInfo) expandComposite(id int, SiTyp SiType, id2Portable map[int]SiType) string {
 	// SpRuntimeUncheckedExtrinsic
 	if len(SiTyp.Path) >= 2 && SiTyp.Path[0] == "sp_runtime" && SiTyp.Path[len(SiTyp.Path)-1] == "UncheckedExtrinsic" {
 		if param := SiTyp.FindParameter("Signature"); param != nil {
@@ -234,7 +243,7 @@ func (s *ScaleDecoder) expandComposite(id int, SiTyp SiType, id2Portable map[int
 			subType = s.dealOneSiType(subTypeId, id2Portable[subTypeId], id2Portable)
 		}
 		s.RegisteredSiType[id] = subType
-		RegCustomTypes(map[string]source.TypeStruct{s.nameSiType(SiTyp, id): {Type: "string", TypeString: subType, V14: true, SpecVec: s.Spec}})
+		RegCustomTypes(map[string]source.TypeStruct{s.nameSiType(SiTyp, id): {Type: "string", TypeString: subType, V14: s.V14, SpecVec: s.Spec}})
 		return s.RegisteredSiType[id]
 	}
 	var typeMapping [][]string
@@ -246,12 +255,12 @@ func (s *ScaleDecoder) expandComposite(id int, SiTyp SiType, id2Portable map[int
 		typeMapping = append(typeMapping, []string{field.Name, subType})
 	}
 	typeString := s.nameSiType(SiTyp, id)
-	RegCustomTypes(map[string]source.TypeStruct{typeString: {Type: "struct", TypeMapping: typeMapping, V14: true, SpecVec: s.Spec}})
+	RegCustomTypes(map[string]source.TypeStruct{typeString: {Type: "struct", TypeMapping: typeMapping, V14: s.V14, SpecVec: s.Spec}})
 	s.RegisteredSiType[id] = typeString
 	return typeString
 }
 
-func (s *ScaleDecoder) expandArray(id int, SiTyp SiType, id2Portable map[int]SiType) string {
+func (s *ScaleInfo) expandArray(id int, SiTyp SiType, id2Portable map[int]SiType) string {
 	subTypeId := SiTyp.Def.Array.Type
 	if SiTyp.Def.Array.Len == 0 {
 		s.RegisteredSiType[id] = "NULL"
@@ -265,7 +274,7 @@ func (s *ScaleDecoder) expandArray(id int, SiTyp SiType, id2Portable map[int]SiT
 	return s.RegisteredSiType[id]
 }
 
-func (s *ScaleDecoder) expandSequence(id int, SiTyp SiType, id2Portable map[int]SiType) string {
+func (s *ScaleInfo) expandSequence(id int, SiTyp SiType, id2Portable map[int]SiType) string {
 	subTypeId := SiTyp.Def.Sequence.Type
 	subType, ok := s.RegisteredSiType[subTypeId]
 	if !ok {
@@ -275,10 +284,11 @@ func (s *ScaleDecoder) expandSequence(id int, SiTyp SiType, id2Portable map[int]
 	return s.RegisteredSiType[id]
 }
 
-func (s *ScaleDecoder) expandTuple(id int, SiTyp SiType, id2Portable map[int]SiType) string {
+func (s *ScaleInfo) expandTuple(id int, SiTyp SiType, id2Portable map[int]SiType) string {
 	var tupleSlice []string
 	var tupleStruct [][]string
 	if len(*SiTyp.Def.Tuple) == 0 {
+		s.RegisteredSiType[id] = "NULL"
 		return "NULL"
 	}
 	for index, field := range *SiTyp.Def.Tuple {
@@ -290,12 +300,12 @@ func (s *ScaleDecoder) expandTuple(id int, SiTyp SiType, id2Portable map[int]SiT
 		tupleSlice = append(tupleSlice, subType)
 	}
 	tupleTypeName := fmt.Sprintf("Tuple:%s", strings.Join(tupleSlice, ""))
-	RegCustomTypes(map[string]source.TypeStruct{tupleTypeName: {Type: "struct", TypeMapping: tupleStruct, V14: true, SpecVec: s.Spec}})
+	RegCustomTypes(map[string]source.TypeStruct{tupleTypeName: {Type: "struct", TypeMapping: tupleStruct, V14: s.V14, SpecVec: s.Spec}})
 	s.RegisteredSiType[id] = tupleTypeName
 	return s.RegisteredSiType[id]
 }
 
-func (s *ScaleDecoder) expandCompact(id int, SiTyp SiType, id2Portable map[int]SiType) string {
+func (s *ScaleInfo) expandCompact(id int, SiTyp SiType, id2Portable map[int]SiType) string {
 	subTypeId := SiTyp.Def.Compact.Type
 	subType, ok := s.RegisteredSiType[subTypeId]
 	if !ok {
@@ -305,7 +315,7 @@ func (s *ScaleDecoder) expandCompact(id int, SiTyp SiType, id2Portable map[int]S
 	return s.RegisteredSiType[id]
 }
 
-func (s *ScaleDecoder) expandOption(id int, SiTyp SiType, id2Portable map[int]SiType) string {
+func (s *ScaleInfo) expandOption(id int, SiTyp SiType, id2Portable map[int]SiType) string {
 	subTypeId := SiTyp.Params[0].Type
 	subType, ok := s.RegisteredSiType[subTypeId]
 	if !ok {
@@ -315,7 +325,7 @@ func (s *ScaleDecoder) expandOption(id int, SiTyp SiType, id2Portable map[int]Si
 	return s.RegisteredSiType[id]
 }
 
-func (s *ScaleDecoder) expandResult(id int, SiTyp SiType, id2Portable map[int]SiType) string {
+func (s *ScaleInfo) expandResult(id int, SiTyp SiType, id2Portable map[int]SiType) string {
 	// Result<u8, bool>
 	resultOk := SiTyp.Params[0].Type
 	resultErr := SiTyp.Params[1].Type
@@ -331,7 +341,7 @@ func (s *ScaleDecoder) expandResult(id int, SiTyp SiType, id2Portable map[int]Si
 	return s.RegisteredSiType[id]
 }
 
-func (s *ScaleDecoder) expandEnum(id int, SiTyp SiType, id2Portable map[int]SiType) string {
+func (s *ScaleInfo) expandEnum(id int, SiTyp SiType, id2Portable map[int]SiType) string {
 	var types, enumValueList [][]string
 	var ok bool
 
@@ -390,7 +400,7 @@ func (s *ScaleDecoder) expandEnum(id int, SiTyp SiType, id2Portable map[int]SiTy
 		types = enumValueList
 	}
 	typeString := s.nameSiType(SiTyp, id)
-	RegCustomTypes(map[string]source.TypeStruct{typeString: {Type: "enum", TypeMapping: types, V14: true, SpecVec: s.Spec}})
+	RegCustomTypes(map[string]source.TypeStruct{typeString: {Type: "enum", TypeMapping: types, V14: s.V14, SpecVec: s.Spec}})
 	s.RegisteredSiType[id] = typeString
 	return typeString
 }
@@ -403,7 +413,7 @@ func RecursiveOption() SiTypeOption {
 	return SiTypeOption{Recursive: true}
 }
 
-func (s *ScaleDecoder) dealOneSiType(id int, SiTyp SiType, id2Portable map[int]SiType, opt ...SiTypeOption) string {
+func (s *ScaleInfo) dealOneSiType(id int, SiTyp SiType, id2Portable map[int]SiType, opt ...SiTypeOption) string {
 	// Intercept some fixed types
 	if ot := overriderTypesName(SiTyp); ot != "" {
 		s.RegisteredSiType[id] = ot
