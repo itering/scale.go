@@ -240,7 +240,11 @@ func (s *ScaleInfo) expandComposite(id int, SiTyp SiType, id2Portable map[int]Si
 		subTypeId := SiTyp.Def.Composite.Fields[0].Type
 		subType, ok := s.RegisteredSiType[subTypeId]
 		if !ok {
-			subType = s.dealOneSiType(subTypeId, id2Portable[subTypeId], id2Portable)
+			if subTypeId == id {
+				subType = "NULL"
+			} else {
+				subType = s.dealOneSiType(subTypeId, id2Portable[subTypeId], id2Portable)
+			}
 		}
 		s.RegisteredSiType[id] = subType
 		RegCustomTypes(map[string]source.TypeStruct{s.nameSiType(SiTyp, id): {Type: "string", TypeString: subType, V14: s.V14, SpecVec: s.Spec}})
