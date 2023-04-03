@@ -82,6 +82,10 @@ func (e *Era) Process() {
 	}
 }
 
+func (e *Era) Encode(era string) string {
+	return era
+}
+
 type EraExtrinsic struct{ Era }
 
 type CompactMoment struct {
