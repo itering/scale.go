@@ -199,10 +199,8 @@ func (g *GenericExtrinsic) EncodeWithOpt(opt *scaleType.ScaleDecoderOption) stri
 	if opt.Metadata == nil {
 		panic(errors.New("invalid metadata"))
 	}
-	var data string
-	data = data + scaleType.Encode("Compact<u32>", g.ExtrinsicLength)
-	data = data + g.VersionInfo
-	if g.Signature != "" {
+	data := g.VersionInfo
+	if g.VersionInfo == "84" {
 		data = data + scaleType.Encode(utiles.TrueOrElse(opt.Metadata.MetadataVersion >= 14 &&
 			scaleType.HasReg("ExtrinsicSigner"), "ExtrinsicSigner", "AccountId"), g.Signer) // accountId
 		data = data + scaleType.Encode("ExtrinsicSignature", g.SignatureRaw) // signature
@@ -219,5 +217,5 @@ func (g *GenericExtrinsic) EncodeWithOpt(opt *scaleType.ScaleDecoderOption) stri
 	for index, arg := range call.Call.Args {
 		data = data + scaleType.Encode(arg.Type, g.Params[index].Value)
 	}
-	return data
+	return scaleType.Encode("Compact<u32>", len(utiles.HexToBytes(data))) + data
 }
