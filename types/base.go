@@ -117,10 +117,10 @@ func (s *ScaleDecoder) getNextBool() bool {
 	return utiles.BytesToHex(data) == "01"
 }
 
-func (s *ScaleDecoder) reset() {
-	s.Data.Data = []byte{}
-	s.Data.Offset = 0
-}
+// func (s *ScaleDecoder) reset() {
+// 	s.Data.Data = []byte{}
+// 	s.Data.Offset = 0
+// }
 
 func (s *ScaleDecoder) buildStruct() {
 	if s.TypeString != "" && string(s.TypeString[0]) == "(" && s.TypeString[len(s.TypeString)-1:] == ")" {

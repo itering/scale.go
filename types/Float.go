@@ -9,8 +9,8 @@ import (
 
 type Float struct {
 	ScaleDecoder
-	bitLength     int
-	encodedLength int
+	// bitLength     int
+	// encodedLength int
 }
 
 type Float64 struct {
@@ -18,8 +18,8 @@ type Float64 struct {
 }
 
 func (f *Float64) Init(data scaleBytes.ScaleBytes, option *ScaleDecoderOption) {
-	f.bitLength = 64
-	f.encodedLength = f.bitLength / 8
+	// f.bitLength = 64
+	// f.encodedLength = f.bitLength / 8
 	f.ScaleDecoder.Init(data, option)
 }
 
@@ -38,8 +38,8 @@ type Float32 struct {
 }
 
 func (f *Float32) Init(data scaleBytes.ScaleBytes, option *ScaleDecoderOption) {
-	f.bitLength = 32
-	f.encodedLength = f.bitLength / 8
+	// f.bitLength = 32
+	// f.encodedLength = f.bitLength / 8
 	f.ScaleDecoder.Init(data, option)
 }
 
