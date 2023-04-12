@@ -195,27 +195,34 @@ func (e *ExtrinsicDecoder) Process() {
 	e.Value = &result
 }
 
-func (g *GenericExtrinsic) EncodeWithOpt(opt *scaleType.ScaleDecoderOption) string {
+// Encode extrinsic with option
+func (g *GenericExtrinsic) Encode(opt *scaleType.ScaleDecoderOption) (string, error) {
 	if opt.Metadata == nil {
-		panic(errors.New("invalid metadata"))
+		return "", errors.New("invalid metadata")
 	}
 	data := g.VersionInfo
 	if g.VersionInfo == "84" {
-		data = data + scaleType.Encode(utiles.TrueOrElse(opt.Metadata.MetadataVersion >= 14 &&
-			scaleType.HasReg("ExtrinsicSigner"), "ExtrinsicSigner", "AccountId"), g.Signer) // accountId
-		data = data + scaleType.Encode("ExtrinsicSignature", g.SignatureRaw) // signature
-		data = data + scaleType.Encode("EraExtrinsic", g.Era)                // era
-		data = data + scaleType.Encode("Compact<U64>", g.Nonce)              // nonce
-		data = data + scaleType.Encode("Compact<Balance>", g.Tip)            // tip
+		data = data + scaleType.Encode(utiles.TrueOrElse(opt.Metadata.MetadataVersion >= 14 && scaleType.HasReg("ExtrinsicSigner"), "ExtrinsicSigner", "AccountId"), g.Signer) // accountId
+		data = data + scaleType.Encode("ExtrinsicSignature", g.SignatureRaw)                                                                                                   // signature
+		data = data + scaleType.Encode("EraExtrinsic", g.Era)                                                                                                                  // era
+		data = data + scaleType.Encode("Compact<U64>", g.Nonce)                                                                                                                // nonce
+		data = data + scaleType.Encode("Compact<Balance>", g.Tip)                                                                                                              // tip
 	}
 
 	data = data + g.CallCode
 	call, ok := opt.Metadata.CallIndex[g.CallCode]
+
 	if !ok {
-		panic(fmt.Sprintf("Not find Extrinsic Lookup %s, please check metadata info", g.CallCode))
+		return "", fmt.Errorf("not find Extrinsic Lookup %s, please check metadata info", g.CallCode)
 	}
+
+	if len(g.Params) != len(call.Call.Args) {
+		return "", fmt.Errorf("extrinsic params length not match, expect %d, got %d", len(call.Call.Args), len(g.Params))
+	}
+
 	for index, arg := range call.Call.Args {
-		data = data + scaleType.Encode(arg.Type, g.Params[index].Value)
+		data = data + utiles.TrimHex(scaleType.EncodeWithOpt(arg.Type, g.Params[index].Value, opt))
 	}
-	return scaleType.Encode("Compact<u32>", len(utiles.HexToBytes(data))) + data
+
+	return scaleType.Encode("Compact<u32>", len(utiles.HexToBytes(data))) + data, nil
 }
