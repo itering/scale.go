@@ -73,4 +73,9 @@ func TestExtrinsicEncode(t *testing.T) {
 		assert.NoError(t, err)
 		assert.Equal(t, raw, encode)
 	}
+
+	// will raise extrinsic params length not match error
+	genericExtrinsic := scalecodec.GenericExtrinsic{VersionInfo: "04", CallCode: "0200", Params: nil}
+	_, err := genericExtrinsic.Encode(&option)
+	assert.Error(t, err)
 }

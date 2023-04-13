@@ -82,9 +82,9 @@ type GenericExtrinsic struct {
 	Tip                decimal.Decimal
 	SignedExtensions   map[string]interface{}
 	AccountId          interface{}
-	Signer             interface{}
+	Signer             interface{} // map[string]interface or string
 	Signature          string
-	SignatureRaw       interface{}
+	SignatureRaw       interface{} // map[string]interface or string
 	Nonce              int
 	Era                string
 	ExtrinsicHash      string
@@ -195,7 +195,30 @@ func (e *ExtrinsicDecoder) Process() {
 	e.Value = &result
 }
 
-// Encode extrinsic with option
+/*
+Encode extrinsic with option
+opt.Metadata is required
+return hex string, if error, return empty string
+
+Example:
+m := scalecodec.MetadataDecoder{}
+m.Init(utiles.HexToBytes(Kusama9370))
+_ = m.Process()
+option := types.ScaleDecoderOption{Metadata: &m.Metadata}
+genericExtrinsic := scalecodec.GenericExtrinsic{
+	VersionInfo:  "84",
+	CallCode:     "0400",
+	Nonce:        0,
+	Era:          "00",
+	Signer:       map[string]interface{}{"Id": "0xe673cb35ffaaf7ab98c4e9268bfa9b4a74e49d41c8225121c346db7a7dd06d88"},
+	SignatureRaw: map[string]interface{}{"Ed25519": "0xfce9453b1442bba86c2781e755a29c8a215ccf4b65ce81eeaa5b5a04dcdb79a54525cc86969f910c71c05f84aeab9c205022ecd4aa2abb4a3c3667f09dd16e0b"},
+	Params: []scalecodec.ExtrinsicParam{
+		{Value: map[string]interface{}{"Id": "0x0770e0831a275b534f7507c8ebd9f5f982a55053c9dc672da886ef41a6b5c628"}}, {Value: "1094000000000"},
+	},
+}
+fmt.Println(genericExtrinsic.Encode(&option))
+*/
+
 func (g *GenericExtrinsic) Encode(opt *scaleType.ScaleDecoderOption) (string, error) {
 	if opt.Metadata == nil {
 		return "", errors.New("invalid metadata")

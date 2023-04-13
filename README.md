@@ -21,7 +21,13 @@ go get -u github.com/itering/scale.go
 ## Test
 
 ```bash
-go test ./... --cover -v
+go test ./... --cover -v 
+```
+
+Docker
+```bash
+docker build -t scale_go .
+docker run -it scale_go
 ```
 
 ## Resources
