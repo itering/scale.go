@@ -19,7 +19,7 @@
         "[[\"assets\", \"Vec<MultiAssetV0>\"], [\"effects\", \"Vec<XcmOrderV0>\"]]"
       ],
       [
-        "ReceiveTeleportedAsset",
+        "TeleportAsset",
         "[[\"assets\", \"Vec<MultiAssetV0>\"], [\"effects\", \"Vec<XcmOrderV0>\"]]"
       ],
       [
@@ -284,7 +284,7 @@
       ],
       [
         "InitiateTeleport",
-        "[[\"assets\", \"Vec<MultiAsset>\"], [\"dest\", \"MultiLocationV0\"], [\"effects\", \"Vec<XcmOrderV0>\"]]"
+        "[[\"assets\", \"Vec<MultiAssetV0>\"], [\"dest\", \"MultiLocationV0\"], [\"effects\", \"Vec<XcmOrderV0>\"]]"
       ],
       [
         "QueryHolding",
@@ -292,7 +292,7 @@
       ],
       [
         "BuyExecution",
-        "[[\"fees\", \"MultiAsset\"], [\"weight\", \"u64\"], [\"debt\", \"u64\"], [\"haltOnError\", \"bool\"], [\"xcm\", \"Vec<XcmV0>\"]]"
+        "[[\"fees\", \"MultiAssetV0\"], [\"weight\", \"u64\"], [\"debt\", \"u64\"], [\"haltOnError\", \"bool\"], [\"xcm\", \"Vec<XcmV0>\"]]"
       ]
     ],
     "type": "enum"

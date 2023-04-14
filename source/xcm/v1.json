@@ -4,6 +4,10 @@
       [
         "Assets",
         "MultiAssetsV1"
+      ],
+      [
+        "Version",
+        "U32"
       ]
     ],
     "type": "enum"
@@ -53,6 +57,14 @@
       [
         "RelayedFrom",
         "[[\"who\", \"MultiLocationV1\"], [\"message\", \"XcmV1\"]]"
+      ],
+      [
+        "SubscribeVersion",
+        "[[\"query_id\", \"U64\"], [\"max_response_weight\", \"U64\"]]"
+      ],
+      [
+        "UnsubscribeVersion",
+        "NULL"
       ]
     ],
     "type": "enum"
@@ -294,11 +306,11 @@
       ],
       [
         "DepositAsset",
-        "[[\"assets\", \"MultiAssetFilterV1\"], [\"maxAssets\", \"u32\"], [\"beneficiary\", \"MultiLocationV1\"]]"
+        "[[\"assets\", \"MultiAssetFilterV1\"], [\"max_assets\", \"u32\"], [\"beneficiary\", \"MultiLocationV1\"]]"
       ],
       [
         "DepositReserveAsset",
-        "[[\"assets\", \"MultiAssetFilterV1\"], [\"maxAssets\", \"u32\"], [\"dest\", \"MultiLocationV1\"], [\"effects\", \"Vec<XcmOrderV1>\"]]"
+        "[[\"assets\", \"MultiAssetFilterV1\"], [\"max_assets\", \"u32\"], [\"dest\", \"MultiLocationV1\"], [\"effects\", \"Vec<XcmOrderV1>\"]]"
       ],
       [
         "ExchangeAsset",
@@ -318,7 +330,7 @@
       ],
       [
         "BuyExecution",
-        "[[\"fees\", \"MultiAssetV1\"], [\"weight\", \"u64\"], [\"debt\", \"u64\"], [\"haltOnError\", \"bool\"], [\"instructions\", \"Vec<XcmV1>\"]]"
+        "[[\"fees\", \"MultiAssetV1\"], [\"weight\", \"u64\"], [\"debt\", \"u64\"], [\"halt_on_error\", \"bool\"], [\"instructions\", \"Vec<XcmV1>\"]]"
       ]
     ],
     "type": "enum"
@@ -364,7 +376,7 @@
         "XcmAssetId"
       ],
       [
-        "fungibility",
+        "fun",
         "FungibilityV1"
       ]
     ],
@@ -379,7 +391,7 @@
       ],
       [
         "AllOf",
-        "[[\"id\", \"XcmAssetId\"], [\"fungibility\", \"WildFungibilityV1\"]]"
+        "[[\"id\", \"XcmAssetId\"], [\"fun\", \"WildFungibilityV1\"]]"
       ]
     ],
     "type": "enum"
