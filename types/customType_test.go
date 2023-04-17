@@ -14,8 +14,8 @@ func TestRegCustomTypesConcurrency(t *testing.T) {
 	for {
 		count++
 		go func() {
-			wg.Add(1)
 			RegCustomTypes(map[string]source.TypeStruct{fmt.Sprintf("%d", count): {Type: "string", TypeString: "u32"}})
+			wg.Add(1)
 			wg.Done()
 		}()
 		if count > 100 {

@@ -48,7 +48,7 @@ func (f *IntFixed) Encode(value interface{}) string {
 		_, _ = buffer.Read(c)
 		return utiles.BytesToHex(c)
 	}
-	valueBigInt := big.NewInt(0)
+	var valueBigInt *big.Int
 	switch v := value.(type) {
 	case float64:
 		valueBigInt = decimal.NewFromFloat(v).BigInt()

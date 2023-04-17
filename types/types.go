@@ -464,5 +464,10 @@ type BitVec struct {
 
 func (b *BitVec) Process() {
 	length := b.ProcessAndUpdateData("Compact<u32>").(int)
-	b.Value = utiles.BytesToHex(b.NextBytes(int(math.Ceil(float64(length) / 8))))
+	u8a := b.NextBytes(int(math.Ceil(float64(length) / 8)))
+	var value []string
+	for _, v := range u8a {
+		value = append(value, fmt.Sprintf("%08b", v))
+	}
+	b.Value = "0b" + strings.Join(value, "_")
 }

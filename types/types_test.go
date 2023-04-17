@@ -347,3 +347,12 @@ func TestEmptyVec(t *testing.T) {
 	assert.EqualValues(t, []interface{}(nil), m.ProcessAndUpdateData("Vec<u32>"))
 	assert.Equal(t, raw, Encode("Vec<u32>", nil))
 }
+
+func TestBitVec(t *testing.T) {
+	m := ScaleDecoder{}
+	r := []string{"0b00010111", "0b01111011", "0b00110011"}
+	for i, v := range []string{"0x0817", "0x087b", "0x0c33"} {
+		m.Init(scaleBytes.ScaleBytes{Data: utiles.HexToBytes(v)}, nil)
+		assert.EqualValues(t, r[i], m.ProcessAndUpdateData("BitVec"))
+	}
+}
