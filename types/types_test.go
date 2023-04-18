@@ -330,7 +330,7 @@ func TestFloat(t *testing.T) {
 	m.Init(scaleBytes.ScaleBytes{Data: utiles.HexToBytes("0x0000000000000080")}, nil)
 	assert.Equal(t, float64(0), m.ProcessAndUpdateData("Float64"))
 	m.Init(scaleBytes.ScaleBytes{Data: utiles.HexToBytes("0x00000080")}, nil)
-	assert.Equal(t, float32(-0), m.ProcessAndUpdateData("Float32"))
+	assert.Equal(t, float32(0), m.ProcessAndUpdateData("Float32"))
 }
 
 func TestDataRawDecode(t *testing.T) {

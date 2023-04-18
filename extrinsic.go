@@ -1,6 +1,7 @@
 package scalecodec
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 
@@ -76,22 +77,22 @@ func (e *ExtrinsicDecoder) generateHash() string {
 }
 
 type GenericExtrinsic struct {
-	VersionInfo        string
-	ExtrinsicLength    int
-	AddressType        string
-	Tip                decimal.Decimal
-	SignedExtensions   map[string]interface{}
-	AccountId          interface{}
-	Signer             interface{} // map[string]interface or string
-	Signature          string
-	SignatureRaw       interface{} // map[string]interface or string
-	Nonce              int
-	Era                string
-	ExtrinsicHash      string
-	CallModuleFunction string
-	CallCode           string
-	CallModule         string
-	Params             []ExtrinsicParam
+	VersionInfo        string                 `json:"version_info"`
+	ExtrinsicLength    int                    `json:"extrinsic_length"`
+	AddressType        string                 `json:"address_type"`
+	Tip                decimal.Decimal        `json:"tip"`
+	SignedExtensions   map[string]interface{} `json:"signed_extensions"`
+	AccountId          interface{}            `json:"accountId"`
+	Signer             interface{}            `json:"signer"` // map[string]interface or string
+	Signature          string                 `json:"signature"`
+	SignatureRaw       interface{}            `json:"signature_raw"` // map[string]interface or string
+	Nonce              int                    `json:"nonce"`
+	Era                string                 `json:"era"`
+	ExtrinsicHash      string                 `json:"extrinsic_hash"`
+	CallModuleFunction string                 `json:"call_module_function"`
+	CallCode           string                 `json:"call_code"`
+	CallModule         string                 `json:"call_module"`
+	Params             []ExtrinsicParam       `json:"params"`
 }
 
 func (e *ExtrinsicDecoder) Process() {
@@ -248,4 +249,15 @@ func (g *GenericExtrinsic) Encode(opt *scaleType.ScaleDecoderOption) (string, er
 	}
 
 	return scaleType.Encode("Compact<u32>", len(utiles.HexToBytes(data))) + data, nil
+}
+
+// ToMap GenericExtrinsic convert to map[string]interface
+func (g *GenericExtrinsic) ToMap() map[string]interface{} {
+	var r map[string]interface{}
+	b, err := json.Marshal(g)
+	if err != nil {
+		return nil
+	}
+	_ = json.Unmarshal(b, &r)
+	return r
 }
