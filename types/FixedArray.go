@@ -43,6 +43,10 @@ func (f *FixedArray) Process() {
 	}
 }
 
+func (f *FixedArray) TypeStructString() string {
+	return fmt.Sprintf("[%d;%s]", f.FixedLength, getTypeStructString(f.SubType, 0))
+}
+
 func (f *FixedArray) Encode(value interface{}) string {
 	var raw string
 	if reflect.TypeOf(value).Kind() == reflect.String && value.(string) == "" {

@@ -33,6 +33,10 @@ func (f *Float64) Process() {
 	f.Value = f64
 }
 
+func (f *Float64) TypeStructString() string {
+	return "Float64"
+}
+
 type Float32 struct {
 	Float
 }
@@ -51,4 +55,8 @@ func (f *Float32) Process() {
 		panic(err)
 	}
 	f.Value = f32
+}
+
+func (f *Float32) TypeStructString() string {
+	return "Float32"
 }

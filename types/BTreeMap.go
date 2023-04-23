@@ -24,3 +24,10 @@ func (b *BTreeMap) Process() {
 	}
 	b.Value = result
 }
+
+func (b *BTreeMap) TypeStructString() string {
+	subType := strings.Split(b.SubType, ",")
+	type1 := getTypeStructString(subType[0], 0)
+	type2 := getTypeStructString(subType[1], 0)
+	return fmt.Sprintf("BTreeMap<%s,%s>", type1, type2)
+}

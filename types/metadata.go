@@ -85,7 +85,6 @@ type MetadataEvents struct {
 type MetadataStruct struct {
 	MetadataVersion int                   `json:"metadata_version"`
 	Metadata        MetadataTag           `json:"metadata"`
-	Lookup          interface{}           `json:"lookup,omitempty"`
 	CallIndex       map[string]CallIndex  `json:"call_index"`
 	EventIndex      map[string]EventIndex `json:"event_index"`
 	Extrinsic       *ExtrinsicMetadata    `json:"extrinsic"`

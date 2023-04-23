@@ -1,6 +1,9 @@
 package types
 
-import "strings"
+import (
+	"fmt"
+	"strings"
+)
 
 type Struct struct {
 	ScaleDecoder
@@ -31,9 +34,17 @@ func (s *Struct) Encode(value map[string]interface{}) string {
 	return raw
 }
 
-func (s *Struct) ToString() string {
+func (s *Struct) TypeStructString() string {
 	if s.TypeMapping != nil {
-		return strings.Join(s.TypeMapping.Types, "")
+		var typeStrings []string
+		s.RecursiveTime++
+		for _, subType := range s.TypeMapping.Types {
+			if s.RecursiveTime > limitRecursiveTime {
+				return "Struct(...)"
+			}
+			typeStrings = append(typeStrings, getTypeStructString(subType, s.RecursiveTime))
+		}
+		return fmt.Sprintf("Struct(%s)", strings.Join(typeStrings, ","))
 	}
 	return s.ScaleDecoder.TypeString
 }

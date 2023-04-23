@@ -1,6 +1,10 @@
 package types
 
-import "github.com/itering/scale.go/utiles"
+import (
+	"fmt"
+
+	"github.com/itering/scale.go/utiles"
+)
 
 type FixedU8 struct {
 	ScaleDecoder
@@ -18,4 +22,8 @@ func (s *FixedU8) Process() {
 
 func (s *FixedU8) Encode(value string) string {
 	return utiles.TrimHex(value)
+}
+
+func (s *FixedU8) TypeStructString() string {
+	return fmt.Sprintf("[%d;U8]", s.FixedLength)
 }

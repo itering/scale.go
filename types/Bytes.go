@@ -24,6 +24,10 @@ func (b *Bytes) Encode(value string) string {
 	return Encode("Compact<u32>", len(bytes)) + value
 }
 
+func (b *Bytes) TypeStructString() string {
+	return "Bytes"
+}
+
 type HexBytes struct{ ScaleDecoder }
 
 func (h *HexBytes) Process() {
@@ -39,9 +43,17 @@ func (h *HexBytes) Encode(value string) string {
 	return Encode("Compact<u32>", len(bytes)) + value
 }
 
+func (h *HexBytes) TypeStructString() string {
+	return "Bytes"
+}
+
 type String struct{ Bytes }
 
 func (s *String) Encode(value string) string {
 	bytes := []byte(value)
 	return Encode("Compact<u32>", len(bytes)) + utiles.BytesToHex(bytes)
+}
+
+func (s *String) TypeStructString() string {
+	return "String"
 }

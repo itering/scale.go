@@ -11,6 +11,8 @@ import (
 	"github.com/itering/scale.go/utiles"
 )
 
+const limitRecursiveTime = 5
+
 type ScaleDecoderOption struct {
 	Spec             int
 	SubType          string
@@ -20,6 +22,7 @@ type ScaleDecoderOption struct {
 	FixedLength      int
 	SignedExtensions []SignedExtension `json:"signed_extensions"`
 	TypeName         string
+	recursiveTime    int
 }
 
 type TypeMapping struct {
@@ -42,7 +45,7 @@ type IScaleDecoder interface {
 	Process()
 	Encode(interface{}) string
 
-	ToString() string
+	TypeStructString() string
 }
 
 type ScaleDecoder struct {
@@ -59,6 +62,7 @@ type ScaleDecoder struct {
 	TypeName         string                `json:"-"`
 	RegisteredSiType map[int]string        `json:"-"`
 	InternalCall     []string              `json:"-"`
+	RecursiveTime    int                   `json:"-"`
 }
 
 func (s *ScaleDecoder) Init(data scaleBytes.ScaleBytes, option *ScaleDecoderOption) {
@@ -78,6 +82,7 @@ func (s *ScaleDecoder) Init(data scaleBytes.ScaleBytes, option *ScaleDecoderOpti
 		if option.TypeName != "" {
 			s.TypeName = option.TypeName
 		}
+		s.RecursiveTime = option.recursiveTime
 	}
 	if len(s.DuplicateName) == 0 {
 		s.DuplicateName = make(map[string]int)
@@ -94,7 +99,8 @@ func (s *ScaleDecoder) Process() {}
 
 func (s *ScaleDecoder) Encode(interface{}) string { return "" }
 
-func (s *ScaleDecoder) ToString() string {
+// TypeStructString Type Struct string
+func (s *ScaleDecoder) TypeStructString() string {
 	return s.TypeName
 }
 
@@ -209,19 +215,11 @@ func EncodeWithOpt(typeString string, data interface{}, opt *ScaleDecoderOption)
 	return ""
 }
 
-func Eq(typeString string, dest *source.TypeStruct) bool {
-	r := RuntimeType{}
-	class, value, subType := r.GetCodecClass(typeString, 0)
-	if class == nil {
+func EqTypeStringWithTypeStruct(typeString string, dest *source.TypeStruct) bool {
+	typeName := getTypeStructString(typeString, 0)
+	if typeName == "" {
 		return true
 	}
-	method, _ := class.MethodByName("Init")
-	method.Func.Call([]reflect.Value{value, reflect.ValueOf(scaleBytes.EmptyScaleBytes()), reflect.ValueOf(&ScaleDecoderOption{SubType: subType, TypeName: typeString})})
-	typeNameValue := value.MethodByName("ToString").Call(nil)
-	if len(typeNameValue) == 0 {
-		return true
-	}
-	typeName := typeNameValue[0].String()
 	switch dest.Type {
 	case "struct":
 		var typeStrings []string
@@ -240,4 +238,26 @@ func Eq(typeString string, dest *source.TypeStruct) bool {
 		return typeName == strings.Join(typeStrings, "")
 	}
 	return true
+}
+
+// getTypeStructString get type struct string
+func getTypeStructString(typeString string, recursiveTime int) string {
+	r := RuntimeType{}
+	class, value, subType := r.GetCodecClass(typeString, 0)
+	if class == nil {
+		return ""
+	}
+	method, _ := class.MethodByName("Init")
+	opt := &ScaleDecoderOption{SubType: subType, TypeName: typeString, recursiveTime: recursiveTime}
+	method.Func.Call([]reflect.Value{value, reflect.ValueOf(scaleBytes.EmptyScaleBytes()), reflect.ValueOf(opt)})
+	typeNameValue := value.MethodByName("TypeStructString").Call(nil)
+	if len(typeNameValue) == 0 {
+		return ""
+	}
+	return typeNameValue[0].String()
+}
+
+// Eq check type string is equal
+func Eq(typeString, destTypeString string) bool {
+	return strings.EqualFold(getTypeStructString(typeString, 0), getTypeStructString(destTypeString, 0))
 }

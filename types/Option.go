@@ -1,6 +1,8 @@
 package types
 
 import (
+	"fmt"
+
 	"github.com/itering/scale.go/utiles"
 )
 
@@ -33,4 +35,8 @@ func (o *Option) Encode(value interface{}) string {
 		return "02"
 	}
 	return EncodeWithOpt(o.SubType, value, &ScaleDecoderOption{Spec: o.Spec, Metadata: o.Metadata})
+}
+
+func (o *Option) TypeStructString() string {
+	return fmt.Sprintf("Option<%s>", getTypeStructString(o.SubType, o.RecursiveTime))
 }

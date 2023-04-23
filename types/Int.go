@@ -68,6 +68,10 @@ func (f *IntFixed) Encode(value interface{}) string {
 	}
 }
 
+func (f *IntFixed) TypeStructString() string {
+	return fmt.Sprintf("Int<%d>", f.FixedLength*8)
+}
+
 // BigIntToIntBytes ref https://github.com/centrifuge/go-substrate-rpc-client/blob/master/types/int.go#L218
 func BigIntToIntBytes(i *big.Int, bytelen int) ([]byte, error) {
 	res := make([]byte, bytelen)
