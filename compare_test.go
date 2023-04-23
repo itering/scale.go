@@ -21,7 +21,7 @@ func Test_MetadataDecoderCompare(t *testing.T) {
 	m2.Init(utiles.HexToBytes(Kusama9370))
 	_ = m2.Process()
 
-	result := m1.Compare(&m2.Metadata.Metadata)
+	result := m1.Metadata.Metadata.Compare(&m2.Metadata.Metadata)
 	assert.Equal(t, len(result.NewModules), 0)
 	assert.Greater(t, len(result.ModuleChanges), 0)
 

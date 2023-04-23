@@ -23,7 +23,7 @@ func TestGetTypeStructStr(t *testing.T) {
 		{"compact<U128>", "Compact<U128>"},
 		{"Vec<Call>", "Vec<Call>"},
 		{"Option<Data>", "Option<Enum(NULL,String,H256,H256,H256,H256)>"},
-		{"Seal", "Struct(U32,HexBytes)"},
+		{"Seal", "Struct(U32,Bytes)"},
 		{"H256", "H256"},
 		{"AssetBalance", "Struct(U64,Bool,Bool)"},
 		{"Result<U64,String>", "Results<U64,String>"},
