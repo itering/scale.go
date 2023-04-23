@@ -3,6 +3,7 @@ package types
 import (
 	"bytes"
 	"encoding/binary"
+	"fmt"
 	"io"
 
 	"github.com/itering/scale.go/types/scaleBytes"
@@ -64,6 +65,10 @@ func (c *Compact) Process() {
 	} else {
 		c.Value = byteData
 	}
+}
+
+func (c *Compact) TypeStructString() string {
+	return fmt.Sprintf("Compact<%s>", c.SubType)
 }
 
 func (c *Compact) Encode(value interface{}) string {
@@ -133,6 +138,10 @@ func (c *CompactU32) Process() {
 		c.Value = int(c.Value.(int)) / 4
 	}
 
+}
+
+func (c *CompactU32) TypeStructString() string {
+	return c.TypeString
 }
 
 func (c *CompactU32) Encode(value interface{}) string {

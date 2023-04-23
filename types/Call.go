@@ -63,6 +63,10 @@ func (s *Call) Encode(value interface{}) string {
 	return raw
 }
 
+func (s *Call) TypeStructString() string {
+	return "Call"
+}
+
 type BoxProposal struct {
 	Call
 }

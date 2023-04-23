@@ -39,6 +39,10 @@ func (u *U8) Encode(value interface{}) string {
 	return utiles.U8Encode(i)
 }
 
+func (u *U8) TypeStructString() string {
+	return "U8"
+}
+
 type U16 struct {
 	Reader io.Reader
 	ScaleDecoder
@@ -74,6 +78,10 @@ func (u *U16) Encode(value interface{}) string {
 	return utiles.BytesToHex(bs)
 }
 
+func (u *U16) TypeStructString() string {
+	return "U16"
+}
+
 type U32 struct {
 	Reader io.Reader
 	ScaleDecoder
@@ -103,6 +111,10 @@ func (u *U32) Encode(value interface{}) string {
 	bs := make([]byte, 4)
 	binary.LittleEndian.PutUint32(bs, u32)
 	return utiles.BytesToHex(bs)
+}
+
+func (u *U32) TypeStructString() string {
+	return "U32"
 }
 
 type U64 struct {
@@ -138,6 +150,10 @@ func (u *U64) Encode(value interface{}) string {
 	return utiles.BytesToHex(bs)
 }
 
+func (u *U64) TypeStructString() string {
+	return "U64"
+}
+
 type U128 struct {
 	ScaleDecoder
 }
@@ -170,4 +186,8 @@ func (u *U128) Encode(value interface{}) string {
 	u128 := uint128.FromBig(bigInt)
 	u128.PutBytes(bs)
 	return utiles.BytesToHex(bs)
+}
+
+func (u *U128) TypeStructString() string {
+	return "U128"
 }

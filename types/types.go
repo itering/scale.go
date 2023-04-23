@@ -31,6 +31,10 @@ type SlotNumber struct{ U64 }
 
 type Null struct{ ScaleDecoder }
 
+func (*Null) TypeStructString() string {
+	return "NULL"
+}
+
 type Empty struct{ ScaleDecoder }
 
 func (e *Empty) Process() {
@@ -45,6 +49,10 @@ func (h *H160) Encode(value string) string {
 	return utiles.AddHex(strings.ToLower(value))
 }
 
+func (h *H160) TypeStructString() string {
+	return "H160"
+}
+
 type H256 struct {
 	ScaleDecoder
 }
@@ -57,6 +65,10 @@ func (h *H256) Encode(value string) string {
 	return utiles.AddHex(strings.ToLower(value))
 }
 
+func (h *H256) TypeStructString() string {
+	return "H256"
+}
+
 type H512 struct {
 	ScaleDecoder
 }
@@ -67,6 +79,10 @@ func (h *H512) Process() {
 
 func (h *H512) Encode(value string) string {
 	return utiles.AddHex(strings.ToLower(value))
+}
+
+func (h *H512) TypeStructString() string {
+	return "H512"
 }
 
 type Era struct {
@@ -167,6 +183,10 @@ func (s *AccountId) Process() {
 
 func (s *AccountId) Encode(value string) string {
 	return value
+}
+
+func (s *AccountId) TypeStructString() string {
+	return "AccountId"
 }
 
 type Balance struct {
@@ -466,4 +486,8 @@ func (b *BitVec) Process() {
 		value = append(value, fmt.Sprintf("%08b", v))
 	}
 	b.Value = "0b" + strings.Join(value, "_")
+}
+
+func (b *BitVec) TypeStructString() string {
+	return "BitVec"
 }

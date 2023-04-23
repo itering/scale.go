@@ -1,6 +1,7 @@
 package types
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/itering/scale.go/utiles"
@@ -37,4 +38,9 @@ func (b *Result) Encode(value map[string]interface{}) string {
 		return "01" + EncodeWithOpt(subType[1], data, &ScaleDecoderOption{Spec: b.Spec, Metadata: b.Metadata})
 	}
 	panic("illegal Result data")
+}
+
+func (b *Result) TypeStructString() string {
+	subType := strings.Split(b.SubType, ",")
+	return fmt.Sprintf("Results<%s,%s>", getTypeStructString(subType[0], 0), getTypeStructString(subType[1], 0))
 }

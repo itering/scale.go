@@ -32,7 +32,7 @@ func RegCustomTypes(registry map[string]source.TypeStruct) {
 				V14Types[key] = typeStruct
 				V14TypesLock.Unlock()
 			} else {
-				if typeStruct.SpecVec == 0 || Eq(key, &typeStruct) {
+				if typeStruct.SpecVec == 0 || EqTypeStringWithTypeStruct(key, &typeStruct) {
 					return
 				}
 				// history spec type

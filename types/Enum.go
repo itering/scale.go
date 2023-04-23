@@ -119,12 +119,20 @@ func (e *Enum) Encode(data interface{}) string {
 	return ""
 }
 
-func (e *Enum) ToString() string {
+func (e *Enum) TypeStructString() string {
 	if e.TypeMapping != nil {
-		return strings.Join(e.TypeMapping.Types, "")
+		var typeStrings []string
+		e.RecursiveTime++
+		for _, subType := range e.TypeMapping.Types {
+			if e.RecursiveTime > limitRecursiveTime {
+				return "Enum(...)"
+			}
+			typeStrings = append(typeStrings, getTypeStructString(subType, e.RecursiveTime))
+		}
+		return fmt.Sprintf("Enum(%s)", strings.Join(typeStrings, ","))
 	}
 	if e.ValueList != nil {
-		return strings.Join(e.ValueList, "")
+		return fmt.Sprintf("Enum(%s)", strings.Join(e.ValueList, ","))
 	}
 	return e.ScaleDecoder.TypeString
 }

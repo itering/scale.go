@@ -50,6 +50,10 @@ func (v *Vec) Encode(value interface{}) string {
 	}
 }
 
+func (v *Vec) TypeStructString() string {
+	return fmt.Sprintf("Vec<%s>", getTypeStructString(v.SubType, v.RecursiveTime))
+}
+
 type BoundedVec struct {
 	Vec
 }

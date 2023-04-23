@@ -10,10 +10,8 @@ import (
 
 type MetadataDecoder struct {
 	types.ScaleDecoder
-	Version       string               `json:"version"`
-	VersionNumber int                  `json:"version_number"`
-	Metadata      types.MetadataStruct `json:"metadata"`
-	CodecTypes    []string             `json:"codec_types"`
+	Version  string               `json:"version"`
+	Metadata types.MetadataStruct `json:"metadata"`
 }
 
 func (m *MetadataDecoder) Init(data []byte) {
@@ -34,5 +32,6 @@ func (m *MetadataDecoder) Process() error {
 
 }
 
-// CheckRegistry deprecated, metadata v14 will auto register all types
+// CheckRegistry
+// Deprecated
 func (m *MetadataDecoder) CheckRegistry() (notReg []string) { return }

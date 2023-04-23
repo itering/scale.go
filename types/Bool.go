@@ -14,3 +14,7 @@ func (b *Bool) Encode(value bool) string {
 	}
 	return "00"
 }
+
+func (b *Bool) TypeStructString() string {
+	return "Bool"
+}
