@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/itering/scale.go/types/scaleBytes"
+	"github.com/itering/scale.go/utiles"
 )
 
 type Vec struct {
@@ -42,7 +43,7 @@ func (v *Vec) Encode(value interface{}) string {
 		s := reflect.ValueOf(value)
 		raw += Encode("Compact<u32>", s.Len())
 		for i := 0; i < s.Len(); i++ {
-			raw += EncodeWithOpt(v.SubType, s.Index(i).Interface(), &ScaleDecoderOption{Spec: v.Spec, Metadata: v.Metadata})
+			raw += utiles.TrimHex(EncodeWithOpt(v.SubType, s.Index(i).Interface(), &ScaleDecoderOption{Spec: v.Spec, Metadata: v.Metadata}))
 		}
 		return raw
 	default:

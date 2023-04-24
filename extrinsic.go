@@ -1,11 +1,14 @@
 package scalecodec
 
 import (
+	"encoding/json"
+	"errors"
 	"fmt"
 
 	scaleType "github.com/itering/scale.go/types"
 	"github.com/itering/scale.go/types/scaleBytes"
 	"github.com/itering/scale.go/utiles"
+	"github.com/shopspring/decimal"
 	"golang.org/x/crypto/blake2b"
 )
 
@@ -73,6 +76,25 @@ func (e *ExtrinsicDecoder) generateHash() string {
 	return utiles.BytesToHex(h)
 }
 
+type GenericExtrinsic struct {
+	VersionInfo        string                 `json:"version_info"`
+	ExtrinsicLength    int                    `json:"extrinsic_length"`
+	AddressType        string                 `json:"address_type"`
+	Tip                decimal.Decimal        `json:"tip"`
+	SignedExtensions   map[string]interface{} `json:"signed_extensions"`
+	AccountId          interface{}            `json:"accountId"`
+	Signer             interface{}            `json:"signer"` // map[string]interface or string
+	Signature          string                 `json:"signature"`
+	SignatureRaw       interface{}            `json:"signature_raw"` // map[string]interface or string
+	Nonce              int                    `json:"nonce"`
+	Era                string                 `json:"era"`
+	ExtrinsicHash      string                 `json:"extrinsic_hash"`
+	CallModuleFunction string                 `json:"call_module_function"`
+	CallCode           string                 `json:"call_code"`
+	CallModule         string                 `json:"call_module"`
+	Params             []ExtrinsicParam       `json:"params"`
+}
+
 func (e *ExtrinsicDecoder) Process() {
 	e.ExtrinsicLength = e.ProcessAndUpdateData("Compact<u32>").(int)
 	if e.ExtrinsicLength != e.Data.GetRemainingLength() {
@@ -84,27 +106,28 @@ func (e *ExtrinsicDecoder) Process() {
 
 	e.ContainsTransaction = utiles.U256(e.VersionInfo).Int64() >= 80
 
-	result := map[string]interface{}{
-		"extrinsic_length": e.ExtrinsicLength,
-		"version_info":     e.VersionInfo,
+	result := GenericExtrinsic{
+		ExtrinsicLength: e.ExtrinsicLength,
+		VersionInfo:     e.VersionInfo,
 	}
+
 	if e.VersionInfo == "04" || e.VersionInfo == "84" {
 		if e.ContainsTransaction {
 			// Address
-			address := e.ProcessAndUpdateData(utiles.TrueOrElse(e.Metadata.MetadataVersion >= 14 && scaleType.HasReg("ExtrinsicSigner"), "ExtrinsicSigner", "Address"))
-			switch v := address.(type) {
+			result.Signer = e.ProcessAndUpdateData(utiles.TrueOrElse(e.Metadata.MetadataVersion >= 14 && scaleType.HasReg("ExtrinsicSigner"), "ExtrinsicSigner", "Address"))
+			switch v := result.Signer.(type) {
 			case string:
 				e.Address = v
-				result["address_type"] = "AccountId"
+				result.AddressType = "AccountId"
 			case map[string]interface{}:
 				for name, value := range v {
-					result["address_type"] = name
+					result.AddressType = name
 					e.Address = value
 				}
 			}
 			// ExtrinsicSignature
-			signature := e.ProcessAndUpdateData("ExtrinsicSignature")
-			switch v := signature.(type) {
+			result.SignatureRaw = e.ProcessAndUpdateData("ExtrinsicSignature")
+			switch v := result.SignatureRaw.(type) {
 			case string:
 				e.Signature = v
 			case map[string]interface{}:
@@ -116,17 +139,17 @@ func (e *ExtrinsicDecoder) Process() {
 			e.Nonce = int(e.ProcessAndUpdateData("Compact<U64>").(uint64))
 			if e.Metadata.Extrinsic != nil {
 				if utiles.SliceIndex("ChargeTransactionPayment", e.Metadata.Extrinsic.SignedIdentifier) != -1 {
-					result["tip"] = e.ProcessAndUpdateData("Compact<Balance>")
+					result.Tip = e.ProcessAndUpdateData("Compact<Balance>").(decimal.Decimal)
 				}
 			} else {
-				result["tip"] = e.ProcessAndUpdateData("Compact<Balance>")
+				result.Tip = e.ProcessAndUpdateData("Compact<Balance>").(decimal.Decimal)
 			}
 			// spec SignedExtensions
 			if len(e.SignedExtensions) > 0 {
 				for _, extension := range e.SignedExtensions {
 					if utiles.SliceIndex(extension.Name, e.Metadata.Extrinsic.SignedIdentifier) != -1 {
 						for _, v := range extension.AdditionalSigned {
-							result[v.Name] = e.ProcessAndUpdateData(v.Type)
+							result.SignedExtensions[v.Name] = e.ProcessAndUpdateData(v.Type)
 						}
 					}
 				}
@@ -134,7 +157,7 @@ func (e *ExtrinsicDecoder) Process() {
 				if e.Metadata.MetadataVersion >= 14 {
 					for _, ext := range e.Metadata.Extrinsic.SignedExtensions {
 						if enable, ok := signedExts[ext.Identifier]; ok && enable {
-							result[ext.Identifier] = e.ProcessAndUpdateData(ext.TypeString)
+							result.SignedExtensions[ext.Identifier] = e.ProcessAndUpdateData(ext.TypeString)
 						}
 					}
 				}
@@ -160,21 +183,81 @@ func (e *ExtrinsicDecoder) Process() {
 	}
 
 	if e.ContainsTransaction {
-		result["account_id"] = e.Address
-		result["signature"] = e.Signature
-		result["nonce"] = e.Nonce
-		result["era"] = e.Era
-		result["extrinsic_hash"] = e.ExtrinsicHash
+		result.AccountId = e.Address
+		result.Signature = e.Signature
+		result.Nonce = e.Nonce
+		result.Era = e.Era
+		result.ExtrinsicHash = e.ExtrinsicHash
+	}
+	result.CallCode = e.CallIndex
+	result.CallModuleFunction = call.Call.Name
+	result.CallModule = call.Module.Name
+	result.Params = e.Params
+	e.Value = &result
+}
+
+/*
+Encode extrinsic with option
+opt.Metadata is required
+return hex string, if error, return empty string
+
+Example:
+m := scalecodec.MetadataDecoder{}
+m.Init(utiles.HexToBytes(Kusama9370))
+_ = m.Process()
+option := types.ScaleDecoderOption{Metadata: &m.Metadata}
+genericExtrinsic := scalecodec.GenericExtrinsic{
+	VersionInfo:  "84",
+	CallCode:     "0400",
+	Nonce:        0,
+	Era:          "00",
+	Signer:       map[string]interface{}{"Id": "0xe673cb35ffaaf7ab98c4e9268bfa9b4a74e49d41c8225121c346db7a7dd06d88"},
+	SignatureRaw: map[string]interface{}{"Ed25519": "0xfce9453b1442bba86c2781e755a29c8a215ccf4b65ce81eeaa5b5a04dcdb79a54525cc86969f910c71c05f84aeab9c205022ecd4aa2abb4a3c3667f09dd16e0b"},
+	Params: []scalecodec.ExtrinsicParam{
+		{Value: map[string]interface{}{"Id": "0x0770e0831a275b534f7507c8ebd9f5f982a55053c9dc672da886ef41a6b5c628"}}, {Value: "1094000000000"},
+	},
+}
+fmt.Println(genericExtrinsic.Encode(&option))
+*/
+
+func (g *GenericExtrinsic) Encode(opt *scaleType.ScaleDecoderOption) (string, error) {
+	if opt.Metadata == nil {
+		return "", errors.New("invalid metadata")
+	}
+	data := g.VersionInfo
+	if g.VersionInfo == "84" {
+		data = data + scaleType.Encode(utiles.TrueOrElse(opt.Metadata.MetadataVersion >= 14 && scaleType.HasReg("ExtrinsicSigner"), "ExtrinsicSigner", "AccountId"), g.Signer) // accountId
+		data = data + scaleType.Encode("ExtrinsicSignature", g.SignatureRaw)                                                                                                   // signature
+		data = data + scaleType.Encode("EraExtrinsic", g.Era)                                                                                                                  // era
+		data = data + scaleType.Encode("Compact<U64>", g.Nonce)                                                                                                                // nonce
+		data = data + scaleType.Encode("Compact<Balance>", g.Tip)                                                                                                              // tip
 	}
 
-	if e.CallIndex != "" {
-		result["call_code"] = e.CallIndex
-		result["call_module_function"] = call.Call.Name
-		result["call_module"] = call.Module.Name
+	data = data + g.CallCode
+	call, ok := opt.Metadata.CallIndex[g.CallCode]
+
+	if !ok {
+		return "", fmt.Errorf("not find Extrinsic Lookup %s, please check metadata info", g.CallCode)
 	}
 
-	result["nonce"] = e.Nonce
-	result["era"] = e.Era
-	result["params"] = e.Params
-	e.Value = result
+	if len(g.Params) != len(call.Call.Args) {
+		return "", fmt.Errorf("extrinsic params length not match, expect %d, got %d", len(call.Call.Args), len(g.Params))
+	}
+
+	for index, arg := range call.Call.Args {
+		data = data + utiles.TrimHex(scaleType.EncodeWithOpt(arg.Type, g.Params[index].Value, opt))
+	}
+
+	return scaleType.Encode("Compact<u32>", len(utiles.HexToBytes(data))) + data, nil
+}
+
+// ToMap GenericExtrinsic convert to map[string]interface
+func (g *GenericExtrinsic) ToMap() map[string]interface{} {
+	var r map[string]interface{}
+	b, err := json.Marshal(g)
+	if err != nil {
+		return nil
+	}
+	_ = json.Unmarshal(b, &r)
+	return r
 }

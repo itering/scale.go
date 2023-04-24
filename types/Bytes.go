@@ -1,6 +1,8 @@
 package types
 
 import (
+	"strings"
+
 	"github.com/itering/scale.go/utiles"
 )
 
@@ -16,11 +18,16 @@ func (b *Bytes) Process() {
 }
 
 func (b *Bytes) Encode(value string) string {
-	value = utiles.TrimHex(value)
-	if len(value)%2 == 1 {
-		value += "0"
+	var bytes []byte
+	if strings.HasPrefix(value, "0x") {
+		value = utiles.TrimHex(value)
+		if len(value)%2 == 1 {
+			value += "0"
+		}
+	} else {
+		value = utiles.BytesToHex([]byte(value))
 	}
-	bytes := utiles.HexToBytes(value)
+	bytes = utiles.HexToBytes(value)
 	return Encode("Compact<u32>", len(bytes)) + value
 }
 

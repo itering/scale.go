@@ -3,7 +3,6 @@ package types
 import (
 	"encoding/binary"
 	"encoding/json"
-	"fmt"
 	"math/big"
 	"reflect"
 	"strings"
@@ -154,7 +153,6 @@ func TestReferendumInfo(t *testing.T) {
 
 func TestEthereumAccountId(t *testing.T) {
 	raw := "0x4119b2e6c3cb618f4f0B93ac77f9Beec7ff02887"
-	fmt.Println(len(utiles.HexToBytes(raw)))
 	m := ScaleDecoder{}
 	m.Init(scaleBytes.ScaleBytes{Data: utiles.HexToBytes(raw)}, nil)
 	r := m.ProcessAndUpdateData("EthereumAccountId")
@@ -165,26 +163,21 @@ func TestEthereumAccountId(t *testing.T) {
 
 func TestRegistrarInfo(t *testing.T) {
 	raw := "0x08014c4bf7f93d0a5ed801ef778f8e7ef58201bdd7e33e167faf42a01d439283cb430000000000000000000000000000000000000000000000000112ccb53338ac0da571d3697548346fb5f0b637ac9412f8abbf6d13588be7563200d8c3795800000000000000000000000000000000000000"
-	fmt.Println(len(utiles.HexToBytes(raw)))
 	m := ScaleDecoder{}
 	m.Init(scaleBytes.ScaleBytes{Data: utiles.HexToBytes(raw)}, nil)
-	r := m.ProcessAndUpdateData("Vec<Option<RegistrarInfo<BalanceOf, AccountId>>>")
-	fmt.Println(r)
+	m.ProcessAndUpdateData("Vec<Option<RegistrarInfo<BalanceOf, AccountId>>>")
 }
 
 func TestRewardDestinationLatest(t *testing.T) {
 	raw := "0x03f8764d575b96b30e095a201d90b6ddaf944d042811846f7a3fe5ffda2a01c045"
-	fmt.Println(len(utiles.HexToBytes(raw)))
 	m := ScaleDecoder{}
 	m.Init(scaleBytes.ScaleBytes{Data: utiles.HexToBytes(raw)}, nil)
-	r := m.ProcessAndUpdateData("RewardDestination")
-	fmt.Println(r)
+	m.ProcessAndUpdateData("RewardDestination")
 }
 
 func TestGenericLookupSource(t *testing.T) {
 	bs := make([]byte, 4)
 	binary.LittleEndian.PutUint32(bs, uint32(256))
-	fmt.Println(bs)
 	c := []byte{255, 1, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8}
 	raw := utiles.BytesToHex(c)
 	m := ScaleDecoder{}
@@ -252,7 +245,7 @@ func TestModuleTypeOverride(t *testing.T) {
 func TestAccountInfo(t *testing.T) {
 	m := ScaleDecoder{}
 	m.Init(scaleBytes.ScaleBytes{Data: utiles.HexToBytes(`0x0100000001000000`)}, nil)
-	utiles.Debug(m.ProcessAndUpdateData("AccountInfo<Index, AccountData>"))
+	m.ProcessAndUpdateData("AccountInfo<Index, AccountData>")
 }
 
 func TestWeakBoundedVec(t *testing.T) {
@@ -337,7 +330,7 @@ func TestFloat(t *testing.T) {
 	m.Init(scaleBytes.ScaleBytes{Data: utiles.HexToBytes("0x0000000000000080")}, nil)
 	assert.Equal(t, float64(0), m.ProcessAndUpdateData("Float64"))
 	m.Init(scaleBytes.ScaleBytes{Data: utiles.HexToBytes("0x00000080")}, nil)
-	assert.Equal(t, float32(-0), m.ProcessAndUpdateData("Float32"))
+	assert.Equal(t, float32(0), m.ProcessAndUpdateData("Float32"))
 }
 
 func TestDataRawDecode(t *testing.T) {
