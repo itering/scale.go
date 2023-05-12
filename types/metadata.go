@@ -88,6 +88,28 @@ type MetadataStruct struct {
 	CallIndex       map[string]CallIndex  `json:"call_index"`
 	EventIndex      map[string]EventIndex `json:"event_index"`
 	Extrinsic       *ExtrinsicMetadata    `json:"extrinsic"`
+	Type            *int                  `json:"type,omitempty"`
+	Apis            []RuntimeApiMetadata  `json:"apis,omitempty"`
+}
+
+type RuntimeApiMetadata struct {
+	Name    string                     `json:"name"`
+	Methods []RuntimeApiMethodMetadata `json:"methods"`
+	Docs    []string                   `json:"docs"`
+}
+
+type RuntimeApiMethodMetadata struct {
+	Name         string                          `json:"name"`
+	Inputs       []RuntimeApiMethodParamMetadata `json:"inputs"`
+	OutputsValue int                             `json:"outputsValue"`
+	Outputs      string                          `json:"outputs"`
+	Docs         []string                        `json:"docs"`
+}
+
+type RuntimeApiMethodParamMetadata struct {
+	Name      string `json:"name"`
+	TypeValue int    `json:"type_value"`
+	Type      string `json:"type"`
 }
 
 type ExtrinsicMetadata struct {
