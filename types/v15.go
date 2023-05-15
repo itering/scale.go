@@ -163,9 +163,9 @@ func (m *MetadataV15Decoder) Process() {
 	_ = utiles.UnmarshalAny(m.ProcessAndUpdateData("Vec<RuntimeApiMetadataV15>").([]interface{}), &result.Apis)
 	for index, api := range result.Apis {
 		for methodIndex, method := range api.Methods {
-			result.Apis[index].Methods[methodIndex].Outputs = metadataSiType[method.OutputsValue]
+			result.Apis[index].Methods[methodIndex].Outputs = metadataSiType[method.OutputsId]
 			for inputIndex, arg := range method.Inputs {
-				result.Apis[index].Methods[methodIndex].Inputs[inputIndex].Type = metadataSiType[arg.TypeValue]
+				result.Apis[index].Methods[methodIndex].Inputs[inputIndex].Type = metadataSiType[arg.TypeId]
 			}
 		}
 	}
@@ -179,14 +179,14 @@ type MetadataV15Module struct {
 
 func (m *MetadataV15Module) Process() {
 	m.MetadataV14Module.Process()
-	docs := m.ProcessAndUpdateData("Vec<Text>").([]interface{})
-	for _, v := range docs {
-		m.Docs = append(m.Docs, v.(string))
-	}
+	result := MetadataV15Module{}
+	_ = utiles.UnmarshalAny(m.Value, &result)
+	_ = utiles.UnmarshalAny(m.ProcessAndUpdateData("Vec<Text>").([]interface{}), &result.Docs)
+	m.Value = result
 }
 
 type RuntimeApiMetadataV15 struct {
-	ScaleDecoder `json:"-"`
+	ScaleDecoder
 }
 
 // Process
@@ -204,7 +204,7 @@ func (m *RuntimeApiMetadataV15) Process() {
 }
 
 type RuntimeApiMethodParamMetadataV15 struct {
-	ScaleDecoder `json:"-"`
+	ScaleDecoder
 }
 
 // Process
@@ -215,12 +215,12 @@ type RuntimeApiMethodParamMetadataV15 struct {
 func (r *RuntimeApiMethodParamMetadataV15) Process() {
 	ra := RuntimeApiMethodParamMetadata{}
 	ra.Name = r.ProcessAndUpdateData("Text").(string)
-	ra.TypeValue = r.ProcessAndUpdateData("SiLookupTypeId").(int)
+	ra.TypeId = r.ProcessAndUpdateData("SiLookupTypeId").(int)
 	r.Value = ra
 }
 
 type RuntimeApiMethodMetadataV15 struct {
-	ScaleDecoder `json:"-"`
+	ScaleDecoder
 }
 
 func (r *RuntimeApiMethodMetadataV15) Process() {
@@ -228,7 +228,7 @@ func (r *RuntimeApiMethodMetadataV15) Process() {
 	ra.Name = r.ProcessAndUpdateData("Text").(string)
 
 	_ = utiles.UnmarshalAny(r.ProcessAndUpdateData("Vec<RuntimeApiMethodParamMetadataV15>").([]interface{}), &ra.Inputs)
-	ra.OutputsValue = r.ProcessAndUpdateData("SiLookupTypeId").(int)
+	ra.OutputsId = r.ProcessAndUpdateData("SiLookupTypeId").(int)
 	_ = utiles.UnmarshalAny(r.ProcessAndUpdateData("Vec<Text>").([]interface{}), &ra.Docs)
 	r.Value = ra
 }

@@ -99,17 +99,17 @@ type RuntimeApiMetadata struct {
 }
 
 type RuntimeApiMethodMetadata struct {
-	Name         string                          `json:"name"`
-	Inputs       []RuntimeApiMethodParamMetadata `json:"inputs"`
-	OutputsValue int                             `json:"outputsValue"`
-	Outputs      string                          `json:"outputs"`
-	Docs         []string                        `json:"docs"`
+	Name      string                          `json:"name"`
+	Inputs    []RuntimeApiMethodParamMetadata `json:"inputs"`
+	OutputsId int                             `json:"outputsId"`
+	Outputs   string                          `json:"outputs"`
+	Docs      []string                        `json:"docs"`
 }
 
 type RuntimeApiMethodParamMetadata struct {
-	Name      string `json:"name"`
-	TypeValue int    `json:"type_value"`
-	Type      string `json:"type"`
+	Name   string `json:"name"`
+	TypeId int    `json:"typeId"`
+	Type   string `json:"type"`
 }
 
 type ExtrinsicMetadata struct {
