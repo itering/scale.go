@@ -714,8 +714,15 @@ func (m *MetadataV8Module) Process() {
 
 type MetadataModuleError struct {
 	ScaleDecoder `json:"-"`
-	Name         string   `json:"name"`
-	Doc          []string `json:"doc"`
+	Name         string             `json:"name"`
+	Doc          []string           `json:"doc"`
+	Fields       []ModuleErrorField `json:"fields,omitempty"`
+}
+
+type ModuleErrorField struct {
+	Type     string   `json:"type"`
+	TypeName string   `json:"type_name"`
+	Doc      []string `json:"doc"`
 }
 
 func (m *MetadataModuleError) Init(data scaleBytes.ScaleBytes, option *ScaleDecoderOption) {
