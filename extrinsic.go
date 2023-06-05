@@ -82,7 +82,7 @@ type GenericExtrinsic struct {
 	AddressType        string                 `json:"address_type"`
 	Tip                decimal.Decimal        `json:"tip"`
 	SignedExtensions   map[string]interface{} `json:"signed_extensions"`
-	AccountId          interface{}            `json:"accountId"`
+	AccountId          interface{}            `json:"account_id"`
 	Signer             interface{}            `json:"signer"` // map[string]interface or string
 	Signature          string                 `json:"signature"`
 	SignatureRaw       interface{}            `json:"signature_raw"` // map[string]interface or string
