@@ -43,5 +43,18 @@
       ]
     ]
   },
-  "BabeWeight": "u64"
+  "BabeWeight": "u64",
+  "WeightV2": {
+    "type": "struct",
+    "type_mapping": [
+      [
+        "ref_time",
+        "Compact<u64>"
+      ],
+      [
+        "proof_size",
+        "Compact<u64>"
+      ]
+    ]
+  }
 }
