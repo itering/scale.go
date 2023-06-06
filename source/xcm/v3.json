@@ -80,7 +80,7 @@
       ],
       [
         "BuyExecution",
-        "[[\"fees\", \"MultiAssetV3\"], [\"weightLimit\", \"WeightLimitV3\"]]"
+        "[[\"fees\", \"MultiAssetV3\"], [\"weight_limit\", \"WeightLimitV3\"]]"
       ],
       [
         "RefundSurplus",
