@@ -88,6 +88,7 @@ func (m *MetadataV14Decoder) Process() {
 				for _, field := range variant.Fields {
 					event.Args = append(event.Args, metadataSiType[field.Type])
 					event.ArgsTypeName = append(event.ArgsTypeName, convert.ConvertType(field.TypeName))
+					event.ArgsName = append(event.ArgsName, field.Name)
 				}
 				module.Events = append(module.Events, event)
 			}
