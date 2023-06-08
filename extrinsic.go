@@ -145,6 +145,7 @@ func (e *ExtrinsicDecoder) Process() {
 				result.Tip = e.ProcessAndUpdateData("Compact<Balance>").(decimal.Decimal)
 			}
 			// spec SignedExtensions
+			result.SignedExtensions = make(map[string]interface{})
 			if len(e.SignedExtensions) > 0 {
 				for _, extension := range e.SignedExtensions {
 					if utiles.SliceIndex(extension.Name, e.Metadata.Extrinsic.SignedIdentifier) != -1 {
