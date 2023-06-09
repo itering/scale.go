@@ -314,6 +314,7 @@ func TestEncode(t *testing.T) {
 	assert.Equal(t, "0d00", Encode("U16", int64(13)))
 	assert.Equal(t, "00000000000000000000000000000000", Encode("U128", decimal.Zero))
 	assert.Equal(t, "87d61200000000000000000000000000", Encode("U128", decimal.NewFromInt32(1234567)))
+	assert.Equal(t, "070736c8230a", Encode("compact<u128>", decimal.New(43549996551, 0)))
 	assert.Equal(t, "87d61200000000000000000000000000", Encode("U128", decimal.NewFromInt32(1234567)))
 	assert.Equal(t, "47a952404f2b1568e6881efeb58c8918", Encode("U128", decimal.RequireFromString("32615670524745285411807346420584982855")))
 	assert.Equal(t, "0x9a5b8a1b7bca89cdb3931d8ee71aa468081d971c", Encode("H160", "0x9a5b8a1B7Bca89CDB3931D8eE71AA468081D971c"))
