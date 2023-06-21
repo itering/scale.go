@@ -152,6 +152,7 @@ func init() {
 	registry["i64"] = &IntFixed{FixedLength: 8}
 	registry["i128"] = &IntFixed{FixedLength: 16}
 	registry["i256"] = &IntFixed{FixedLength: 32}
+	registry["h128"] = &FixedU8{FixedLength: 16}
 	registry["[u8; 32]"] = &FixedU8{FixedLength: 32}
 	registry["[u8; 64]"] = &FixedU8{FixedLength: 64}
 	registry["[u8; 65]"] = &FixedU8{FixedLength: 65}
