@@ -251,12 +251,16 @@ func (s *ScaleInfo) expandComposite(id int, SiTyp SiType, id2Portable map[int]Si
 		return s.RegisteredSiType[id]
 	}
 	var typeMapping [][]string
-	for _, field := range SiTyp.Def.Composite.Fields {
+	for index, field := range SiTyp.Def.Composite.Fields {
 		subType, ok := s.RegisteredSiType[field.Type]
 		if !ok {
 			subType = s.dealOneSiType(field.Type, id2Portable[field.Type], id2Portable, RecursiveOption())
 		}
-		typeMapping = append(typeMapping, []string{field.Name, subType})
+		name := field.Name
+		if name == "" {
+			name = fmt.Sprintf("col%d", index+1)
+		}
+		typeMapping = append(typeMapping, []string{name, subType})
 	}
 	typeString := s.nameSiType(SiTyp, id)
 	RegCustomTypes(map[string]source.TypeStruct{typeString: {Type: "struct", TypeMapping: typeMapping, V14: s.V14, SpecVec: s.Spec}})
