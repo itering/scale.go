@@ -232,6 +232,13 @@ func (g *GenericExtrinsic) Encode(opt *scaleType.ScaleDecoderOption) (string, er
 		data = data + scaleType.Encode("EraExtrinsic", g.Era)                                                                                                                  // era
 		data = data + scaleType.Encode("Compact<U64>", g.Nonce)                                                                                                                // nonce
 		data = data + scaleType.Encode("Compact<Balance>", g.Tip)                                                                                                              // tip
+		for identifier, extension := range g.SignedExtensions {
+			for _, ext := range opt.Metadata.Extrinsic.SignedExtensions {
+				if ext.Identifier == identifier {
+					data = data + scaleType.Encode(ext.TypeString, extension)
+				}
+			}
+		}
 	}
 
 	data = data + g.CallCode
