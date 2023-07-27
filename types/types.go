@@ -38,7 +38,7 @@ func (*Null) TypeStructString() string {
 type Empty struct{ ScaleDecoder }
 
 func (e *Empty) Process() {
-	e.Value = ""
+	e.Value = "NULL"
 }
 
 func (h *H160) Process() {
