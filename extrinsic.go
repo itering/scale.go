@@ -231,7 +231,9 @@ func (g *GenericExtrinsic) Encode(opt *scaleType.ScaleDecoderOption) (string, er
 		data = data + scaleType.Encode("ExtrinsicSignature", g.SignatureRaw)                                                                                                   // signature
 		data = data + scaleType.Encode("EraExtrinsic", g.Era)                                                                                                                  // era
 		data = data + scaleType.Encode("Compact<U64>", g.Nonce)                                                                                                                // nonce
-		data = data + scaleType.Encode("Compact<Balance>", g.Tip)                                                                                                              // tip
+		if len(opt.Metadata.Extrinsic.SignedIdentifier) > 0 && utiles.SliceIndex("ChargeTransactionPayment", opt.Metadata.Extrinsic.SignedIdentifier) > -1 {
+			data = data + scaleType.Encode("Compact<Balance>", g.Tip) // tip
+		}
 		for identifier, extension := range g.SignedExtensions {
 			for _, ext := range opt.Metadata.Extrinsic.SignedExtensions {
 				if ext.Identifier == identifier {

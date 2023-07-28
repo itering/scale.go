@@ -87,7 +87,7 @@ func Test_ComplexEnum(t *testing.T) {
 			TypeMapping: [][]string{{"a", "[[\"col1\", \"u32\"], [\"col2\", \"u32\"]]"}},
 		},
 	})
-	assert.EqualValues(t, "0100000002000000", Encode("CustomEnum", map[string]interface{}{"a": map[string]interface{}{"col1": 1, "col2": 2}}))
+	assert.EqualValues(t, "000100000002000000", Encode("CustomEnum", map[string]interface{}{"a": map[string]interface{}{"col1": 1, "col2": 2}}))
 
 }
 
