@@ -139,10 +139,10 @@ func (e *ExtrinsicDecoder) Process() {
 			e.Nonce = int(e.ProcessAndUpdateData("Compact<U64>").(uint64))
 			if e.Metadata.Extrinsic != nil {
 				if utiles.SliceIndex("ChargeTransactionPayment", e.Metadata.Extrinsic.SignedIdentifier) != -1 {
-					result.Tip = e.ProcessAndUpdateData("Compact<Balance>").(decimal.Decimal)
+					result.Tip = utiles.DecimalFromInterface(e.ProcessAndUpdateData("Compact<Balance>"))
 				}
 			} else {
-				result.Tip = e.ProcessAndUpdateData("Compact<Balance>").(decimal.Decimal)
+				result.Tip = utiles.DecimalFromInterface(e.ProcessAndUpdateData("Compact<Balance>"))
 			}
 			// spec SignedExtensions
 			result.SignedExtensions = make(map[string]interface{})
