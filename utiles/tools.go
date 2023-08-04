@@ -170,6 +170,27 @@ func GetEnumValue(e map[string]interface{}) (string, interface{}, error) {
 	return "", "", errors.New("empty enum")
 }
 
+// UnmarshalAny unmarshal any type
+func UnmarshalAny(raw interface{}, r interface{}) error {
+	switch v := raw.(type) {
+	case string:
+		if v == "" {
+			return nil
+		}
+
+		return json.Unmarshal([]byte(v), &r)
+	case []uint8:
+		if len(v) == 0 {
+			return nil
+		}
+
+		return json.Unmarshal(v, &r)
+	default:
+		b, _ := json.Marshal(v)
+		return json.Unmarshal(b, r)
+	}
+}
+
 func DecimalFromInterface(i interface{}) decimal.Decimal {
 	switch i := i.(type) {
 	case int:

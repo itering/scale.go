@@ -89,6 +89,28 @@ type MetadataStruct struct {
 	CallIndex       map[string]CallIndex  `json:"call_index"`
 	EventIndex      map[string]EventIndex `json:"event_index"`
 	Extrinsic       *ExtrinsicMetadata    `json:"extrinsic"`
+	Type            *int                  `json:"type,omitempty"`
+	Apis            []RuntimeApiMetadata  `json:"apis,omitempty"`
+}
+
+type RuntimeApiMetadata struct {
+	Name    string                     `json:"name"`
+	Methods []RuntimeApiMethodMetadata `json:"methods"`
+	Docs    []string                   `json:"docs"`
+}
+
+type RuntimeApiMethodMetadata struct {
+	Name      string                          `json:"name"`
+	Inputs    []RuntimeApiMethodParamMetadata `json:"inputs"`
+	OutputsId int                             `json:"outputsId"`
+	Outputs   string                          `json:"outputs"`
+	Docs      []string                        `json:"docs"`
+}
+
+type RuntimeApiMethodParamMetadata struct {
+	Name   string `json:"name"`
+	TypeId int    `json:"typeId"`
+	Type   string `json:"type"`
 }
 
 type ExtrinsicMetadata struct {
@@ -693,8 +715,15 @@ func (m *MetadataV8Module) Process() {
 
 type MetadataModuleError struct {
 	ScaleDecoder `json:"-"`
-	Name         string   `json:"name"`
-	Doc          []string `json:"doc"`
+	Name         string             `json:"name"`
+	Doc          []string           `json:"doc"`
+	Fields       []ModuleErrorField `json:"fields,omitempty"`
+}
+
+type ModuleErrorField struct {
+	Type     string   `json:"type"`
+	TypeName string   `json:"type_name"`
+	Doc      []string `json:"doc"`
 }
 
 func (m *MetadataModuleError) Init(data scaleBytes.ScaleBytes, option *ScaleDecoderOption) {
