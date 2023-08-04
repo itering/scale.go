@@ -239,11 +239,11 @@
       ],
       [
         "DepositAsset",
-        "[[\"assets\", \"MultiAssetFilterV2\"], [\"maxAssets\", \"u32\"], [\"beneficiary\", \"MultiLocationV2\"]]"
+        "[[\"assets\", \"MultiAssetFilterV2\"], [\"max_assets\", \"compact<u32>\"], [\"beneficiary\", \"MultiLocationV2\"]]"
       ],
       [
         "DepositReserveAsset",
-        "[[\"assets\", \"MultiAssetFilterV2\"], [\"maxAssets\", \"u32\"], [\"dest\", \"MultiLocationV2\"], [\"xcm\", \"XcmV2\"]]"
+        "[[\"assets\", \"MultiAssetFilterV2\"], [\"max_assets\", \"compact<u32>\"], [\"dest\", \"MultiLocationV2\"], [\"xcm\", \"XcmV2\"]]"
       ],
       [
         "ExchangeAsset",

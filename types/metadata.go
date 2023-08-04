@@ -79,6 +79,7 @@ type MetadataEvents struct {
 	Name         string   `json:"name"`
 	Docs         []string `json:"docs"`
 	Args         []string `json:"args"`
+	ArgsName     []string `json:"args_name,omitempty"`
 	ArgsTypeName []string `json:"args_type_name,omitempty"`
 }
 

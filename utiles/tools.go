@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/shopspring/decimal"
 	"math/big"
 	"reflect"
 	"strconv"
@@ -189,4 +190,25 @@ func UnmarshalAny(raw interface{}, r interface{}) error {
 		b, _ := json.Marshal(v)
 		return json.Unmarshal(b, r)
 	}
+  
+  
+func DecimalFromInterface(i interface{}) decimal.Decimal {
+	switch i := i.(type) {
+	case int:
+		return decimal.New(int64(i), 0)
+	case int64:
+		return decimal.New(i, 0)
+	case uint64:
+		return decimal.New(int64(i), 0)
+	case float64:
+		return decimal.NewFromFloat(i)
+	case string:
+		r, _ := decimal.NewFromString(i)
+		return r
+	case decimal.Decimal:
+		return i
+	case *big.Int:
+		return decimal.NewFromBigInt(i, 0)
+	}
+	return decimal.Zero
 }

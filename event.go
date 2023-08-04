@@ -24,6 +24,7 @@ func (e *EventsDecoder) Init(data scaleBytes.ScaleBytes, option *scaleType.Scale
 
 type EventParam struct {
 	Type     string      `json:"type"`
+	Name     string      `json:"name,omitempty"`
 	TypeName string      `json:"type_name"`
 	Value    interface{} `json:"value"`
 }
@@ -83,6 +84,9 @@ func (e *EventRecord) Process() map[string]interface{} {
 		param := EventParam{Type: argType, Value: value}
 		if len(e.Event.ArgsTypeName) == len(e.Event.Args) {
 			param.TypeName = e.Event.ArgsTypeName[index]
+		}
+		if len(e.Event.ArgsName) == len(e.Event.Args) {
+			param.Name = e.Event.ArgsName[index]
 		}
 		e.Params = append(e.Params, param)
 	}

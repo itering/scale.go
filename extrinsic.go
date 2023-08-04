@@ -82,7 +82,7 @@ type GenericExtrinsic struct {
 	AddressType        string                 `json:"address_type"`
 	Tip                decimal.Decimal        `json:"tip"`
 	SignedExtensions   map[string]interface{} `json:"signed_extensions"`
-	AccountId          interface{}            `json:"accountId"`
+	AccountId          interface{}            `json:"account_id"`
 	Signer             interface{}            `json:"signer"` // map[string]interface or string
 	Signature          string                 `json:"signature"`
 	SignatureRaw       interface{}            `json:"signature_raw"` // map[string]interface or string
@@ -139,12 +139,13 @@ func (e *ExtrinsicDecoder) Process() {
 			e.Nonce = int(e.ProcessAndUpdateData("Compact<U64>").(uint64))
 			if e.Metadata.Extrinsic != nil {
 				if utiles.SliceIndex("ChargeTransactionPayment", e.Metadata.Extrinsic.SignedIdentifier) != -1 {
-					result.Tip = e.ProcessAndUpdateData("Compact<Balance>").(decimal.Decimal)
+					result.Tip = utiles.DecimalFromInterface(e.ProcessAndUpdateData("Compact<Balance>"))
 				}
 			} else {
-				result.Tip = e.ProcessAndUpdateData("Compact<Balance>").(decimal.Decimal)
+				result.Tip = utiles.DecimalFromInterface(e.ProcessAndUpdateData("Compact<Balance>"))
 			}
 			// spec SignedExtensions
+			result.SignedExtensions = make(map[string]interface{})
 			if len(e.SignedExtensions) > 0 {
 				for _, extension := range e.SignedExtensions {
 					if utiles.SliceIndex(extension.Name, e.Metadata.Extrinsic.SignedIdentifier) != -1 {
@@ -230,7 +231,16 @@ func (g *GenericExtrinsic) Encode(opt *scaleType.ScaleDecoderOption) (string, er
 		data = data + scaleType.Encode("ExtrinsicSignature", g.SignatureRaw)                                                                                                   // signature
 		data = data + scaleType.Encode("EraExtrinsic", g.Era)                                                                                                                  // era
 		data = data + scaleType.Encode("Compact<U64>", g.Nonce)                                                                                                                // nonce
-		data = data + scaleType.Encode("Compact<Balance>", g.Tip)                                                                                                              // tip
+		if len(opt.Metadata.Extrinsic.SignedIdentifier) > 0 && utiles.SliceIndex("ChargeTransactionPayment", opt.Metadata.Extrinsic.SignedIdentifier) > -1 {
+			data = data + scaleType.Encode("Compact<Balance>", g.Tip) // tip
+		}
+		for identifier, extension := range g.SignedExtensions {
+			for _, ext := range opt.Metadata.Extrinsic.SignedExtensions {
+				if ext.Identifier == identifier {
+					data = data + scaleType.Encode(ext.TypeString, extension)
+				}
+			}
+		}
 	}
 
 	data = data + g.CallCode

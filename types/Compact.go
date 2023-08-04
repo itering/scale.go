@@ -47,22 +47,24 @@ func (c *Compact) Process() {
 	}
 	s := ScaleDecoder{TypeString: c.SubType, Data: scaleBytes.ScaleBytes{Data: c.CompactBytes}}
 	byteData := s.ProcessAndUpdateData(c.SubType)
+	var divValue uint64 = 1
 	if c.CompactLength <= 4 {
-		switch v := byteData.(type) {
-		case uint64:
-			c.Value = v / 4
-		case uint32:
-			c.Value = uint64(v / 4)
-		case int:
-			c.Value = uint64(v / 4)
-		case decimal.Decimal:
-			c.Value = v.Div(decimal.New(4, 0)).Floor()
-		case string:
-			c.Value = decimal.RequireFromString(v).Div(decimal.New(4, 0)).Floor()
-		default:
-			c.Value = byteData
-		}
-	} else {
+		divValue = 4
+	}
+	switch v := byteData.(type) {
+	case uint64:
+		c.Value = v / divValue
+	case uint16:
+		c.Value = uint64(v) / divValue
+	case uint32:
+		c.Value = uint64(v) / divValue
+	case int:
+		c.Value = uint64(v) / divValue
+	case decimal.Decimal:
+		c.Value = v.Div(decimal.New(int64(divValue), 0)).Floor()
+	case string:
+		c.Value = decimal.RequireFromString(v).Div(decimal.New(int64(divValue), 0)).Floor()
+	default:
 		c.Value = byteData
 	}
 }

@@ -126,6 +126,10 @@
       [
         "V2",
         "XcmV2"
+      ],
+      [
+        "V3",
+        "XcmV3"
       ]
     ],
     "type": "enum"
@@ -222,6 +226,18 @@
       ],
       [
         "Judicial",
+        "Null"
+      ],
+      [
+        "Defense",
+        "Null"
+      ],
+      [
+        "Administration",
+        "Null"
+      ],
+      [
+        "Treasury",
         "Null"
       ]
     ],
