@@ -172,7 +172,6 @@ func GetEnumValue(e map[string]interface{}) (string, interface{}, error) {
 
 // UnmarshalAny unmarshal any type
 func UnmarshalAny(raw interface{}, r interface{}) error {
-
 	switch v := raw.(type) {
 	case string:
 		if v == "" {
@@ -190,8 +189,8 @@ func UnmarshalAny(raw interface{}, r interface{}) error {
 		b, _ := json.Marshal(v)
 		return json.Unmarshal(b, r)
 	}
-  
-  
+}
+
 func DecimalFromInterface(i interface{}) decimal.Decimal {
 	switch i := i.(type) {
 	case int:
