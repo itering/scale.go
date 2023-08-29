@@ -31,7 +31,3 @@ func (m *MetadataDecoder) Process() error {
 	return errors.New("not metadata")
 
 }
-
-// CheckRegistry
-// Deprecated
-func (m *MetadataDecoder) CheckRegistry() (notReg []string) { return }

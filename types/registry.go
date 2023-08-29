@@ -39,7 +39,19 @@ func HasReg(typeName string) bool {
 	return ok
 }
 
+// Clean all type registry
+func Clean() {
+	TypeRegistry = nil
+	specialRegistry = make(map[string][]Special)
+	V14Types = nil
+	regBaseType()
+}
+
 func init() {
+	regBaseType()
+}
+
+func regBaseType() {
 	registry := make(map[string]interface{})
 	scales := []interface{}{
 		&Null{},
