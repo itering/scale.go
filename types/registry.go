@@ -43,7 +43,7 @@ func HasReg(typeName string) bool {
 func Clean() {
 	TypeRegistry = nil
 	specialRegistry = make(map[string][]Special)
-	V14Types = nil
+	V14Types = make(map[string]source.TypeStruct)
 	regBaseType()
 }
 
