@@ -16,7 +16,7 @@ type MetadataV15Decoder struct {
 // "MetadataV15": {
 //    "lookup": "PortableRegistry",
 //    "pallets": "Vec<PalletMetadataV15>",
-//    "extrinsic": "ExtrinsicMetadataV14",
+//    "extrinsic": "ExtrinsicMetadataV15",
 //    "type": "SiLookupTypeId",
 //    "apis": "Vec<RuntimeApiMetadataV15>"
 //  }
@@ -149,7 +149,7 @@ func (m *MetadataV15Decoder) Process() {
 		}
 	}
 	result.Metadata.Modules = modulesType
-	extrinsicMetadata := m.ProcessAndUpdateData("ExtrinsicMetadataV14").(map[string]interface{})
+	extrinsicMetadata := m.ProcessAndUpdateData("ExtrinsicMetadataV15").(map[string]interface{})
 	bm, _ = json.Marshal(extrinsicMetadata)
 	_ = json.Unmarshal(bm, &result.Extrinsic)
 
@@ -174,6 +174,9 @@ func (m *MetadataV15Decoder) Process() {
 			}
 		}
 	}
+
+	_ = utiles.UnmarshalAny(m.ProcessAndUpdateData("OuterEnumsMetadataV15").(interface{}), &result.OuterEnums)
+	_ = utiles.UnmarshalAny(m.ProcessAndUpdateData("CustomMetadataV15").(interface{}), &result.Customer)
 	m.Value = result
 }
 
@@ -236,4 +239,24 @@ func (r *RuntimeApiMethodMetadataV15) Process() {
 	ra.OutputsId = r.ProcessAndUpdateData("SiLookupTypeId").(int)
 	_ = utiles.UnmarshalAny(r.ProcessAndUpdateData("Vec<Text>").([]interface{}), &ra.Docs)
 	r.Value = ra
+}
+
+type OuterEnumsMetadataV15 struct{ ScaleDecoder }
+
+func (o *OuterEnumsMetadataV15) Process() {
+	ra := OuterEnumsMetadata{}
+	ra.CallType = o.ProcessAndUpdateData("SiLookupTypeId").(int)
+	ra.EventType = o.ProcessAndUpdateData("SiLookupTypeId").(int)
+	ra.ErrorType = o.ProcessAndUpdateData("SiLookupTypeId").(int)
+	// fmt.Println(ra.CallType, ra.ErrorType, ra.EventType)
+	o.Value = ra
+}
+
+type CustomMetadataV15 struct{ ScaleDecoder }
+
+func (c *CustomMetadataV15) Process() {
+	ra := CustomMetadata{}
+	mapping := c.ProcessAndUpdateData("BTreeMap<Text, CustomValueMetadata15>").([]interface{})
+	_ = utiles.UnmarshalAny(mapping, &ra.Map)
+	c.Value = ra
 }
