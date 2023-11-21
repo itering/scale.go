@@ -43,6 +43,48 @@
     ],
     "type": "struct"
   },
+  "ExtrinsicMetadataV15": {
+    "type_mapping": [
+      [
+        "version",
+        "u8"
+      ],
+      [
+        "addressType",
+        "SiLookupTypeId"
+      ],
+      [
+        "callType",
+        "SiLookupTypeId"
+      ],
+      [
+        "signatureType",
+        "SiLookupTypeId"
+      ],
+      [
+        "extraType",
+        "SiLookupTypeId"
+      ],
+      [
+        "signedExtensions",
+        "Vec<SignedExtensionMetadataV14>"
+      ]
+    ],
+    "type": "struct"
+  },
+  "CustomValueMetadata15": {
+    "type_mapping": [
+      [
+        "type",
+        "SiLookupTypeId"
+      ],
+      [
+        "value",
+        "Bytes"
+      ]
+    ],
+    "type": "struct"
+  },
   "SignedExtensionMetadataV14": {
     "type": "struct",
     "type_mapping": [

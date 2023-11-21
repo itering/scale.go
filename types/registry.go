@@ -149,6 +149,8 @@ func regBaseType() {
 		&SubstrateFixedU64{},
 		&SubstrateFixedI128{},
 		&Empty{},
+		&OuterEnumsMetadataV15{},
+		&CustomMetadataV15{},
 	}
 	for _, class := range scales {
 		valueOf := reflect.ValueOf(class)

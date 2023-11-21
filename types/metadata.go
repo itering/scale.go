@@ -91,6 +91,8 @@ type MetadataStruct struct {
 	Extrinsic       *ExtrinsicMetadata    `json:"extrinsic"`
 	Type            *int                  `json:"type,omitempty"`
 	Apis            []RuntimeApiMetadata  `json:"apis,omitempty"`
+	OuterEnums      *OuterEnumsMetadata   `json:"outer_enums,omitempty"`
+	Customer        *CustomMetadata       `json:"customer,omitempty"`
 }
 
 type RuntimeApiMetadata struct {
@@ -114,10 +116,29 @@ type RuntimeApiMethodParamMetadata struct {
 }
 
 type ExtrinsicMetadata struct {
-	Type             int                `json:"type"`
+	Type             int                `json:"type,omitempty"`
 	Version          int                `json:"version"`
+	AddressType      int                `json:"addressType,omitempty"`
+	CallType         int                `json:"callType,omitempty"`
+	SignatureType    int                `json:"signatureType,omitempty"`
+	ExtraType        int                `json:"extraType,omitempty"`
 	SignedExtensions []SignedExtensions `json:"signedExtensions"`
 	SignedIdentifier []string           `json:"signed_identifier"`
+}
+
+type OuterEnumsMetadata struct {
+	CallType  int `json:"callType"`
+	EventType int `json:"eventType"`
+	ErrorType int `json:"errorType"`
+}
+
+type CustomMetadata struct {
+	Map []map[string]CustomValueMetadata `json:"map"`
+}
+
+type CustomValueMetadata struct {
+	Value string `json:"value"`
+	Type  int    `json:"type"`
 }
 
 type CallIndex struct {
