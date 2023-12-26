@@ -236,6 +236,8 @@ func EqTypeStringWithTypeStruct(typeString string, dest *source.TypeStruct) bool
 			typeStrings = append(typeStrings, v[1])
 		}
 		return typeName == strings.Join(typeStrings, "")
+	case "string":
+		return typeName == getTypeStructString(dest.TypeString, 0)
 	}
 	return true
 }
