@@ -21,6 +21,7 @@ type ScaleDecoderOption struct {
 	Metadata         *MetadataStruct
 	FixedLength      int
 	SignedExtensions []SignedExtension `json:"signed_extensions"`
+	AdditionalCheck  []string
 	TypeName         string
 	recursiveTime    int
 }

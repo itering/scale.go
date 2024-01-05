@@ -33,6 +33,7 @@ type ExtrinsicDecoder struct {
 	Params              []ExtrinsicParam `json:"params"`
 	Metadata            *scaleType.MetadataStruct
 	SignedExtensions    []scaleType.SignedExtension `json:"signed_extensions"`
+	AdditionalCheck     []string
 }
 
 // https://github.com/polkadot-js/api/blob/master/packages/types/src/extrinsic/signedExtensions/index.ts#L24
@@ -55,6 +56,7 @@ func (e *ExtrinsicDecoder) Init(data scaleBytes.ScaleBytes, option *scaleType.Sc
 	e.Params = []ExtrinsicParam{}
 	e.Metadata = option.Metadata
 	e.SignedExtensions = option.SignedExtensions
+	e.AdditionalCheck = option.AdditionalCheck
 	e.ScaleDecoder.Init(data, option)
 }
 
@@ -157,7 +159,7 @@ func (e *ExtrinsicDecoder) Process() {
 			} else {
 				if e.Metadata.MetadataVersion >= 14 {
 					for _, ext := range e.Metadata.Extrinsic.SignedExtensions {
-						if enable, ok := signedExts[ext.Identifier]; ok && enable {
+						if enable := signedExts[ext.Identifier]; enable || utiles.SliceIndex(ext.Identifier, e.AdditionalCheck) >= 0 {
 							result.SignedExtensions[ext.Identifier] = e.ProcessAndUpdateData(ext.TypeString)
 						}
 					}
