@@ -34,7 +34,7 @@ func (o *Option) Encode(value interface{}) string {
 		}
 		return "02"
 	}
-	return EncodeWithOpt(o.SubType, value, &ScaleDecoderOption{Spec: o.Spec, Metadata: o.Metadata})
+	return "01" + EncodeWithOpt(o.SubType, value, &ScaleDecoderOption{Spec: o.Spec, Metadata: o.Metadata})
 }
 
 func (o *Option) TypeStructString() string {
