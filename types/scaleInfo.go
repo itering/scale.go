@@ -237,6 +237,11 @@ func (s *ScaleInfo) expandComposite(id int, SiTyp SiType, id2Portable map[int]Si
 	}
 
 	if len(SiTyp.Def.Composite.Fields) == 1 {
+		// Avoid accountId32 being converted to ascii
+		if len(SiTyp.Path) > 0 && SiTyp.Path[len(SiTyp.Path)-1] == "AccountId32" {
+			s.RegisteredSiType[id] = "AccountId"
+			return s.RegisteredSiType[id]
+		}
 		subTypeId := SiTyp.Def.Composite.Fields[0].Type
 		subType, ok := s.RegisteredSiType[subTypeId]
 		if !ok {
