@@ -66,7 +66,7 @@ func (f *FixedArray) Encode(value interface{}) string {
 	case reflect.String:
 		valueStr := value.(string)
 		if strings.HasPrefix(valueStr, "0x") {
-			return valueStr
+			return utiles.TrimHex(valueStr)
 		} else {
 			return utiles.BytesToHex([]byte(valueStr))
 		}

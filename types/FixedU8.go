@@ -20,8 +20,16 @@ func (s *FixedU8) Process() {
 	}
 }
 
-func (s *FixedU8) Encode(value string) string {
-	return utiles.TrimHex(value)
+func (s *FixedU8) Encode(value interface{}) string {
+	switch value.(type) {
+	case string:
+		return utiles.TrimHex(value.(string))
+	case []byte:
+		return utiles.TrimHex(utiles.BytesToHex(value.([]byte)))
+	default:
+		panic("type error,only support string or []byte")
+	}
+	return ""
 }
 
 func (s *FixedU8) TypeStructString() string {

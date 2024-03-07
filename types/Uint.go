@@ -35,6 +35,8 @@ func (u *U8) Encode(value interface{}) string {
 		i = int(v)
 	case float64:
 		i = int(v)
+	case uint8:
+		i = int(v)
 	}
 	return utiles.U8Encode(i)
 }

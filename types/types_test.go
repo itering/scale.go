@@ -357,3 +357,10 @@ func TestBitVec(t *testing.T) {
 		assert.EqualValues(t, r[i], m.ProcessAndUpdateData("BitVec"))
 	}
 }
+
+func TestFixedArray(t *testing.T) {
+	ts := []string{"[u8; 16]", "[u8; 16]", "[u8;16]"}
+	for i, v := range []interface{}{[]byte{2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2}, []byte{2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2}, "0x02020202020202020202020202020202"} {
+		assert.Equal(t, Encode(ts[i], v), "02020202020202020202020202020202", "TestFixedArray Encode fail %s", ts[i])
+	}
+}
