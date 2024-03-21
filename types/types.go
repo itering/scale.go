@@ -182,7 +182,7 @@ type AccountId struct {
 }
 
 func (s *AccountId) Process() {
-	s.Value = xstrings.RightJustify(utiles.BytesToHex(s.NextBytes(32)), 64, "0")
+	s.Value = utiles.AddHex(xstrings.RightJustify(utiles.BytesToHex(s.NextBytes(32)), 64, "0"))
 }
 
 func (s *AccountId) Encode(value string) string {

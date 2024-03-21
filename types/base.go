@@ -211,7 +211,7 @@ func EncodeWithOpt(typeString string, data interface{}, opt *ScaleDecoderOption)
 	}
 	out := value.MethodByName("Encode").Call([]reflect.Value{val})
 	if len(out) > 0 {
-		return strings.ToLower(out[0].String())
+		return utiles.TrimHex(strings.ToLower(out[0].String()))
 	}
 	return ""
 }
