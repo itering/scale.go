@@ -47,6 +47,7 @@ var signedExts = map[string]bool{
 	"ChargeTransactionPayment": false,
 	"CheckBlockGasLimit":       false,
 	"ChargeAssetTxPayment":     true,
+	"CheckMetadataHash":        true,
 }
 
 func (e *ExtrinsicDecoder) Init(data scaleBytes.ScaleBytes, option *scaleType.ScaleDecoderOption) {
