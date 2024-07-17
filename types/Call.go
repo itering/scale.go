@@ -33,6 +33,7 @@ func (s *Call) Process() {
 type BoxCall struct {
 	CallIndex string           `json:"call_Index"`
 	Params    []ExtrinsicParam `json:"params"`
+	CallArgs  []ExtrinsicParam `json:"call_args"`
 }
 
 func (s *Call) Encode(value interface{}) string {
@@ -50,6 +51,9 @@ func (s *Call) Encode(value interface{}) string {
 		}
 	default:
 		panic("input value is not valid boxCall")
+	}
+	if len(boxCall.CallArgs) > 0 {
+		boxCall.Params = boxCall.CallArgs
 	}
 	callIndex := utiles.TrimHex(boxCall.CallIndex)
 	raw := callIndex

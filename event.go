@@ -53,6 +53,7 @@ type EventRecord struct {
 	Params       []EventParam             `json:"params"`
 	Event        scaleType.MetadataEvents `json:"event"`
 	Topic        []string                 `json:"topic"`
+	ParamsRaw    string                   `json:"params_raw"`
 }
 
 func (e *EventRecord) Process() map[string]interface{} {
@@ -79,6 +80,7 @@ func (e *EventRecord) Process() map[string]interface{} {
 
 	e.Event = call.Call
 	e.Module = call.Module.Name
+	offset := e.Data.Offset
 	for index, argType := range e.Event.Args {
 		value := e.ProcessAndUpdateData(argType)
 		param := EventParam{Type: argType, Value: value}
@@ -90,6 +92,7 @@ func (e *EventRecord) Process() map[string]interface{} {
 		}
 		e.Params = append(e.Params, param)
 	}
+	e.ParamsRaw = utiles.BytesToHex(e.Data.Data[offset:e.Data.Offset])
 
 	if e.Metadata.MetadataVersion >= 5 {
 		if topic := e.ProcessAndUpdateData("Vec<Hash>"); topic != nil {
@@ -108,6 +111,7 @@ func (e *EventRecord) Process() map[string]interface{} {
 		"event_id":      e.Event.Name,
 		"params":        e.Params,
 		"topic":         e.Topic,
+		"params_raw":    e.ParamsRaw,
 	}
 
 }

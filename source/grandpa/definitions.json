@@ -107,7 +107,6 @@
     ],
     "type": "enum"
   },
-  "NextAuthority": "(AuthorityId, AuthorityWeight)",
   "AuthorityIndex": "u64",
   "GrandpaEquivocationProof": {
     "type_mapping": [

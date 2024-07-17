@@ -31,6 +31,7 @@ type ExtrinsicDecoder struct {
 	Era                 string           `json:"era"`
 	CallIndex           string           `json:"call_index"`
 	Params              []ExtrinsicParam `json:"params"`
+	ParamsRaw           string           `json:"params_raw"`
 	Metadata            *scaleType.MetadataStruct
 	SignedExtensions    []scaleType.SignedExtension `json:"signed_extensions"`
 	AdditionalCheck     []string
@@ -96,6 +97,7 @@ type GenericExtrinsic struct {
 	CallCode           string                 `json:"call_code"`
 	CallModule         string                 `json:"call_module"`
 	Params             []ExtrinsicParam       `json:"params"`
+	ParamsRaw          string                 `json:"params_raw"`
 }
 
 func (e *ExtrinsicDecoder) Process() {
@@ -181,10 +183,11 @@ func (e *ExtrinsicDecoder) Process() {
 		panic(fmt.Sprintf("Not find Extrinsic Lookup %s, please check metadata info", e.CallIndex))
 	}
 	e.Module = call.Module.Name
-
+	offset := e.Data.Offset
 	for _, arg := range call.Call.Args {
 		e.Params = append(e.Params, ExtrinsicParam{Name: arg.Name, Type: arg.Type, Value: e.ProcessAndUpdateData(arg.Type), TypeName: arg.TypeName})
 	}
+	e.ParamsRaw = utiles.BytesToHex(e.Data.Data[offset:e.Data.Offset])
 
 	if e.ContainsTransaction {
 		result.AccountId = e.Address
@@ -197,6 +200,7 @@ func (e *ExtrinsicDecoder) Process() {
 	result.CallModuleFunction = call.Call.Name
 	result.CallModule = call.Module.Name
 	result.Params = e.Params
+	result.ParamsRaw = e.ParamsRaw
 	e.Value = &result
 }
 

@@ -98,7 +98,9 @@ func (s *ScaleDecoder) Init(data scaleBytes.ScaleBytes, option *ScaleDecoderOpti
 
 func (s *ScaleDecoder) Process() {}
 
-func (s *ScaleDecoder) Encode(interface{}) string { return "" }
+func (s *ScaleDecoder) Encode(interface{}) string {
+	panic(fmt.Sprintf("not found base type %s", s.TypeName))
+}
 
 // TypeStructString Type Struct string
 func (s *ScaleDecoder) TypeStructString() string {
@@ -190,12 +192,13 @@ func Encode(typeString string, data interface{}) string {
 
 func EncodeWithOpt(typeString string, data interface{}, opt *ScaleDecoderOption) string {
 	r := RuntimeType{}
-	if typeString == "Null" {
+	if strings.EqualFold(typeString, "Null") {
 		return ""
 	}
 	if opt == nil {
 		opt = &ScaleDecoderOption{Spec: -1}
 	}
+	opt.TypeName = typeString
 	class, value, subType := r.GetCodecClass(typeString, opt.Spec)
 	if class == nil {
 		panic(fmt.Sprintf("Not found decoder class %s", typeString))

@@ -91,23 +91,32 @@ func (e *Enum) Encode(data interface{}) string {
 				}
 			}
 		}
-		for enumKey, value := range data.(map[string]interface{}) {
-			index := 0
-			for k, v := range e.TypeMapping.Names {
-				if v == enumKey {
-					subType := e.TypeMapping.Types[k]
-					var typeMap [][]string
-					if len(subType) > 4 && subType[0:2] == "[[" && json.Unmarshal([]byte(subType), &typeMap) == nil && len(typeMap) > 0 && len(typeMap[0]) == 2 {
-						var raw string
-						valueStruct := value.(map[string]interface{})
-						for _, st := range typeMap {
-							raw += EncodeWithOpt(st[1], valueStruct[st[0]], &ScaleDecoderOption{Spec: e.Spec, Metadata: e.Metadata})
+		switch dataValue := data.(type) {
+		case map[string]interface{}:
+			for enumKey, value := range dataValue {
+				index := 0
+				for k, v := range e.TypeMapping.Names {
+					if v == enumKey {
+						subType := e.TypeMapping.Types[k]
+						var typeMap [][]string
+						if len(subType) > 4 && subType[0:2] == "[[" && json.Unmarshal([]byte(subType), &typeMap) == nil && len(typeMap) > 0 && len(typeMap[0]) == 2 {
+							var raw string
+							valueStruct := value.(map[string]interface{})
+							for _, st := range typeMap {
+								raw += EncodeWithOpt(st[1], valueStruct[st[0]], &ScaleDecoderOption{Spec: e.Spec, Metadata: e.Metadata})
+							}
+							return utiles.U8Encode(index) + raw
 						}
-						return utiles.U8Encode(index) + raw
+						return utiles.U8Encode(index) + EncodeWithOpt(subType, value, &ScaleDecoderOption{Spec: e.Spec, Metadata: e.Metadata})
 					}
-					return utiles.U8Encode(index) + EncodeWithOpt(subType, value, &ScaleDecoderOption{Spec: e.Spec, Metadata: e.Metadata})
+					index++
 				}
-				index++
+			}
+		case string:
+			for index, v := range e.TypeMapping.Names {
+				if v == dataValue {
+					return utiles.U8Encode(index)
+				}
 			}
 		}
 	}

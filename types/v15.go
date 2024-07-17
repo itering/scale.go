@@ -175,8 +175,8 @@ func (m *MetadataV15Decoder) Process() {
 		}
 	}
 
-	_ = utiles.UnmarshalAny(m.ProcessAndUpdateData("OuterEnumsMetadataV15").(interface{}), &result.OuterEnums)
-	_ = utiles.UnmarshalAny(m.ProcessAndUpdateData("CustomMetadataV15").(interface{}), &result.Customer)
+	_ = utiles.UnmarshalAny(m.ProcessAndUpdateData("OuterEnumsMetadataV15"), &result.OuterEnums)
+	_ = utiles.UnmarshalAny(m.ProcessAndUpdateData("CustomMetadataV15"), &result.Customer)
 	m.Value = result
 }
 
@@ -198,11 +198,12 @@ type RuntimeApiMetadataV15 struct {
 }
 
 // Process
-// "RuntimeApiMetadataV15": {
-//    "name": "Text",
-//    "methods": "Vec<RuntimeApiMethodMetadataV15>",
-//    "docs": "Vec<Text>"
-//  }
+//
+//	"RuntimeApiMetadataV15": {
+//	   "name": "Text",
+//	   "methods": "Vec<RuntimeApiMethodMetadataV15>",
+//	   "docs": "Vec<Text>"
+//	 }
 func (m *RuntimeApiMetadataV15) Process() {
 	runtimeApiMetadata := RuntimeApiMetadata{}
 	runtimeApiMetadata.Name = m.ProcessAndUpdateData("Text").(string)
@@ -216,10 +217,11 @@ type RuntimeApiMethodParamMetadataV15 struct {
 }
 
 // Process
-// "RuntimeApiMethodParamMetadataV15": {
-//    "name": "Text",
-//    "type": "SiLookupTypeId"
-//  },
+//
+//	"RuntimeApiMethodParamMetadataV15": {
+//	   "name": "Text",
+//	   "type": "SiLookupTypeId"
+//	 },
 func (r *RuntimeApiMethodParamMetadataV15) Process() {
 	ra := RuntimeApiMethodParamMetadata{}
 	ra.Name = r.ProcessAndUpdateData("Text").(string)

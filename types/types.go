@@ -41,6 +41,8 @@ func (e *Empty) Process() {
 	e.Value = "NULL"
 }
 
+func (e *Empty) Encode(interface{}) string { return "" }
+
 func (h *H160) Process() {
 	h.Value = utiles.AddHex(utiles.BytesToHex(h.NextBytes(20)))
 }
@@ -170,11 +172,7 @@ func (a *GenericAddress) Process() {
 }
 
 type Signature struct {
-	ScaleDecoder
-}
-
-func (s *Signature) Process() {
-	s.Value = utiles.BytesToHex(s.NextBytes(64))
+	H512
 }
 
 type AccountId struct {
@@ -330,7 +328,7 @@ func (e *EcdsaSignature) Process() {
 }
 
 type EthereumAddress struct {
-	ScaleDecoder
+	H160
 }
 
 func (e *EthereumAddress) Process() {
