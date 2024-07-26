@@ -112,7 +112,6 @@ func TestBalance(t *testing.T) {
 	assert.Equal(t, raw, Encode("Balance", m.ProcessAndUpdateData("Balance")))
 }
 
-//
 func TestRegistration(t *testing.T) {
 	raw := "04010000000200a0724e180900000000000000000000000d505552455354414b452d30310e507572655374616b65204c74641b68747470733a2f2f7777772e707572657374616b652e636f6d2f000000000d40707572657374616b65636f"
 	m := ScaleDecoder{}
@@ -352,8 +351,8 @@ func TestEmptyVec(t *testing.T) {
 func TestBitVec(t *testing.T) {
 	m := ScaleDecoder{}
 	r := []string{"0b00010111", "0b01111011", "0b00110011"}
-	for i, v := range []string{"0x0817", "0x087b", "0x0c33"} {
-		m.Init(scaleBytes.ScaleBytes{Data: utiles.HexToBytes(v)}, nil)
+	for i := range []string{"0x0817", "0x087b", "0x0c33"} {
+		m.Init(scaleBytes.ScaleBytes{Data: utiles.HexToBytes(utiles.AddHex(Encode("BitVec", r[i])))}, nil)
 		assert.EqualValues(t, r[i], m.ProcessAndUpdateData("BitVec"))
 	}
 }

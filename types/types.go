@@ -493,3 +493,14 @@ func (b *BitVec) Process() {
 func (b *BitVec) TypeStructString() string {
 	return "BitVec"
 }
+
+func (b *BitVec) Encode(value string) string {
+	value = strings.TrimPrefix(value, "0b")
+	values := strings.Split(value, "_")
+	var u8a []byte
+	for _, v := range values {
+		b, _ := strconv.ParseUint(v, 2, 8)
+		u8a = append(u8a, byte(b))
+	}
+	return Encode("Compact<u32>", len(u8a)) + utiles.BytesToHex(u8a)
+}
