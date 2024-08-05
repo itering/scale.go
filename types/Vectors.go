@@ -13,6 +13,8 @@ type Vec struct {
 	ScaleDecoder
 }
 
+const maxVecLength = 512 * 1024
+
 func (v *Vec) Init(data scaleBytes.ScaleBytes, option *ScaleDecoderOption) {
 	if v.SubType != "" && option != nil {
 		option.SubType = v.SubType
@@ -23,8 +25,8 @@ func (v *Vec) Init(data scaleBytes.ScaleBytes, option *ScaleDecoderOption) {
 func (v *Vec) Process() {
 	elementCount := v.ProcessAndUpdateData("Compact<u32>").(int)
 	var result []interface{}
-	if elementCount > 99_999 {
-		panic(fmt.Sprintf("Vec length %d exceeds %d with subType %s", elementCount, 99_999, v.SubType))
+	if elementCount > maxVecLength {
+		panic(fmt.Sprintf("Vec length %d exceeds %d with subType %s", elementCount, maxVecLength, v.SubType))
 	}
 	subType := v.SubType
 	for i := 0; i < elementCount; i++ {
