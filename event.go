@@ -35,6 +35,7 @@ func (e *EventsDecoder) Process() {
 	er := EventRecord{Metadata: e.Metadata}
 	er.Data = e.Data
 	er.Spec = e.Spec
+	er.ScaleDecoder.Metadata = e.Metadata
 	var result []interface{}
 	for i := 0; i < elementCount; i++ {
 		element := er.Process()
