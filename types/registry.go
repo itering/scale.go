@@ -59,6 +59,7 @@ func regBaseType() {
 		&U16{},
 		&U32{},
 		&U64{},
+		&U256{},
 		&Float64{},
 		&Float32{},
 		&U128{},

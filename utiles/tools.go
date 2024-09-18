@@ -211,3 +211,8 @@ func DecimalFromInterface(i interface{}) decimal.Decimal {
 	}
 	return decimal.Zero
 }
+
+func U256DecoderToBigInt(u256 string) *big.Int {
+	reverseData := ReverseBytes(HexToBytes(u256))
+	return U256(BytesToHex(reverseData))
+}

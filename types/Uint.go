@@ -3,8 +3,11 @@ package types
 import (
 	"bytes"
 	"encoding/binary"
+	"fmt"
 	"io"
 	"math/big"
+	"reflect"
+	"strings"
 
 	"github.com/huandu/xstrings"
 	"github.com/itering/scale.go/utiles"
@@ -192,4 +195,45 @@ func (u *U128) Encode(value interface{}) string {
 
 func (u *U128) TypeStructString() string {
 	return "U128"
+}
+
+type U256 struct {
+	ScaleDecoder
+}
+
+func (u *U256) Process() {
+	u.Value = utiles.AddHex(utiles.BytesToHex(u.NextBytes(32)))
+}
+
+func (u *U256) Encode(value interface{}) string {
+	var raw string
+	if reflect.TypeOf(value).Kind() == reflect.String && value.(string) == "" {
+		return ""
+	}
+	switch reflect.TypeOf(value).String() {
+	case reflect.Slice.String():
+		s := reflect.ValueOf(value)
+		if s.Len() != 32 {
+			panic("fixed length not match")
+		}
+		for i := 0; i < s.Len(); i++ {
+			raw += EncodeWithOpt("U8", s.Index(i).Interface(), nil)
+		}
+		return raw
+	case reflect.String.String():
+		valueStr := value.(string)
+		if strings.HasPrefix(valueStr, "0x") {
+			return utiles.TrimHex(valueStr)
+		} else {
+			return utiles.BytesToHex([]byte(valueStr))
+		}
+	case "decimal.Decimal":
+		value = value.(decimal.Decimal).BigInt()
+		fallthrough
+	case "*big.Int":
+		bigVal := fmt.Sprintf("%064s", value.(*big.Int).Text(16))
+		return utiles.BytesToHex(utiles.ReverseBytes(utiles.HexToBytes(bigVal)))
+	default:
+		panic(fmt.Errorf("invalid vec input"))
+	}
 }

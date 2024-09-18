@@ -363,3 +363,11 @@ func TestFixedArray(t *testing.T) {
 		assert.Equal(t, Encode(ts[i], v), "02020202020202020202020202020202", "TestFixedArray Encode fail %s", ts[i])
 	}
 }
+
+func TestU256(t *testing.T) {
+	raw := "0x1001000000000000000000000000000000000000000000000000000000000000"
+	m := ScaleDecoder{}
+	m.Init(scaleBytes.ScaleBytes{Data: utiles.HexToBytes(raw)}, nil)
+	assert.Equal(t, raw, utiles.AddHex(Encode("U256", utiles.U256DecoderToBigInt(m.ProcessAndUpdateData("U256").(string)))))
+	assert.Equal(t, raw, utiles.AddHex(Encode("U256", "0x1001000000000000000000000000000000000000000000000000000000000000")))
+}
