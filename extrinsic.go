@@ -81,23 +81,24 @@ func (e *ExtrinsicDecoder) generateHash() string {
 }
 
 type GenericExtrinsic struct {
-	VersionInfo        string                 `json:"version_info"`
-	ExtrinsicLength    int                    `json:"extrinsic_length"`
-	AddressType        string                 `json:"address_type"`
-	Tip                decimal.Decimal        `json:"tip"`
-	SignedExtensions   map[string]interface{} `json:"signed_extensions"`
-	AccountId          interface{}            `json:"account_id"`
-	Signer             interface{}            `json:"signer"` // map[string]interface or string
-	Signature          string                 `json:"signature"`
-	SignatureRaw       interface{}            `json:"signature_raw"` // map[string]interface or string
-	Nonce              int                    `json:"nonce"`
-	Era                string                 `json:"era"`
-	ExtrinsicHash      string                 `json:"extrinsic_hash"`
-	CallModuleFunction string                 `json:"call_module_function"`
-	CallCode           string                 `json:"call_code"`
-	CallModule         string                 `json:"call_module"`
-	Params             []ExtrinsicParam       `json:"params"`
-	ParamsRaw          string                 `json:"params_raw"`
+	VersionInfo                 string                 `json:"version_info"`
+	ExtrinsicLength             int                    `json:"extrinsic_length"`
+	AddressType                 string                 `json:"address_type"`
+	Tip                         decimal.Decimal        `json:"tip"`
+	SignedExtensions            map[string]interface{} `json:"signed_extensions"`
+	AccountId                   interface{}            `json:"account_id"`
+	Signer                      interface{}            `json:"signer"` // map[string]interface or string
+	Signature                   string                 `json:"signature"`
+	SignatureRaw                interface{}            `json:"signature_raw"` // map[string]interface or string
+	Nonce                       int                    `json:"nonce"`
+	Era                         string                 `json:"era"`
+	ExtrinsicHash               string                 `json:"extrinsic_hash"`
+	CallModuleFunction          string                 `json:"call_module_function"`
+	CallCode                    string                 `json:"call_code"`
+	CallModule                  string                 `json:"call_module"`
+	Params                      []ExtrinsicParam       `json:"params"`
+	ParamsRaw                   string                 `json:"params_raw"`
+	TransactionExtensionVersion int                    `json:"transaction_extension_version"`
 }
 
 func (e *ExtrinsicDecoder) Process() {
@@ -142,6 +143,63 @@ func (e *ExtrinsicDecoder) Process() {
 			}
 			e.Era = e.ProcessAndUpdateData("EraExtrinsic").(string)
 			e.Nonce = int(e.ProcessAndUpdateData("Compact<U64>").(uint64))
+			if e.Metadata.Extrinsic != nil {
+				if utiles.SliceIndex("ChargeTransactionPayment", e.Metadata.Extrinsic.SignedIdentifier) != -1 {
+					result.Tip = utiles.DecimalFromInterface(e.ProcessAndUpdateData("Compact<Balance>"))
+				}
+			} else {
+				result.Tip = utiles.DecimalFromInterface(e.ProcessAndUpdateData("Compact<Balance>"))
+			}
+			// spec SignedExtensions
+			result.SignedExtensions = make(map[string]interface{})
+			if len(e.SignedExtensions) > 0 {
+				for _, extension := range e.SignedExtensions {
+					if utiles.SliceIndex(extension.Name, e.Metadata.Extrinsic.SignedIdentifier) != -1 {
+						for _, v := range extension.AdditionalSigned {
+							result.SignedExtensions[v.Name] = e.ProcessAndUpdateData(v.Type)
+						}
+					}
+				}
+			} else {
+				if e.Metadata.MetadataVersion >= 14 {
+					for _, ext := range e.Metadata.Extrinsic.SignedExtensions {
+						if enable := signedExts[ext.Identifier]; enable || utiles.SliceIndex(ext.Identifier, e.AdditionalCheck) >= 0 {
+							result.SignedExtensions[ext.Identifier] = e.ProcessAndUpdateData(ext.TypeString)
+						}
+					}
+				}
+			}
+			e.ExtrinsicHash = e.generateHash()
+		}
+		e.CallIndex = utiles.BytesToHex(e.NextBytes(2))
+	} else if e.VersionInfo == "05" || e.VersionInfo == "85" {
+		if e.ContainsTransaction {
+			// Address
+			result.Signer = e.ProcessAndUpdateData(utiles.TrueOrElse(e.Metadata.MetadataVersion >= 14 && scaleType.HasReg("ExtrinsicSigner"), "ExtrinsicSigner", "Address"))
+			switch v := result.Signer.(type) {
+			case string:
+				e.Address = v
+				result.AddressType = "AccountId"
+			case map[string]interface{}:
+				for name, value := range v {
+					result.AddressType = name
+					e.Address = value
+				}
+			}
+			// ExtrinsicSignature
+			result.SignatureRaw = e.ProcessAndUpdateData("ExtrinsicSignature")
+			result.TransactionExtensionVersion = e.ProcessAndUpdateData("U8").(int)
+			switch v := result.SignatureRaw.(type) {
+			case string:
+				e.Signature = v
+			case map[string]interface{}:
+				for _, value := range v {
+					e.Signature = value.(string)
+				}
+			}
+			e.Era = e.ProcessAndUpdateData("EraExtrinsic").(string)
+			e.Nonce = int(e.ProcessAndUpdateData("Compact<U64>").(uint64))
+
 			if e.Metadata.Extrinsic != nil {
 				if utiles.SliceIndex("ChargeTransactionPayment", e.Metadata.Extrinsic.SignedIdentifier) != -1 {
 					result.Tip = utiles.DecimalFromInterface(e.ProcessAndUpdateData("Compact<Balance>"))

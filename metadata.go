@@ -21,6 +21,10 @@ func (m *MetadataDecoder) Init(data []byte) {
 
 func (m *MetadataDecoder) Process() error {
 	magicBytes := m.NextBytes(4)
+	// if string(magicBytes) != "meta" {
+	// 	m.NextBytes(1) // maybe option<metadata> ?
+	// 	magicBytes = m.NextBytes(4)
+	// }
 	if string(magicBytes) == "meta" {
 		metadataVersion := utiles.U256(utiles.BytesToHex(m.Data.Data[m.Data.Offset : m.Data.Offset+1]))
 		m.Version = m.ProcessAndUpdateData("MetadataVersion").(string)
