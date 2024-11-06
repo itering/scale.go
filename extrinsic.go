@@ -45,7 +45,7 @@ var signedExts = map[string]bool{
 	"CheckMortality":           false,
 	"CheckNonce":               false,
 	"CheckWeight":              false,
-	"ChargeTransactionPayment": false,
+	"ChargeTransactionPayment": true,
 	"CheckBlockGasLimit":       false,
 	"ChargeAssetTxPayment":     true,
 	"CheckMetadataHash":        true,
@@ -116,7 +116,6 @@ func (e *ExtrinsicDecoder) Process() {
 		ExtrinsicLength: e.ExtrinsicLength,
 		VersionInfo:     e.VersionInfo,
 	}
-
 	if e.VersionInfo == "04" || e.VersionInfo == "84" {
 		if e.ContainsTransaction {
 			// Address
@@ -143,11 +142,7 @@ func (e *ExtrinsicDecoder) Process() {
 			}
 			e.Era = e.ProcessAndUpdateData("EraExtrinsic").(string)
 			e.Nonce = int(e.ProcessAndUpdateData("Compact<U64>").(uint64))
-			if e.Metadata.Extrinsic != nil {
-				if utiles.SliceIndex("ChargeTransactionPayment", e.Metadata.Extrinsic.SignedIdentifier) != -1 {
-					result.Tip = utiles.DecimalFromInterface(e.ProcessAndUpdateData("Compact<Balance>"))
-				}
-			} else {
+			if e.Metadata.Extrinsic == nil {
 				result.Tip = utiles.DecimalFromInterface(e.ProcessAndUpdateData("Compact<Balance>"))
 			}
 			// spec SignedExtensions
@@ -164,7 +159,11 @@ func (e *ExtrinsicDecoder) Process() {
 				if e.Metadata.MetadataVersion >= 14 {
 					for _, ext := range e.Metadata.Extrinsic.SignedExtensions {
 						if enable := signedExts[ext.Identifier]; enable || utiles.SliceIndex(ext.Identifier, e.AdditionalCheck) >= 0 {
-							result.SignedExtensions[ext.Identifier] = e.ProcessAndUpdateData(ext.TypeString)
+							if ext.Identifier == "ChargeTransactionPayment" {
+								result.Tip = utiles.DecimalFromInterface(e.ProcessAndUpdateData("Compact<Balance>"))
+							} else {
+								result.SignedExtensions[ext.Identifier] = e.ProcessAndUpdateData(ext.TypeString)
+							}
 						}
 					}
 				}
@@ -199,30 +198,14 @@ func (e *ExtrinsicDecoder) Process() {
 			}
 			e.Era = e.ProcessAndUpdateData("EraExtrinsic").(string)
 			e.Nonce = int(e.ProcessAndUpdateData("Compact<U64>").(uint64))
-
-			if e.Metadata.Extrinsic != nil {
-				if utiles.SliceIndex("ChargeTransactionPayment", e.Metadata.Extrinsic.SignedIdentifier) != -1 {
-					result.Tip = utiles.DecimalFromInterface(e.ProcessAndUpdateData("Compact<Balance>"))
-				}
-			} else {
-				result.Tip = utiles.DecimalFromInterface(e.ProcessAndUpdateData("Compact<Balance>"))
-			}
 			// spec SignedExtensions
 			result.SignedExtensions = make(map[string]interface{})
-			if len(e.SignedExtensions) > 0 {
-				for _, extension := range e.SignedExtensions {
-					if utiles.SliceIndex(extension.Name, e.Metadata.Extrinsic.SignedIdentifier) != -1 {
-						for _, v := range extension.AdditionalSigned {
-							result.SignedExtensions[v.Name] = e.ProcessAndUpdateData(v.Type)
-						}
-					}
-				}
-			} else {
-				if e.Metadata.MetadataVersion >= 14 {
-					for _, ext := range e.Metadata.Extrinsic.SignedExtensions {
-						if enable := signedExts[ext.Identifier]; enable || utiles.SliceIndex(ext.Identifier, e.AdditionalCheck) >= 0 {
-							result.SignedExtensions[ext.Identifier] = e.ProcessAndUpdateData(ext.TypeString)
-						}
+			for _, ext := range e.Metadata.Extrinsic.SignedExtensions {
+				if enable := signedExts[ext.Identifier]; enable || utiles.SliceIndex(ext.Identifier, e.AdditionalCheck) >= 0 {
+					if ext.Identifier == "ChargeTransactionPayment" {
+						result.Tip = utiles.DecimalFromInterface(e.ProcessAndUpdateData("Compact<Balance>"))
+					} else {
+						result.SignedExtensions[ext.Identifier] = e.ProcessAndUpdateData(ext.TypeString)
 					}
 				}
 			}
