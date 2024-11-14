@@ -8,7 +8,7 @@
     "type_mapping": [
       [
         "Null",
-        "Null"
+        "empty"
       ],
       [
         "Assets",
@@ -25,67 +25,67 @@
     "type_mapping": [
       [
         "Undefined",
-        "Null"
+        "empty"
       ],
       [
         "Overflow",
-        "Null"
+        "empty"
       ],
       [
         "Unimplemented",
-        "Null"
+        "empty"
       ],
       [
         "UnhandledXcmVersion",
-        "Null"
+        "empty"
       ],
       [
         "UnhandledXcmMessage",
-        "Null"
+        "empty"
       ],
       [
         "UnhandledEffect",
-        "Null"
+        "empty"
       ],
       [
         "EscalationOfPrivilege",
-        "Null"
+        "empty"
       ],
       [
         "UntrustedReserveLocation",
-        "Null"
+        "empty"
       ],
       [
         "UntrustedTeleportLocation",
-        "Null"
+        "empty"
       ],
       [
         "DestinationBufferOverflow",
-        "Null"
+        "empty"
       ],
       [
         "MultiLocationFull",
-        "Null"
+        "empty"
       ],
       [
         "MultiLocationNotInvertible",
-        "Null"
+        "empty"
       ],
       [
         "FailedToDecode",
-        "Null"
+        "empty"
       ],
       [
         "BadOrigin",
-        "Null"
+        "empty"
       ],
       [
         "ExceedsMaxMessageSize",
-        "Null"
+        "empty"
       ],
       [
         "FailedToTransactAsset",
-        "Null"
+        "empty"
       ],
       [
         "WeightLimitReached",
@@ -93,59 +93,59 @@
       ],
       [
         "Wildcard",
-        "Null"
+        "empty"
       ],
       [
         "TooMuchWeightRequired",
-        "Null"
+        "empty"
       ],
       [
         "NotHoldingFees",
-        "Null"
+        "empty"
       ],
       [
         "WeightNotComputable",
-        "Null"
+        "empty"
       ],
       [
         "Barrier",
-        "Null"
+        "empty"
       ],
       [
         "NotWithdrawable",
-        "Null"
+        "empty"
       ],
       [
         "LocationCannotHold",
-        "Null"
+        "empty"
       ],
       [
         "TooExpensive",
-        "Null"
+        "empty"
       ],
       [
         "AssetNotFound",
-        "Null"
+        "empty"
       ],
       [
         "DestinationUnsupported",
-        "Null"
+        "empty"
       ],
       [
         "RecursionLimitReached",
-        "Null"
+        "empty"
       ],
       [
         "Transport",
-        "Null"
+        "empty"
       ],
       [
         "Unroutable",
-        "Null"
+        "empty"
       ],
       [
         "UnknownWeightRequired",
-        "Null"
+        "empty"
       ],
       [
         "Trap",
@@ -153,11 +153,11 @@
       ],
       [
         "UnknownClaim",
-        "Null"
+        "empty"
       ],
       [
         "InvalidLocation",
-        "Null"
+        "empty"
       ]
     ],
     "type": "enum"
@@ -170,7 +170,7 @@
     "type_mapping": [
       [
         "Unlimited",
-        "Null"
+        "empty"
       ],
       [
         "Limited",
@@ -227,7 +227,7 @@
       ],
       [
         "ClearOrigin",
-        "Null"
+        "empty"
       ],
       [
         "DescendOrigin",
@@ -263,11 +263,11 @@
       ],
       [
         "BuyExecution",
-        "[[\"fees\", \"MultiAssetV2\"], [\"weightLimit\", \"WeightLimitV2\"]]"
+        "[[\"fees\", \"MultiAssetV2\"], [\"weight_limit\", \"WeightLimitV2\"]]"
       ],
       [
         "RefundSurplus",
-        "Null"
+        "empty"
       ],
       [
         "SetErrorHandler",
@@ -279,7 +279,7 @@
       ],
       [
         "ClearError",
-        "Null"
+        "empty"
       ],
       [
         "ClaimAsset",
