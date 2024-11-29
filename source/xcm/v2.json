@@ -17,6 +17,10 @@
       [
         "ExecutionResult",
         "ResponseV2Result"
+      ],
+      [
+        "Version",
+        "U32"
       ]
     ],
     "type": "enum"
@@ -162,7 +166,7 @@
     ],
     "type": "enum"
   },
-  "ResponseV2Result": "Result<Null, ResponseV2Error>",
+  "ResponseV2Result": "Result<U32, ResponseV2Error>",
   "MultiAssetFilterV2": "MultiAssetFilterV1",
   "MultiLocationV2": "MultiLocationV1",
   "JunctionV2": "JunctionV1",
@@ -199,7 +203,7 @@
       ],
       [
         "QueryResponse",
-        "[[\"queryId\", \"Compact<u64>\"], [\"response\", \"ResponseV2\"], [\"maxWeight\", \"Compact<u64>\"]]"
+        "[[\"query_id\", \"Compact<u64>\"], [\"response\", \"ResponseV2\"], [\"max_weight\", \"Compact<u64>\"]]"
       ],
       [
         "TransferAsset",
@@ -235,7 +239,7 @@
       ],
       [
         "ReportError",
-        "[[\"queryId\", \"Compact<u64>\"], [\"dest\", \"MultiLocationV2\"], [\"maxResponseWeight\", \"Compact<u64>\"]]"
+        "[[\"query_id\", \"Compact<u64>\"], [\"dest\", \"MultiLocationV2\"], [\"maxResponseWeight\", \"Compact<u64>\"]]"
       ],
       [
         "DepositAsset",

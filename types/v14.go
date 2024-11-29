@@ -141,8 +141,12 @@ func (m *MetadataV14Decoder) Process() {
 						ValueId: maps.ValueId,
 					}
 					if t := portable[maps.KeysId].Def.Tuple; t != nil {
-						for _, v := range *t {
-							NMapTypeValue.KeyVec = append(NMapTypeValue.KeyVec, metadataSiType[v])
+						if len(NMapTypeValue.Hashers) < len(*t) {
+							NMapTypeValue.KeyVec = []string{metadataSiType[maps.KeysId]}
+						} else {
+							for _, v := range *t {
+								NMapTypeValue.KeyVec = append(NMapTypeValue.KeyVec, metadataSiType[v])
+							}
 						}
 					} else {
 						NMapTypeValue.KeyVec = TupleDisassemble(metadataSiType[maps.KeysId])
