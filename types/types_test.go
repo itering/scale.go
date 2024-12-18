@@ -368,6 +368,8 @@ func TestU256(t *testing.T) {
 	raw := "0x1001000000000000000000000000000000000000000000000000000000000000"
 	m := ScaleDecoder{}
 	m.Init(scaleBytes.ScaleBytes{Data: utiles.HexToBytes(raw)}, nil)
-	assert.Equal(t, raw, utiles.AddHex(Encode("U256", utiles.U256DecoderToBigInt(m.ProcessAndUpdateData("U256").(string)))))
+	assert.Equal(t, raw, utiles.AddHex(Encode("U256", m.ProcessAndUpdateData("U256").(decimal.Decimal))))
 	assert.Equal(t, raw, utiles.AddHex(Encode("U256", "0x1001000000000000000000000000000000000000000000000000000000000000")))
+	m.Init(scaleBytes.ScaleBytes{Data: utiles.HexToBytes("0x00b5070000000000000000000000000000000000000000000000000000000000")}, nil)
+	assert.Equal(t, int64(505088), m.ProcessAndUpdateData("U256").(decimal.Decimal).IntPart())
 }

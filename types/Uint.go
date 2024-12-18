@@ -202,7 +202,9 @@ type U256 struct {
 }
 
 func (u *U256) Process() {
-	u.Value = utiles.AddHex(utiles.BytesToHex(u.NextBytes(32)))
+	reverseData := u.NextBytes(32)
+	Reverse(reverseData)
+	u.Value = decimal.NewFromBigInt(utiles.U256(utiles.BytesToHex(reverseData)), 0)
 }
 
 func (u *U256) Encode(value interface{}) string {
