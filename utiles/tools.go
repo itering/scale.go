@@ -70,10 +70,10 @@ func UniqueSlice(s []string) (list []string) {
 	return
 }
 
-func ReverseBytes(a []byte) []byte {
-	for i := len(a)/2 - 1; i >= 0; i-- {
-		opp := len(a) - 1 - i
-		a[i], a[opp] = a[opp], a[i]
+func ReverseBytes(b []byte) []byte {
+	a := make([]byte, len(b))
+	for i, j := 0, len(b)-1; i < j; i, j = i+1, j-1 {
+		a[i], a[j] = b[j], b[i]
 	}
 	return a
 }
