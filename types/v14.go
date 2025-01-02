@@ -33,7 +33,7 @@ func (m *MetadataV14Decoder) Process() {
 	}
 
 	// custom type lookup
-	portable := initPortableRaw(m.ProcessAndUpdateData("PortableRegistry").([]interface{}))
+	portable := InitPortableRaw(m.ProcessAndUpdateData("PortableRegistry").([]interface{}))
 	// utiles.Debug(portable)
 
 	scaleInfo := ScaleInfo{ScaleDecoder: &m.ScaleDecoder, V14: true}

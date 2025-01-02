@@ -23,9 +23,7 @@ func (m *MetadataDecoder) Process() error {
 	magicBytes := m.NextBytes(4)
 	if string(magicBytes) != "meta" {
 		m.Data.Reset()
-		// option<Opaque<metadata>> version > v15
-		m.NextBytes(1)                         // 0x01
-		m.ProcessAndUpdateData("Compact<u32>") // Compact<u32>
+		m.ProcessAndUpdateData("Option<Compact<u32>>") // Option<Compact<u32>>
 		magicBytes = m.NextBytes(4)
 	}
 	if string(magicBytes) == "meta" {
@@ -37,4 +35,28 @@ func (m *MetadataDecoder) Process() error {
 	}
 	return errors.New("not metadata")
 
+}
+
+func (m *MetadataDecoder) PortableRegistry() (map[int]types.SiType, error) {
+	magicBytes := m.NextBytes(4)
+	if string(magicBytes) != "meta" { // metadata version >= v15
+		m.Data.Reset()
+		m.ProcessAndUpdateData("Option<Compact<u32>>")
+		magicBytes = m.NextBytes(4)
+	}
+	if string(magicBytes) == "meta" {
+		metadataVersion := utiles.U256(utiles.BytesToHex(m.Data.Data[m.Data.Offset : m.Data.Offset+1]))
+		m.Version = m.ProcessAndUpdateData("MetadataVersion").(string)
+		if metadataVersion.Int64() < 14 {
+			return nil, errors.New("PortableRegistry not support, only metadata version >= v14")
+		}
+		portable := types.InitPortableRaw(m.ProcessAndUpdateData("PortableRegistry").([]interface{}))
+		var registry = make(map[int]types.SiType)
+		for index, item := range portable {
+			item.RemoveDocs()
+			registry[index] = item
+		}
+		return registry, nil
+	}
+	return nil, errors.New("not metadata")
 }

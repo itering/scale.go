@@ -1,6 +1,7 @@
 package scalecodec_test
 
 import (
+	"github.com/stretchr/testify/assert"
 	"testing"
 
 	scalecodec "github.com/itering/scale.go"
@@ -50,4 +51,12 @@ func TestMetadataV15DecoderProcess(t *testing.T) {
 		t.Errorf("MetadataV15version should equal 15")
 	}
 	// utiles.Debug(m.Metadata)
+}
+
+func TestMetadataPortableRegistry(t *testing.T) {
+	m := scalecodec.MetadataDecoder{}
+	m.Init(utiles.HexToBytes(Kusama9370))
+	registry, err := m.PortableRegistry()
+	assert.NoError(t, err)
+	assert.Equal(t, len(registry), 856)
 }

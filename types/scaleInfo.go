@@ -20,7 +20,7 @@ type SiType struct {
 	Path   []string          `json:"path"`
 	Params []SiTypeParameter `json:"params,omitempty"`
 	Def    SiTypeDef         `json:"def"`
-	Docs   []string          `json:"docs"`
+	Docs   []string          `json:"docs,omitempty"`
 }
 
 func (s *SiType) FindParameter(name string) *SiTypeParameter {
@@ -30,6 +30,23 @@ func (s *SiType) FindParameter(name string) *SiTypeParameter {
 		}
 	}
 	return nil
+}
+
+func (s *SiType) RemoveDocs() {
+	s.Docs = nil
+	switch {
+	case s.Def.Composite != nil:
+		for i := range s.Def.Composite.Fields {
+			s.Def.Composite.Fields[i].Docs = nil
+		}
+	case s.Def.Variant != nil:
+		for i := range s.Def.Variant.Variants {
+			s.Def.Variant.Variants[i].Docs = nil
+			for j := range s.Def.Variant.Variants[i].Fields {
+				s.Def.Variant.Variants[i].Fields[j].Docs = nil
+			}
+		}
+	}
 }
 
 type SiTypeParameter struct {
@@ -59,7 +76,7 @@ type SiField struct {
 	Name     string   `json:"name,omitempty"`
 	Type     int      `json:"type"`
 	TypeName string   `json:"typeName"`
-	Docs     []string `json:"docs"`
+	Docs     []string `json:"docs,omitempty"`
 }
 
 type SiTypeDefRange struct {
@@ -76,7 +93,7 @@ type SiVariant struct {
 	Name   string    `json:"name"`
 	Fields []SiField `json:"fields"`
 	Index  int       `json:"index"`
-	Docs   []string  `json:"docs"`
+	Docs   []string  `json:"docs,omitempty"`
 }
 
 type SiTypeDefSequence struct {
@@ -101,7 +118,7 @@ type SiTypeDefBitSequence struct {
 	BitOrderType int `json:"bitOrderType"`
 }
 
-func initPortableRaw(raw []interface{}) map[int]SiType {
+func InitPortableRaw(raw []interface{}) map[int]SiType {
 	var portables []PortableType
 	bm, _ := json.Marshal(raw)
 	if err := json.Unmarshal(bm, &portables); err != nil {
