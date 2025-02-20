@@ -81,6 +81,7 @@ type MetadataEvents struct {
 	Args         []string `json:"args"`
 	ArgsName     []string `json:"args_name,omitempty"`
 	ArgsTypeName []string `json:"args_type_name,omitempty"`
+	LookupIndex  int      `json:"-"`
 }
 
 type MetadataStruct struct {

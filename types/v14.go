@@ -84,7 +84,7 @@ func (m *MetadataV14Decoder) Process() {
 			}
 
 			for _, variant := range variants.Variants {
-				event := MetadataEvents{Name: variant.Name, Docs: variant.Docs}
+				event := MetadataEvents{Name: variant.Name, Docs: variant.Docs, LookupIndex: variant.Index}
 				for _, field := range variant.Fields {
 					event.Args = append(event.Args, metadataSiType[field.Type])
 					event.ArgsTypeName = append(event.ArgsTypeName, convert.ConvertType(field.TypeName))
@@ -96,7 +96,7 @@ func (m *MetadataV14Decoder) Process() {
 		modulesType[k].Events = module.Events
 		if module.Events != nil {
 			for eventIndex, event := range module.Events {
-				modulesType[k].Events[eventIndex].Lookup = xstrings.RightJustify(utiles.IntToHex(module.Index), 2, "0") + xstrings.RightJustify(utiles.IntToHex(eventIndex), 2, "0")
+				modulesType[k].Events[eventIndex].Lookup = xstrings.RightJustify(utiles.IntToHex(module.Index), 2, "0") + xstrings.RightJustify(utiles.IntToHex(event.LookupIndex), 2, "0")
 				result.EventIndex[modulesType[k].Events[eventIndex].Lookup] = EventIndex{Module: MetadataModules{Name: module.Name}, Call: event}
 			}
 		}
